@@ -1,0 +1,204 @@
+# yast2-apparmor locale file
+# Copyright (C) 2005 Novell INC.
+# This file is distributed under the same license as the yast2-apparmor package.
+# David Drewelow <davidd@immunix.com>, 2005.
+# translation of yast2-agents.pt.po to portuguese
+# Antonio Cardoso Martins <digiplan@netvisao.pt>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: yast2-agents.pt\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-22 13:42-0700\n"
+"PO-Revision-Date: 2005-08-07 01:14+0100\n"
+"Last-Translator: Antonio Cardoso Martins <digiplan@netvisao.pt>\n"
+"Language-Team: portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10\n"
+
+#: ag_logparse:63 ag_logparse:83
+msgid "Unable to open"
+msgstr "Não foi possíve abrir"
+
+#: ag_logparse:63
+msgid "Couldn't save query."
+msgstr "Não foi possível gravar a pergunta."
+
+#: ag_logparse:83
+msgid "Couldn't retrieve query."
+msgstr "Não foi possíve obter a pergunta."
+
+#: ag_reports_confined:104
+#, c-format
+msgid "ag_reports_confined: Couldn't open %s for writing."
+msgstr "ag_reports_confined: Não foi possíve abrir %s para escrita."
+
+#: ag_reports_confined:130
+#, c-format
+msgid "Failure in readMultiAudLog() - couldn't open %s."
+msgstr "Falah em readMultiAudLog() - não foi possível abrir %s."
+
+#: ag_reports_confined:143
+#, c-format
+msgid "Problem in readMultiAudLog\\(\\) - couldn't open %s\\/%s."
+msgstr "Problema em readMultiAudLog\\(\\) - não foi possível abrir %s\\/%s."
+
+#: ag_reports_confined:177
+msgid "readAudLog() wasn't passed an input file."
+msgstr "radAudLog() não foi fornecido um ficheiro de entrada."
+
+#: ag_reports_confined:201
+#, c-format
+msgid "readAudLog\\(\\) couldn't open %s."
+msgstr "readAudLog\\(\\) não foi possível abrir %s."
+
+#: ag_reports_confined:259
+#, c-format
+msgid "Can't run %s.  Exiting."
+msgstr "Não foi possível executar %s. A sair."
+
+#: ag_reports_ess:57
+msgid "Failure in readMultiEssLog() - couldn't open"
+msgstr "Falha em readMultiEssLog() . não foi possível abrir"
+
+#: ag_reports_ess:70
+msgid "Problem in readMultiEssLog() - couldn't open"
+msgstr "Problema em readMultiEssLog() - não foi possível abrir"
+
+#: ag_reports_ess:105
+msgid "readEssLog() wasn't passed an input file."
+msgstr "readEssLog() não foi fornecido um ficheiro de entrada."
+
+#: ag_reports_ess:129
+msgid "readEssLog() couldn't open $logFile"
+msgstr "readEssLog() não foi possível abrir $logFile"
+
+#: ag_reports_ess:163
+#, c-format
+msgid "ag_logparse: Unknown instruction %s or argument: %s"
+msgstr "ag_logparse: Instrução %s ou argumento  desconhecidos: %s"
+
+#: ag_reports_parse:78
+#, c-format
+msgid "ag_reports_parse: Couldn't open %s for writing."
+msgstr "ag_reports_parse: Não foi possível abrir %s para escrita."
+
+#: ag_reports_parse:145
+msgid "ag_reports_parse: No archived reports found."
+msgstr "ag_reports_parse: Não foram encontrados relatórios arquivados."
+
+#: ag_reports_parse:150
+#, c-format
+msgid "ag_reports_parse: Can't open directory %s: %s"
+msgstr "ag_reports_parse: Não foi possível abrir o directório %s: %s"
+
+#: ag_reports_parse:179
+#, c-format
+msgid "ag_reports_parse: Unknown instruction %s or argument: %s"
+msgstr "ag_reports_parse: Instrução %s ou argumento desconhecidos: %s"
+
+#: ag_reports_sched:76
+#, c-format
+msgid "Couldn't find %s.  Unable to create crontab.  Exiting."
+msgstr "Não foi possível encontrar %s.  Não foi possível criar o crontab. A sair."
+
+#: ag_reports_sched:133 ag_reports_sched:175 ag_reports_sched:253
+#: ag_reports_sched:316 ag_reports_sched:323 ag_reports_sched:387
+#: ag_reports_sched:394 ag_reports_sched:477 ag_reports_sched:542
+#, c-format
+msgid "Couldn't open %s."
+msgstr "Não foi possível abrir %s."
+
+#: ag_reports_sched:245
+#, c-format
+msgid "Couldn't open %s.  Unable to add report: %s"
+msgstr "Não foi possível abrir %s. Incapaz de adicionar relatório: %s"
+
+#: ag_reports_sched:270
+#, c-format
+msgid "Duplicate report name not allowed. Didn't schedule new report: %s"
+msgstr "Não é permitido um nome duplicado de relatório. Não foi agendado novo relatório: %s"
+
+#: ag_reports_sched:583 ag_reports_sched:590
+#, c-format
+msgid "Couldn't open %s.  No changes performed."
+msgstr "Não foi possível abrir %s. Não foram realizadas alterações."
+
+#: ag_reports_sched:685
+#, c-format
+msgid "ag_reports_sched: Unknown instruction %s or arg: %s"
+msgstr "ag_reports_sched: Instrucção %s ou argumento desconhecidos: %s"
+
+#: Reports.pm:246 Reports.pm:1328
+#, perl-format
+msgid "DBI Execution failed: %s."
+msgstr "Falhou a execução de DBI: %s."
+
+#: Reports.pm:272
+#, perl-format
+msgid "Couldn't open file: %s."
+msgstr "Não foi possível abrir o ficheiro: %s."
+
+#: Reports.pm:276
+msgid "No type value passed.  Unable to determine page count."
+msgstr "Não foi passado o valor do tipo. Não foi possível determinar a contagem de páginas."
+
+#: Reports.pm:346
+#, perl-format
+msgid "Failed copying %s."
+msgstr "Falhou a cópia de %s."
+
+#: Reports.pm:459
+#, perl-format
+msgid "Export Log Error: Couldn't open %s"
+msgstr "Erro no Registo Diário de Exportação: Não foi possível abrir %s"
+
+#: Reports.pm:483
+msgid "Fatal error.  No report name given. Exiting."
+msgstr "Erro fatal. Não foi dado um nome para o relatório. A sair."
+
+#: Reports.pm:489
+#, perl-format
+msgid ""
+"Unable to get configuration info for %s.\n"
+"                Unable to find %s."
+msgstr ""
+"Não foi possível obter a informação de configuração para %s.\n"
+"                   Não foi possível encontrar %s."
+
+#: Reports.pm:530
+#, perl-format
+msgid "Failed to parse: %s."
+msgstr "Falha na interpretação: %s."
+
+#: Reports.pm:539
+#, perl-format
+msgid "Fatal Error.  Couldn't open %s."
+msgstr "Erro Fatal. Não foi possível abrir %s."
+
+#: Reports.pm:587
+#, perl-format
+msgid "Fatal Error.  Can't run %s.  Exiting."
+msgstr "Erro Fatal. Não foi possível executar %s. A sair."
+
+#: Reports.pm:608
+#, perl-format
+msgid "Fatal Error.  No directory, %s, found.  Exiting."
+msgstr "Erro Fatal. Não foi encontrado o directório %s. A sair."
+
+#: Reports.pm:630
+#, perl-format
+msgid "Fatal Error.  Couldn't open %s.  Exiting"
+msgstr "Erro Fatal. Não foi possível abrir %s. A sair"
+
+#: Reports.pm:658 Reports.pm:671 Reports.pm:681
+#, perl-format
+msgid "DBI Execution failed: %s"
+msgstr "Falhou a execução de DBI: %s"
+
+#: Reports.pm:1434
+#, perl-format
+msgid "Fatal Error.  getArchReport() couldn't open %s"
+msgstr "Erro Fatal. getArchReport() não foi possível abrir %s"
+

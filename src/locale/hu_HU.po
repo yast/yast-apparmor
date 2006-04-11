@@ -1,0 +1,1073 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-08-06 20:20+0100\n"
+"Last-Translator: Szabolcs Varga <shirokuma@shirokuma.hu>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# yast2-apparmor locale file
+# Copyright (C) 2005 Novell INC.
+# This file is distributed under the same license as the yast2-apparmor package.
+# David Drewelow <davidd@immunix.com>, 2005.
+#
+#: profile_dialogs.ycp:218
+#: reporting_dialogues.ycp:1079
+#: reporting_dialogues.ycp:1756
+#: reporting_dialogues.ycp:2054
+msgid "Select Directory"
+msgstr "Könyvtár kiválasztása"
+
+#: profile_dialogs.ycp:220
+msgid "Select File"
+msgstr "Fájl kiválasztása"
+
+#: profile_dialogs.ycp:261
+msgid "Entry will not added. Entry name or permissions not defined."
+msgstr "A bejegyzés nem kerül felvételre. A bejegyzés neve vagy a jogosultságok nincsenek megadva."
+
+#: profile_dialogs.ycp:336
+msgid "&Hat name to add"
+msgstr "Felvenni kívánt &kalap neve"
+
+#: profile_dialogs.ycp:450
+#: reporting_dialogues.ycp:678
+#: reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1066
+#: reporting_dialogues.ycp:1074
+#: reporting_dialogues.ycp:1090
+#: reporting_dialogues.ycp:1108
+#: reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132
+#: reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209
+#: reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248
+#: reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271
+#: reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288
+#: reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412
+#: reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466
+#: reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483
+#: reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499
+#: sd-config.ycp:79
+msgid "&Done"
+msgstr "&Kész"
+
+#: profile_dialogs.ycp:478
+msgid "Include entries can not be edited. Please select add or delete to manage Include entries."
+msgstr "Az include bejegyzések nem módosíthatók. Az include bejegyzések kezeléséhez válassza ki a hozzáadás vagy törlés lehetőséget."
+
+#: profile_dialogs.ycp:596
+msgid "Save changes to the Profile"
+msgstr "Profil módosításainak mentése"
+
+#: profile_dialogs.ycp:669
+msgid "You must select a profile to edit"
+msgstr "A szerkesztéshez ki kell választani egy profilt"
+
+#: report_helptext.ycp:5
+msgid "The Report Configuration dialog enables you to filter the archived report selected in the previous screen.  To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  "
+msgstr "A Jelentés beállítása párbeszédablakban szűrhető meg az előző képernyőn kiválasztott archivált jelentés. Ha <b>Dátumtartomány:</b><br><br> <ol> szerint kíván szűrni, akkor <li>kattintson a <b>Szűrés dátumtartomány szerint</b> gombra. A mezők aktívvá válnak. <li>Adja meg a kezdő és befejező dátumot, amelyen belüli időtartományra kíváncsi."
+
+#: profile_dialogs.ycp:574
+msgid "Select File To Include"
+msgstr "Beágyazandó fájl kiválasztása"
+
+#: report_helptext.ycp:5
+msgid "The Report Configuration dialog enables you to filter the archived report selected in the previous screen.  To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <br><br> <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the binary executable of the program of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the profile, the report will display the security events that are generated for the specified profile.  You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided."
+msgstr "A Jelentés beállítása párbeszédablakban szűrhető meg az előző képernyőn kiválasztott archivált jelentés. Ha <b>Dátumtartomány:</b><br><br> <ol> szerint kíván szűrni, akkor <li>kattintson a <b>Szűrés dátumtartomány szerint</b> gombra. A mezők aktívvá válnak. <li>Adja meg a kezdő és befejező dátumot, amelyen belüli időtartományra kíváncsi. <li>Megadhat más szűrőparamétereket is. </ol> Az alábbi meghatározások segítenek a Jelentés beállítása párbeszédablak szűrőparamétereinek meghatározásában: <br><br> <b>Programnév minta:</b> Ha beír egy programnevet, vagy mintát, amely illeszkedik a kívánt program bináris végrehajtható fájljának a nevéhez, a jelentés csak az adott programmal kapcsolatos biztonsági eseményeket fogja megjeleníteni.<br><br> <b>Profilenév minta:</b> Ha megadja a profil nevét, akkor a jelentés csak az adott profilhoz készült biztonsági eseményeket fogja megjeleníteni. <br><br> <b>PID szám:</b> A folyamatazonosító (PID) szám egyedileg azonosítja az egyes futó folyamatokat vagy programokat (a szám csak a folyamat futása alatt létezik). <br><br> <b>Súlyossági szint:</b>  Adja meg a legalacsonyabb súlyossági szintet, amelynek megfelelő eseményeket még látni kíván a jelentésben. A jelentés a megadott, illetve még komolyabb súlyossági szintű eseményeket fogja tartalmazni.<br><br> <b>Részlet:</b>  Egy forrás, amelyhez a profil megtagadta a hozzáférést. Ez lehet egy funkció és lehet egy fájl. A mező segítségével gyűjthető ki a jelentésben, hogy a profilok mely erőforrások elérését tiltják. <br><br> <b>Mód:</b> A mód az a jogosultság, amelyet a profil megad a program vagy folyamat számára, amelyre alkalmazásra kerül. A lehetséges értékek r (olvasás) w (írás) l (csatolás) x (végrehajtás)<br><br> <b>Hozzáférési típus:</b> A hozzáférési típus azt mondja meg, hogy mi történik ténylegesen a biztonsági esemény során. A lehetőségek: PERMITTING (enged), REJECTING (tilt) vagy AUDITING (felülvizsgálatra naplóz).<br><br> <b>CSV vagy HTML:</b> CSV (vesszővel elválasztott értékeket tartalmazó szöveges fájl) vagy HTML fájl formátumban exportálhat. A CSV fájlban a naplóbejegyzések egyes adatelemei vesszővel vannak elválasztva, a táblázatorientált alkalmazások ebből könnyen tudnak importálni. Az exportált jelentés más helyre is menthető, ha a mezőbe beírja a teljes elérési utat."
+
+#: report_helptext.ycp:8
+msgid "The AppArmor On-Demand Report screen displays an instantly generated version of one of the following reports.  <b>Executive Security Summary:</b> A combined report, consisting of one or more Security incident reports from one or more machines.  This report provides a single view of security events on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that reports which application servers are running and whether the applications are confined by AppArmor. Application servers are applications that accept incoming network connections. <br><br> <b>Security Incident Report:</b> A report that displays application security for a single host.  It reports policy violations for locally confined applications during a specific time period. You can edit and customize this report, or add new versions."
+msgstr "Az AppArmor igény szerinti jelentés képernyőn a következő jelentések azonnal előállított változata látható. <b>Vezetői biztonsági összefoglaló:</b> Egy egyesített jelentés, egy vagy több gép Biztonsági esemény jelentéseinek összesítése. Ez a jelentés egységes nézetet biztosít több gép biztonsági eseményeiről. <br><br> <b>Alkalmazásaudit jelentés:</b> Egy auditálási eszköz, amely kimutatja, mely szerveralkalmazások futnak éppen, illetve hogy az AppArmor korlátozza-e az alkalmazásokat. Szerveralkalmazás az olyan alkalmazás, amely fogad bejövő hálózati kapcsolatokat. <br><br> <b>Biztonsági esemény jelentés:</b> Ez a jelentés egy adott gép alkalmazásbiztonságát mutatja be. Felsorolja a helyileg korlátozott alkalmazások irányelvsértéseit egy adott időszakon belül. A jelentés módosítható és testreszabható, illetve új változatok vehetők fel."
+
+#: report_helptext.ycp:10
+msgid "The Report Configuration dialog enables you to filter the report selected in the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the executable process of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the security profile that is applied to the rocess, the report will display the security events that are generated for the specified profile. You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided.<br><br>"
+msgstr "A Jelentés beállítása párbeszédablakban szűrhető meg az előző képernyőn kiválasztott archivált jelentés. Ha <b>Dátumtartomány:</b><br><br> <ol> szerint kíván szűrni, akkor <li>kattintson a <b>Szűrés dátumtartomány szerint</b> gombra. A mezők aktívvá válnak. <li>Adja meg a kezdő és befejező dátumot, amelyen belüli időtartományra kíváncsi. <li>Megadhat más szűrőparamétereket is. </ol> Az alábbi meghatározások segítenek a Jelentés beállítása párbeszédablak szűrőparamétereinek meghatározásában: <br><br> <b>Programnév minta:</b> Ha beír egy programnevet, vagy mintát, amely illeszkedik a kívánt program bináris végrehajtható fájljának a nevéhez, a jelentés csak az adott programmal kapcsolatos biztonsági eseményeket fogja megjeleníteni.<br><br> <b>Profilenév minta:</b> Ha megadja a profil nevét, akkor a jelentés csak az adott profilhoz készült biztonsági eseményeket fogja megjeleníteni. <br><br> <b>PID szám:</b> A folyamatazonosító (PID) szám egyedileg azonosítja az egyes futó folyamatokat vagy programokat (a szám csak a folyamat futása alatt létezik). <br><br> <b>Súlyossági szint:</b>  Adja meg a legalacsonyabb súlyossági szintet, amelynek megfelelő eseményeket még látni kíván a jelentésben. A jelentés a megadott, illetve még komolyabb súlyossági szintű eseményeket fogja tartalmazni.<br><br> <b>Részlet:</b>  Egy forrás, amelyhez a profil megtagadta a hozzáférést. Ez lehet egy funkció és lehet egy fájl. A mező segítségével gyűjthető ki a jelentésben, hogy a profilok mely erőforrások elérését tiltják. <br><br> <b>Mód:</b> A mód az a jogosultság, amelyet a profil megad a program vagy folyamat számára, amelyre alkalmazásra kerül. A lehetséges értékek r (olvasás) w (írás) l (csatolás) x (végrehajtás)<br><br> <b>Hozzáférési típus:</b> A hozzáférési típus azt mondja meg, hogy mi történik ténylegesen a biztonsági esemény során. A lehetőségek: PERMITTING (enged), REJECTING (tilt) vagy AUDITING (felülvizsgálatra naplóz).<br><br> <b>CSV vagy HTML:</b> CSV (vesszővel elválasztott értékeket tartalmazó szöveges fájl) vagy HTML fájl formátumban exportálhat. A CSV fájlban a naplóbejegyzések egyes adatelemei vesszővel vannak elválasztva, a táblázatorientált alkalmazások ebből könnyen tudnak importálni. Az exportált jelentés más helyre is menthető, ha a mezőbe beírja a teljes elérési utat."
+
+#: report_helptext.ycp:13
+msgid "The summary of scheduled reports page shows us when reports are scheduled to run. Reports can be set to run monthly, weekly, daily, or hourly. The default settings are daily at midnight. The reports can also be emailed, upon completion, to up to three email recipients.<br><br> In the Set Schedule section, you can schedule the following three types of security reports:<br><br> <b>Executive Security Summary:</b> A combined report, consisting of one or more Security incident reports from one or more machines.  This report provides a single view of security events on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that reports which application servers are running and whether the applications are confined by AppArmor. Application servers are applications that accept incoming network connections. <br><br> <b>Security Incident Report:</b> A report that displays application security for a single host.  It reports policy violations for locally confined applications during a specific time period. You can edit and customize this report, or add new versions."
+msgstr "Az ütemezett jelentések összegző oldalán az látható, hogy az egyes jelentések futtatása mikorra van beállítva. A jelentések futtathatók havonta, hetente, naponta, vagy akár óránként. Az alapértelmezett beállítás a naponta, éjfélkor. A jelentések ezenfelül befejezés után elküldhetők e-mailben, maximum három címzettnek. <br><br> Az Ütemezés beállítása szakaszban a következő három típusú biztonsági jelentés ütemezett futtatása állítható be: <br><br> <b>Vezetői biztonsági összefoglaló:</b> Egy egyesített jelentés, egy vagy több gép Biztonsági esemény jelentéseinek összesítése. Ez a jelentés egységes nézetet biztosít több gép biztonsági eseményeiről. <br><br> <b>Alkalmazásaudit jelentés:</b> Egy auditálási eszköz, amely kimutatja, mely szerveralkalmazások futnak éppen, illetve hogy az AppArmor korlátozza-e az alkalmazásokat. Szerveralkalmazás az olyan alkalmazás, amely fogad bejövő hálózati kapcsolatokat. <br><br> <b>Biztonsági esemény jelentés:</b> Ez a jelentés egy adott gép alkalmazásbiztonságát mutatja be. Felsorolja a helyileg korlátozott alkalmazások irányelvsértéseit egy adott időszakon belül. A jelentés módosítható és testreszabható, illetve új változatok vehetők fel."
+
+#: report_helptext.ycp:15
+msgid " The View Archive Reports form enables you to view previously generated reports, located in the /var/log/apparmor/reports-archived directory. The checkboxes at the top of the form enable you to narrow-down the category of reports shown in the list to the following: SIR Reports, AUD Reports, or ESS Reports.  To see report details, select a report and click the <b>View</b> button.<br><br> You can view reports from one or more systems if you move the reports to the /var/log/apparmor/reports-archived directory."
+msgstr "Az Archív jelentések megjelenítése űrlapon megtekintheti a korábban előállított (a /var/log/apparmor/reports-archived könyvtárban található) jelentéseket. Az űrlap felső részén található jelölőnégyzetekkel szűkíthető a listában látható jelentések köre az alábbiakra: SIR jelentések, AUD jelentések, illetve ESS jelentések. A jelentések részleteinek megtekintéséhez válassza ki a kívánt jelentést, majd kattintson a <b>Megjelenítés</b> gombra. <br><br> Több rendszer jelentései is megtekinthetők, ha a jelentéseket átmozgatja a /var/log/apparmor/reports-archived könyvtárba."
+
+#: report_helptext.ycp:27
+msgid "repConfHelp"
+msgstr "repConfHelp"
+
+#: report_helptext.ycp:28
+msgid "<b>Security Incident Report (SIR):</b> A report that displays security events of interest to an administrator. The SIR reports policy violations for locally confined applications during the specified time period. The SIR reports policy exceptions and policy engine state changes. These two types of security events are defined as follows: <ul> <li><b>Policy Exceptions:</b> When an application requests a resource that's not defined within its profile, a security event is generated.  <li><b>Policy Engine State Changes:</b> Enforces policy for applications and maintains its own state, including when engines start or stop, when a policy is reloaded, and when global security feature are enabled or disabled.  </ul> Select the report from the archive, then <b>View</b> to see the report details."
+msgstr "<b>Biztonsági esemény jelentés (SIR):</b> A rendszergazda érdeklődésére számot tartó biztonsági eseményeket felsoroló jelentés. A SIR jelentések a helyi, korlátozott alkalmazások irányelvsértéseit írják le, a megadott időszakra vonatkozóan. A SIR jelentésekben az irányelvek megsértései, illetve az irányelvkezelő alrendszer állapotváltozásai láthatók. E kétféle biztonsági esemény a következőket jelenti: <ul> <li><b>Irányelv megsértése:</b> Amikor egy alkalmazás olyan erőforrást kér, amelyik nincs felsorolva a profiljában, biztonsági esemény generálódik. <li><b>Irányelvkezelő alrendszer állapotváltozásai:</b> Az alkalmazások irányelveinek betartatása és a saját állapot figyelése, például hogy mikor indulnak el és állnak le az alrendszerek, mikor töltődik be újra egy irányelv, illetve hogy a globális biztonsági funkció be- vagy kikapcsolásra kerül. </ul> Válassza ki a kívánt jelentést az archívumból, majd kattintson a <b>Megjelenítés</b> gombra a jelentés részleteinek megtekintéséhez."
+
+#: report_helptext.ycp:31
+msgid "<b>Applications Audit Report (AUD):</b> An auditing tool that reports which application servers are running and whether they are confined by AppArmor. Application servers are applications that accept incoming network connections. This report provides the host machine's IP Address, the date the Applications Audit Report ran, the name and path of the unconfined program or application server, the suggested profile or a placeholder for a profile for an unconfined program, the process ID number, The state of the program (confined or unconfined), and the type of confinement that the profile is performing (enforce/complain).<br><br> "
+msgstr "<b>Alkalmazásaudit jelentés (AUD):</b> Egy auditálási eszköz, amely kimutatja, mely szerveralkalmazások futnak éppen, illetve hogy az AppArmor korlátozza-e az alkalmazásokat. Szerveralkalmazás az olyan alkalmazás, amely fogad bejövő hálózati kapcsolatokat. Ez a jelentés tartalmazza a gép IP-címét, az Alkalmazásaudit jelentés futásának idejét, a nem korlátozott program vagy szerveralkalmazás nevét és elérési útját, a nem korlátozott program javasolt profilját vagy a profil egy helykitöltőjét, a folyamatazonosító (PID) számot, a program állapotát (korlátozott vagy nem korlátozott), valamint a korlátozoás típusát, amelyet a profil végrehajt (kényszerítés/panasz).<br><br> "
+
+#: report_helptext.ycp:33
+msgid "<b>Executive Security Summary (ESS):</b> A combined report, consisting of one or more high-level reports from one or more machines. This report can provide a single view of security events on multiple machines if each machine's data is copied to the reports archive directory, which is <b>/var/log/apparmor/reports-archived</b>. This report provides the host machine's IP address, the start and end dates of the polled events, total number of rejects, total number of events, average of severity levels reported, and the highest severity level reported. One line of the ESS report represents a range of SIR reports.<br><br> "
+msgstr "<b>Vezetői biztonsági összefoglaló (ESS):</b> Egy egyesített jelentés, egy vagy több gép Biztonsági esemény jelentéseinek összesítése. Ez a jelentés egységes nézetet biztosít több gép biztonsági eseményeiről, ha az egyes gépek adatait átmozgatja a jelentésarchívum, azaz a /var/log/apparmor/reports-archived könyvtárba. Ez a jelentés tartalmazza a gép IP-címét, a lekérdezett események kezdési és befejezési dátumát, a visszautasítások és az események összes számát, a jelentett események átlagos súlyossági szintjét, valamint a jelentett legmagasabb súlyossági szintet. Az ESS jelentés egy sora akár több SIR jelentést is magában foglal.<br><br> "
+
+#: reporting_archived_dialogs.ycp:37
+msgid "Archived Security Incident Report - Page "
+msgstr "Archivált Biztonsági esemény jelentés - Oldalszám:"
+
+#: reporting_archived_dialogs.ycp:37
+#: reporting_dialogues.ycp:414
+#: reporting_dialogues.ycp:968
+#: reporting_dialogues.ycp:971
+msgid " of "
+msgstr "/"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+#: reporting_dialogues.ycp:985
+msgid "Host"
+msgstr "Gép"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:673
+#: reporting_dialogues.ycp:803
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Date"
+msgstr "Dátum"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Program"
+msgstr "Program"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:976
+msgid "Profile"
+msgstr "Profil"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:976
+msgid "PID"
+msgstr "PID"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_archived_dialogs.ycp:105
+#: reporting_dialogues.ycp:189
+#: reporting_dialogues.ycp:226
+#: reporting_dialogues.ycp:272
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+#: sd-config.ycp:261
+#: sd-config.ycp:274
+#: sd-config.ycp:287
+msgid "Severity"
+msgstr "Súlyosság"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+msgid "Mode"
+msgstr "Mód"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_archived_dialogs.ycp:111
+#: reporting_dialogues.ycp:183
+#: reporting_dialogues.ycp:220
+#: reporting_dialogues.ycp:278
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+msgid "Detail"
+msgstr "Részletek"
+
+#: reporting_archived_dialogs.ycp:47
+#: reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972
+msgid "Access Type"
+msgstr "Hozzáférés típusa"
+
+#: reporting_archived_dialogs.ycp:53
+msgid "F&irst"
+msgstr "&Első"
+
+#: reporting_archived_dialogs.ycp:54
+#: reporting_dialogues.ycp:1005
+msgid "&Previous"
+msgstr "E&lőző"
+
+#: reporting_archived_dialogs.ycp:55
+msgid "&Sort"
+msgstr "&Rendezés"
+
+#: reporting_archived_dialogs.ycp:56
+#: reporting_dialogues.ycp:1007
+msgid "&Forward"
+msgstr "Elő&re"
+
+#: reporting_archived_dialogs.ycp:57
+msgid "&Last"
+msgstr "&Utolsó"
+
+#: reporting_archived_dialogs.ycp:75
+#: reporting_dialogues.ycp:243
+msgid "Filter By Date Range"
+msgstr "Szűrés dátumtartomány alapján"
+
+#: reporting_archived_dialogs.ycp:76
+#: reporting_dialogues.ycp:244
+msgid " Select Date Range "
+msgstr "Adja meg a dátumtartományt"
+
+#: reporting_archived_dialogs.ycp:78
+#: reporting_dialogues.ycp:246
+msgid "Enter Starting Date/Time"
+msgstr "Írja be a kezdő dátumot/időt"
+
+#: reporting_archived_dialogs.ycp:81
+#: reporting_archived_dialogs.ycp:91
+#: reporting_dialogues.ycp:249
+#: reporting_dialogues.ycp:259
+msgid "Hours"
+msgstr "óra"
+
+#: reporting_archived_dialogs.ycp:82
+#: reporting_archived_dialogs.ycp:92
+#: reporting_dialogues.ycp:250
+#: reporting_dialogues.ycp:260
+msgid "Minutes"
+msgstr "perc"
+
+#: reporting_archived_dialogs.ycp:83
+#: reporting_archived_dialogs.ycp:93
+#: reporting_dialogues.ycp:251
+#: reporting_dialogues.ycp:261
+msgid "Day"
+msgstr "nap"
+
+#: reporting_archived_dialogs.ycp:84
+#: reporting_archived_dialogs.ycp:94
+#: reporting_dialogues.ycp:252
+#: reporting_dialogues.ycp:262
+msgid "Month"
+msgstr "hónap"
+
+#: reporting_archived_dialogs.ycp:85
+#: reporting_archived_dialogs.ycp:95
+#: reporting_dialogues.ycp:253
+#: reporting_dialogues.ycp:263
+msgid "Year"
+msgstr "év"
+
+#: reporting_archived_dialogs.ycp:88
+#: reporting_dialogues.ycp:256
+msgid "Enter Ending Date"
+msgstr "Írja be a befejező dátumot"
+
+#: reporting_archived_dialogs.ycp:101
+#: reporting_dialogues.ycp:176
+#: reporting_dialogues.ycp:213
+#: reporting_dialogues.ycp:268
+#: reporting_dialogues.ycp:485
+msgid "Program name"
+msgstr "Program neve"
+
+#: reporting_archived_dialogs.ycp:102
+#: reporting_dialogues.ycp:177
+#: reporting_dialogues.ycp:214
+#: reporting_dialogues.ycp:269
+msgid "Profile name"
+msgstr "Profil neve"
+
+#: reporting_archived_dialogs.ycp:103
+#: reporting_dialogues.ycp:182
+#: reporting_dialogues.ycp:219
+#: reporting_dialogues.ycp:270
+msgid "PID number"
+msgstr "PID szám"
+
+#: reporting_archived_dialogs.ycp:106
+#: reporting_dialogues.ycp:17
+#: reporting_dialogues.ycp:56
+#: reporting_dialogues.ycp:69
+#: reporting_dialogues.ycp:70
+#: reporting_dialogues.ycp:190
+#: reporting_dialogues.ycp:227
+#: reporting_dialogues.ycp:273
+#: reporting_dialogues.ycp:829
+#: reporting_dialogues.ycp:834
+#: reporting_dialogues.ycp:1548
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1626
+#: reporting_dialogues.ycp:1627
+#: reporting_dialogues.ycp:1628
+#: reporting_dialogues.ycp:1657
+#: reporting_dialogues.ycp:1658
+#: reporting_dialogues.ycp:1726
+#: reporting_dialogues.ycp:1913
+#: reporting_dialogues.ycp:1928
+#: reporting_dialogues.ycp:1974
+#: reporting_dialogues.ycp:1983
+#: reporting_dialogues.ycp:1987
+#: reporting_dialogues.ycp:2001
+#: reporting_dialogues.ycp:2002
+#: reporting_dialogues.ycp:2003
+#: reporting_utils.ycp:195
+#: reporting_utils.ycp:341
+msgid "All"
+msgstr "Mind"
+
+#: reporting_archived_dialogs.ycp:106
+#: reporting_dialogues.ycp:273
+msgid "U"
+msgstr "U"
+
+#: reporting_archived_dialogs.ycp:112
+#: reporting_dialogues.ycp:229
+#: reporting_dialogues.ycp:279
+msgid "Access Type: R"
+msgstr "Hozzáférés típusa: R"
+
+#: reporting_archived_dialogs.ycp:113
+#: reporting_dialogues.ycp:230
+#: reporting_dialogues.ycp:280
+msgid "Mode: All"
+msgstr "Mód: Mind"
+
+#: reporting_archived_dialogs.ycp:120
+#: reporting_dialogues.ycp:288
+#: reporting_dialogues.ycp:379
+#: reporting_dialogues.ycp:1592
+#: reporting_dialogues.ycp:1952
+msgid "Export Type"
+msgstr "Exportálás típusa"
+
+#: reporting_archived_dialogs.ycp:121
+#: reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+#: reporting_dialogues.ycp:1991
+msgid "None"
+msgstr "Egyik sem"
+
+#: reporting_archived_dialogs.ycp:121
+#: reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "csv"
+msgstr "csv"
+
+#: reporting_archived_dialogs.ycp:121
+#: reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "html"
+msgstr "html"
+
+#: reporting_archived_dialogs.ycp:121
+#: reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "Both"
+msgstr "mindkettő"
+
+#: reporting_archived_dialogs.ycp:123
+#: reporting_dialogues.ycp:291
+#: reporting_dialogues.ycp:382
+#: reporting_dialogues.ycp:1595
+#: reporting_dialogues.ycp:1955
+msgid "Location to store log."
+msgstr "A napló tárolásának a helye."
+
+#: reporting_archived_dialogs.ycp:124
+#: reporting_dialogues.ycp:292
+#: reporting_dialogues.ycp:383
+#: reporting_dialogues.ycp:797
+#: reporting_dialogues.ycp:1596
+#: reporting_dialogues.ycp:1956
+msgid "&Accept"
+msgstr "&Elfogadás"
+
+#: reporting_archived_dialogs.ycp:125
+#: reporting_dialogues.ycp:293
+#: reporting_dialogues.ycp:384
+#: reporting_dialogues.ycp:798
+#: reporting_dialogues.ycp:1597
+#: reporting_dialogues.ycp:1957
+msgid "&Browse"
+msgstr "&Tallózás"
+
+#: reporting_archived_dialogs.ycp:145
+#: reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:831
+msgid "Report Configuration Dialog"
+msgstr "Jelentésbeállítási párbeszédablak"
+
+#: reporting_archived_dialogs.ycp:145
+#: reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:832
+#: reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1108
+#: reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132
+#: reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209
+#: reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248
+#: reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271
+#: reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288
+#: reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412
+#: reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466
+#: reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483
+#: reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499
+#: reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "Back"
+msgstr "Vissza"
+
+#: reporting_archived_dialogs.ycp:145
+#: reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:832
+#: reporting_dialogues.ycp:1608
+#: reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "&Next"
+msgstr "&Tovább"
+
+#: reporting_archived_dialogs.ycp:196
+#: reporting_archived_dialogs.ycp:211
+msgid "February only has 28 days!  Fixing."
+msgstr "Februárban csak 28 nap van! Kijavítom."
+
+#: reporting_archived_dialogs.ycp:199
+msgid "February only has 29 days!  Fixing."
+msgstr "Februárban csak 29 nap van! Kijavítom."
+
+#: reporting_archived_dialogs.ycp:203
+#: reporting_archived_dialogs.ycp:222
+msgid "Month only has 30 days!  Fixing."
+msgstr "A hónapban csak 30 nap van! Kijavítom."
+
+#: reporting_archived_dialogs.ycp:216
+msgid "February only has 29 days!"
+msgstr "Februárban csak 29 nap van!"
+
+#: reporting_dialogues.ycp:145
+msgid "Unrecognized form request."
+msgstr "Ismeretlen űrlapkérés."
+
+#: reporting_dialogues.ycp:193
+#: reporting_dialogues.ycp:881
+#: reporting_dialogues.ycp:1699
+#: reporting_dialogues.ycp:2033
+msgid "Access Type: "
+msgstr "Hozzáférés típusa:"
+
+#: reporting_dialogues.ycp:195
+#: reporting_dialogues.ycp:890
+#: reporting_dialogues.ycp:1708
+#: reporting_dialogues.ycp:2041
+msgid "Mode: "
+msgstr "Mód:"
+
+#: reporting_dialogues.ycp:200
+#: reporting_dialogues.ycp:235
+#: reporting_dialogues.ycp:1607
+#: reporting_dialogues.ycp:1884
+#: reporting_dialogues.ycp:1894
+#: reporting_dialogues.ycp:2143
+msgid "&Cancel"
+msgstr "&Mégse"
+
+#: reporting_dialogues.ycp:201
+#: reporting_dialogues.ycp:236
+#: reporting_dialogues.ycp:1895
+#: reporting_utils.ycp:68
+#: reporting_utils.ycp:131
+#: reporting_utils.ycp:203
+#: reporting_utils.ycp:348
+msgid "&Save"
+msgstr "Menté&s"
+
+#: reporting_dialogues.ycp:414
+#: reporting_dialogues.ycp:968
+msgid "On Demand Event Report - Page "
+msgstr "Igény szerinti eseményjelentés - Oldal: "
+
+#: reporting_dialogues.ycp:483
+msgid "Filter By Program Name"
+msgstr "Szűrés programnév alapján"
+
+#: reporting_dialogues.ycp:489
+msgid "Export Report"
+msgstr "Jelentés exportálása"
+
+#: reporting_dialogues.ycp:491
+msgid "Export File Location"
+msgstr "Exportált fájl helye"
+
+#: reporting_dialogues.ycp:492
+msgid "Select Export Format"
+msgstr "Válassza ki az exportálás formátumát"
+
+#: reporting_dialogues.ycp:493
+msgid "CSV"
+msgstr "CSV"
+
+#: reporting_dialogues.ycp:494
+msgid "HTML"
+msgstr "HTML"
+
+#: reporting_dialogues.ycp:663
+msgid ""
+"<b>AppArmor Security Events</b><p>\n"
+"                    This table displays the events found that match your search criteria."
+msgstr ""
+"<b>AppArmor biztonsági események</b><p>\n"
+"                    Ez a táblázat a megadott keresési feltételeknek megfelelő eseményeket tartalmazza."
+
+#: reporting_dialogues.ycp:670
+msgid "AppArmor Event Report Data"
+msgstr "AppArmor eseményjelentés adatok"
+
+#: reporting_dialogues.ycp:673
+msgid "AppArmor Message"
+msgstr "AppArmor üzenet"
+
+#: reporting_dialogues.ycp:677
+#: reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1065
+#: reporting_dialogues.ycp:1073
+#: reporting_dialogues.ycp:1089
+#: reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "AppArmor Security Event Report"
+msgstr "AppArmor biztonsági esemény jelentés"
+
+#: reporting_dialogues.ycp:713
+msgid "AppArmor Reporting"
+msgstr "AppArmor jelentések"
+
+#: reporting_dialogues.ycp:717
+#: reporting_dialogues.ycp:2241
+msgid "Schedule Reports"
+msgstr "Jelentések ütemezése"
+
+#: reporting_dialogues.ycp:718
+#: reporting_dialogues.ycp:784
+msgid "View Archived Reports"
+msgstr "Archivált jelentések megtekintése"
+
+#: reporting_dialogues.ycp:719
+msgid "Run Reports"
+msgstr "Jelentések futtatása"
+
+#: reporting_dialogues.ycp:788
+msgid "SIR"
+msgstr "SIR"
+
+#: reporting_dialogues.ycp:789
+msgid "App Aud"
+msgstr "App Aud"
+
+#: reporting_dialogues.ycp:790
+msgid "ESS"
+msgstr "ESS"
+
+#: reporting_dialogues.ycp:796
+msgid "Location of Archived Reports"
+msgstr "Archivált jelentések helye"
+
+#: reporting_dialogues.ycp:803
+msgid "Report"
+msgstr "Jelentés"
+
+#: reporting_dialogues.ycp:808
+msgid "&View"
+msgstr "&Megjelenítés"
+
+#: reporting_dialogues.ycp:809
+msgid "View &All"
+msgstr "Össze&s megjelenítése"
+
+#: reporting_dialogues.ycp:971
+msgid "Archived Event Report - Page "
+msgstr "Archivált esemény jelentés - Oldal: "
+
+#: reporting_dialogues.ycp:974
+#: reporting_dialogues.ycp:1209
+msgid "Applications Audit Report"
+msgstr "Alkalmazásaudit jelentés"
+
+#: reporting_dialogues.ycp:976
+msgid "State"
+msgstr "Állapot"
+
+#: reporting_dialogues.ycp:976
+msgid "Type"
+msgstr "Típus"
+
+#: reporting_dialogues.ycp:979
+#: reporting_dialogues.ycp:984
+msgid "Executive Security Summary"
+msgstr "Vezetői biztonsági összefoglaló"
+
+#: reporting_dialogues.ycp:980
+msgid "Query Results"
+msgstr "Lekérdezés eredménye"
+
+#: reporting_dialogues.ycp:980
+msgid "No event information exists."
+msgstr "Nem találhatók eseményadatok."
+
+#: reporting_dialogues.ycp:985
+msgid "Start Date"
+msgstr "Kezdési dátum"
+
+#: reporting_dialogues.ycp:986
+msgid "End Date"
+msgstr "Befejezési dátum"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Rejects"
+msgstr "Visszautasítások száma"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Events"
+msgstr "Események száma"
+
+#: reporting_dialogues.ycp:986
+msgid "Ave. Sev"
+msgstr "Átl. súly."
+
+#: reporting_dialogues.ycp:986
+msgid "High Sev"
+msgstr "Max. súly."
+
+#: reporting_dialogues.ycp:1004
+msgid "F&irst Page"
+msgstr "&Első oldal"
+
+#: reporting_dialogues.ycp:1008
+msgid "&Last Page"
+msgstr "&Utolsó oldal"
+
+#: reporting_dialogues.ycp:1009
+msgid "&Go to Page"
+msgstr "&Oldalra ugrás"
+
+#: reporting_dialogues.ycp:1108
+msgid "View Archived SIR Report"
+msgstr "Archivált SIR jelentés megtekintése"
+
+#: reporting_dialogues.ycp:1119
+msgid "View Archived AUD Report"
+msgstr "Archivált AUD jelentés megtekintése"
+
+#: reporting_dialogues.ycp:1131
+msgid "View Archived ESS Report"
+msgstr "Archivált ESS jelentés megtekintése"
+
+#: reporting_dialogues.ycp:1183
+msgid "Security Incident Report"
+msgstr "Biztonsági esemény jelentés"
+
+#: reporting_dialogues.ycp:1232
+msgid "Executive Security Summary Report"
+msgstr "Vezetői biztonsági összefoglaló jelentés"
+
+#: reporting_dialogues.ycp:1236
+msgid "No recognized report type selected.  Try again."
+msgstr "Nincs azonosítható jelentéstípus kiválasztva. Próbálkozzon újra."
+
+#: reporting_dialogues.ycp:1248
+#: reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271
+#: reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288
+#: reporting_dialogues.ycp:1295
+msgid "AppArmor Report"
+msgstr "AppArmor jelentés"
+
+#: reporting_dialogues.ycp:1412
+msgid "AppArmor On-Demand Report"
+msgstr "AppArmor igény szerinti jelentés"
+
+#: reporting_dialogues.ycp:1447
+#: reporting_dialogues.ycp:1465
+#: reporting_dialogues.ycp:1475
+#: reporting_dialogues.ycp:1482
+#: reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499
+msgid "AppArmor - Run Reports"
+msgstr "AppArmor - Jelentések futtatása"
+
+#: reporting_dialogues.ycp:1547
+#: reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Day of Month"
+msgstr "Hónap napja"
+
+#: reporting_dialogues.ycp:1575
+#: reporting_dialogues.ycp:1927
+#: reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Day of Week"
+msgstr "Hét napja"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Sun"
+msgstr "Vas"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Mon"
+msgstr "Hét"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Tue"
+msgstr "Ked"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Wed"
+msgstr "Sze"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Thu"
+msgstr "Csü"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Fri"
+msgstr "Pén"
+
+#: reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1928
+msgid "Sat"
+msgstr "Szo"
+
+#: reporting_dialogues.ycp:1578
+#: reporting_dialogues.ycp:1937
+#: reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Hour"
+msgstr "óra"
+
+#: reporting_dialogues.ycp:1579
+#: reporting_dialogues.ycp:1938
+msgid "Minute"
+msgstr "perc"
+
+#: reporting_dialogues.ycp:1584
+#: reporting_dialogues.ycp:1943
+msgid "Email Target 1"
+msgstr "1. e-mail címzett"
+
+#: reporting_dialogues.ycp:1585
+#: reporting_dialogues.ycp:1944
+msgid "Email Target 2"
+msgstr "2. e-mail címzett"
+
+#: reporting_dialogues.ycp:1586
+#: reporting_dialogues.ycp:1945
+msgid "Email Target 3"
+msgstr "3. e-mail címzett"
+
+#: reporting_dialogues.ycp:1675
+msgid "Only one contiguous space allowed in report names."
+msgstr "A jelentésnevekben egymás után csak egy szóköz használható."
+
+#: reporting_dialogues.ycp:1677
+msgid "These characters are not allowed in report names: \"`~!@#$%^&*()[{]};:'\",<>?/|\""
+msgstr "A jelentésnevekben a következő karakterek nem használhatók: \"`~!@#$%^&*()[{]};:'\",<>?/|\""
+
+#: reporting_dialogues.ycp:1679
+msgid "Only 128 characters are allowed in report names."
+msgstr "A jelentésnevekben legfeljebb 128 karakter használható."
+
+#: reporting_dialogues.ycp:1681
+msgid "You must enter a name for the report."
+msgstr "A jelentésnek nevet kell adni."
+
+#: reporting_dialogues.ycp:1683
+msgid "You must enter at least one email address."
+msgstr "Legalább egy e-mail címet meg kell adnia."
+
+#: reporting_dialogues.ycp:1689
+msgid "Each report name should be unique."
+msgstr "Minden jelentésnévnek egyedinek kell lennie."
+
+#: reporting_dialogues.ycp:1885
+msgid "N&ext"
+msgstr "&Tovább"
+
+#: reporting_dialogues.ycp:1905
+msgid "Edit "
+msgstr "Módosítás"
+
+#: reporting_dialogues.ycp:1905
+msgid " Schedule"
+msgstr " Ütemezés"
+
+#: reporting_dialogues.ycp:1975
+msgid "R"
+msgstr "R"
+
+#: reporting_dialogues.ycp:2014
+#: reporting_dialogues.ycp:2093
+msgid "You must enter at least one email address ."
+msgstr "Legalább egy e-mail címet meg kell adnia."
+
+#: reporting_dialogues.ycp:2108
+msgid "Error: "
+msgstr "Hiba: "
+
+#: reporting_dialogues.ycp:2135
+msgid "Delete Confirmation"
+msgstr "Törlés megerősítése"
+
+#: reporting_dialogues.ycp:2139
+msgid "Are you sure you want to delete: "
+msgstr "Biztosan törölni kívánja: "
+
+#: reporting_dialogues.ycp:2139
+msgid "?"
+msgstr "?"
+
+#: reporting_dialogues.ycp:2144
+msgid "&Delete"
+msgstr "&Törlés"
+
+#: reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Report Name"
+msgstr "Jelentés neve"
+
+#: reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Mins"
+msgstr "perc"
+
+#: reporting_dialogues.ycp:2202
+#: reporting_dialogues.ycp:2252
+msgid "View Archive"
+msgstr "Archívum megtekintése"
+
+#: reporting_dialogues.ycp:2203
+#: reporting_dialogues.ycp:2253
+msgid "Run Now"
+msgstr "Futtatás most"
+
+#: reporting_dialogues.ycp:2206
+#: reporting_dialogues.ycp:2256
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: reporting_dialogues.ycp:2207
+#: reporting_dialogues.ycp:2257
+msgid "Edit"
+msgstr "Módosítás"
+
+#: reporting_dialogues.ycp:2208
+#: reporting_dialogues.ycp:2258
+msgid "Delete"
+msgstr "Törlés"
+
+#: reporting_dialogues.ycp:2306
+msgid "Cannot delete a stock report."
+msgstr "Gyári jelentés nem törölhető."
+
+#: reporting_utils.ycp:64
+msgid "Enter a Page to Move to."
+msgstr "Adja meg az oldalszámot az áthelyezéshez."
+
+#: reporting_utils.ycp:67
+#: reporting_utils.ycp:130
+#: reporting_utils.ycp:202
+#: reporting_utils.ycp:347
+msgid "&Abort"
+msgstr "&Megszakítás"
+
+#: reporting_utils.ycp:196
+msgid "Read"
+msgstr "Olvasás"
+
+#: reporting_utils.ycp:197
+msgid "Write"
+msgstr "Írás"
+
+#: reporting_utils.ycp:198
+msgid "Link"
+msgstr "Hivatkozás"
+
+#: reporting_utils.ycp:199
+msgid "Execute"
+msgstr "Végrehajtás"
+
+#: reporting_utils.ycp:342
+msgid "Permit"
+msgstr "Engedélyezés"
+
+#: reporting_utils.ycp:343
+msgid "Reject"
+msgstr "Visszautasítás"
+
+#: reporting_utils.ycp:344
+msgid "Audit"
+msgstr "Naplózás felülvizsgálathoz"
+
+#: sd-config.ycp:12
+msgid "AppArmor is disabled"
+msgstr "AppArmor kikapcsolva"
+
+#: sd-config.ycp:16
+msgid "AppArmor is enabled"
+msgstr "AppArmor bekapcsolva"
+
+#: sd-config.ycp:27
+msgid "Notification is disabled"
+msgstr "Értesítés kikapcsolva"
+
+#: sd-config.ycp:30
+msgid "Notification is enabled"
+msgstr "Értesítés bekapcsolva"
+
+#: sd-config.ycp:36
+msgid "AppArmor Configuration"
+msgstr "AppArmor beállítások"
+
+#: sd-config.ycp:37
+msgid "<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement module is loaded and functioning.</p> <p><b>Security Event Notification</b><br>When an access violation occurs, configure this tool if you want to be notified via email. </p>"
+msgstr "<p><b>AppArmor állapot</b><br>Itt látható, hogy az AppArmor irányelvkezelő modulja be van-e töltve és működik-e. </p> <p><b>Biztonsági esemény értesítés</b><br>Egy hozzáférési szabály megsértése esetén ezzel az eszközzel állíthatja be, hogy kér-e e-mailben értesítést. </p>"
+
+#: sd-config.ycp:40
+msgid "AppArmor Status"
+msgstr "AppArmor állapot"
+
+#: sd-config.ycp:47
+msgid "Enable AppArmor"
+msgstr "AppArmor bekapcsolása"
+
+#: sd-config.ycp:51
+#: sd-config.ycp:66
+msgid "&Configure"
+msgstr "&Beállítások"
+
+#: sd-config.ycp:62
+msgid "Enable Security Event Notification"
+msgstr "Biztonsági esemény értesítés bekapcsolása"
+
+#: sd-config.ycp:215
+#: sd-config.ycp:227
+#: sd-config.ycp:239
+msgid "Disabled"
+msgstr "Kikapcsolva"
+
+#: sd-config.ycp:216
+#: sd-config.ycp:228
+#: sd-config.ycp:240
+msgid "1 minute"
+msgstr "1 perc"
+
+#: sd-config.ycp:217
+#: sd-config.ycp:229
+#: sd-config.ycp:241
+msgid "5 minutes"
+msgstr "5 perc"
+
+#: sd-config.ycp:218
+#: sd-config.ycp:230
+#: sd-config.ycp:242
+msgid "10 minutes"
+msgstr "10 perc"
+
+#: sd-config.ycp:219
+#: sd-config.ycp:231
+#: sd-config.ycp:243
+msgid "15 minutes"
+msgstr "15 perc"
+
+#: sd-config.ycp:220
+#: sd-config.ycp:232
+#: sd-config.ycp:244
+msgid "30 minutes"
+msgstr "30 perc"
+
+#: sd-config.ycp:221
+#: sd-config.ycp:233
+#: sd-config.ycp:245
+msgid "1 hour"
+msgstr "1 óra"
+
+#: sd-config.ycp:222
+#: sd-config.ycp:234
+#: sd-config.ycp:246
+msgid "1 day"
+msgstr "1 nap"
+
+#: sd-config.ycp:223
+#: sd-config.ycp:235
+#: sd-config.ycp:247
+msgid "1 week"
+msgstr "1 hét"
+
+#: sd-config.ycp:259
+#: sd-config.ycp:272
+#: sd-config.ycp:285
+msgid "Frequency"
+msgstr "Gyakoriság"
+
+#: sd-config.ycp:260
+#: sd-config.ycp:273
+#: sd-config.ycp:286
+msgid "Email Address"
+msgstr "E-mail cím"
+
+#: sd-config.ycp:264
+#: sd-config.ycp:277
+#: sd-config.ycp:290
+msgid "Include Unknown Severity Events"
+msgstr "Ismeretlen biztonsági események szerepeltetése"
+
+#: sd-config.ycp:303
+msgid "Security Event Notification"
+msgstr "Biztonsági esemény értesítés"
+
+#: sd-config.ycp:303
+msgid "&Ok"
+msgstr "&OK"
+

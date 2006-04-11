@@ -1,0 +1,122 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+################################################################################
+# ag_subdomain
+#
+#	Version 0.61
+################################################################################
+
+use strict;
+use Immunix::Ycp;
+use Immunix::SubDomain;
+use Data::Dumper;
+
+# Subroutines
+################################################################################
+
+sub getSubdomainStatus {
+
+    my $sdStatus = "disabled";
+
+    # Ok check that there are profiles loaded to 
+    # determine status
+    my $mountpoint = Immunix::SubDomain::check_for_subdomain();
+    if ( $mountpoint ) {
+        open( PROFILES, "cat $mountpoint/profiles|" );
+        while (<PROFILES>) {
+            # Ensure we have loaded profiles
+            # not just a loaded module
+            if ( /\// ) {
+                $sdStatus = "enabled"; 
+                last;
+            }
+        } 
+        close PROFILES;
+    } 
+    return $sdStatus;
+}
+
+sub getNotifySettings {
+
+  my $config = { };
+  if(open(CFG, "/etc/apparmor/notify.cfg")) {
+    while(<CFG>) {
+      chomp;
+      $config->{$1} = $2 if /^(\S+)\s+(.+)\s*$/;
+    }
+    close(CFG);
+  }
+
+  return $config;
+}
+
+
+sub getNotifyStatus {
+
+  my $config = getNotifySettings();
+
+  my $noteStatus = "disabled";
+
+  if($config->{terse_freq} && $config->{terse_freq} != 0) {
+    $noteStatus = "enabled";
+  } elsif($config->{summary_freq} && $config->{summary_freq} != 0) {
+    $noteStatus = "enabled";
+  } elsif($config->{verbose_freq} && $config->{verbose_freq} != 0) {
+    $noteStatus = "enabled";
+  } 
+
+  return $noteStatus;
+}
+
+# Main 
+################################################################################
+
+
+my $line = <STDIN>;
+
+my ($command, $path, $argument) = Immunix::Ycp::ParseCommand($line);
+
+my $result = undef;
+my $donereturn = 0;
+if ( $command && $path && $argument ) {
+	if ( $argument eq 'sd-all') {
+		my %hResult = '';		# hashed result, duh 
+		$hResult{'sd-status'} = getSubdomainStatus();
+		$hResult{'sd-notify'} = getNotifyStatus();
+		Immunix::Ycp::ycpReturnHashAsMap( %hResult );
+		$donereturn = 1;
+	} elsif ( $argument eq 'sd-status') {
+		$result = getSubdomainStatus();
+	} elsif ( $argument eq 'sd-notify') {
+		$result = getNotifyStatus();
+	} elsif ( $argument eq 'sd-notify-settings') {
+		$result = getNotifySettings();
+		Immunix::Ycp::ycpReturn($result);
+                       $donereturn = 1;
+	}
+
+	Immunix::Ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
+
+} else {
+
+	my $ycpCmd = ycpGetCommand() || "";
+	my $ycpArg = ycpGetArgType() || "";
+	$result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
+	Immunix::Ycp::ycpReturnSkalarAsString( $result );
+}
+
+exit 0;
+
+
+

@@ -1,0 +1,140 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+#####################################################################
+#
+# ag_subdomain_profiles - Immunix SCR agent for the 
+#                         management of SubDomain profiles
+#
+#  	 
+#####################################################################
+
+use strict;
+use Immunix::SubDomain;
+use Immunix::Ycp;
+
+################
+# Subroutines
+################
+
+{
+
+sub newprofile {
+  my $filename = shift;
+  system("/usr/sbin/autodep $filename > /dev/null 2>&1");
+  system("/usr/sbin/enforce $filename > /dev/null 2>&1");
+  return; 
+}
+
+# ############################################################################### 
+#
+#    YCP <-> SCR Commands:
+#
+#   Command        Path           Argument           Returns
+#   -------        ----           --------           --------
+#
+#   Read                          all                hash containing all profiles
+#
+#   Read           .new           pathtoprogram      true/false (creates new profile)
+#
+#   Write                         hash {             true/false
+#                                  PROFILE_NAME => 
+#                                  pathtoprogram,
+#                                  PROFILE_HASH => 
+#                                  <hash containing the 
+#                                   profile defs>
+#                                 } 
+#
+#   Write          .delete        pathtoprogram      true/fale  (deletes profile)
+#
+#   Write          .reload        -                  true       (reloads profiles)
+#                                                        
+#
+################################################################################
+
+
+while ( <STDIN> ) {
+
+    my ($command, $path, $argument) = Immunix::Ycp::ParseCommand ($_);
+    $argument = "NONE" if ( ! $argument ); 
+    Immunix::Ycp::y2milestone ("DOM command: $command, path: $path, argument: $argument");
+
+	my $result = undef;
+	if ( $command && $path && $argument ) {
+		if ( $command eq "Read" and $argument eq "all") {
+                   $UI_Mode = "yast";
+                   Immunix::SubDomain::readprofiles();
+		   Immunix::Ycp::Return( \%sd );
+		} elsif ( $command eq "Read" and $path eq ".new" ) {
+                   my $pfname = getprofilefilename($argument);
+                   if  ( -e $pfname ) {
+                     Immunix::Ycp::Return("false");
+                   } else {   
+                     newprofile( $argument );
+                     Immunix::Ycp::Return( "true" );
+	           }	
+                } elsif ( $command eq "Read" ) {
+                   my $pfname = getprofilefilename($argument);
+                   if ( -e $pfname ) {
+                     $UI_Mode = "yast";
+                     Immunix::SubDomain::readprofiles();
+		     Immunix::Ycp::Return( $sd{$argument} );
+                   } else { 
+		     Immunix::Ycp::Return( "false" );
+                   }
+		} elsif ( $command eq "Read") {
+                    $UI_Mode = "yast";
+                    Immunix::SubDomain::readprofile("$profiledir/$argument");
+		    Immunix::Ycp::Return( \%sd );
+		} elsif ( $command eq "Write" and $path eq ".delete") {
+                  if ( $argument ne "" ) {
+                    my $profilefile = getprofilefilename( $argument );
+                    if ( -e $profilefile ) {
+                      unlink( $profilefile );
+                    }   
+		    Immunix::Ycp::Return( "true" );
+                  } else {
+		    Immunix::Ycp::Return( "false" );
+                  }
+		} elsif ( $command eq "Write" and $path eq ".reload") {
+                     $result = system("/sbin/rcsubdomain reload > /dev/null 2>&1");
+		     Immunix::Ycp::Return( "true" );
+		} elsif ( $command eq "Write") {
+                    if ( (ref($argument) eq "HASH") ) {
+                     my $profilename = "";
+                     $profilename = $$argument{"PROFILE_NAME"};
+		     my $ref = $$argument{"PROFILE_HASH"};
+                     my %profiles = ();
+                     $profiles{$profilename} = $ref;
+                     if ( (ref($ref) eq "HASH") ) {
+                      %sd = %profiles;
+                      $UI_Mode = "yast";
+		      $result = Immunix::SubDomain::writeprofile($profilename);
+                     } else {
+		     Immunix::Ycp::Return( "false" );
+                     }  
+		     Immunix::Ycp::Return( "true" );
+                    }
+		} 
+	} else {
+
+		my $ycpCmd = ycpGetCommand() || "";
+		my $ycpArg = ycpGetArgType() || "";
+		$result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
+		Immunix::Ycp::Return( $result );
+	}
+}
+}
+exit 0;
+
+

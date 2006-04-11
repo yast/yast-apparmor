@@ -1,0 +1,194 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+//
+//  YCP map containing definitons for Capabiltiies
+//
+{
+map<string,map>  capdefs =  $[
+"chown" :
+	$[ 
+	  "name" : "CAP_CHOWN",
+	  "info" : "<ul><li>In a system with the [_POSIX_CHOWN_RESTRICTED] option defined, this overrides the restriction of changing file ownership and group ownership.</li></ul>",
+	 ],
+"dac_override" :
+	$[ 
+	  "name" : "CAP_DAC_OVERRIDE",
+	  "info" : "<ul><li>Override all DAC access, including ACL execute access if [_POSIX_ACL] is defined. Excluding DAC access covered by CAP_LINUX_IMMUTABLE.</li></ul>",
+	 ],
+"dac_read_search" :
+	$[ 
+	  "name" : "CAP_DAC_READ_SEARCH",
+	  "info" : "<ul><li>Overrides all DAC restrictions regarding read and search on files and directories, including ACL restrictions if [_POSIX_ACL] is defined. Excluding DAC access covered by CAP_LINUX_IMMUTABLE. </li></ul>",
+	 ],
+"fowner" :
+	$[ 
+	  "name" : "CAP_FOWNER",
+	  "info" : "<ul><li>Overrides all restrictions about allowed operations on files, where file owner ID must be equal to the user ID, except where CAP_FSETID is applicable. It doesn't override MAC and DAC restrictions. </li></ul>",
+	 ],
+"fsetid" :
+	$[ 
+	  "name" : "CAP_FSETID",
+	  "info" : "<ul><li>Overrides the following restrictions that the effective user ID shall match the file owner ID when setting the S_ISUID and S_ISGID bits on that file; that the effective group ID (or one of the supplementary group IDs) shall match the file owner ID when setting the S_ISGID bit on that file; that the S_ISUID and S_ISGID bits are cleared on successful return from chown(2) (not implemented). </li></ul>",
+	 ],
+"kill" :
+	$[ 
+	  "name" : "CAP_KILL",
+	  "info" : "<ul><li>Overrides the restriction that the real or effective user ID of a process sending a signal must match the real or effective user ID of the process receiving the signal.</li></ul>",
+	 ],
+"setgid" :
+	$[ 
+	  "name" : "CAP_SETGID",
+	  "info" : "<ul><li>Allows setgid(2) manipulation </li> <li> Allows setgroups(2) </li> <li> Allows forged gids on socket credentials passing. </li></ul>",
+	 ],
+"setuid" :
+	$[ 
+	  "name" : "CAP_SETUID",
+	  "info" : "<ul><li>Allows setuid(2) manipulation (including fsuid) </li> <li> Allows forged pids on socket credentials passing. </li></ul>",
+	 ],
+"setpcap" :
+	$[ 
+	  "name" : "CAP_SETPCAP",
+	  "info" : "<ul><li> Transfer any capability in your permitted set to any pid, remove any capability in your permitted set from any pid</li></ul>",
+	 ],
+"linux_immutable" :
+	$[ 
+	  "name" : "CAP_LINUX_IMMUTABLE",
+	  "info" : "<ul><li>Allow modification of S_IMMUTABLE and S_APPEND file attributes</li></ul>",
+	 ],
+"net_bind_service" :
+	$[ 
+	  "name" : "CAP_NET_BIND_SERVICE",
+	  "info" : "<ul><li>Allows binding to TCP/UDP sockets below 1024 </li> <li> Allows binding to ATM VCIs below 32</li></ul>",
+	 ],
+"net_broadcast" :
+	$[ 
+	  "name" : "CAP_NET_BROADCAST",
+	  "info" : "<ul><li> Allow broadcasting, listen to multicast </li></ul>",
+	 ],
+"net_admin" :
+	$[ 
+	  "name" : "CAP_NET_ADMIN",
+	  "info" : "<ul><li> Allow interface configuration</li> <li> Allow administration of IP firewall, masquerading and accounting</li> <li> Allow setting debug option on sockets</li> <li> Allow modification of routing tables</li> <li> Allow setting arbitrary process / process group ownership on sockets</li> <li> Allow binding to any address for transparent proxying</li> <li> Allow setting TOS (type of service)</li> <li> Allow setting promiscuous mode</li> <li> Allow clearing driver statistics</li> <li> Allow multicasting</li> <li> Allow read/write of device-specific registers</li> <li> Allow activation of ATM control sockets </li></ul>",
+	 ],
+"net_raw" :
+	$[ 
+	  "name" : "CAP_NET_RAW",
+	  "info" : "<ul><li> Allow use of RAW sockets</li> <li> Allow use of PACKET sockets </li></ul>",
+	 ],
+"ipc_lock" :
+	$[ 
+	  "name" : "CAP_IPC_LOCK",
+	  "info" : "<ul><li> Allow locking of shared memory segments</li> <li> Allow mlock and mlockall (which doesn't really have anything to do with IPC) </li></ul>",
+	 ],
+"ipc_owner" :
+	$[ 
+	  "name" : "CAP_IPC_OWNER",
+	  "info" : "<ul><li> Override IPC ownership checks </li></ul>",
+	 ],
+"sys_module" :
+	$[ 
+	  "name" : "CAP_SYS_MODULE",
+	  "info" : "<ul><li> Insert and remove kernel modules - modify kernel without limit</li> <li> Modify cap_bset </li></ul>",
+	 ],
+"sys_rawio" :
+	$[ 
+	  "name" : "CAP_SYS_RAWIO",
+	  "info" : "<ul><li> Allow ioperm/iopl access</li> <li> Allow sending USB messages to any device via /proc/bus/usb </li></ul>",
+	 ],
+"sys_chroot" :
+	$[ 
+	  "name" : "CAP_SYS_CHROOT",
+	  "info" : "<ul><li> Allow use of chroot() </li></ul>",
+	 ],
+"sys_ptrace" :
+	$[ 
+	  "name" : "CAP_SYS_PTRACE",
+	  "info" : "<ul><li> Allow ptrace() of any process </li></ul>",
+	 ],
+"sys_pacct" :
+	$[ 
+	  "name" : "CAP_SYS_PACCT",
+	  "info" : "<ul><li> Allow configuration of process accounting </li></ul>",
+	 ],
+"sys_admin" :
+	$[ 
+	  "name" : "CAP_SYS_ADMIN",
+	  "info" : "<ul><li> Allow configuration of the secure attention key</li> <li> Allow administration of the random device</li> <li> Allow examination and configuration of disk quotas</li> <li> Allow configuring the kernel's syslog (printk behaviour)</li> <li> Allow setting the domainname</li> <li> Allow setting the hostname</li> <li> Allow calling bdflush()</li> <li> Allow mount() and umount(), setting up new smb connection</li> <li> Allow some autofs root ioctls</li> <li> Allow nfsservctl</li> <li> Allow VM86_REQUEST_IRQ</li> <li> Allow to read/write pci config on alpha</li> <li> Allow irix_prctl on mips (setstacksize)</li> <li> Allow flushing all cache on m68k (sys_cacheflush)</li> <li> Allow removing semaphores</li> <li> Used instead of CAP_CHOWN to \"chown\" IPC message queues, semaphores and shared memory</li> <li> Allow locking/unlocking of shared memory segment</li> <li> Allow turning swap on/off</li> <li> Allow forged pids on socket credentials passing</li> <li> Allow setting readahead and flushing buffers on block devices</li> <li> Allow setting geometry in floppy driver</li> <li> Allow turning DMA on/off in xd driver</li> <li> Allow administration of md devices (mostly the above, but some extra ioctls)</li> <li> Allow tuning the ide driver</li> <li> Allow access to the nvram device</li> <li> Allow administration of apm_bios, serial and bttv (TV) device</li> <li> Allow manufacturer commands in isdn CAPI support driver</li> <li> Allow reading non-standardized portions of pci configuration space</li> <li> Allow DDI debug ioctl on sbpcd driver</li> <li> Allow setting up serial ports</li> <li> Allow sending raw qic-117 commands</li> <li> Allow enabling/disabling tagged queuing on SCSI controllers and sending arbitrary SCSI commands</li> <li> Allow setting encryption key on loopback filesystem </li></ul>",
+	 ],
+"sys_boot" :
+	$[ 
+	  "name" : "CAP_SYS_BOOT",
+	  "info" : "<ul><li> Allow use of reboot() </li></ul>",
+	 ],
+"sys_nice" :
+	$[ 
+	  "name" : "CAP_SYS_NICE",
+	  "info" : "<ul><li> Allow raising priority and setting priority on other (different UID) processes</li> <li> Allow use of FIFO and round-robin (realtime) scheduling on own processes and setting the scheduling algorithm used by another process.</li> <li> Allow setting cpu affinity on other processes </li></ul>",
+	 ],
+"sys_resource" :
+	$[ 
+	  "name" : "CAP_SYS_RESOURCE",
+	  "info" : "<ul><li> Override resource limits. Set resource limits.</li> <li> Override quota limits.</li> <li> Override reserved space on ext2 filesystem</li> <li> Modify data journaling mode on ext3 filesystem (uses journaling resources)</li> <li> NOTE: ext2 honors fsuid when checking for resource overrides, so you can override using fsuid too</li> <li> Override size restrictions on IPC message queues</li> <li> Allow more than 64hz interrupts from the real-time clock</li> <li> Override max number of consoles on console allocation</li> <li> Override max number of keymaps </li></ul>",
+	 ],
+"sys_time" :
+	$[ 
+	  "name" : "CAP_SYS_TIME",
+	  "info" : "<ul><li> Allow manipulation of system clock</li> <li> Allow irix_stime on mips</li> <li> Allow setting the real-time clock </li></ul>",
+	 ],
+"sys_tty_config" :
+	$[ 
+	  "name" : "CAP_SYS_TTY_CONFIG",
+	  "info" : "<ul><li> Allow configuration of tty devices</li> <li> Allow vhangup() of tty </li></ul>",
+	 ],
+"mknod" :
+	$[ 
+	  "name" : "CAP_MKNOD",
+	  "info" : "<ul><li> Allow the privileged aspects of mknod() </li></ul>",
+	 ],
+"lease" :
+	$[ 
+	  "name" : "CAP_LEASE",
+	  "info" : "<ul><li> Allow taking of leases on files </li></ul>",
+	 ],
+];
+
+
+map<string,string>  linnametolp =  $[
+"CAP_CHOWN" : "chown", 
+"CAP_DAC_OVERRIDE" : "dac_override", 
+"CAP_DAC_READ_SEARCH" : "dac_read_search", 
+"CAP_FOWNER" : "fowner", 
+"CAP_FSETID" : "fsetid", 
+"CAP_KILL" : "kill", 
+"CAP_SETGID" : "setgid", 
+"CAP_SETUID" : "setuid", 
+"CAP_SETPCAP" : "setpcap", 
+"CAP_LINUX_IMMUTABLE" : "linux_immutable", 
+"CAP_NET_BIND_SERVICE" : "net_bind_service", 
+"CAP_NET_BROADCAST" : "net_broadcast", 
+"CAP_NET_ADMIN" : "net_admin", 
+"CAP_NET_RAW" : "net_raw", 
+"CAP_IPC_LOCK" : "ipc_lock", 
+"CAP_IPC_OWNER" : "ipc_owner", 
+"CAP_SYS_MODULE" : "sys_module", 
+"CAP_SYS_RAWIO" : "sys_rawio", 
+"CAP_SYS_CHROOT" : "sys_chroot", 
+"CAP_SYS_PTRACE" : "sys_ptrace", 
+"CAP_SYS_PACCT" : "sys_pacct", 
+"CAP_SYS_ADMIN" : "sys_admin", 
+"CAP_SYS_BOOT" : "sys_boot", 
+"CAP_SYS_NICE" : "sys_nice", 
+"CAP_SYS_RESOURCE" : "sys_resource", 
+"CAP_SYS_TIME" : "sys_time", 
+"CAP_SYS_TTY_CONFIG" : "sys_tty_config", 
+"CAP_MKNOD" : "mknod", 
+"CAP_LEASE" : "lease", 
+];
+}

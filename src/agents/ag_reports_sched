@@ -1,0 +1,690 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+################################################################################
+# ag_reports_sched
+#
+#  - Adds/Deletes/Edits Scheduled Subdomain Event Reports (cron)
+#
+#  Requires:
+#       - /usr/lib/immunix/SubDomain/perl/Immunix/Events.pm
+#       - /usr/lib/immunix/SubDomain/perl/Immunix/Reports.pm
+#
+#	Uses:
+#		-/etc/apparmor/reports.crontab
+#		-/etc/apparmor/reports.conf
+#
+#  Input (Conditional/Optional):
+#       -Report Name
+#       -Start Date|End Date (Year, Month, Day, Time)
+#       -Program Name
+#       -Profile Name
+#       -PID
+#       -Severity Level
+#       -Denied Resources
+#       -SD Mode
+#       -Mode
+#
+################################################################################
+
+my $Version="0.97";
+
+use strict;
+use Immunix::Ycp;
+use Immunix::Reports;
+use POSIX;
+use Locale::gettext;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+sub debug {
+
+	my $db = shift;
+
+	for (@$db) {
+		my $rec = $_;
+		for (sort keys(%$rec) ) {
+			print "$_ is $rec->{$_} ";	
+		}
+	}
+
+	print "\n";
+	return 0;
+}
+
+# Activate the cron jobs
+sub setCronTab {
+
+	my $cronFile = '/etc/apparmor/reports.crontab';
+
+	if ( -e $cronFile ) {
+		#system('/usr/bin/crontab', '-u root', "$cronFile");
+		system("/usr/bin/crontab -u root $cronFile");
+	} else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't find %s.  Unable to create crontab.  Exiting."), $cronFile));
+		exit 1; 
+	}
+
+	return 0;
+}
+
+# returns ref to active filters for the specific SIR report
+# This is the same routine as in /usr/bin/reportgen.pl -- should move both to Reports.pm
+sub getFilters {
+
+    my $repName = shift;
+
+    my $filts = undef;
+    my $schedConf = '/etc/apparmor/reports.conf';
+    my $regExp = '(prog|profile|pid|resource|severity|sdmode|mode)';
+
+    my $allConf = Immunix::Reports::getXmlReport($repName);
+
+    # Create filters reference
+    for my $ref ( keys(%$allConf) ) {
+        if ( $ref =~ /$regExp/ ) {
+            $filts->{$ref} = $allConf->{$ref};
+            delete($allConf->{$ref});
+        }
+    }
+
+    # Clean hash of useless refs
+    for (sort keys(%$filts) ) {
+        if ($filts->{$_} eq "-") {
+            delete($filts->{$_});
+        }
+    }
+
+    return $filts;
+}
+
+# checks crontab file for matching report name
+sub findDupeReportName {
+
+    my $name = shift;
+    my $dupe = '0';
+	my @db = ();
+
+    my $schedCron = '/etc/apparmor/reports.crontab';
+
+    if ( open (CRON, "<$schedCron") ) {
+
+        while(<CRON>) {
+            chomp;
+            my ($repname) = (split(/reportgen\.pl\s+/, $_))[1];
+            push(@db, $repname);
+        }
+
+        close CRON;
+
+	} else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		exit 1;
+	}
+
+	for (@db) {
+		if ( $name eq "$_" || "\"$name\"" eq "$_" ) {
+			$dupe = 1;
+		}
+	}
+
+    return $dupe;
+}
+
+sub addCron {
+
+	my $args = shift;
+
+    #my $schedCron = '/etc/cron.d/reportsched';
+    my $schedCron = '/etc/apparmor/reports.crontab';
+	my $repScript = "/usr/bin/reportgen.pl";
+
+    if ( open (CRON, ">>$schedCron") ) {
+
+		my $mon = '*';
+
+        # crontab key
+        ############################################################
+        #   minute         0-59
+        #   hour           0-23
+        #   day of month   1-31
+        #   month          1-12 (or names, see below)
+        #   day of week    0-7 (0 or 7 is Sun, or use names)
+        ############################################################
+
+		my $sched = "$args->{'mins'} $args->{'hour'} $args->{'monthdate'} $mon $args->{'weekday'}";
+
+		#print CRON "$sched root $repScript $args->{'name'}\n";
+		print CRON "$sched $repScript \"$args->{'name'}\"\n";
+
+		close CRON;
+
+    } else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+        return 1;
+    }
+
+	return 0;
+}
+
+sub addConf {
+
+    my $args = shift;
+    my $schedConf = '/etc/apparmor/reports.conf';
+    my $newSchedConf = '/var/log/apparmor/reports/reports.conf';
+
+	if ( ! $args->{'csv'} ) { $args->{'csv'} = '0'; }
+	if ( ! $args->{'html'} ) { $args->{'html'} = '0'; }
+
+    if ( open (OCF, "<$schedConf") ) {
+
+        if ( open (NCF, ">$newSchedConf") ) {
+
+            # pre-process filters for GUI - UGLY
+	        for ($args->{'prog'},$args->{'prof'},$args->{'pid'},$args->{'sev'},
+					$args->{'res'},$args->{'sdmode'},$args->{'mode'}) {
+
+	            $_ =~ s/\s+//g;
+
+	            if ( ! $_ || $_ eq "NA" || $_ eq "" || $_ eq "All" ) {
+	                $_ = "-";
+	            }
+	        }
+
+            if ( ! $_ || $_ eq "NA" || $_ eq "" || $_ eq "All" ) {
+                $_ = "-";
+            }
+
+			# pre-write the longer entries
+        	my $expPath = $args->{'expPath'} || '/var/log/apparmor/reports-archived';
+			$expPath = "<exportpath>$expPath<\/exportpath>";
+			my $expType = "<exporttype csv=\"$args->{'csv'}\" html=\"$args->{'html'}\" \/>";
+
+			my $email = "<email addr1=\"$args->{'email1'}\" addr2=\"$args->{'email2'}\" " .
+					"addr3=\"$args->{'email3'}\" \/>";
+
+			# copy the old stuff over
+            while (<OCF>) {
+                unless ( $_ =~ /\<\/apparmor\>/ || $_ eq "\n" ) {
+                    print NCF "$_";
+                }
+            }
+
+			# add the new
+            print NCF "\t<report>\n";
+            print NCF "\t\t<name>$args->{'name'}</name>\n";
+            print NCF "\t\t<prog>$args->{'prog'}</prog>\n";
+            print NCF "\t\t<profile>$args->{'prof'}</profile>\n";
+            print NCF "\t\t<pid>$args->{'pid'}</pid>\n";
+            print NCF "\t\t<severity>$args->{'sev'}</severity>\n";
+            print NCF "\t\t<resource>$args->{'res'}</resource>\n";
+            print NCF "\t\t<sdmode>$args->{'sdmode'}</sdmode>\n";
+            print NCF "\t\t<mode>$args->{'mode'}</mode>\n";
+            print NCF "\t\t$expPath\n";
+            print NCF "\t\t$expType\n";
+            print NCF "\t\t$email\n";
+            print NCF "\t\t<time>1104566401</time>\n";      # '1104566401' is default last run time
+            print NCF "\t</report>\n";
+            print NCF "</apparmor>\n";
+
+            close NCF;
+
+        } else {
+            my $error = sprintf(gettext("Couldn't open %s.  Unable to add report: %s"), $newSchedConf, $args->{'name'});
+            Immunix::Ycp::y2error($error);
+            return 1;
+        }
+
+        close OCF;
+
+    } else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
+        return 1;
+    }
+
+    Immunix::Reports::updateFiles($schedConf,$newSchedConf);
+
+    return 0;
+}
+
+
+sub addReport {
+
+	my $args = shift;
+
+	my $dupe = findDupeReportName("$args->{'name'}");
+
+	if ($dupe == 1) {
+		my $error = sprintf(gettext("Duplicate report name not allowed. Didn't schedule new report: %s"), $args->{'name'});
+		Immunix::Ycp::y2error("$error");
+		return 1;
+	}
+
+	# Translate filters to cronspeak
+    if ( ! $args->{'hour'} || $args->{'hour'}  eq "-" || $args->{'hour'} eq '*' ) { $args->{'hour'} = "0"; }
+    if ( ! $args->{'mins'} || $args->{'mins'} eq "-" || $args->{'mins'} eq '*'  ) { $args->{'mins'} = "0"; }
+    if ( ! $args->{'weekday'} || $args->{'weekday'} eq "-" ) { $args->{'weekday'} = "*"; }
+    if ( ! $args->{'monthdate'} || $args->{'monthdate'} eq "-" ) { $args->{'monthdate'} = "*"; }
+
+	my $error = addCron($args);
+	setCronTab();
+
+	if ($error == 0) {
+		$error = addConf($args);
+		if ($error != 0) { Immunix::Ycp::y2error($error); }
+	} else {
+		Immunix::Ycp::y2error($error);
+		exit 1;
+	}
+
+	return 0;
+}
+
+# removes cron job related to report 
+sub delCron {
+
+	my $name = shift;
+	#my $schedCron = '/etc/cron.d/reportsched';
+    my $schedCron = '/etc/apparmor/reports.crontab';
+	my $newSchedCron = '/var/log/apparmor/reports/reportsched';
+	if ( open(OCRON, "<$schedCron") ) {
+
+		if ( open(NCRON, ">$newSchedCron") ) {
+		
+			while (<OCRON>) {
+	            chomp;
+	            my ($repname) = (split(/reportgen\.pl\s+/, $_))[1];
+				next if ($repname eq "\"$name\"");
+				print NCRON "$_\n";
+	        }
+
+			close NCRON;
+
+		} else {
+			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedCron));
+	        return 1;
+		}
+
+		close OCRON;
+
+	} else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+        return 1;
+	}
+
+
+	Immunix::Reports::updateFiles($schedCron,$newSchedCron);
+
+	return 0;
+}
+
+# deletes a report entry from reports.conf
+sub delConf {
+
+    my $repName = shift;
+    my $schedConf = '/etc/apparmor/reports.conf';
+    my $newSchedConf = '/var/log/apparmor/reports/reports.conf';
+
+	my @repList = ();
+	my @thisRep = ();
+	my $writeFlag = 1;
+
+    if ( open(OCF, "<$schedConf") ) {
+
+        if ( open(NCF, ">$newSchedConf") ) {
+
+            while (<OCF>) {
+
+				my $line = $_;
+
+				# Start array storage
+				if ( $line =~ m/\<report\>/ ) {
+					@thisRep = ();
+				}
+
+				push(@thisRep, $line);
+                chomp($line);
+
+				# End array storage
+				if ( $line =~ m/\<\/report\>/ ) {
+					if ( $writeFlag == 1 ) {
+						push (@repList, @thisRep);
+					}
+					$writeFlag = 1;			# reset flag -- we want to write by default
+				}
+
+				# Match names to determine flag state
+				if ( $line =~ m/\<name\>/ ) {
+					my $curName = $line;
+					$curName =~ s/(^\s*|\s*$)//g;
+					$curName =~ s/((\<|\<\/)name\>)//g; #/<name>(\w+)</name>/;
+					if ( $curName eq $repName ) { $writeFlag = 0; }
+				}
+
+			}
+
+			if ( scalar(@repList) > 0 ) {
+				print NCF "<apparmor>\n";
+	            print NCF "@repList";
+				print NCF "</apparmor>\n";
+			}
+
+            close NCF;
+
+        } else {
+			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedConf));
+            return 1;
+        }
+
+        close OCF;
+
+    } else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
+        return 1;
+    }
+
+    Immunix::Reports::updateFiles($schedConf,$newSchedConf);
+
+    return 0;
+}
+
+sub delReport {
+
+	my $args = shift;
+
+	my $name = $args->{'name'};
+
+	my $error = delCron($name);
+
+	if ($error == 0) {
+		$error = delConf($name);
+		if ($error != 0) { Immunix::Ycp::y2error($error); }
+	} else {
+		Immunix::Ycp::y2error($error);
+		exit 1;
+	}
+
+	setCronTab();
+
+	return 0;
+}
+
+# returns list of report cron jobs
+sub parseCron {
+
+    my $args = shift;
+    my $error = undef;
+    my @db = ();
+
+    #my $schedCron = '/etc/cron.d/reportsched';
+    my $schedCron = '/etc/apparmor/reports.crontab';
+
+    if ( open (CRON, "<$schedCron") ) {
+
+		my $junkMon = undef;
+		#my $junkRt = undef;
+		my $junkScript = undef;
+
+        while (<CRON>) {
+
+            #next if /^#\s*\w*/;
+			chomp;
+		    my $rec = undef;
+		    my @name = undef;
+
+            # Day of Month, Day of Week, Hour, Minute : report-to-execute 
+            # * * * * root /usr/bin/reportgen.pl <sir|aud|name-of-sir> 
+
+		    # crontab key
+		    ############################################################
+		    #   minute         0-59
+		    #   hour           0-23
+		    #   day of month   1-31
+		    #   month          1-12 (or names, see below)
+		    #   day of week    0-7 (0 or 7 is Sun, or use names)
+		    ############################################################
+
+			#($rec->{'mins'}, $rec->{'hour'}, $rec->{'mday'}, $junkMon, $rec->{'wday'}, $junkRt, $junkScript, $rec->{'name'}) = split (/\s+/, $_); 
+			($rec->{'mins'}, $rec->{'hour'}, $rec->{'mday'}, $junkMon, $rec->{'wday'}, 
+				$junkScript, @name) = split (/\s+/, $_); 
+				#$junkRt, $junkScript, @name) = split (/\s+/, $_); 
+
+			if ($rec->{'mins'} eq "*") { $rec->{'mins'} = "-"; }
+			if ($rec->{'hour'} eq "*") { $rec->{'hour'} = "-"; }
+			if ($rec->{'mday'} eq "*") { $rec->{'mday'} = "-"; }
+			if ($rec->{'wday'} eq "*") { $rec->{'wday'} = "-"; }
+			$rec->{'name'} = join( " ", @name);
+			if ($rec->{'name'} =~ /\"/) { $rec->{'name'} =~ s/\"//g; }
+
+            push(@db, $rec);
+        }
+
+		close CRON;
+
+    } else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+        return 1;
+    }
+
+    return \@db;
+}
+
+# returns hash refs of a single (line) report
+sub getCron {
+
+    my $args = shift;
+    my $error = undef;
+    my @db = ();
+    my $rep = undef;
+
+    #my $schedCron = '/etc/cron.d/reportsched';
+    my $schedCron = '/etc/apparmor/reports.crontab';
+
+    if ( open (CRON, "<$schedCron") ) {
+
+		my $junkMon = undef;
+		#my $junkRt = undef;
+		my $junkScript = undef;
+
+		#if ($args->{'name'} && $args->{'name'} =~ m/\s+/) { $args->{'name'} = "\"$args->{'name'}\""; }
+
+        while (<CRON>) {
+
+            #next if /^#\s*\w*/;
+			chomp;
+		    my $rec = undef;
+			my @name = ();
+
+            # Day of Month, Day of Week, Hour, Minute : report-to-execute 
+            # * * * * root /usr/bin/reportgen.pl <sir|aud|name-of-sir> 
+            # * * * * /usr/bin/reportgen.pl <sir|aud|name-of-sir> 
+
+		    # crontab key
+		    ############################################################
+		    #   minute         0-59
+		    #   hour           0-23
+		    #   day of month   1-31
+		    #   month          1-12 (or names, see below)
+		    #   day of week    0-7 (0 or 7 is Sun, or use names)
+		    ############################################################
+
+			($rec->{'mins'}, $rec->{'hour'}, $rec->{'mday'}, $junkMon, 
+				#$rec->{'wday'}, $junkRt, $junkScript, @name ) = split (/\s+/, $_); 
+				$rec->{'wday'}, $junkScript, @name ) = split (/\s+/, $_); 
+
+			if ($rec->{'mins'} eq "*") { $rec->{'mins'} = "-"; }
+			if ($rec->{'hour'} eq "*") { $rec->{'hour'} = "-"; }
+			if ($rec->{'mday'} eq "*") { $rec->{'mday'} = "-"; }
+			if ($rec->{'wday'} eq "*") { $rec->{'wday'} = "-"; }
+			$rec->{'name'} = join( " ", @name);
+
+			if ($rec->{'name'} eq "\"$args->{'name'}\"" ) {
+				$rec->{'name'} =~ s/\"//g; 
+				$rep = $rec;
+			}
+        }
+
+		close CRON;
+
+    } else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+        return 1;
+    }
+
+	return $rep;
+}
+
+sub editCron {
+
+	my $args = shift;
+	#my $schedCron = '/etc/cron.d/reportsched';
+    my $schedCron = '/etc/apparmor/reports.crontab';
+	my $newCron = '/var/log/apparmor/reports/reportsched';
+	my $repScript = "/usr/bin/reportgen.pl";
+
+	if ( open(CRON, "<$schedCron") ) {
+
+		if ( open (NCRON, ">$newCron") ) {
+
+			my $mon = '*';
+
+			if ( ! $args->{'hour'} || $args->{'hour'} eq "-" || $args->{'hour'} eq '*') { $args->{'hour'} = '0'; }
+			if ( ! $args->{'mins'} || $args->{'mins'} eq "-" || $args->{'mins'} eq '*' ) { $args->{'mins'} = '0'; }
+			if ( ! $args->{'monthdate'} || $args->{'monthdate'} eq "-" ) { $args->{'monthdate'}  = '*'; }
+			if ( ! $args->{'weekday'} || $args->{'weekday'} eq "-" ) { $args->{'weekday'} = '*'; }
+
+			while (<CRON>) {
+                chomp;
+                my ($repname) = (split(/reportgen\.pl\s+/, $_))[1];
+				$repname =~ s/^\s+//;
+				$repname =~ s/\s+$//;
+                if ($repname eq "\"$args->{'name'}\"") {
+        			my $sched = "$args->{'mins'} $args->{'hour'} $args->{'monthdate'} $mon $args->{'weekday'}";
+					$_ = "$sched $repScript \"$args->{'name'}\"";
+				}
+				print NCRON "$_\n";
+			} 
+
+			close NCRON;
+
+		} else {
+			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $newCron));
+			return 1;
+		}
+
+		close CRON;
+
+	} else {
+		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $schedCron));
+		return 1;
+	}
+
+	my $error = Immunix::Reports::updateFiles($schedCron,$newCron);
+
+	if ($error == 1) { 
+		exit 1;
+	} else { 
+		return 0; 
+	}
+}
+
+# sloppy -- should redo
+sub editConf {
+
+	my $args = shift;
+
+	if ( ! $args->{'csv'} ) { $args->{'csv'} = '0'; }
+	if ( ! $args->{'html'} ) { $args->{'html'} = '0'; }
+
+	delConf($args->{'name'});
+	addConf($args);
+
+	return 0;
+}
+
+sub editSched {
+        
+	my $args = shift;
+	editCron($args);
+	setCronTab();
+	editConf($args);
+
+	return 0;
+}
+
+
+
+# Main
+################################################################################
+
+while ( <STDIN> ) {
+
+    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+
+	if ( $command && $path && $args ) {
+
+		my $db = undef;
+
+		if ( $args->{'name'} =~ /Edit\s+(\w.+)\s+Sched/ ) {
+			$args->{'name'} = $1;
+		}
+
+		# Parse sdmode & mode labels
+		if ( $args->{'sdmode'} ) {
+			$args->{'sdmode'} =~ s/\&//g;
+			$args->{'sdmode'} =~ s/\://g;
+			$args->{'sdmode'} =~ s/\s//g;
+			$args->{'sdmode'} =~ s/AccessType//g;
+		}
+		if ( $args->{'mode'} ) {
+			$args->{'mode'} =~ s/\&//g;
+			$args->{'mode'} =~ s/Mode\://g;
+			$args->{'mode'} =~ s/\s//g;
+		}
+
+		if ( $args->{'getdupe'} && $args->{'getdupe'} == 1) {
+
+			$db = findDupeReportName("$args->{'name'}");
+
+		} 
+        if ($args->{'getcron'} && $args->{'getcron'} == 1) {
+			$db = parseCron($args);				# Return list of all scheduled report crons
+		} elsif ( $args->{'getrep'} && $args->{'getrep'} ==1 ) {
+			$db = getCron($args);
+		} elsif ( $args->{'getconf'} && $args->{'getconf'} ==1 ) {
+			$db = Immunix::Reports::getXmlReport($args->{'name'});
+		} elsif ( $args->{'setconf'} && $args->{'setconf'} ==1 ) {
+			editSched($args);
+		} elsif ( $args->{'add'} && $args->{'add'} == 1) {
+			addReport($args);
+		} elsif ( $args->{'del'} && $args->{'del'} == 1) {
+			delReport($args);
+		} elsif ( $args->{'getfilters'} && $args->{'getfilters'} == 1) {
+			$db = getFilters($args);
+		}
+
+		if ( defined($db) ) {
+		    Immunix::Ycp::ycpReturn( $db );
+		} else {
+		    Immunix::Ycp::ycpReturn( "true" );
+		}
+
+    } else {
+        my $error = sprintf( gettext("ag_reports_sched: Unknown instruction %s or arg: %s"), ycpGetCommand, ycpGetArgType);
+        Immunix::Ycp::ycpReturn($error);
+    }
+}
+
+exit 0;
+
+

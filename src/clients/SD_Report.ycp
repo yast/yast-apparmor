@@ -1,0 +1,124 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2006 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+{
+
+import "Wizard";
+import "Popup";
+import "Sequencer";
+include "subdomain/apparmor_packages.ycp";
+include "subdomain/reporting_dialogues.ycp";
+include "subdomain/report_helptext.ycp";
+textdomain  "yast2-apparmor";
+
+// Globalz
+
+define any mainSequence() ``{
+
+// Read the profiles from the SCR agent
+   map aliases = $[
+        "mainreport"     : ``(mainReportForm()),
+        "configreport"   : ``(reportConfigForm()),
+        "reportview"     : ``(mainArchivedReportForm()),
+		"schedReport"    : ``(displaySchedForm()),
+		"viewreport"     : ``(displayArchForm()),
+		"runReport"      : ``(displayRunForm())
+/*
+		"addSched"       : ``(addSchedForm()),
+		"editSched"      : ``(editSchedForm()),
+		"delSched"       : ``(delSchedForm())
+*/
+   ];
+
+   map sequence = $[
+        "ws_start"   : "schedReport",
+		"mainreport" : $[
+			`back    : `back,
+            `abort   : `abort,
+            `next    : `finish,
+			`schedrep: "schedReport",
+            `finish  : `ws_finish
+		],
+		"schedReport": $[
+			`back    : `ws_start,
+            `abort   : `abort,
+//            `add     : "mainreport",
+//            `edit    : "editSched",
+//            `del     : "delSched",
+			`viewrep : "viewreport",
+			`runrep  : "runReport",
+            `next    : "runReport",
+            `finish  : `ws_finish
+		],
+/*
+		"addSched"   : $[
+			`back    : "schedReport",
+            `abort   : `abort,
+            `save    : `finish,
+            `finish  : `ws_finish
+		],
+		"editSched"  : $[
+			`back    : "schedReport",
+            `abort   : `abort,
+            `save    : `finish,
+            `finish  : `ws_finish
+		],
+		"delSched"   : $[
+			`back    : "schedReport",
+            `abort   : `abort,
+            `save    : `finish,
+            `finish  : `ws_finish
+		],
+*/
+		"viewreport" : $[
+			//`back    : "viewreport",
+			`back    : "mainreport",
+            `abort   : `abort,
+            //`next    : `finish,
+            `next    : "mainreport",
+            `finish  : `ws_finish
+		],
+		"runReport": $[
+			//`back    : "runReport",
+			`back    : `back,
+            `abort   : `abort,
+            `next    : `finish,
+            `finish  : `ws_finish
+		],
+        "configreport" : $[
+			`back : `back,
+            `abort : `abort,
+            `next : "reportview",
+            `finish : `ws_finish
+        ],
+        "reportview" : $[
+			`back : `back,
+            `abort : `abort,
+            `next : `finish,
+            `finish : `ws_finish
+        ],
+   ];
+
+   Wizard::CreateDialog();
+   Wizard::SetTitleIcon("apparmor/view_profile");
+   any ret = Sequencer::Run(aliases, sequence);
+   Wizard::CloseDialog();
+   return ret;
+}
+
+any ret = nil;
+if (!installAppArmorPackages()) {
+  return ret;
+}
+ret = mainSequence();
+return ret;
+
+}
+
+

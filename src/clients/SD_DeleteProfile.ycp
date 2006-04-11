@@ -1,0 +1,73 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2006 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+{
+import "Wizard";
+import "Popup";
+import "Sequencer";
+include "subdomain/apparmor_packages.ycp";
+include "subdomain/profile_dialogs.ycp";
+textdomain  "yast2-apparmor";
+
+// Globalz
+
+define any DeleteProfileConfirmation() {
+  string profilename = Settings["CURRENT_PROFILE"]:"";
+  if (Popup::YesNoHeadline( _("Delete profile confirmation"), _("Are you 
+sure you want to delete the profile ")
+		+ profilename + _(" ?\nAfter this operation the AppArmor module will reload the profile set.") ) )  {
+    y2milestone("Deleted " + profilename );
+    boolean result = SCR::Write(.subdomain_profiles.delete, profilename);
+    any result2 = SCR::Write(.subdomain_profiles.reload, "-");
+  }
+  return `finish;
+}
+
+define any MainSequence() ``{
+
+//
+// Read the profiles from the SCR agent
+   map profiles = (map) SCR::Read (.subdomain_profiles, "all");
+
+   map aliases = $[
+        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a selection from the listed profiles and press Next to delete the profile.<p>"), _("Delete Profile - Choose profile to delete"), "subdomain/delete_profile")),
+        "deleteprofile"   : ``(DeleteProfileConfirmation()),
+   ];
+
+   map sequence = $[
+        "ws_start" : "chooseprofile",
+        "chooseprofile" : $[
+            `abort : `abort,
+            `next : "deleteprofile",
+            `finish : `next,
+        ],
+    ];
+
+    Wizard::CreateDialog();
+    Wizard::SetTitleIcon("apparmor/delete_profile");
+    any ret = Sequencer::Run(aliases, sequence);
+    Wizard::CloseDialog();
+    Settings = remove( Settings, "CURRENT_PROFILE");
+    Settings = remove( Settings, "PROFILE_MAP");
+    return ret;
+}
+
+
+
+//
+// YEAH BABY RUN BABY RUN
+//
+any ret = nil;
+if (!installAppArmorPackages()) {
+  return ret;
+}
+ret = MainSequence();
+return ret;
+}
+

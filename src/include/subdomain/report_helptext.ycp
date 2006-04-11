@@ -1,0 +1,56 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+
+{
+
+textdomain  "yast2-apparmor";
+
+string setArchHelp = _("The Report Configuration dialog enables you to filter the archived report selected in the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <br><br> <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the binary executable of the program of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the profile, the report will display the security events that are generated for the specified profile.  You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided.");
+
+
+string runHelp = _("The AppArmor On-Demand Report screen displays an instantly generated version of one of the following reports.  <b>Executive Security Summary:</b> A combined report, consisting of one or more Security incident reports from one or more machines.  This report provides a single view of security events on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that reports which application servers are running and whether the applications are confined by AppArmor. Application servers are applications that accept incoming network connections. <br><br> <b>Security Incident Report:</b> A report that displays application security for a single host.  It reports policy violations for locally confined applications during a specific time period. You can edit and customize this report, or add new versions.");
+
+string filterCfHelp1 = _("The Report Configuration dialog enables you to filter the report selected in the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the executable process of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the security profile that is applied to the rocess, the report will display the security events that are generated for the specified profile. You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided.<br><br>");
+
+
+/* START Help Section
+************************************************************/
+
+string repGenHelpText = _("<b>Generate Reports Help</b> <p>If there were, in fact, going to be any help for you (which, incidentally, there isn't going to be), then you would indeed find said help, here.<p> Thank you for your time, and have a nice day.");
+
+
+
+string schedHelpText =
+_("The summary of scheduled reports page shows us when reports are scheduled to run. Reports can be set to run monthly, weekly, daily, or hourly. The default settings are daily at midnight. The reports can also be emailed, upon completion, to up to three email recipients.<br><br> In the Set Schedule section, you can schedule the following three types of security reports:<br><br> <b>Executive Security Summary:</b> A combined report, consisting of one or more Security incident reports from one or more machines.  This report provides a single view of security events on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that reports which application servers are running and whether the applications are confined by AppArmor. Application servers are applications that accept incoming network connections. <br><br> <b>Security Incident Report:</b> A report that displays application security for a single host.  It reports policy violations for locally confined applications during a specific time period. You can edit and customize this report, or add new versions.");
+
+
+string archHelpText = _(" The View Archive Reports form enables you to view previously generated reports, located in the /var/log/apparmor/reports-archived directory. The checkboxes at the top of the form enable you to narrow-down the category of reports shown in the list to the following: SIR Reports, AUD Reports, or ESS Reports.  To see report details, select a report and click the <b>View</b> button.<br><br> You can view reports from one or more systems if you move the reports to the /var/log/apparmor/reports-archived directory.");
+
+string mainHelp = schedHelpText;
+
+list helpList = [ schedHelpText ];
+
+term defaultHelp = `RichText ( schedHelpText );
+term schedHelp = `RichText ( schedHelpText );
+term repGenHelp = `RichText ( repGenHelpText );
+term archHelp = `RichText ( archHelpText );
+term otherHelp = `RichText ( archHelpText );
+
+string repConfHelp = _("repConfHelp");
+
+string sirHelp = _("<b>Security Incident Report (SIR):</b> A report that displays security events of interest to an administrator. The SIR reports policy violations for locally confined applications during the specified time period. The SIR reports policy exceptions and policy engine state changes. These two types of security events are defined as follows: <ul> <li><b>Policy Exceptions:</b> When an application requests a resource that's not defined within its profile, a security event is generated.  <li><b>Policy Engine State Changes:</b> Enforces policy for applications and maintains its own state, including when engines start or stop, when a policy is reloaded, and when global security feature are enabled or disabled.  </ul> Select the report from the archive, then <b>View</b> to see the report details.");
+
+
+string audHelp = _("<b>Applications Audit Report (AUD):</b> An auditing tool that reports which application servers are running and whether they are confined by AppArmor. Application servers are applications that accept incoming network connections. This report provides the host machine's IP Address, the date the Applications Audit Report ran, the name and path of the unconfined program or application server, the suggested profile or a placeholder for a profile for an unconfined program, the process ID number, The state of the program (confined or unconfined), and the type of confinement that the profile is performing (enforce/complain).<br><br> ");
+
+string essHelp = _("<b>Executive Security Summary (ESS):</b> A combined report, consisting of one or more high-level reports from one or more machines. This report can provide a single view of security events on multiple machines if each machine's data is copied to the reports archive directory, which is <b>/var/log/apparmor/reports-archived</b>. This report provides the host machine's IP address, the start and end dates of the polled events, total number of rejects, total number of events, average of severity levels reported, and the highest severity level reported. One line of the ESS report represents a range of SIR reports.<br><br> ");
+
+}
+

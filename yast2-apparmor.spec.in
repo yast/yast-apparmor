@@ -1,0 +1,176 @@
+# $Id: yast2-apparmor.spec.in 6363 2006-04-02 23:26:31Z dominic $
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, contact Novell, Inc.
+#
+# norootforbuild
+#
+Summary: Yast2 plugins for AppArmor management
+Name: yast2-apparmor
+Version: @@immunix_version@@
+Release: 7.8
+Group: Productivity/Security
+Source0: %{name}-%{version}-@@repo_version@@.tar.gz
+License: GPL and LGPL
+BuildRoot: %{?_tmppath:}%{!?_tmppath:/var/tmp}/%{name}-%{version}-build
+Url: http://forge.novell.com/modules/xfmod/project/?apparmor
+Requires: yast2 perl-TimeDate
+BuildArch: noarch
+Obsoletes: yast2-subdomain
+Provides: yast2-subdomain
+BuildRequires: update-desktop-files
+%if %{suse_version} > 1000 
+BuildRequires: yast2 yast2-devtools yast2-theme-SuSELinux
+%endif
+
+%description
+Yast2 forms and components for the management of Novell AppArmor profiles.
+This package is part of a suite of tools that used to be named SubDomain.
+
+%prep
+
+%setup -q
+
+%build
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+make DESTDIR=${RPM_BUILD_ROOT} DISTRO=%{distro}
+
+%install
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=${RPM_BUILD_ROOT} DISTRO=%{distro}
+
+# Register as SuSE app
+for f in `find $RPM_BUILD_ROOT/%{_prefix}/share/applications/YaST2/ -name "*.desktop"` ; do
+    d=${f##*/}
+    if [ "%{suse_version}" -lt 930 ] ; then
+    	%suse_update_desktop_file ${d%.desktop}
+    else
+    	%suse_update_desktop_file -d ycc_${d%.desktop} ${d%.desktop}
+    fi
+done
+
+%clean 
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+
+%files 
+%defattr(-,root,root)
+/usr/bin/*
+/usr/share/YaST2/clients
+/usr/share/YaST2/include/subdomain
+/usr/share/YaST2/scrconf
+/usr/share/applications/YaST2/
+/usr/share/applications/YaST2/groups
+/usr/lib/YaST2/servers_non_y2
+/usr/lib/perl5/vendor_perl/*
+/usr/share/YaST2/theme/SuSELinux/icons
+%doc COPYING.LGPL
+%dir %attr(-,root,root) /etc/apparmor
+%config(noreplace) /etc/apparmor/reports.crontab
+%config(noreplace) /etc/apparmor/reports.conf
+
+%post
+REPDIR='/var/log/apparmor/reports'
+REPDIR2='/var/log/apparmor/reports-archived'
+REPDIR3='/var/log/apparmor/reports-exported'
+[ -e $REPDIR ] || mkdir -p $REPDIR
+[ -e $REPDIR2 ] || mkdir -p $REPDIR2
+[ -e $REPDIR3 ] || mkdir -p $REPDIR3
+
+%preun
+
+%changelog
+* Sub Apr 2 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
+- Fix typo regression in profile_dialogs.ycp
+* Wed Mar 30 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
+- Remove libapparmor as a dependency for all yast wizards (#160518)
+* Sun Mar 26 2006 David Drewelow <ddrewelow@suse.de> 2.0-7.9
+- Filter out html files in archived app. audit list: ag_reports_confined
+  Added some mixed l10n calls, fixed text to match yast spced: profile_dialogs.ycp
+  Removed confusing accept buttons in reporting_dialogs.ycp
+  Fixed bug in reportgen.pl related to accept buttons above
+  (#158261, #159732, #159734, #160271)
+* Sun Mar 12 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.8
+- Don't check for event DB intialization when running the audit report.
+  (#155343)
+* Fri Mar 10 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.7
+- Remove localized text in apparmor.desktop - as the desktop translation 
+  is handled by the translation group. 
+  https://bugzilla.novell.com/show_bug.cgi?id=151509
+* Sun Mar 5 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.6
+- Changes the checks from /etc/subdomain.d to /etc/apparmor.d when
+  validated manual selection of #includes in the "Edit Profile" wizard.
+- Replace yast2-devel build-requires 
+* Fri Feb 10 2006 Dominic Reynolds <dreynold@suse.de> 2.0-7.5
+- Include counter (and time) in ag_genprof logmark
+* Wed Feb  8 2006 Steve Beattie <sbeattie@suse.de> 2.0-7.4
+- Install apparmor packages if not already installed (#137585)
+- Remove direct dependency on apparmor packages
+* Sun Feb  5 2006 Steve Beattie <sbeattie@suse.de> 2.0-7.3
+- Enable/start aaeventd if notification is enabled
+- (jmichael) Remove some dead code 
+* Tue Jan 31 2006 Steve Beattie <sbeattie@suse.de> 2.0-7.1
+- Fix non-wrapping error-dialog (#146435)
+* Fri Jan  27 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-5
+- Added code to process events from the audit system in addition to syslog
+- Removed AALite checks
+- Fix regex warning
+- Fix apparmor control panel to correctly tell if AA is enabled/disabled (#145955)
+- (smb) disable autoyast support in aa configs (#116749)
+* Mon Jan  16 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-4
+- Remove references to message catalog files - now provided by yast2-trans
+* Wed Jan  4 2006 Steve Beattie <sbeattie@suse.de> 2.0-3
+- Add svn repo to tarball
+* Thu Dec  8 2005 Steve Beattie <sbeattie@suse.de> 2.0-2
+- fix gettext/textdomain() calls to refer to new messages filename
+- fix references to old package names within .po files
+* Wed Dec  7 2005 Steve Beattie <sbeattie@suse.de> 2.0-1
+- Reset version for inclusion in SUSE autobuild
+* Wed Nov 30 2005 Steve Beattie <sbeattie@suse.de> 1.2-13
+- Rename package to yast2-apparmor
+* Mon Nov 28 2005 Dominic Reynolds <dreynolds@suse.de> 1.2-12_imnx
+- Changes to licenses for open source release
+* Fri Sep 2 2005 Jesse Michael <jmichael@suse.de> 1.2-11_imnx
+- fix control panel to enable and disable subdomain correctly
+* Wed Aug 17 2005 Jesse Michael <jmichael@suse.de> 1.2-10_imnx
+- move perl modules from site_perl to vendor_perl
+* Fri Aug 6 2005 David Drewelow <ddrewelow@suse.de> 1.2-9_imnx
+- Added suse registration lines in %install
+* Thu Aug 5 2005 Dominic Reynolds <dreynolds@suse.de> 1.2-9_imnx
+- Removed dependency for subdomain-master for SuSE 10.0
+* Wed Jul  6 2005 David Drewelow <davidd@immunix.com> 1.2-7_imnx
+- added /var/log/apparmor/reports-exported
+* Sun May 22 2005 David Drewelow <davidd@immunix.com> 1.2-5_imnx
+- removed /var/log/apparmor/reports-scheduled 
+* Thu May 19 2005 David Drewelow <davidd@immunix.com> 1.2-5_imnx
+- moved /etc/cron.d/reportsched to /etc/apparmor/reports.crontab 
+* Thu May 19 2005 David Drewelow <davidd@immunix.com> 1.2-5_imnx
+- added REPDIR3 
+* Mon May 16 2005 David Drewelow <davidd@immunix.com> 1.2-5_imnx
+- renamed /var/log/immunix/* to /var/log/apparmor/* 
+* Mon Mar 14 2005 David Drewelow <davidd@immunix.com> 1.2-5_imnx
+- moved /etc/immunix/reports.conf here from subdomain-utils 
+* Mon Mar 14 2005 Steve Beattie <steve@immunix.com> 1.2-5_imnx
+- renamed subdomain_parser package to subdomain-parser
+* Thu Mar 10 2005 David Drewelow <davidd@immunix.com> 1.2-3_imnx
+- Added immunix/reports-archived  
+* Mon Feb 28 2005 David Drewelow <davidd@immunix.com> 1.2-3_imnx
+- Added /usr/bin/*, /etc/cron.d/* scripts
+* Fri Feb  4 2005 Seth Arnold <sarnold@immunix.com> 1.2-1_imnx
+- Reversion to 1.2
+* Sun Jan 09 2005 Dominic Reynolds <dominic@immunix.com> 1.1-4_imnx
+- Added 22x22 Icons
+* Wed Nov 10 2004 Steve Beattie <steve@immunix.com> 1.1-2_imnx
+- Merge in new-style build infrastructure.
+* Tue Oct 12 2004 Steve Beattie <steve@immunix.com> 1.1-1_imnx
+- bump version for shass-1.1 release
+* Wed Jul 21 2004 Dominic Reynolds <dominic@immunix.com> 1.0-1_imnx
+- Initial release

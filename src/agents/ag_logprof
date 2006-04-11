@@ -1,0 +1,64 @@
+#!/usr/bin/perl
+#
+# $Id: ag_logprof 5900 2005-12-08 19:12:56Z steve $
+#
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+use strict;
+use Data::Dumper;
+use Getopt::Long;
+use Locale::gettext;
+use POSIX;
+
+use Immunix::SubDomain;
+
+sub usage {
+  UI_Info("usage: $0 [ -d /path/to/profiles ] [ -f /path/to/logfile ] [ -m \"mark in log to start processing after\"");
+  exit 0;
+}
+
+# initialize the local poo
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+setup_yast();
+
+# options variables
+my $help           = '';
+my $logmark;
+  
+GetOptions(
+  'file|f=s'    => \$filename,
+  'dir|d=s'     => \$profiledir,
+  'logmark|m=s' => \$logmark,
+  'help|h'      => \$help,
+);
+  
+# tell 'em how to use it...
+&usage && exit if $help;
+
+# let's convert it to full path...
+$profiledir = get_full_path($profiledir);
+  
+unless(-d $profiledir) {
+  fatal_error "Can't find subdomain profiles in $profiledir.";
+}
+
+# read the settings in /etc/logprof.conf
+readconfig();
+
+# load all the include files
+loadincludes();
+
+do_logprof_pass($logmark);
+
+shutdown_yast();
+exit 0;

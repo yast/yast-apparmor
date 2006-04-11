@@ -1,0 +1,170 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+################################################################################
+# ag_reports_ess
+#
+#  - Generates Report of SubDomain Executive Security Summary 
+#
+#  Requires:
+#       - /usr/lib/immunix/SubDomain/perl/Immunix/Events.pm
+#       - /usr/lib/immunix/SubDomain/perl/Immunix/Reports.pm
+#
+#  Input (Optional):
+#
+################################################################################
+
+use strict;
+use Immunix::Ycp;
+use Immunix::Reports;
+use POSIX;
+use Locale::gettext;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+sub readMultiEssLog {
+
+    my $args = shift;
+    my @essDb = ();
+    my @rawDb = ();
+    my @repList = ();
+    my $dir = '/var/log/apparmor/reports-archived';
+    my $logFile = undef;
+    my $error = undef;
+    my @errors = undef;
+
+    if ( $args->{'repPath'} ) { $dir = $args->{'repPath'}; }
+
+    # Get list of files in archived report directory
+    if ( opendir (RDIR, $dir) ) {
+
+        @repList = grep(/Executive.Security.Summary/, readdir(RDIR));
+        close RDIR;
+
+    } else {
+        $error = gettext("Failure in readMultiEssLog() - couldn't open") . " $dir.";
+        return($error);     # debug - exit instead?
+    }
+
+    for (@repList) {
+
+        my $file = $_;
+
+        # Cycle through each $file in $dir
+        if (open (RPT, "<$dir/$file") ) {
+            push(@rawDb, <RPT>);
+            close RPT;
+        } else {
+            $error = gettext("Problem in readMultiEssLog() - couldn't open") . " $dir/$file.";
+            push(@errors, $error);
+        }
+    }
+
+    for (@rawDb) {
+        next if /^#/;
+        chomp;
+        next if (! $_ || $_ eq "");
+
+        my $rec = undef;
+
+        ( $rec->{'host'}, $rec->{'startdate'}, $rec->{'enddate'}, $rec->{'sevHi'},
+            $rec->{'sevMean'}, $rec->{'numRejects'},$rec->{'numEvents'} ) = split(/\,/, $_);
+
+
+        push(@essDb, $rec);
+    }
+
+
+    return (\@essDb);
+
+}
+
+sub readEssLog {
+
+	my $args = shift;
+    my @essDb = ();
+    my $dir = '/var/log/apparmor/reports-archived';
+    my $logFile = undef;
+    my $error = undef;
+
+    if ($args->{'file'}) {
+        $logFile = $args->{'file'};
+    } else {
+        $error = gettext("readEssLog() wasn't passed an input file.");
+        Immunix::Ycp::y2error($error);
+        exit 1;
+    }
+
+    if ( open(ESS, "<$dir/$logFile") ) {
+
+        while (<ESS>) {
+
+			next if /^#/;
+            chomp;
+			next unless ($_);
+
+            my $rec = undef;
+
+            ( $rec->{'host'}, $rec->{'startdate'}, $rec->{'enddate'}, $rec->{'sevHi'}, 
+				$rec->{'sevMean'}, $rec->{'numRejects'},$rec->{'numEvents'} ) = split(/\,/, $_);
+
+            push(@essDb, $rec);
+        }
+
+        close ESS;
+
+    } else {
+        $error = sprintf(gettext("readEssLog() couldn't open %s"), $logFile);
+        Immunix::Ycp::y2error($error);
+        exit 1;
+    }
+
+    return (\@essDb);
+}
+
+# Main
+################################################################################
+
+while ( <STDIN> ) {
+
+    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+
+	if ($command && $path && $args) {
+
+		my $db = undef;
+
+	    if ($args->{'essArch'} && $args->{'essArch'} == 1) {
+
+			if (! $args->{'single'} || $args->{'single'} != 1 ) {
+		        $db = readMultiEssLog($args);
+			} else {
+		        $db = readEssLog($args);
+			}
+
+	    } else {
+			$db = Immunix::Reports::getEssStats($args);
+	    }
+
+	    Immunix::Ycp::ycpReturn( $db );
+
+    } else {
+        my $error = sprintf( gettext("ag_logparse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
+        Immunix::Ycp::y2error("$error");
+        Immunix::Ycp::ycpReturn($error);
+        exit 1;
+    }
+
+}
+
+exit 0;
+

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Categories=Qt;X-SuSE-YaST-AppArmor;
+
+X-KDE-ModuleType=Library
+X-KDE-RootOnly=true
+X-KDE-HasReadOnlyMode=true
+X-KDE-Library=yast2
+
+X-SuSE-YaST-Group=AppArmor
+X-SuSE-YaST-SortKey=50
+
+OnlyShowIn=X-SuSE-YaST;
+Icon=apparmor/app_armor
+
+Name=Novell AppArmor

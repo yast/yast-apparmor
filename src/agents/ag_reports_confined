@@ -1,0 +1,314 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+use strict;
+use Immunix::Ycp;
+use POSIX;
+use Locale::gettext;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+# Routines
+################################################################################
+sub debug {
+
+	my $db = shift;
+
+	if ((@$db) > 1)  {
+		for ( @$db ) {
+			print "Prog: $_->{'prog'}, Prof: $_->{'prof'}, PID: $_->{'pid'}, ";
+			print "State: $_->{'state'}, Type: $_->{'type'}\n";
+		}
+		print "\n";
+
+	} else {
+		print "$db\n";
+		exit 1;
+	}
+
+	return 0;	# Shouldn't get here
+}
+
+sub test_getCfInfo {
+
+	my $cfTest = shift;
+
+	my @cfDb = ();
+
+	my $host = `hostname`;
+	chomp($host);
+
+	my $date = localtime;
+
+	for (@$cfTest) {
+		my $ref = ();
+		my $all = undef;
+		chomp;
+
+		$ref->{'host'} = $host;
+		$ref->{'date'} = $date;
+
+        ($ref->{'pid'}, $ref->{'prog'}, $all) = split(/\s+/, $_, 3);
+		$all = /\s*((not)*\s*confined\s*(by)*)/;
+		$ref->{'state'} = $1;
+		$ref->{'state'} =~ s/\s*by//g;
+		$ref->{'state'} =~ s/not\s+/not-/g;
+		($ref->{'prof'}, $ref->{'type'}) = split(/\s+/, $_);
+
+		push (@cfDb, $ref);
+	}
+
+	if ( scalar(@cfDb) < 1 ) {
+		return "Error: parsing all messed up!!\n";
+	}
+
+	return (\@cfDb);
+}
+
+
+# Writes out file to allow for multiple pages in YaST form
+#   -For large number of entries in the array
+sub writePagingFile {
+
+    my $db = shift;
+
+    my $pagingFile = "/var/log/apparmor/reports/events.rpt";
+
+    if ( open(PF, ">$pagingFile") ) {
+
+        my $i = 1;
+        my $page = 1;
+        my $skip = 0;
+
+        print PF "Page $page\n";
+        $page++;
+
+        for (@$db) {
+
+            # Order (for YaST): "host", "date", "prog", "prof", "pid", "state", "type"
+            print PF "$_->{'host'},$_->{'date'},$_->{'prog'},$_->{'prof'},$_->{'pid'},$_->{'state'},$_->{'type'}\n";
+
+            if ( ($i % 100) == 0 && $skip == 0) {
+                print PF "Page $page\n";
+                $page++;
+                $skip = 1;
+            } else {
+                $i++;
+                $skip = 0;
+            }
+        }
+
+        close PF;
+
+    } else {
+        Immunix::Ycp::y2error(sprintf(gettext("ag_reports_confined: Couldn't open %s for writing."), $pagingFile));
+    }
+
+    return;
+}
+
+sub readMultiAudLog {
+
+    my $args = shift;
+    my @audDb = ();
+    my @rawDb = ();
+    my @repList = ();
+    my $dir = '/var/log/apparmor/reports-archived';
+    my $logFile = undef;
+    my $error = undef;
+    my @errors = undef;
+
+    if ( $args->{'repPath'} ) { $dir = $args->{'repPath'}; }
+
+    # Get list of files in archived report directory
+    if ( opendir (RDIR, $dir) ) {
+
+        @repList = grep(/Applications.Audit/, readdir(RDIR));
+        close RDIR;
+
+    } else {
+        $error = sprintf(gettext("Failure in readMultiAudLog() - couldn't open %s."), $dir);
+        return($error);     # debug - exit instead?
+    }
+
+    for (@repList) {
+
+        my $file = $_;
+
+		next if $file =~ /$\.html/;
+
+        # Cycle through each $file in $dir
+        if (open (RPT, "<$dir/$file") ) {
+            push(@rawDb, <RPT>);
+            close RPT;
+        } else {
+            $error = sprintf(gettext("Problem in readMultiAudLog\(\) - couldn't open %s\/%s."), $dir, $file);
+            #$error = "Problem in readMultiAudLog() - couldn't open $dir/$file.";
+            push(@errors, $error);
+        }
+    }
+
+	for (@rawDb) {
+		next if /^#/;
+		chomp;
+        next if (! $_ || $_ eq "");
+
+        my $rec = undef;
+
+        ( $rec->{'host'}, $rec->{'date'}, $rec->{'prog'}, $rec->{'prof'}, $rec->{'pid'},
+            $rec->{'state'}, $rec->{'type'} ) = split(/\,/, $_);
+
+        push(@audDb, $rec);
+    }
+
+
+    return (\@audDb);
+}
+
+sub readAudLog {
+
+    my $args = shift;
+    my @audDb = ();
+    my $dir = '/var/log/apparmor/reports-archived';
+	my $logFile = undef;
+	my $error = undef;
+
+	if ($args->{'file'}) {
+	    $logFile = $args->{'file'};
+	} else {
+		$error = gettext("readAudLog() wasn't passed an input file.");
+		Immunix::Ycp::y2error($error);
+        exit 1;
+	}
+
+    if ( open(AUD, "<$dir/$logFile") ) {
+
+        while (<AUD>) {
+
+            next if /^#/;
+            chomp;
+            next unless ($_);
+
+            my $rec = undef;
+
+            ( $rec->{'host'}, $rec->{'date'}, $rec->{'prog'}, $rec->{'prof'}, $rec->{'pid'},
+                $rec->{'state'}, $rec->{'type'} ) = split(/\,/, $_);
+
+            push(@audDb, $rec);
+        }
+
+        close AUD;
+
+    } else {
+        $error = sprintf(gettext("readAudLog\(\) couldn't open %s."), $logFile);
+        Immunix::Ycp::y2error($error);
+        exit 1;
+    }
+
+    return (\@audDb);
+}
+
+sub getCfInfo {
+
+	my $ref = ();
+	my @cfDb = ();
+
+	my $cfApp = '/usr/sbin/unconfined';
+
+	if ( open (CF, "$cfApp |") ) {
+
+		my $host = `hostname`;
+		chomp($host);
+
+		my $date = localtime;
+
+		while(<CF>) {
+
+            my $ref = ();
+            my $all = undef;
+            my $info = undef;
+            $ref->{'host'} = $host;
+            $ref->{'date'} = $date;
+            chomp;
+
+            ($ref->{'pid'}, $ref->{'prog'}, $all) = split(/\s+/, $_, 3);
+            $info = $all;
+            $all = /\s*((not)*\s*confined\s*(by)*)/;
+            $ref->{'state'} = $1;
+            $ref->{'state'} =~ s/\s*by//g;
+            $ref->{'state'} =~ s/not\s+/not-/g;
+
+            if ($ref->{'state'} =~ /not-confined/ ) {
+                $ref->{'prof'} = "-";
+                $ref->{'type'} = "-";
+            } else {
+                ($info) = (split(/\'/, $info, 2))[1];
+                ($ref->{'prof'}, $ref->{'type'}) = split(/\s+/, $info);
+                $ref->{'type'} =~ s/\(|\)|\'//g;
+            }
+
+            if ( $ref->{'prog'} eq "") { $ref->{'prog'} = "-"; }
+            if ( $ref->{'prof'} eq "") { $ref->{'prof'} = "-"; }
+            if ( $ref->{'pid'} eq "") { $ref->{'pid'} = "-"; }
+            if ( $ref->{'state'} eq "") { $ref->{'state'} = "-"; }
+            if ( $ref->{'type'} eq "") { $ref->{'type'} = "-"; }
+
+            push (@cfDb, $ref);
+		}
+		close CF;
+
+	} else {
+		my $error = sprintf(gettext("Can't run %s.  Exiting."), $cfApp);
+		Immunix::Ycp::y2error($error);
+		return $error;
+	}
+
+	return (\@cfDb);
+}
+
+# Main
+################################################################################
+
+
+while ( <STDIN> ) {
+
+    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+
+    if ( $command && $path && $args ) {
+
+		my $db = undef;
+
+		if ($args->{'audArch'} && $args->{'audArch'} == 1) {
+
+			if (! $args->{'single'} || $args->{'single'} != 1 ) {
+				$db = readMultiAudLog($args);
+			} else {
+				$db = readAudLog($args);
+			}
+
+		} else {
+			$db = getCfInfo();
+		}
+
+		writePagingFile($db);
+	    Immunix::Ycp::ycpReturn( $db );
+
+	    } else {
+	        my $error = gettext("ag_reports_confined: Missing instruction or argument!");
+	        Immunix::Ycp::y2error($error);
+	        Immunix::Ycp::ycpReturn($error);
+	        exit 1;
+	    }
+}
+
+exit 0;
+

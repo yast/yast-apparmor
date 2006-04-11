@@ -1,0 +1,23 @@
+[Desktop Entry]
+Type=Application
+Categories=Qt;X-SuSE-YaST;X-SuSE-YaST-AppArmor;
+
+X-KDE-ModuleType=Library
+X-KDE-RootOnly=true
+X-KDE-HasReadOnlyMode=true
+X-KDE-Library=yast2
+X-SuSE-YaST-Call=SD_AddProfile
+
+X-SuSE-YaST-Group=AppArmor
+X-SuSE-YaST-Argument=
+X-SuSE-YaST-RootOnly=true
+X-SuSE-YaST-AutoInst=none
+X-SuSE-YaST-Geometry=
+X-SuSE-YaST-SortKey=
+X-SuSE-YaST-AutoInstClonable=false
+
+Icon=apparmor/add_profile
+Exec=/sbin/yast2 SD_AddProfile
+
+Name=Manually Add Profile
+GenericName=AppArmor Configuration 

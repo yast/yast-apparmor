@@ -1,0 +1,20 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+{
+import "Popup";
+import "Wizard";
+
+//include "subdomain/prof-config.ycp";
+
+/*  BEGIN - This is just temporary filler */
+        Popup::Message("This function is not implemented at this time");
+        symbol button = (`ok);
+        return button;
+}

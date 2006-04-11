@@ -1,0 +1,196 @@
+#!/usr/bin/perl 
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+################################################################################
+# ag_reports_parse
+#
+#  - Generates list of archived reports 
+#		The 3 types of possible reports are:
+#			1) Security Incidents 
+#			2) Applications Audits
+#			3) Executive Security Summaries 
+#
+#  Requires:
+#
+#  Input (Required):
+#	Parameter 'type' as in $args->{'type'}
+#		of one of the following: 'archRep', 'audRep', 'essRep'
+#
+################################################################################
+my $Version='0.61';
+
+use strict;
+use Immunix::Ycp;
+use Immunix::Reports;
+use POSIX;
+use Locale::gettext;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+# Writes out file to allow for multiple pages in YaST form
+#	-For large number of entries in the array
+sub writePagingFile {
+
+	my $db = shift;
+
+	my $pagingFile = "/var/log/apparmor/reports/events.rpt";
+
+	if ( open(PF, ">$pagingFile") ) {
+
+        my $i = 1;
+        my $page = 1;
+        my $skip = 0;
+
+        print PF "Page $page\n";
+        $page++;
+
+        for (@$db) {
+
+			# Order (for YaST): "host", "startdate", "enddate", "numRejects", "numEvents", "sevMean", "sevHi"
+			print PF "$_->{'host'},$_->{'startdate'},$_->{'enddate'},$_->{'numRejects'},$_->{'numEvents'},$_->{'sevMean'},$_->{'sevHi'}\n";
+
+            if ( ($i % 100) == 0 && $skip == 0) {
+                print PF "Page $page\n";
+                $page++;
+                $skip = 1;
+            } else {
+                $i++;
+                $skip = 0;
+            }
+
+        }
+
+		close PF;
+
+	} else {
+		Immunix::Ycp::y2error(sprintf(gettext("ag_reports_parse: Couldn't open %s for writing."), $pagingFile));
+	}
+
+	return;
+}
+
+sub getFileList {
+
+	my $args = shift;
+
+	my $logDir = '/var/log/apparmor/reports-archived';
+
+	if ( $args->{'repPath'} && -d $args->{'repPath'} ) {
+		$logDir = $args->{'repPath'};
+	}
+
+	my @rawList = ();
+	my @presortList = ();
+	my @dirList = ();
+	my $error = undef;
+
+    # Create list of subdomain activation prospects from Old logfiles
+	if ( opendir(LDIR, $logDir) ) { 
+
+		if ( $args->{'type'} eq "sirRep" || $args->{'type'} eq "archRep" ) {
+	    	#@rawList = grep { /Security.Incident/ && -f "$logDir/$_" } readdir(LDIR);
+
+	        while ( my $file = readdir(LDIR) ) {
+	            if ( $file !~ /^\.|\.$/ && $file !~ /Applications.Audit/ && $file !~ /Executive.Security/) {
+					push(@rawList, $file);
+	            }
+	        }
+
+		} elsif ( $args->{'type'} eq "audRep" ) {
+	    	#@rawList = grep { /.aud.csv/ && -f "$logDir/$_" } readdir(LDIR);
+	    	@rawList = grep { /Applications.Audit/ && -f "$logDir/$_" } readdir(LDIR);
+		} elsif ( $args->{'type'} eq "essRep" ) {
+	    	#@rawList = grep { /.ess.csv/ && -f "$logDir/$_" } readdir(LDIR);
+	    	@rawList = grep { /Executive.Security/ && -f "$logDir/$_" } readdir(LDIR);
+		}
+
+	    closedir LDIR;
+
+		# remove non csv file types
+		@rawList = grep(/csv$/, @rawList);
+
+        for (@rawList) {
+            my $ref = undef;
+            $ref->{'name'} = "$_";
+            #$ref->{'time'} = (stat("$logDir/$_"))[10];
+            my $file = "$_";
+            $file =~ s/\.\d+\.\w+$//;
+            my ($junk, $date) = split(/\-/, $file, 2);
+            $date =~ s/\./\:/g;
+            $ref->{'time'} = $date;
+
+            push(@presortList, $ref);
+        }
+
+		@dirList = sort { $a->{'time'} cmp $b->{'time'} } (@presortList);
+
+		my $numels = scalar(@dirList);
+
+		if (@dirList > 0) {
+			#writePagingFile(\@dirList);
+			return \@dirList;
+		} else {
+			Immunix::Ycp::y2error(gettext("ag_reports_parse: No archived reports found."));
+			return $error;
+		}
+
+	} else {
+		$error = sprintf(gettext("ag_reports_parse: Can't open directory %s: %s"), $logDir, $!);
+		Immunix::Ycp::y2error($error);
+			return $error;
+	}
+}
+
+# Main
+################################################################################
+
+while ( <STDIN> ) {
+
+    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+
+    if ( $command && $path && $args ) {
+
+	    my $error = undef;
+
+		if ( $args->{'checkDb'} && $args->{'checkDb'} == 1 ) {
+			my $check = Immunix::Reports::checkEventDb();
+            Immunix::Ycp::ycpReturn( $check );
+
+        } elsif ( $args->{'getLastPage'} && $args->{'getLastPage'} == 1 ) {
+
+			my $ref = undef;
+            $ref->{'numPages'} = Immunix::Reports::getNumPages($args);
+            Immunix::Ycp::ycpReturn( $ref );
+
+        } elsif ( $args->{'checkFile'} && $args->{'checkFile'} == 1 ) {
+			my $fileCheck = Immunix::Reports::checkFileExists("$args->{'file'}");
+            Immunix::Ycp::ycpReturn( $fileCheck );
+
+		} else {
+			my $dirList = getFileList($args);
+			Immunix::Ycp::ycpReturn( $dirList );
+		}
+
+    } else {
+        my $error = sprintf( gettext("ag_reports_parse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
+        Immunix::Ycp::y2error("$error");
+        Immunix::Ycp::ycpReturn($error);
+        exit 1;
+    }
+
+}
+
+exit 0;
+
+
+

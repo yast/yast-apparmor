@@ -1,0 +1,20 @@
+/**
+ * File:
+ *   subdomain.scr
+ * Summary:
+ *   SCR Agent for configuring subdomain
+ * Access:
+ *   read/write
+ * Authors:
+ *   David Drewelow <davidd@immunix.com>
+ * See:
+ *   libscr
+ * Example:
+ *   Read(.cron,$[..])
+ *
+ * $Id: sdconf.scr 3715 2005-01-19 09:06:05Z sarnold $
+ *
+ */
+.sdconf
+
+`ag_sd_config ()

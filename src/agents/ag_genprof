@@ -1,0 +1,251 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+
+use warnings;
+use strict;
+use Data::Dumper;
+use Getopt::Long;
+use Locale::gettext;
+use POSIX;
+
+use Immunix::SubDomain;
+
+# initialize the local poo
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+setup_yast();
+
+$running_under_genprof = 1;
+
+# options variables
+my $help           = '';
+  
+GetOptions(
+  'file|f=s'    => \$filename,
+  'dir|d=s'     => \$profiledir,
+  'help|h'      => \$help,
+);
+  
+# tell 'em how to use it...
+&usage && exit if $help;
+
+my $sd_mountpoint = check_for_subdomain();
+unless($sd_mountpoint) {
+  fatal_error(gettext("SubDomain does not appear to be started.  Please enable SubDomain and try again."));
+}
+
+# let's convert it to full path...
+$profiledir = get_full_path($profiledir);
+  
+unless(-d $profiledir) {
+  fatal_error "Can't find subdomain profiles in $profiledir.";
+}
+
+# what are we profiling?
+my $profiling;
+my $fqdbin;
+
+do {
+
+  my $f = {
+    description  =>
+
+"This wizard will help you create a new AppArmor security 
+profile for an application, or you can use it to enhance 
+an existing profile by allowing AppArmor to learn new 
+application behavior. 
+
+Please enter the application name for which you would like
+to create a profile, or selecte Browse to find the 
+application on your system.",
+    file_label   => "&Application to Profile",
+    okay_label   => "&Create",
+    cancel_label => "&Abort",
+    browse_desc  => "Select Program to Profile",
+  };
+
+  my $profiling = UI_GetFile( $f );
+  if(not defined $profiling) {
+
+    # they hit cancel
+    shutdown_yast();
+    exit 0;
+
+  } elsif($profiling) {
+
+    # they selected something, see if it exists or we can find it in $PATH
+    $fqdbin = "";
+    if(-f $profiling) {
+      $fqdbin = get_full_path($profiling);
+      chomp($fqdbin);
+
+      unless(-x $fqdbin) {
+        UI_Important("The specified file is not executable.
+
+Please enter an application name to
+continue generating a profile or press
+Abort to cancel this wizard.");
+      }
+    } elsif(-d $profiling) {
+      UI_Important("The specified pathname is a directory.
+
+Please enter an application name to
+continue generating a profile or press
+Abort to cancel this wizard.");
+    } else {
+      if($profiling !~ /\//) {
+        my $which = which($profiling);
+        if($which) {
+          $fqdbin = get_full_path($which);
+        }
+      }
+
+      unless(-f $fqdbin) {
+        UI_Important("The specified file does not exist.
+
+Please enter an application name to
+continue generating a profile or press
+Abort to cancel this wizard.");
+      }
+    }
+
+  } else {
+    # they hit okay without entering anything
+    UI_Important(gettext("You have not entered or selected an
+application to profile.
+
+Please enter an application name to
+continue generating a profile or press
+Abort to cancel this wizard."));
+  }
+
+} until($fqdbin && -x $fqdbin);
+
+# read the settings in /etc/logprof.conf
+readconfig();
+
+# make sure that the app they're requesting to profile is not marked as
+# not allowed to have it's own profile
+if($qualifiers{$fqdbin}) {
+  unless($qualifiers{$fqdbin} =~ /p/) {
+    fatal_error(sprintf(gettext(
+"\%s is currently marked as a program that should not have
+it's own profile.  Usually, programs are marked this way
+if creating a profile for them is likely to break the
+rest of the system.  If you know what you're doing and
+are certain you want to create a profile for this program,
+edit the corresponding entry in the [qualifiers] section
+in /etc/apparmor/logprof.conf."
+	    ), $fqdbin));
+  }
+}
+
+
+# load all the include files
+loadincludes();
+
+my $profilefilename = getprofilefilename($fqdbin);
+if(-e $profilefilename) {
+  $helpers{$fqdbin}  = getprofileflags($profilefilename) || "enforce";
+} else {
+  autodep($fqdbin);
+  $helpers{$fqdbin} = "enforce";
+}
+
+if($helpers{$fqdbin} eq "enforce") {
+  complain($fqdbin);
+  reload($fqdbin);
+}
+
+my $done_profiling = 0;
+my $syslog = 1;
+$syslog = 0 if ( -e "/var/log/audit/audit.log" );
+
+while(not $done_profiling) {
+   
+  my $logmark = "";
+  if ( $syslog ) {
+    $logmark = `date | md5sum`;
+    chomp $logmark;
+    $logmark = $1 if $logmark =~ /^([0-9a-f]+)/;
+    system("logger -p kern.warn 'GenProf: $logmark'");
+  } else {
+    $logmark = last_audit_entry_time();
+  }
+
+  my $q = { };
+  $q->{headers}   = [ gettext("Profiling"), $fqdbin ];
+  $q->{explanation} = "Please start the application to be profiled in
+another window and exercise its functionality now.
+
+Once completed, select the 'Scan' option below in
+order to scan the system logs for AppArmor events.
+
+For each AppArmor event, you will be given the
+opportunity to choose whether the access should be
+allowed or denied.";
+  $q->{functions} = [ "CMD_SCAN", "CMD_FINISHED" ];
+  $q->{default}   = "CMD_SCAN";
+  my ($ans, $arg) = UI_PromptUser($q);
+
+  if($ans eq "CMD_SCAN") {
+
+    my $lp_ret = do_logprof_pass($logmark);
+
+    $done_profiling = 1 if $lp_ret eq "FINISHED";
+
+  } else {
+
+    # make them confirm the exit command
+    my $ans = UI_YesNo(gettext("Are you sure you want to exit?"), "n");
+    if($ans eq "y") {
+      $done_profiling = 1;
+    }
+
+  }
+
+}
+  
+for my $p (sort keys %helpers) {
+  if($helpers{$p} eq "enforce") {
+    enforce($p);
+    reload($p);
+  }
+}
+
+UI_Info(gettext("Reloaded SubDomain profiles in enforce mode."));
+UI_Info(sprintf(gettext('Finished generating profile for %s.'), $fqdbin));
+
+shutdown_yast();
+
+exit 0;
+
+sub usage {
+  UI_Info("usage: $0 [ -d /path/to/profiles ] [ -f /path/to/logfile ] [ program to profile ]");
+  exit 0;
+}
+
+sub last_audit_entry_time {
+
+  local $_ = `tail -1 /var/log/audit/audit.log`;
+  my $logmark;
+  if ( /^.*msg\=audit\((\d+\.\d+\:\d+).*\).*$/ ) {
+    $logmark = $1;
+  } else {
+    $logmark = "";
+  }
+  return $logmark;
+}
+

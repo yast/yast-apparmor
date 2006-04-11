@@ -1,0 +1,31 @@
+/*
+	Copyright (C) 2006 Novell Inc. All Rights Reserved.
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of version 2 of the GNU General Public
+	License published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, contact Novell, Inc.
+
+	Written by Steve Beattie <sbeattie@suse.de>
+ */
+
+ /* This should probably be more intelligent and query the user once
+  * whether they want optional packages like apparmor-docs, libapparmor,
+  * apache2-mod-apparmor and * (eventually) pam-apparmor installed. */
+
+import "PackageSystem";
+
+list<string> __needed_packages =
+	["apparmor-parser", "apparmor-utils", "apparmor-profiles",
+	 "apparmor-docs"];
+
+define boolean installAppArmorPackages () {
+	return PackageSystem::CheckAndInstallPackagesInteractive (__needed_packages);
+}

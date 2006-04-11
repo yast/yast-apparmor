@@ -1,0 +1,364 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+
+{
+include "subdomain/event_notification_helptext.ycp";
+textdomain "yast2-apparmor";
+
+define symbol displayAppArmorConfig () {
+  // AppArmor Status
+  boolean sdIsEnabled = false;
+  boolean ntIsEnabled = false;
+  string subdomain = (string) SCR::Execute(.subdomain, "sd-status");
+  string sdEnStr = _("AppArmor is disabled");
+
+  if (subdomain == "enabled") {
+    sdIsEnabled = true;
+	sdEnStr = _("AppArmor is enabled");
+  }
+
+  // Notification Status
+  string evnotify = (string) SCR::Execute(.subdomain, "sd-notify");
+  string evEnStr = _("Notification is disabled");
+  if (evnotify == "enabled") {
+    ntIsEnabled = true;
+	evEnStr = _("Notification is enabled");
+  } else if (evnotify == "notinstalled") {
+    evnotify = "disabled";
+  }
+
+  /* Network dialog caption */
+  string caption = _("AppArmor Configuration");
+  string help = _("<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement module is loaded and functioning.</p> <p><b>Security Event Notification</b><br>When an access violation occurs, configure this tool if you want to be notified via email. </p>");
+
+  term contents = `HVCenter( `HBox(
+      `Frame(_("AppArmor Status"), `HBox(
+      `VBox(
+    `VSpacing(3), `HSpacing(3),
+            `HBox (
+            //`HSpacing( `opt(`hstretch), 0.15 ),
+            `HSpacing( 3 ),
+      `VBox(
+          `Frame ( _("Enable AppArmor"),
+              `HBox(
+          //`HVCenter( `Label( `id(`sdlabel), _("AppArmor is ") + subdomain + " ")),
+          `HVCenter( `Label( `id(`sdlabel), sdEnStr + " ")),
+          `PushButton( `id(`sdconf), _("&Configure") )
+              )
+          ),
+                `VSpacing( 1 ),
+          `Frame ( _("Enable Security Event Notification"),
+              `HBox(
+          //`HVCenter( `Label( `id(`notifyLabel),  _("Notification is ") + evnotify )),
+          `HVCenter( `Label( `id(`notifyLabel),  evEnStr )),
+          `PushButton( `id(`ntconf), _("&Configure") )
+              )
+          )
+      ),
+            `HSpacing( 3 )
+            ),
+    `VSpacing(3),
+      `HSpacing(8)
+    )))
+  ));
+
+  Wizard::CreateDialog();
+  Wizard::SetTitleIcon("apparmor/control_panel");
+  Wizard::SetContentsButtons(caption, contents, help, nil, _("&Done"));
+  Wizard::DisableBackButton();
+
+        while( true ) {
+          symbol ret = (symbol) UI::UserInput();
+                if ( ret == `abort || ret == `cancel || ret == `next) {
+                        break;
+                } else if (ret == `sdconf ) {
+
+      boolean sdNotEnabled = false;
+      if (sdIsEnabled == false) {
+        sdNotEnabled = true;
+      }
+
+        UI::OpenDialog(
+              `VBox(
+                  `Frame ( _("Enable AppArmor"),
+        `HBox(
+                    `RadioButtonGroup(`id(`subdomain),
+                        `HBox(
+                            `VSpacing( `opt(`vstretch), 0.5),
+                            `Left(`RadioButton(`id(0), _("Disabled"), sdNotEnabled)),
+                            `Left(`RadioButton(`id(1), _("Enabled"), sdIsEnabled)),
+                            `VSpacing( `opt(`vstretch), 0.5)
+                        )
+                    )
+          )),
+              `HBox (
+                `PushButton(`id(`abort), _("&Cancel") ),
+                `PushButton(`id(`ok),  _("&Ok") )
+               ))
+
+      );
+
+        /* Not sure if this is the best way to do this */
+        /* Popup dialog to turn SD on/off */
+        any sdInput = UI::UserInput();
+        any scrret = nil;
+        boolean sdorig = sdIsEnabled;
+
+        if (sdInput == `ok) {
+          any sdEnable = UI::QueryWidget(`id(`subdomain), `CurrentButton);
+          string sdAction = "";
+          if (sdEnable == 1) {
+            sdAction = "subdomain:enable";
+            sdIsEnabled = true;
+          } else {
+            sdAction = "subdomain:disable";
+            sdIsEnabled = false;
+          }
+          scrret = SCR::Execute(.sdconf, sdAction);
+        }
+        UI::CloseDialog();
+                    if ( scrret != nil && is(scrret, string) ) {
+                      // Error condition.
+                      string errormsg = (string) scrret;
+					  string popError = _("This operation generated the following error. Please check  your installation and AppArmor profile settings.");
+                      Popup::Message( popError+ "\n[" + errormsg + "]");
+                      sdIsEnabled = sdorig;
+                    } else {
+                      string sdLabelVal = "";
+                      if ( sdIsEnabled == true ) {
+                        sdLabelVal = _("AppArmor is enabled");
+                      } else {
+                        sdLabelVal = _("AppArmor is disabled") + " ";
+                      }
+                      UI::ChangeWidget( `id(`sdlabel), `Value, sdLabelVal );
+                    }
+    } else if (ret == `ntconf ) {
+      map settings = (map) SCR::Execute(.subdomain, "sd-notify-settings");
+
+      any t_freq = settings["terse_freq"]:0;
+      any s_freq = settings["summary_freq"]:0;
+      any v_freq = settings["verbose_freq"]:0;
+
+      boolean t_unknown = true;
+      string t_poop = settings["terse_unknown"]:"1";
+      if(t_poop == "0") {
+        t_unknown = false;
+      }
+
+      boolean s_unknown = true;
+      string s_poop = settings["summary_unknown"]:"1";
+      if(s_poop == "0") {
+        s_unknown = false;
+      }
+
+      boolean v_unknown = true;
+      string v_poop = settings["verbose_unknown"]:"1";
+      if(v_poop == "0") {
+        v_unknown = false;
+      }
+
+      list terse_items = [
+        `item(`id(0),      _("Disabled"),   t_freq==0?true:false),  
+        `item(`id(60),     _("1 minute"),   t_freq==60?true:false),
+        `item(`id(300),    _("5 minutes"),  t_freq==300?true:false),
+        `item(`id(600),    _("10 minutes"), t_freq==600?true:false),
+        `item(`id(900),    _("15 minutes"), t_freq==900?true:false),
+        `item(`id(1800),   _("30 minutes"), t_freq==1800?true:false),
+        `item(`id(3600),   _("1 hour"),     t_freq==3600?true:false),
+        `item(`id(86400),  _("1 day"),      t_freq==86400?true:false),
+        `item(`id(604800), _("1 week"),     t_freq==604800?true:false)
+      ];
+
+      list summary_items = [
+        `item(`id(0),      _("Disabled"),   s_freq==0?true:false),  
+        `item(`id(60),     _("1 minute"),   s_freq==60?true:false),
+        `item(`id(300),    _("5 minutes"),  s_freq==300?true:false),
+        `item(`id(600),    _("10 minutes"), s_freq==600?true:false),
+        `item(`id(900),    _("15 minutes"), s_freq==900?true:false),
+        `item(`id(1800),   _("30 minutes"), s_freq==1800?true:false),
+        `item(`id(3600),   _("1 hour"),     s_freq==3600?true:false),
+        `item(`id(86400),  _("1 day"),      s_freq==86400?true:false),
+        `item(`id(604800), _("1 week"),     s_freq==604800?true:false)
+      ];
+
+      list verbose_items = [
+        `item(`id(0),      _("Disabled"),   v_freq==0?true:false),  
+        `item(`id(60),     _("1 minute"),   v_freq==60?true:false),
+        `item(`id(300),    _("5 minutes"),  v_freq==300?true:false),
+        `item(`id(600),    _("10 minutes"), v_freq==600?true:false),
+        `item(`id(900),    _("15 minutes"), v_freq==900?true:false),
+        `item(`id(1800),   _("30 minutes"), v_freq==1800?true:false),
+        `item(`id(3600),   _("1 hour"),     v_freq==3600?true:false),
+        `item(`id(86400),  _("1 day"),      v_freq==86400?true:false),
+        `item(`id(604800), _("1 week"),     v_freq==604800?true:false)
+      ];
+
+
+      term event_config = `HVCenter(`VBox(`opt(`vstretch),
+          `Frame( _("Security Event Notification"),
+            `HBox(`HSpacing(1),
+            `VBox(`opt(`vstretch),
+              `VSpacing(1),
+              `Frame( _("Terse Notification"),
+                `VBox(`opt(`vstretch),
+                  `HBox(
+                    `ComboBox(`id(`terse_freq), _("Frequency"), terse_items),
+                    `TextEntry(`id(`terse_email), _("Email Address"), settings["terse_email"]:""),
+                    `IntField(`id(`terse_level), _("Severity"), 0,10, settings["terse_level"]:0)
+                  ),
+                  `HBox(
+                    `CheckBox( `id(`terse_unknown), _("Include Unknown Severity Events"), t_unknown)
+                  )
+                )
+              ),
+              `VSpacing(1),
+              `Frame( _("Summary Notification"),
+                `VBox(`opt(`vstretch),
+                  `HBox(
+                    `ComboBox(`id(`summary_freq), _("Frequency"), summary_items),
+                    `TextEntry(`id(`summary_email), _("Email Address"), settings["summary_email"]:""),
+                    `IntField(`id(`summary_level), _("Severity"), 0,10, settings["summary_level"]:0)
+                  ),
+                  `HBox(
+                    `CheckBox( `id(`summary_unknown), _("Include Unknown Severity Events"), s_unknown)
+                  )
+                )
+              ),
+              `VSpacing(1),
+              `Frame( _("Verbose Notification"),
+                `VBox(`opt(`vstretch),
+                  `HBox(
+                    `ComboBox(`id(`verbose_freq), _("Frequency"), verbose_items),
+                    `TextEntry(`id(`verbose_email), _("Email Address"), settings["verbose_email"]:""),
+                    `IntField(`id(`verbose_level), _("Severity"), 0,10, settings["verbose_level"]:0)
+                  ),
+                  `HBox(
+                    `CheckBox( `id(`verbose_unknown), _("Include Unknown Severity Events"), v_unknown)
+                  )
+                )
+              ),
+              `VSpacing(1)
+            ),
+            `HSpacing(1)
+          )
+          )
+        )
+      );
+
+      Wizard::CreateDialog();
+      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, nil, _("&Ok"));
+      Wizard::DisableBackButton();
+
+      /* Not sure if this is the best way to do this */
+
+      any ntInput = nil;
+      string notifyLabelValue = "";
+      while( true ) {
+        ntInput = UI::UserInput(); 
+      if (ntInput == `next) {
+        map<string,string> answers = $[ ];
+
+        t_freq = UI::QueryWidget(`id(`terse_freq),   `Value);
+        s_freq = UI::QueryWidget(`id(`summary_freq), `Value);
+        v_freq = UI::QueryWidget(`id(`verbose_freq), `Value);
+
+        answers["sd-set-notify"] = "yes";
+        answers["terse_freq"]   = tostring(t_freq);
+        answers["summary_freq"] = tostring(s_freq);
+        answers["verbose_freq"] = tostring(v_freq);
+
+        if(t_freq != 0) {
+          string t_email = (string) UI::QueryWidget(`id(`terse_email), `Value);
+          if ( t_email == nil || t_email == "" )  {
+             Popup::Error( _("An email address is required for each selected notification method.") );
+             continue;
+          }
+          answers["enable_terse"] = "yes";
+          answers["terse_email"] = (string) UI::QueryWidget(`id(`terse_email), `Value);
+          answers["terse_level"] = (string) tostring(UI::QueryWidget(`id(`terse_level), `Value));
+
+          boolean t_unknown = (boolean) UI::QueryWidget(`id(`terse_unknown), `Value);
+          if(t_unknown == true) {
+            answers["terse_unknown"] = "1";
+          } else {
+            answers["terse_unknown"] = "0";
+          }
+        } else {
+          answers["enable_terse"] = "no";
+        }
+
+        if(s_freq != 0) {
+          string s_email = (string) UI::QueryWidget(`id(`summary_email), `Value);
+          if ( s_email == nil || s_email == "" )  {
+             Popup::Error( _("An email address is required for each selected notification method.") );
+             continue;
+          }
+          answers["enable_summary"] = "yes";
+          answers["summary_email"] = (string) UI::QueryWidget(`id(`summary_email), `Value);
+          answers["summary_level"] = (string) tostring(UI::QueryWidget(`id(`summary_level), `Value));
+
+          boolean s_unknown = (boolean) UI::QueryWidget(`id(`summary_unknown), `Value);
+          if(s_unknown == true) {
+            answers["summary_unknown"] = "1";
+          } else {
+            answers["summary_unknown"] = "0";
+          }
+        } else {
+          answers["enable_summary"] = "no";
+        }
+
+        if(v_freq != 0) {
+          string v_email = (string) UI::QueryWidget(`id(`verbose_email), `Value);
+          if ( v_email == nil || v_email == "" )  {
+             Popup::Error( _("An email address is required for each selected notification method.") );
+             continue;
+          }
+          answers["enable_verbose"] = "yes";
+          answers["verbose_email"] = (string) UI::QueryWidget(`id(`verbose_email), `Value);
+          answers["verbose_level"] = (string) tostring(UI::QueryWidget(`id(`verbose_level), `Value));
+
+          boolean v_unknown = (boolean) UI::QueryWidget(`id(`verbose_unknown), `Value);
+          if(v_unknown == true) {
+            answers["verbose_unknown"] = "1";
+          } else {
+            answers["verbose_unknown"] = "0";
+          }
+        } else {
+          answers["enable_verbose"] = "no";
+        }
+
+        SCR::Execute(.sdconf, answers);
+        //Popup::Message("w00t!");
+        if ( t_freq != 0 || s_freq != 0 || v_freq != 0 ) {
+          notifyLabelValue = _("Notification is enabled");
+        } else {
+          notifyLabelValue = _("Notification is disabled");
+        }
+      }
+      Wizard::CloseDialog();
+      if ( (ntInput == `ok) || (ntInput == `next) ) {
+        UI::ChangeWidget( `id(`notifyLabel), `Value, notifyLabelValue );
+      }
+      break;
+     }
+    } else {
+      y2milestone("Weird dialogue close--incl." + tostring(ret));
+    }
+    }
+  UI::CloseDialog();
+  /* Finish */
+  y2milestone("AppArmor config module finished");
+  y2milestone("----------------------------------------");
+
+  return nil;
+}
+
+/* EOF */
+}

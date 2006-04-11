@@ -1,0 +1,701 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+{
+import "Wizard";
+import "Popup";
+include "subdomain/capabilities.ycp";
+textdomain  "yast2-apparmor";
+
+// Globalz
+integer timeout_millisec = 20 * 1000;
+map<string,any> Settings = $[
+   "CURRENT_PROFILE"			: ""
+];
+
+
+define map capabilityEntryPopup( map capmap, string linuxcapname, string profile )   {
+                map results = $[];
+                string lpname = linnametolp[linuxcapname]:"";
+                map cdef = capdefs[lpname]:nil;
+                list caplist = [];
+                boolean capbool = false;
+                foreach( string clname, string clpname, (map<string,string>) linnametolp, {
+                       if ( capmap[clpname]:nil != nil)  capbool = true;
+                       caplist = add( caplist, `item( `id(clname),  clname, capbool) );
+                       capbool = false;
+                });
+                string info =  (string) cdef["info"]:"<b>Capbility Selection</b>.
+                               <br>Select desired capabilities for this profile. 
+                               Select a Capability name to see information about the capability.";
+                UI::OpenDialog(
+                `VBox(
+                  `HSpacing( 75 ),
+                  `VSpacing( `opt(`hstretch), 1 ),
+                  `HBox(
+                  `VSpacing( 20 ),
+                  `HSpacing( 0.5 ),
+                  `Frame( "  Capabilities enabled for the profile " + profile + "   ",
+                    `HBox(
+                      `HWeight( 30, 
+                       `MultiSelectionBox( `id(`caps), `opt(`notify), "Capabilities", caplist)
+                       ),
+                       `HWeight( 60, `RichText( `id(`captext), info) )
+                     )
+                  ),
+                  `HSpacing( 0.05 )
+                  ),
+                  `VSpacing( 0.5 ),
+                  `HBox(
+                    `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), _("&Cancel"))))
+                  ),
+                  `VSpacing( `opt(`hstretch), 0.5 )
+                )
+               );
+
+               if ( linuxcapname != "" ) {
+                  UI::ChangeWidget( `id(`caps), `CurrentValue, linuxcapname );
+               }
+
+               map event2 = $[];
+               any id2    = nil; 
+               repeat
+               {
+                 event2 = UI::WaitForEvent( timeout_millisec );
+                 id2    = event2["ID"]:nil; // We'll need this often - cache it
+                 if ( id2 == `caps ) {
+                   any itemid =  UI::QueryWidget( `id(`caps), `CurrentItem );
+                   list selecteditems = (list) UI::QueryWidget( `id(`caps), `SelectedItems ); 
+                   string stritem = tostring( itemid );
+                   string capindex = linnametolp[stritem]:""; 
+                   map    cdf =  capdefs[capindex]:nil;
+                   string  cdfi = cdf["info"]:"";
+                   UI::ChangeWidget( `id(`captext), `Value, cdfi );
+                 }
+               }  until ( id2 == `save || id2 == `cancel );
+
+               map<string, integer>  newcapmap = $[];
+               if ( id2 == `save ) {
+                 list<any> selectedcaps = (list<any>) UI::QueryWidget( `id(`caps), `SelectedItems ); 
+                 string s = ""; 
+                 foreach( any cpname, selectedcaps, {
+                     s = linnametolp[tostring(cpname)]:""; 
+                     newcapmap = add( newcapmap, s, 1); 
+                 });
+               }
+               UI::CloseDialog();
+               if ( id2 == `cancel ) {
+                 return capmap;
+               }
+               return newcapmap;
+}
+
+
+
+// 
+// Popup the Edit Profile Entry dialog
+// return a map containing PERM and FILE
+// for the updated permissions and filename
+// for the profile entry
+//
+
+define map pathEntryPopup( string filename, string perms, string profile, string filetype  )   {
+                map results = $[];
+                UI::OpenDialog(
+                `VBox(
+                  `VSpacing( `opt(`hstretch), 1 ),
+                  `HSpacing( 45 ),
+                  `HBox(
+                  `VSpacing( 10 ),
+                  `HSpacing( 0.75 ),
+                  `Frame( _("Profile Entry For ") + profile,
+                  `HBox(
+                    `HWeight( 65,
+                       `VBox(
+                        `TextEntry(`id(`filename), _("Enter or modify Filename")),
+			`HCenter(`PushButton(`id(`browse), _("&Browse") ))
+                       )
+                     ),
+                     `HWeight( 35,
+                       `MultiSelectionBox( `id(`perms), `opt(`notify), _("Permissions"),
+                         [  `item( `id(`read),    _("Read"), issubstring(perms, "r")),
+                            `item( `id(`write),   _("Write"), issubstring(perms, "w")),
+                            `item( `id(`link),    _("Link"), issubstring(perms, "l")),
+                            `item( `id(`execute),  _("Execute"), issubstring(perms, "x")),
+                            `item( `id(`profile),  _("Profile"), issubstring(perms, "p")),
+                            `item( `id(`inherit),  _("Inherit"), issubstring(perms, "i")),
+                            `item( `id(`unconstrained),  _("Unconstrained"), issubstring(perms, "u"))
+                         ]
+                     )
+                   )
+                  )
+                  ),
+                  `HSpacing( 0.75 )
+                  ),
+                  `VSpacing( 0.5 ),
+                  `HBox(
+                    `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), _("&Cancel"))))
+                  ),
+                  `VSpacing( `opt(`hstretch), 0.5 )
+                )
+               );
+               UI::ChangeWidget(`id(`filename), `Value, filename);
+               map event2 = $[];
+               any id2    = nil; // We'll need this often - cache it
+               repeat
+               {
+                 event2 = UI::WaitForEvent( timeout_millisec );
+                 id2    = event2["ID"]:nil; // We'll need this often - cache it
+
+                 //
+                 // Something clicked in the 'perms list
+                 //
+                 if ( id2 == `perms ) {
+                   any itemid =  UI::QueryWidget( `id(`perms), `CurrentItem );
+                   list selecteditems = (list) UI::QueryWidget( `id(`perms), `SelectedItems );
+                   if ( itemid == `execute ) {
+                   //
+                   // If we turn off Execute bit then also
+                   // turn off execute modifiers
+                   //
+                     if (  contains( selecteditems, `execute ) == false )  {
+                       if ( contains( selecteditems, `inherit )) {
+                         selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                       }
+                       if ( contains( selecteditems, `profile )) {
+                         selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                       }
+                       if ( contains( selecteditems, `unconstrained )) {
+                         selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                       }
+                     } else if (!( contains( selecteditems, `inherit ) ||
+                                   contains( selecteditems, `unconstrained ) ||
+                                   contains( selecteditems, `profile ))
+                            ) {
+                             //if you just select X alone then by default you get P
+                             selecteditems = prepend( selecteditems, `profile);
+                             UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                     }
+                  }
+
+                  //
+                  // Execute modifier is selected
+                  //  -- if Execute is NOT ON then turn Execute ON
+                  //  -- ensure that only one modifier is selected.
+                  //
+                  if (( contains( selecteditems, `inherit ) ||
+                        contains( selecteditems, `unconstrained ) ||
+                        contains( selecteditems, `profile )) ) {
+                      if ( contains( selecteditems, `execute ) == false ) {
+                        selecteditems = prepend( selecteditems, `execute);
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                      } else if ( itemid == `profile ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                      } else if ( itemid == `inherit ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                      } else if ( itemid == `unconstrained ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                     }
+                  }  else if ( contains( selecteditems, `execute) ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `execute); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                  }
+                }
+                // 
+                // Popup a dialog to let a user browse for a file
+                //
+                if ( id2 == `browse ) {
+                  string selectfilename = "";
+                  if ( filetype == "dir" ) {
+                    selectfilename = UI::AskForExistingDirectory( "/",  _("Select Directory"));
+                  } else {
+                    selectfilename = UI::AskForExistingFile( "/", "",  _("Select File"));
+                  }
+                  if ( selectfilename != nil ) {
+                    UI::ChangeWidget(`id(`filename), `Value, selectfilename);
+                  }
+                }
+               }  until ( id2 == `save || id2 == `cancel );
+
+               if ( id2 == `cancel ) {
+                 UI::CloseDialog();
+                 return nil;
+               }
+
+               //
+               // Update table values
+               //
+               if ( id2 == `save ) {
+                 list selectedbits = (list) UI::QueryWidget( `id(`perms), `SelectedItems );
+                 string newperms = "";
+                 if  ( contains(selectedbits, `read ) )  {
+                   newperms = newperms + "r" ;
+                 }
+                 if  ( contains( selectedbits, `write ) ) {
+                   newperms = newperms + "w" ;
+                 }
+                 if  ( contains(selectedbits, `link ) ) {
+                   newperms = newperms + "l" ;
+                 }
+                 if  ( contains(selectedbits, `execute) ) {
+                   if  ( contains(selectedbits, `profile) ) {
+                      newperms = newperms + "p" ;
+                   } else if  ( contains(selectedbits, `inherit) ) {
+                      newperms = newperms + "i" ;
+                   } else if  ( contains(selectedbits, `unconstrained) ) {
+                      newperms = newperms + "u" ;
+                   }
+                   newperms = newperms + "x" ;
+                 }
+                 filename = tostring( UI::QueryWidget(`id(`filename), `Value) );
+                 UI::CloseDialog();
+                 if ( filename == "" || newperms == "" ) {
+                   Popup::Error(_("Entry will not added. Entry name or permissions not defined."));
+                   results = nil;
+                 } else {
+                   results = $[ "PERM": newperms, "FILE": filename ];
+                 }
+               }
+               return results;
+}
+
+define map fileEntryPopup( string filename, string perms, string profile )   {
+   return (map) pathEntryPopup( filename, perms, profile, "file" );
+}
+
+define map dirEntryPopup( string filename, string perms, string profile )   {
+   return (map) pathEntryPopup( filename, perms, profile, "dir" );
+}
+
+//
+// generateTableContents - generate the list that is used in the table to display the profile
+//
+
+define list<term> generateTableContents( map paths, map caps, map includes, map hats ) {
+    list<term> newlist = [];
+    integer indx = 0;
+
+    foreach( string hatname, any hat, (map<string,map>) hats, {
+      newlist = add( newlist, `item( `id(indx), "[+] ^"+ hatname, ""));
+      indx = indx+1;   });
+    foreach( string incname, integer incval, (map<string,integer>) includes, {
+      newlist = add( newlist, `item( `id(indx), "#include "  +incname, ""));
+      indx = indx+1;   });
+    foreach( string capname, integer capval, (map<string,integer>) caps, {
+      map capdef = capdefs[capname]:nil;
+      newlist = add( newlist, `item( `id(indx), capdef["name"]:"", ""));
+      indx = indx+1;   });
+    foreach( string name, string val, (map<string,string>) paths, {
+      newlist = add( newlist, `item( `id(indx), name, val));
+      indx = indx+1;   });
+     return newlist;
+}
+
+
+define map collectHats(map profile, string pathname ) {
+  map<string,any> hats = $[];
+  y2debug("collecting hats for " + pathname);
+  foreach( string resname, any resource, (map<string,any>) profile,  {
+    if ( resname != pathname ) {
+      map<any,any> hat = tomap(resource);
+      if ( hat != nil ) {
+        y2debug("HAT " + resname);
+        hats = add(hats, resname, resource);
+      }
+    }
+  });
+  return hats;
+}
+
+
+//
+// Prompts the user for a hatname 
+// Side-Effect: sets Settings["CURRENT_HAT"]
+// returns true (hat entered)
+//         false (user aborted)
+//
+define boolean newHatNamePopup(string parentProfile, map currentHats ) {
+
+term intro = `VBox(
+          `Top(
+            `VBox(
+              `VSpacing(1),
+              `Left(`Label("Please enter the name of the Hat that you would like \nto add to the profile " + parentProfile + ".")),
+              `VSpacing(0.5),
+              `Left(
+                `TextEntry(
+                  `id(`hatname), 
+                  _("&Hat name to add"), 
+                  ""
+                )
+              ),
+              `VSpacing(`opt(`vstretch), 0.25)
+            )
+          ),
+          `HBox(
+            `HSpacing(`opt(`hstretch), 0.1),
+            `HCenter(`PushButton(`id(`create), "&Create Hat")),
+            `HCenter(`PushButton(`id(`abort), "&Abort")),
+            `HSpacing(`opt(`hstretch), 0.1),
+            `VSpacing(1)
+          )
+        );
+
+  UI::OpenDialog(intro);
+  UI::SetFocus(`id(`hatname));
+  while (true)  {
+    any input = Wizard::UserInput();
+    if(input == `create) {
+      string hatname = (string) UI::QueryWidget(`id(`hatname), `Value);
+      // Check for no application entry in the dialog
+      if ( hatname == "" ) {
+        Popup::Error("You have not entered or selected an name for the hat you are trying to add.\nPlease enter an hat name to continue generating a new hat for the " + parentProfile + " or press Abort to cancel this wizard."); 
+      } else if ( haskey( currentHats, hatname ) ) {
+        Popup::Error("The profile " + parentProfile + " already contains a hat named " + hatname + ". Please enter a different name to try again or press Abort to cancel this wizard."); 
+      } else {
+        Settings["CURRENT_HAT"] = hatname;
+        UI::CloseDialog();
+        return true;
+      }
+    } else  {
+      UI::CloseDialog();
+      return false;
+    }
+  }
+}
+
+define symbol DisplayProfileForm(string pathname, boolean hat) {
+   map profile_map =  (map) Settings["PROFILE_MAP"]:$[];
+   map profile = (map) profile_map[pathname]:$[];
+   map hats = $[];
+   if ( !hat ) {
+     hats = collectHats( profile_map, pathname );
+   }
+   map paths = (map) profile["path"]:$[];
+   map caps = (map) profile["capability"]:$[];
+   map includes = (map) profile["include"]:$[];
+   list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+   foreach( string hatname, map hatd, (map<string,map>) hats, {
+        map capsh = (map) hatd["capability"]:$[];
+        foreach( string capname, integer capval, (map<string,integer>) capsh, {
+          y2milestone( "Cap for " + hatname + " " + capname);
+        });
+   });
+
+
+   string help1 = "In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog..<p>";
+   string help2 = "<b>Permission Definitions:</b><br><<code> R - read <br> W - write<br> X - execute<br> U - unconfined<br> I - inherit<br> L - link<br> P - discrete profile </code><p>";
+   string help3 = "<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p></li>";
+   string help4 = "<b>File</b><br>Add a file entry to this profile<br>";
+   string help5 = "<b>Directory</b><br>Add a directory entry to this profile<br>";
+   string help6 = "<b>Capability</b><br>Add a capability entry to this profile<br>";
+   string help7 = "<b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.<br>";
+   string helpHat = "<b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.<br><p>";
+   string help8 = "<b>Delete Entry:</b><br>Removes the selected entry from this profile.<p>";
+
+
+   integer listnum = 0;
+   list<term> itemList =  [ `item( `id( `file ), "&File" ),
+                            `item( `id( `dir ), "&Directory" ),
+                            `item( `id( `cap ), "&Capability" ),
+                            `item( `id( `include ), "&Include File" ),
+                          ];
+
+ 
+    string mainLabel = "";
+
+    if ( hat ) {
+     mainLabel = "AppArmor profile " + Settings["CURRENT_PROFILE"]:"" + "^" + pathname;
+   } else {
+     itemList = add(itemList,`item( `id( `hat ), "&Hat" ));
+     mainLabel = "AppArmor profile for " + pathname ; 
+   }
+    // Define the widget contents 
+    // for the Wizard
+    term contents_main_profile_form =
+	       `VBox(
+		     `Label(mainLabel),
+		     `HBox(
+			   `VSpacing(10),
+			   `Table(`id(`table), `opt(`notify, `immediate ), `header("File Name", "Permissions"), profilelist)
+			   ),
+			   `VSpacing(0.5),
+		     `HBox(
+			   `HSpacing(`opt(`hstretch), 0.1),
+                           `HCenter( `MenuButton(`id(`addMenu), "Add Entry", itemList)),
+			   `HCenter(`PushButton(`id(`edit), "&Edit Entry")),
+			   `HCenter(`PushButton(`id(`delete), "&Delete Entry")),
+			   `HSpacing(`opt(`hstretch), 0.1),
+			   `VSpacing(1)
+			   ),
+			   `VSpacing(1)
+		     );
+         string help = "";
+         string formtitle = "";
+         if ( hat ) {
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8;
+           formtitle = "AppArmor Hat Dialog";
+         } else {
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat +  help8;
+           formtitle = "AppArmor Profile Dialog";
+         }
+        Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, "Back", _("&Done") );
+
+
+
+   map event = $[];
+   any id    = nil;
+   while( true )
+   {
+        event = UI::WaitForEvent( timeout_millisec );
+        id    = event["ID"]:nil; // We'll need this often - cache it
+        if ( (( id == `table ) && (event["EventReason"]:nil == "Activated" )) ||
+             ( id == `edit) )
+        {
+                // Widget activated in the table
+                integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+                string filename = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+                integer findcap = find( filename, "CAP_");
+                integer findinc = find( filename, "#include");
+                integer findhat = find( filename, "[+] ^");
+                string origfilename = filename;
+                if ( findcap == 0 ) {
+                    caps = capabilityEntryPopup( caps, filename, pathname );
+                    profile["capability"] = caps;
+                    profile_map[pathname] = profile;
+                    Settings["PROFILE_MAP"] = profile_map;
+                    list<term> newtabledata = generateTableContents( paths, caps, includes, hats);
+                    UI::ChangeWidget( `id(`table), `Items, newtabledata );
+                } else if ( findinc == 0 ) {
+                  Popup::Error(_("Include entries can not be edited. Please select add or delete to manage Include entries."));
+                  continue;
+                } else if ( findhat == 0 ) {
+                  string hatToEdit = substring( filename, 5);
+                  y2milestone("Editing HAT saving" + hatToEdit );
+                  Settings["CURRENT_HAT"] = hatToEdit;
+                  return `showhat;
+                } else {
+                  string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
+                  map results = fileEntryPopup( filename, perms, filename );
+                  string newperms = "";
+                  newperms = results["PERM"]:"";
+                  filename = results["FILE"]:"";
+                  if ( filename != "" ) {
+                    if ( filename != origfilename ) {
+                     paths = remove( paths, origfilename );
+                    }
+                    paths = add(paths, filename, newperms );
+                    profile["path"] = paths;
+                    profile_map[pathname] = profile;
+                    Settings["PROFILE_MAP"] = profile_map;
+                    list<term> newtabledata = generateTableContents( paths, caps, includes, hats);
+                    UI::ChangeWidget( `id(`table), `Items, newtabledata );
+                  }
+               }
+       } else if ( id == `delete ) {
+              integer selectedid =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+              string filename = (string) select((term) UI::QueryWidget(`id(`table), `Item(selectedid)), 1, "");
+              integer findcap = find( filename, "CAP_");
+              integer findinc = find( filename, "#include");
+              integer findhat = find( filename, "[+] ^");
+
+              if ( findcap == 0 ) {
+                 string capNameToDelete = linnametolp[filename]:"";
+                 caps = remove( caps, capNameToDelete );
+                 profile["capability"] = caps;
+                 profile_map[pathname] = profile;
+                 Settings["PROFILE_MAP"] = profile_map;
+              } else if ( findinc == 0 ) {
+                 string includeToRemove = substring( filename, 9);
+                 includes = remove( includes, includeToRemove );
+                 profile["include"] = includes;
+                 profile_map[pathname] = profile;
+                 Settings["PROFILE_MAP"] = profile_map;
+              } else if ( findhat == 0 ) {
+                 string hatToRemove = substring( filename, 5);
+                 y2milestone("Deleting HAT " + hatToRemove );
+                 profile_map = remove( profile_map, hatToRemove );
+                 Settings["PROFILE_MAP"] = profile_map;
+                 hats = remove(hats, hatToRemove); 
+              } else {
+                 paths = remove( paths, filename );
+                 profile["path"] = paths;
+                 profile_map[pathname] = profile;
+                 Settings["PROFILE_MAP"] = profile_map;
+               }
+              list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+              UI::ChangeWidget( `id(`table), `Items, profilelist );
+       } else if ( id == `file || id == `dir ) {
+              string addfname = "";
+              string addperms = "";
+              map newentry = nil;
+              if ( id == `dir ) {
+                 newentry = dirEntryPopup( "", "", pathname );
+              } else {
+                 newentry = fileEntryPopup( "", "", pathname );
+              }
+              if ( newentry == nil ) {
+                continue;
+              }
+              addfname = newentry["FILE"]:"";
+              addperms = newentry["PERM"]:"";
+              // Make sure that the entry doesn't already exist
+              paths = add( paths, addfname, addperms );
+              profile["path"] = paths;
+              profile_map[pathname] = profile;
+              Settings["PROFILE_MAP"] = profile_map;
+              list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+              UI::ChangeWidget( `id(`table), `Items, profilelist );
+       } else if ( id == `cap ) {
+           caps = capabilityEntryPopup( caps, "", pathname );
+           profile["capability"] = caps;
+           profile_map[pathname] = profile;
+           Settings["PROFILE_MAP"] = profile_map;
+           list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+           UI::ChangeWidget( `id(`table), `Items, profilelist );
+       } else if ( id == `hat ) {
+           if ( hat ) {
+             Popup::Error("Hats can not have embedded hats.");
+           }
+           y2milestone("Adding HAT ");
+           boolean hatCreated = newHatNamePopup( pathname, hats );
+           if ( hatCreated == true ) {
+             return `showhat;
+           }
+       } else if ( id == `include ) {
+           string newInclude = UI::AskForExistingFile( "/etc/apparmor.d", "",  _("Select File To Include"));
+           if ( newInclude == nil || (string)newInclude == "" ) { 
+             continue;
+           }
+           integer includeRootBad = find (newInclude, "/etc/apparmor.d");
+           if ( includeRootBad == -1 ) {
+             Popup::Error("AppArmor include files must be located in the directory /etc/apparmor.d");
+           } else {
+             // string includeName = substring(newInclude, 17 );
+             string includeName = substring(newInclude, 16 );
+             includes = add( includes, includeName, 1 );
+             profile["include"] = includes;
+             profile_map[pathname] = profile;
+             Settings["PROFILE_MAP"] = profile_map;
+             list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+             UI::ChangeWidget( `id(`table), `Items, profilelist );
+           }
+       } else if ( id == `abort || id == `cancel ) {
+         break;
+       } else if ( id == `back ) {
+         break;
+       } else if ( id == `next ) {
+         if ( ! hat ) {
+           if (Popup::YesNoHeadline(_("Save changes to the Profile"),
+           "Would you like to save the changes to this profile? \n(Note: after saving the changes the AppArmor profiles will be reloaded.)"))  {
+             map argmap = $[ "PROFILE_HASH" : Settings["PROFILE_MAP"]:$[], 
+                             "PROFILE_NAME" : pathname
+                           ];
+             any result = SCR::Write(.subdomain_profiles, argmap);
+             any result2 = SCR::Write(.subdomain_profiles.reload, "-");
+           }
+         } else {
+           y2milestone("Saving Hat");
+           if ( ! haskey(hats, Settings["CURRENT_HAT"]:"") ) {
+      foreach( string capname, integer capval, (map<string,integer>) caps, {
+      y2milestone( "Cap for " + pathname + " " + capname);
+      });
+             profile["path"] = paths;
+             profile["capability"] = caps;
+             profile["include"] = includes;
+             profile_map[pathname] = profile;
+             Settings["PROFILE_MAP"] = profile_map;
+           }
+         }
+         break;
+       } else {
+         y2error("Unexpected return code: %1", id);
+            continue;
+       }
+   }
+   return (symbol) id;
+}
+
+
+
+ 
+
+  //
+  // Select a profile to edit and populate
+  // Settings["CURRENT_PROFILE"]: profile name
+  // Settings["PROFILE_MAP"]: map containing the profile
+  //
+define symbol  SelectProfileForm( map profiles, string formhelp, string formtitle, string iconname ) {
+   list<term> profilelisting = [];
+   integer indx = 0;
+   foreach( string p, any ignore, (map<string,any>) profiles, {
+     profilelisting = add( profilelisting, `item( `id(p), p));
+     indx = indx+1;
+   });
+
+    term contents_select_profile_form =
+     `VBox(
+          `VSpacing(2),
+          `SelectionBox( `id(`profilelist), `opt(`notify), "Profile Name", profilelisting ),
+          `VSpacing(3)
+          );
+
+   //
+   // Create the Dialog Window and parse user input
+   //
+   Wizard::CreateDialog();
+   Wizard::SetContents( formtitle, contents_select_profile_form, formhelp, false, true );
+   Wizard::SetTitleIcon(iconname);
+
+   map event = $[];
+   any id    = nil;
+   string profilename = "";
+   while( true )
+   {
+        event = UI::WaitForEvent( timeout_millisec );
+        id    = event["ID"]:nil; // We'll need this often - cache it
+        if ( id == `next ) {
+           profilename = tostring( UI::QueryWidget(`id(`profilelist), `CurrentItem) );
+           if ( profilename != nil && profilename != "" ) {
+             break;
+           } else {
+             Popup::Error(_("You must select a profile to edit"));
+             continue;
+           }
+        } // TODO ELSE POPUP NO ENTRY SELECTED ERROR
+        if(id == `abort || id == `cancel) {
+            break;
+        } else if(id == `back) {
+            break;
+        } else {
+            y2error("Unexpected return code: %1", id);
+            continue;
+        }
+    }
+    if ( id == `next ) {
+       Settings["CURRENT_PROFILE"] =  profilename;
+       Settings["PROFILE_MAP"] =  profiles[profilename]:nil;
+    }
+    UI::CloseDialog();
+    return (symbol) id;
+ }
+
+}
+
