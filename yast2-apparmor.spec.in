@@ -88,9 +88,9 @@ REPDIR3='/var/log/apparmor/reports-exported'
 %preun
 
 %changelog
-* Sub Apr 2 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
+* Sun Apr 2 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.9
 - Fix typo regression in profile_dialogs.ycp
-* Wed Mar 30 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
+* Wed Mar 30 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.9
 - Remove libapparmor as a dependency for all yast wizards (#160518)
 * Sun Mar 26 2006 David Drewelow <ddrewelow@suse.de> 2.0-7.9
 - Filter out html files in archived app. audit list: ag_reports_confined
