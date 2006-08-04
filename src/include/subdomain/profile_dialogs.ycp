@@ -117,21 +117,24 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                   `HSpacing( 0.75 ),
                   `Frame( _("Profile Entry For ") + profile,
                   `HBox(
-                    `HWeight( 65,
+                    `HWeight( 60,
                        `VBox(
                         `TextEntry(`id(`filename), _("Enter or modify Filename")),
 			`HCenter(`PushButton(`id(`browse), _("&Browse") ))
                        )
                      ),
-                     `HWeight( 35,
+                     `HWeight( 40,
                        `MultiSelectionBox( `id(`perms), `opt(`notify), _("Permissions"),
                          [  `item( `id(`read),    _("Read"), issubstring(perms, "r")),
                             `item( `id(`write),   _("Write"), issubstring(perms, "w")),
                             `item( `id(`link),    _("Link"), issubstring(perms, "l")),
+                            `item( `id(`mmap),  _("MMap PROT_EXEC"), issubstring(perms, "m")),
                             `item( `id(`execute),  _("Execute"), issubstring(perms, "x")),
-                            `item( `id(`profile),  _("Profile"), issubstring(perms, "p")),
                             `item( `id(`inherit),  _("Inherit"), issubstring(perms, "i")),
-                            `item( `id(`unconstrained),  _("Unconstrained"), issubstring(perms, "u"))
+                            `item( `id(`profile),  _("Profile"), issubstring(perms, "p")),
+                            `item( `id(`clean_profile),  _("Profile Clean Exec"), issubstring(perms, "P")),
+                            `item( `id(`unconstrained),  _("Unconstrained"), issubstring(perms, "u")),
+                            `item( `id(`clean_unconstrained),  _("Unconstrained Clean Exec"), issubstring(perms, "U"))
                          ]
                      )
                    )
@@ -179,8 +182,18 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                          selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
+                       if ( contains( selecteditems, `clean_unconstrained )) {
+                         selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                       }
+                       if ( contains( selecteditems, `clean_profile )) {
+                         selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
+                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                       }
                      } else if (!( contains( selecteditems, `inherit ) ||
                                    contains( selecteditems, `unconstrained ) ||
+                                   contains( selecteditems, `clean_unconstrained ) ||
+                                   contains( selecteditems, `clean_profile ) ||
                                    contains( selecteditems, `profile ))
                             ) {
                              //if you just select X alone then by default you get P
@@ -195,6 +208,8 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                   //  -- ensure that only one modifier is selected.
                   //
                   if (( contains( selecteditems, `inherit ) ||
+                        contains( selecteditems, `clean_unconstrained ) ||
+                        contains( selecteditems, `clean_profile ) ||
                         contains( selecteditems, `unconstrained ) ||
                         contains( selecteditems, `profile )) ) {
                       if ( contains( selecteditems, `execute ) == false ) {
@@ -202,15 +217,33 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                       } else if ( itemid == `profile ) {
                         selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
                         selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                       } else if ( itemid == `inherit ) {
                         selecteditems = filter (`k, selecteditems, { return (k != `profile); });
                         selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                       } else if ( itemid == `unconstrained ) {
                         selecteditems = filter (`k, selecteditems, { return (k != `profile); });
                         selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                      } else if ( itemid == `clean_unconstrained ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
+                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                      } else if ( itemid == `clean_profile ) {
+                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                      }
                   }  else if ( contains( selecteditems, `execute) ) {
@@ -245,11 +278,14 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                if ( id2 == `save ) {
                  list selectedbits = (list) UI::QueryWidget( `id(`perms), `SelectedItems );
                  string newperms = "";
-                 if  ( contains(selectedbits, `read ) )  {
-                   newperms = newperms + "r" ;
-                 }
                  if  ( contains( selectedbits, `write ) ) {
                    newperms = newperms + "w" ;
+                 }
+                 if  ( contains(selectedbits, `mmap ) ) {
+                   newperms = newperms + "m" ;
+                 }
+                 if  ( contains(selectedbits, `read ) )  {
+                   newperms = newperms + "r" ;
                  }
                  if  ( contains(selectedbits, `link ) ) {
                    newperms = newperms + "l" ;
@@ -261,6 +297,10 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                       newperms = newperms + "i" ;
                    } else if  ( contains(selectedbits, `unconstrained) ) {
                       newperms = newperms + "u" ;
+                   } else if  ( contains(selectedbits, `clean_unconstrained) ) {
+                      newperms = newperms + "U" ;
+                   } else if  ( contains(selectedbits, `clean_profile) ) {
+                      newperms = newperms + "P" ;
                    }
                    newperms = newperms + "x" ;
                  }
@@ -400,15 +440,17 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    });
 
 
-   string help1 = "In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog..<p>";
-   string help2 = "<b>Permission Definitions:</b><br><<code> R - read <br> W - write<br> X - execute<br> U - unconfined<br> I - inherit<br> L - link<br> P - discrete profile </code><p>";
-   string help3 = "<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p></li>";
-   string help4 = "<b>File</b><br>Add a file entry to this profile<br>";
-   string help5 = "<b>Directory</b><br>Add a directory entry to this profile<br>";
-   string help6 = "<b>Capability</b><br>Add a capability entry to this profile<br>";
-   string help7 = "<b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.<br>";
-   string helpHat = "<b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.<br><p>";
-   string help8 = "<b>Delete Entry:</b><br>Removes the selected entry from this profile.<p>";
+   string help1 = _("In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog.<p>");
+   string help2 = _("<b>Permission Definitions:</b><br><code> r - read <br> w - write<br>l - link<br>m - mmap PROT_EXEC<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (clean exec)<p>");
+   string help3 = _("<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p></li>");
+   string help4 = _("<b>File</b><br>Add a file entry to this profile<br>");
+   string help5 = _("<b>Directory</b><br>Add a directory entry to this profile<br>");
+   string help6 = _("<b>Capability</b><br>Add a capability entry to this profile<br>");
+   string help7 = _("<b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.<br>");
+   string helpHat = _("<b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.<br><p>");
+   string help8 = _("<b>Delete Entry:</b><br>Removes the selected entry from this profile.<p>");
+   string help9 = _("<b>*Clean Exec</b><br>The Clean Exec option for the discrete profile and unconstrained execute permissions provide added security by stripping the enviroment that is inherited by the child program of specific variables. These variables are:");
+   string help10 = "<ul> <li>GCONV_PATH</li><li>GETCONF_DIR</li><li>HOSTALIASES</li><li>LD_AUDIT</li><li>LD_DEBUG</li><li>LD_DEBUG_OUTPUT</li><li>LD_DYNAMIC_WEAK</li><li>LD_LIBRARY_PATH</li><li>LD_ORIGIN_PATH</li><li>LD_PRELOAD</li><li>LD_PROFILE</li><li>LD_SHOW_AUXV</li><li>LD_USE_LOAD_BIAS</li><li>LOCALDOMAIN</li><li>LOCPATH</li><li>MALLOC_TRACE</li><li>NLSPATH</li><li>RESOLV_HOST_CONF</li><li>RES_OPTION</li><li>TMPDIR</li><li>TZDIR</li></ul><p> ";
 
 
    integer listnum = 0;
@@ -425,9 +467,9 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
      mainLabel = "AppArmor profile " + Settings["CURRENT_PROFILE"]:"" + "^" + pathname;
    } else {
      itemList = add(itemList,`item( `id( `hat ), "&Hat" ));
-     mainLabel = "AppArmor profile for " + pathname ; 
+     mainLabel = "AppArmor profile for " + pathname ;
    }
-    // Define the widget contents 
+    // Define the widget contents
     // for the Wizard
     term contents_main_profile_form =
 	       `VBox(
@@ -450,10 +492,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
          string help = "";
          string formtitle = "";
          if ( hat ) {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8;
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8 + help9 + help10;
            formtitle = "AppArmor Hat Dialog";
          } else {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat +  help8;
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat +  help8 + help9 + help10;
            formtitle = "AppArmor Profile Dialog";
          }
         Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, "Back", _("&Done") );
@@ -533,7 +575,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                  y2milestone("Deleting HAT " + hatToRemove );
                  profile_map = remove( profile_map, hatToRemove );
                  Settings["PROFILE_MAP"] = profile_map;
-                 hats = remove(hats, hatToRemove); 
+                 hats = remove(hats, hatToRemove);
               } else {
                  paths = remove( paths, filename );
                  profile["path"] = paths;

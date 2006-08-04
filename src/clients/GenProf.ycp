@@ -84,6 +84,7 @@
 
 <ul>   <li>r    - read</li>
        <li>w    - write</li>
+       <li>m    - mmap PROT_EXEC</li>
        <li>px   - discrete profile execute</li>
        <li>ux   - unconfined execute</li>
        <li>ix   - inherit execute</li>
@@ -105,6 +106,11 @@
            Allows the program to have write access to the
            resource. Files must have this permission if they are
            to be unlinked (removed.)
+       <br>
+       <br>
+       <b>Mmap PROT_EXEC mode</b><br>
+           Allows the program to call mmap with PROT_EXEC on the
+           resource. 
        <br>
        <br>
        
@@ -167,7 +173,48 @@
 
        <li><b>{ab,cd}</b> will expand to one rule to match ab, one rule to match
            cd</li>\n
-       </ul>");
+       </ul>
+
+        <br>
+        <br>
+       <b>Clean Exec - for sanitized execution</b>
+   <br>
+        <br>
+        The Clean Exec option for the discrete profile and unconstrained 
+        execute permissions provide added security by stripping the 
+        enviroment that is inherited by the child program of specific 
+        variables. You will be prompted to choose whether you want to sanitize the
+        enviroment if you choose 'p' or 'u' during the profiling process.
+        The variables are:
+        <ul> 
+        <li>GCONV_PATH</li>
+        <li>GETCONF_DIR</li>
+        <li>HOSTALIASES</li>
+        <li>LD_AUDIT</li>
+        <li>LD_DEBUG</li>
+        <li>LD_DEBUG_OUTPUT</li>
+        <li>LD_DYNAMIC_WEAK</li>
+        <li>LD_LIBRARY_PATH</li>
+        <li>LD_ORIGIN_PATH</li>
+        <li>LD_PRELOAD</li>
+        <li>LD_PROFILE</li>
+        <li>LD_SHOW_AUXV</li>
+        <li>LD_USE_LOAD_BIAS</li>
+        <li>LOCALDOMAIN</li>
+        <li>LOCPATH</li>
+        <li>MALLOC_TRACE</li>
+        <li>NLSPATH</li>
+        <li>RESOLV_HOST_CONF</li>
+        <li>RES_OPTION</li>
+        <li>TMPDIR</li>
+        <li>TZDIR</li> </ul>
+");
+
+
+
+
+
+
 
 
       list<string> headers     = agent_data["headers"]:[];

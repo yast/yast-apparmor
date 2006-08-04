@@ -290,7 +290,7 @@ define string popUpSort(string type) {
 // Mode
 define string popUpMode() {
 
-	string checkMode = (string) UI::QueryWidget(`id(`mode), `Label);
+    string checkMode = (string) UI::QueryWidget(`id(`mode), `Label);
     list splitMode = splitstring (checkMode, " ");
     string myMode = splitMode[size(splitMode)-1]:"All";
 
@@ -301,7 +301,8 @@ define string popUpMode() {
 				`CheckBox(`id(`read), `opt(`notify, `immediate ), _("Read"), false),
 				`CheckBox(`id(`write), `opt(`notify, `immediate ), _("Write"), false),
 				`CheckBox(`id(`link), `opt(`notify, `immediate ), _("Link"), false),
-				`CheckBox(`id(`exec), `opt(`notify, `immediate ), _("Execute"), false)
+				`CheckBox(`id(`exec), `opt(`notify, `immediate ), _("Execute"), false),
+				`CheckBox(`id(`mmap), `opt(`notify, `immediate ), _("MMap"), false)
 			),
 			`HBox(
 				`PushButton(`id(`abort), _("&Abort") ),
@@ -310,71 +311,36 @@ define string popUpMode() {
 		)
 	);
 
-	if ( myMode == "r") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`read), `Value, true);
-
-	} else if ( myMode == "w") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`write), `Value, true);
-
-	} else if ( myMode == "l") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`link), `Value, true);
-
-	} else if ( myMode == "x") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`exec), `Value, true);
-
-	} else if ( myMode == "rw") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`read), `Value, true);
-		UI::ChangeWidget(`id(`write), `Value, true);
-
-	} else if ( myMode == "rl") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`read), `Value, true);
-		UI::ChangeWidget(`id(`link), `Value, true);
-
-	} else if ( myMode == "rx") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`read), `Value, true);
-		UI::ChangeWidget(`id(`exec), `Value, true);
-
-	} else if ( myMode == "rwl") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`read), `Value, true);
-		UI::ChangeWidget(`id(`write), `Value, true);
-		UI::ChangeWidget(`id(`link), `Value, true);
-
-	} else if ( myMode == "rwlx") {
+        integer isall = search( myMode, "All");
+        if ( isall != nil && isall  >= 0 ) {
 		UI::ChangeWidget(`id(`clear), `Value, false);
 		UI::ChangeWidget(`id(`read), `Value, true);
 		UI::ChangeWidget(`id(`write), `Value, true);
 		UI::ChangeWidget(`id(`link), `Value, true);
 		UI::ChangeWidget(`id(`exec), `Value, true);
-
-	} else if ( myMode == "wlx") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`write), `Value, true);
-		UI::ChangeWidget(`id(`link), `Value, true);
-		UI::ChangeWidget(`id(`exec), `Value, true);
-
-	} else if ( myMode == "lx") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`link), `Value, true);
-		UI::ChangeWidget(`id(`exec), `Value, true);
-
-	} else if ( myMode == "wl") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`write), `Value, true);
-		UI::ChangeWidget(`id(`link), `Value, true);
-
-	} else if ( myMode == "wx") {
-		UI::ChangeWidget(`id(`clear), `Value, false);
-		UI::ChangeWidget(`id(`write), `Value, true);
-		UI::ChangeWidget(`id(`exec), `Value, true);
-	}
+		UI::ChangeWidget(`id(`mmap), `Value, true);
+        } else {
+                if ( search( myMode, "r") != nil ) {
+		        UI::ChangeWidget(`id(`clear), `Value, false);
+		        UI::ChangeWidget(`id(`read), `Value, true);
+	            }
+                if ( search( myMode, "w") != nil ) {
+		        UI::ChangeWidget(`id(`clear), `Value, false);
+		        UI::ChangeWidget(`id(`write), `Value, true);
+	        }
+                if ( search( myMode, "l") != nil ) {
+		        UI::ChangeWidget(`id(`clear), `Value, false);
+		        UI::ChangeWidget(`id(`link), `Value, true);
+	        }
+                if ( search( myMode, "x") != nil ) {
+		        UI::ChangeWidget(`id(`clear), `Value, false);
+		        UI::ChangeWidget(`id(`exec), `Value, true);
+                }
+                if ( search( myMode, "m") != nil ) {
+		        UI::ChangeWidget(`id(`clear), `Value, false);
+		        UI::ChangeWidget(`id(`mmap), `Value, true);
+	        }
+        }
 
 	string mode = "";
 	map event = $[];
@@ -392,10 +358,11 @@ define string popUpMode() {
 				UI::ChangeWidget(`id(`write), `Value, false);
 				UI::ChangeWidget(`id(`link), `Value, false);
 				UI::ChangeWidget(`id(`exec), `Value, false);
+				UI::ChangeWidget(`id(`mmap), `Value, false);
 				mode = "All";
 			}
 
-		} else if ( id == `read || id == `write || id == `link || id == `exec ) {
+		} else if ( id == `read || id == `write || id == `link || id == `exec || id == `mmap ) {
 
 			if ( UI::QueryWidget(`id(`read), `Value) == true ) {
 				UI::ChangeWidget(`id(`clear), `Value, false);
@@ -405,12 +372,13 @@ define string popUpMode() {
 				UI::ChangeWidget(`id(`clear), `Value, false);
 			} else if ( UI::QueryWidget(`id(`exec), `Value) == true ) {
 				UI::ChangeWidget(`id(`clear), `Value, false);
+			} else if ( UI::QueryWidget(`id(`mmap), `Value) == true ) {
+				UI::ChangeWidget(`id(`link), `Value, false);
 			}
 
 		} else if ( id == `abort || id == `cancel || id == `close) {
-            mode = myMode;
+                        mode = myMode;
 			break;
-
 		} else if ( id == `save ) {
 
 			if ( UI::QueryWidget(`id(`clear), `Value) == true ) {
@@ -421,6 +389,7 @@ define string popUpMode() {
 				if ( UI::QueryWidget(`id(`write), `Value) == true ) { sdList = add(sdList, "w"); }
 				if ( UI::QueryWidget(`id(`link), `Value) == true ) { sdList = add(sdList, "l"); }
 				if ( UI::QueryWidget(`id(`exec), `Value) == true ) { sdList = add(sdList, "x"); }
+				if ( UI::QueryWidget(`id(`mmap), `Value) == true ) { sdList = add(sdList, "m"); }
 
 			    foreach ( string perm, sdList, { mode = mode + perm; });
 			}
