@@ -622,15 +622,34 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              return `showhat;
            }
        } else if ( id == `include ) {
-           string newInclude = UI::AskForExistingFile( "/etc/apparmor.d", "",  _("Select File To Include"));
-           if ( newInclude == nil || (string)newInclude == "" ) { 
+           any ci = SCR::Read(.subdomain, "custom-includes");
+           list <any> customIncludes =  tolist(ci);
+           string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File To Include"));
+           if ( newInclude == nil || (string)newInclude == "" ) {
              continue;
            }
-           integer includeRootBad = find (newInclude, "/etc/apparmor.d");
-           if ( includeRootBad == -1 ) {
-             Popup::Error("AppArmor include files must be located in the directory /etc/apparmor.d");
+           list <string> validIncludes = [ "/etc/apparmor.d/abstractions", "/etc/apparmor.d/program-chunks", "/etc/apparmor.d/tunables" ];
+           foreach( any incPath, (list<any>) customIncludes, {
+             string incPathStr = tostring(incPath);
+             validIncludes = add( validIncludes, "/etc/apparmor.d/" + incPathStr);
+           });
+
+           integer result  = 0;
+           boolean includePathOK = false;
+           foreach( string pathToCheck, (list<string>) validIncludes, {
+             result  = find (newInclude, pathToCheck);
+             if ( result != -1 ) {
+               includePathOK = true;
+             }
+           });
+
+           if ( ! includePathOK ) {
+             string pathListMsg = "";
+             foreach( string pathItem, (list<string>) validIncludes, {
+               pathListMsg = pathListMsg + "\n  " + pathItem;
+             });
+             Popup::Error(_("Invalid #include file. Include files must be located in one of these directores: \n") + pathListMsg );
            } else {
-             // string includeName = substring(newInclude, 17 );
              string includeName = substring(newInclude, 16 );
              includes = add( includes, includeName, 1 );
              profile["include"] = includes;
@@ -647,7 +666,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
          if ( ! hat ) {
            if (Popup::YesNoHeadline(_("Save changes to the Profile"),
            "Would you like to save the changes to this profile? \n(Note: after saving the changes the AppArmor profiles will be reloaded.)"))  {
-             map argmap = $[ "PROFILE_HASH" : Settings["PROFILE_MAP"]:$[], 
+             map argmap = $[ "PROFILE_HASH" : Settings["PROFILE_MAP"]:$[],
                              "PROFILE_NAME" : pathname
                            ];
              any result = SCR::Write(.subdomain_profiles, argmap);
@@ -677,7 +696,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
 
 
 
- 
+
 
   //
   // Select a profile to edit and populate

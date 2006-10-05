@@ -27,24 +27,24 @@ use Data::Dumper;
 
 sub getSubdomainStatus {
 
-    my $sdStatus = "disabled";
+  my $sdStatus = "disabled";
 
-    # Ok check that there are profiles loaded to 
-    # determine status
-    my $mountpoint = Immunix::SubDomain::check_for_subdomain();
-    if ( $mountpoint ) {
-        open( PROFILES, "cat $mountpoint/profiles|" );
-        while (<PROFILES>) {
-            # Ensure we have loaded profiles
-            # not just a loaded module
-            if ( /\// ) {
-                $sdStatus = "enabled"; 
-                last;
-            }
-        } 
-        close PROFILES;
+  # Ok check that there are profiles loaded to 
+  # determine status
+  my $mountpoint = Immunix::SubDomain::check_for_subdomain();
+  if ( $mountpoint ) {
+    open( PROFILES, "cat $mountpoint/profiles|" );
+    while (<PROFILES>) {
+      # Ensure we have loaded profiles
+      # not just a loaded module
+      if ( /\// ) {
+        $sdStatus = "enabled"; 
+        last;
+      }
     } 
-    return $sdStatus;
+    close PROFILES;
+  } 
+  return $sdStatus;
 }
 
 sub getNotifySettings {
@@ -79,43 +79,58 @@ sub getNotifyStatus {
   return $noteStatus;
 }
 
+sub profileSyntaxCheck {
+   my $errlist = [];
+   Immunix::SubDomain::checkIncludeSyntax($errlist);
+   Immunix::SubDomain::checkProfileSyntax($errlist);
+   my @errlist = Immunix::SubDomain::uniq(@$errlist);
+   return \@errlist;
+}
+
+
 # Main 
 ################################################################################
 
 
-my $line = <STDIN>;
 
-my ($command, $path, $argument) = Immunix::Ycp::ParseCommand($line);
+while ( <STDIN> ) {
+  my ($command, $path, $argument) = Immunix::Ycp::ParseCommand($_);
 
-my $result = undef;
-my $donereturn = 0;
-if ( $command && $path && $argument ) {
-	if ( $argument eq 'sd-all') {
-		my %hResult = '';		# hashed result, duh 
-		$hResult{'sd-status'} = getSubdomainStatus();
-		$hResult{'sd-notify'} = getNotifyStatus();
-		Immunix::Ycp::ycpReturnHashAsMap( %hResult );
-		$donereturn = 1;
-	} elsif ( $argument eq 'sd-status') {
-		$result = getSubdomainStatus();
-	} elsif ( $argument eq 'sd-notify') {
-		$result = getNotifyStatus();
-	} elsif ( $argument eq 'sd-notify-settings') {
-		$result = getNotifySettings();
-		Immunix::Ycp::ycpReturn($result);
-                       $donereturn = 1;
-	}
-
-	Immunix::Ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
-
-} else {
-
-	my $ycpCmd = ycpGetCommand() || "";
-	my $ycpArg = ycpGetArgType() || "";
-	$result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
-	Immunix::Ycp::ycpReturnSkalarAsString( $result );
+  my $result = undef;
+  my $donereturn = 0;
+  if ( $command && $path && $argument ) {
+    if ( $argument eq 'sd-all') {
+      my %hResult = '';		# hashed result, duh 
+      $hResult{'sd-status'} = getSubdomainStatus();
+      $hResult{'sd-notify'} = getNotifyStatus();
+      Immunix::Ycp::ycpReturnHashAsMap( %hResult );
+      $donereturn = 1;
+    } elsif ( $argument eq 'sd-status') {
+      $result = getSubdomainStatus();
+    } elsif ( $argument eq 'sd-notify') {
+      $result = getNotifyStatus();
+    } elsif ( $command eq "Read" and $argument eq 'custom-includes') {
+      Immunix::SubDomain::readconfig();
+      Immunix::Ycp::ycpReturn(\@Immunix::SubDomain::custom_includes);
+      $donereturn = 1;
+    } elsif ( $command eq "Execute" and $argument eq 'profile-syntax-check') {
+      $result = profileSyntaxCheck();
+      Immunix::Ycp::ycpReturn($result);
+      $donereturn = 1;
+    } elsif ( $argument eq 'sd-notify-settings') {
+      $result = getNotifySettings();
+      Immunix::Ycp::ycpReturn($result);
+      $donereturn = 1;
+    }
+    Immunix::Ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
+  } else {
+    my $ycpCmd = ycpGetCommand() || "";
+    my $ycpArg = ycpGetArgType() || "";
+    $result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
+    Immunix::Ycp::ycpReturnSkalarAsString( $result );
+  }
+  print "\n";
 }
-
 exit 0;
 
 

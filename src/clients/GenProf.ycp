@@ -12,6 +12,7 @@
   import "Wizard";
   import "Popup";
   import "Sequencer";
+  include "subdomain/apparmor_profile_check.ycp";
   include "subdomain/apparmor_packages.ycp";
   textdomain  "yast2-apparmor";
 
@@ -35,6 +36,9 @@
   CMDS["CMD_SCAN"]       = _("&Scan system log for AppArmor events");
 
   if (!installAppArmorPackages()) {
+    return;
+  }
+  if (!checkProfileSyntax()) {
     return;
   }
   // initiate the handshake with the backend agent
