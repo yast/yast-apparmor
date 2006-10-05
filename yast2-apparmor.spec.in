@@ -17,7 +17,7 @@
 Summary: Yast2 plugins for AppArmor management
 Name: yast2-apparmor
 Version: @@immunix_version@@
-Release: 7.10
+Release: 7.11
 Group: Productivity/Security
 Source0: %{name}-%{version}-@@repo_version@@.tar.gz
 License: GPL and LGPL
@@ -88,6 +88,8 @@ REPDIR3='/var/log/apparmor/reports-exported'
 %preun
 
 %changelog
+* Thu Oct 5 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.11
+- Add syntax checks for profiles and display to user.
 * Wed May 31 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.10
 - Fixes for https://bugzilla.novell.com/show_bug.cgi?id=175388, 
   https://bugzilla.novell.com/show_bug.cgi?id=172061. Added support

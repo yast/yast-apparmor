@@ -12,6 +12,7 @@ import "Wizard";
 import "Popup";
 import "Sequencer";
 include "subdomain/apparmor_packages.ycp";
+include "subdomain/apparmor_profile_check.ycp";
 include "subdomain/profile_dialogs.ycp";
 textdomain  "yast2-apparmor";
 
@@ -67,6 +68,11 @@ any ret = nil;
 if (!installAppArmorPackages()) {
   return ret;
 }
+
+if (!checkProfileSyntax()) {
+  return true;
+}
+
 ret = MainSequence();
 return ret;
 }
