@@ -1,0 +1,52 @@
+/*
+        Copyright (C) 2006 Novell Inc. All Rights Reserved.
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of version 2 of the GNU General Public
+	License published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, contact Novell, Inc.
+
+ */
+
+
+import "Popup";
+textdomain "yast2-apparmor";
+
+define boolean checkProfileSyntax () {
+   map <string,string> args = $[];
+   string errmsg = "<ul>";
+   boolean syntax_ok = true;
+
+   args["profile-syntax-check"] = "1";
+   list <string> errors = (list <string>) SCR::Execute (.subdomain, "profile-syntax-check" );
+   foreach ( string error, errors,  ``{
+     syntax_ok = false;
+     errmsg = errmsg + "<li>" + error + "</li>";
+   });
+   errmsg = errmsg + "</ul>";
+   if ( syntax_ok == false ) {
+     string headline = _("Errors found in AppArmor profiles");
+     errmsg  = _("<p>These problems must be corrected before AppArmor can be \
+                 started or the profile management tools can be used.</p> ")
+         + "<p>" + errmsg + "</p>"
+         + _("<p>You can find a description of AppArmor profile syntax by \
+             running ")
+         + "<code>man apparmor.d</code></p>"
+         + _("<p>Comprehensive documentation about AppArmor is available in \
+             the users guide for the distribution. This is available in the \
+             directory: ")
+         + "</p>"
+         + "<code>/usr/share/doc/manual/suselinux-manual_LANGUAGE</code>. "
+         + _("<p>Please refer to this for more detailed information about \
+             AppArmor</p>");
+     Popup::LongText( headline, `RichText(errmsg), 55, 15);
+  }
+  return( syntax_ok );
+}
