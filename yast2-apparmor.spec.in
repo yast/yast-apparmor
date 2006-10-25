@@ -28,8 +28,15 @@ BuildArch: noarch
 Obsoletes: yast2-subdomain
 Provides: yast2-subdomain
 BuildRequires: update-desktop-files
-%if %{suse_version} > 1000 
+
+%if %{suse_version} > 1010 
+BuildRequires: yast2 yast2-devtools yast2-theme-openSUSE
+%define themedir /usr/share/YaST2/theme/openSUSE
+%else
+  %if %{suse_version} > 1000 
 BuildRequires: yast2 yast2-devtools yast2-theme-SuSELinux
+%define themedir /usr/share/YaST2/theme/SuSELinux
+  %endif
 %endif
 
 %description
@@ -46,7 +53,7 @@ make DESTDIR=${RPM_BUILD_ROOT} DISTRO=%{distro}
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=${RPM_BUILD_ROOT} DISTRO=%{distro}
+make install DESTDIR=${RPM_BUILD_ROOT} DISTRO=%{distro} THEMEDIR=%{themedir}
 
 # Register as SuSE app
 for f in `find $RPM_BUILD_ROOT/%{_prefix}/share/applications/YaST2/ -name "*.desktop"` ; do
@@ -71,7 +78,7 @@ done
 /usr/share/applications/YaST2/groups
 /usr/lib/YaST2/servers_non_y2
 /usr/lib/perl5/vendor_perl/*
-/usr/share/YaST2/theme/SuSELinux/icons
+%{themedir}/icons
 %doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
 %config(noreplace) /etc/apparmor/reports.crontab

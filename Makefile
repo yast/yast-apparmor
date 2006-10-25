@@ -14,6 +14,7 @@
 NAME=yast2-apparmor
 all:
 COMMONDIR=../../common/
+THEMEDIR=
 
 include Make.rules
 
@@ -41,9 +42,9 @@ install:
 	mkdir -p ${DESTDIR}/usr/share/applications/YaST2/groups
 	mkdir -p ${DESTDIR}/usr/lib/YaST2/servers_non_y2
 	mkdir -p ${DESTDIR}/usr/lib/perl5/vendor_perl/Immunix
-	mkdir -p ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/48x48/apps/apparmor
-	mkdir -p ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/32x32/apps/apparmor
-	mkdir -p ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/22x22/apps/apparmor
+	mkdir -p ${DESTDIR}/${THEMEDIR}/icons/48x48/apps/apparmor
+	mkdir -p ${DESTDIR}/${THEMEDIR}/icons/32x32/apps/apparmor
+	mkdir -p ${DESTDIR}/${THEMEDIR}/icons/22x22/apps/apparmor
 	mkdir -p ${DESTDIR}/usr/bin
 	mkdir -p ${DESTDIR}/etc/apparmor
 	cp -a src/clients/* ${DESTDIR}/usr/share/YaST2/clients/
@@ -52,9 +53,9 @@ install:
 	cp -a src/desktop/* ${DESTDIR}/usr/share/applications/YaST2/
 	cp -a src/desktop/groups/* ${DESTDIR}/usr/share/applications/YaST2/groups/
 	cp -a src/perl/* ${DESTDIR}/usr/lib/perl5/vendor_perl/Immunix
-	cp -a src/icons/48x48/* ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/48x48/apps/apparmor
-	cp -a src/icons/32x32/* ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/32x32/apps/apparmor
-	cp -a src/icons/22x22/* ${DESTDIR}/usr/share/YaST2/theme/SuSELinux/icons/22x22/apps/apparmor
+	cp -a src/icons/48x48/* ${DESTDIR}/${THEMEDIR}/icons/48x48/apps/apparmor
+	cp -a src/icons/32x32/* ${DESTDIR}/${THEMEDIR}/icons/32x32/apps/apparmor
+	cp -a src/icons/22x22/* ${DESTDIR}/${THEMEDIR}/icons/22x22/apps/apparmor
 	cp -a src/bin/* ${DESTDIR}/usr/bin
 	cp -a src/apparmor/* ${DESTDIR}/etc/apparmor
 	install -m 755 src/agents/* ${DESTDIR}/usr/lib/YaST2/servers_non_y2/
