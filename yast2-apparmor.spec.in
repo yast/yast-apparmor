@@ -17,7 +17,7 @@
 Summary: Yast2 plugins for AppArmor management
 Name: yast2-apparmor
 Version: @@immunix_version@@
-Release: 7.11
+Release: @@repo_version@@
 Group: Productivity/Security
 Source0: %{name}-%{version}-@@repo_version@@.tar.gz
 License: GPL and LGPL
@@ -101,7 +101,7 @@ REPDIR3='/var/log/apparmor/reports-exported'
 - Fixes for https://bugzilla.novell.com/show_bug.cgi?id=175388, 
   https://bugzilla.novell.com/show_bug.cgi?id=172061. Added support
   for new profile syntax Px/Ux/m.
-* Sub Apr 2 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
+* Sun Apr 2 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
 - Fix typo regression in profile_dialogs.ycp
 * Wed Mar 30 2006 Dominic Reynolds <dreynolds@suse.de>2.0-7.9
 - Remove libapparmor as a dependency for all yast wizards (#160518)
