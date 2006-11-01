@@ -1,0 +1,339 @@
+#!/usr/bin/perl
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+################################################################################
+# ag_complain
+#
+#  - Generates list of profiles with complain/enforce info
+#  - Toggles profiles between complain/enforce modes
+#
+#  Requires:
+#        - /usr/lib/perl5/vendor_perl/Immunix/SubDomain.pm
+#
+#  Input (Optional):
+#		- param 'showall' == 1 to change modes for profiles without associated 
+#		  binaries (i.e. 'inactive' profiles), 'showall' effects all of the
+#		  parameters listed below
+#		- param 'all' to change modes for all active profiles
+#       - profile names to change, for single profiles 
+#       - nothing if listing just active profiles
+#
+#		- may allow multiple profiles in the future
+#
+################################################################################
+
+use strict;
+use Locale::gettext;
+use POSIX;
+use Immunix::Ycp;
+use Immunix::SubDomain;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
+
+our $UI_Mode = "yast-agent";
+
+sub getProfPath ($) {
+
+    my $profName = shift;
+    my $profPath = undef;
+
+    if ( ! -f "$profiledir/$profName" ) {
+
+        Immunix::Ycp::y2milestone("Couldn't find file $profiledir/$profName.");
+
+    } elsif (open PROF, "<$profiledir/$profName") {
+
+        while(<PROF>) {
+          if (/^\/\w+/) {
+            $profPath = (split(/\s+[\{||flag]/, $_))[0];
+            last;
+          }
+        }
+
+    close PROF;
+
+    } else {
+        Immunix::Ycp::y2milestone("Couldn't open $profiledir/$profName for reading.");
+      }
+    return $profPath;
+}
+
+# checks for reasonable filename characteristics
+sub badFileName {
+
+    my $profName = shift;
+    my $profPath = undef;
+	my $allProfs = shift || 0;
+    my $badFileName = 1;
+
+    if ( $profName !~ /^\// ) {
+		$profPath = getProfPath($profName);
+    } else {
+        $profPath = $profName;
+    }
+
+	# Only allow profiles with installed binaries unless specified with $allProfs
+    if ( $allProfs != 1 && ! -f $profPath ) {
+        return $badFileName;
+    }
+    if ( $profPath ) {
+
+            if ( ($profPath !~ /^\./) &&
+                 ($profPath !~ /.save$|.new$/) &&
+                 ($profPath !~ /\s/) &&
+                 ($profPath !~ /([!#-\@\w])\.$/) &&
+                 (length($profPath) <= 128) ) {
+
+                     $badFileName = 0;
+            }
+    }
+
+    return $badFileName
+}
+
+
+# returns dot-format profile filenames
+sub getProfList {
+
+	my $args = shift;
+	my $allProfs = $args->{'showall'} || 0;
+
+    my @rawList = ();
+    my @profList = ();
+    my $error = undef;
+
+    if ( opendir (MDIR, $profiledir) ) {
+
+        @rawList = grep { ! /^\./  && ! /^lib(\d*)[\.|\/]ld/ && -f "$profiledir/$_" 
+                            && ! /\.rpm(new|save)$/
+
+                                } readdir(MDIR);
+        close MDIR;
+
+    } else {
+		$error = "Couldn't open directory $profiledir.  Exiting.";
+        Immunix::Ycp::y2error("$error");
+        exit 1;
+    }
+
+	# Remove profiles without installed binaries by default 
+	if ( $allProfs ne '1' ) {
+		for my $prof (@rawList) {
+			if (! badFileName($prof,$allProfs)) {
+				push (@profList, $prof);
+			}
+		}
+	} else {
+		@profList = @rawList;
+	}
+
+    return \@profList;
+}
+
+# returns both the dot-format and pathnames for profiles
+sub getProfHash {
+
+	my $args = shift;
+    my $profList = getProfList($args);
+    my @rawHash = ();
+    my @profHash = ();
+
+    for my $dotProf (@$profList) {
+        if (open PROF, "<$profiledir/$dotProf") {
+            while(<PROF>) {
+                if (/^\/\w+/) {
+                    my $prof = undef;
+                    $prof->{'dot'} = $dotProf;
+                    $prof->{'path'} = (split(/\s+[\{||flag]/, $_))[0];
+                    push(@rawHash, $prof);
+                    last;
+                }
+            }
+
+            close PROF;
+
+		    # Remove profiles without installed binaries by default
+		    if ( $args->{'showall'} ne '1' ) {
+		        for my $prof (@rawHash) {
+		            if (! badFileName($prof->{'path'}, $args->{'showall'})) {
+		                push (@profHash, $prof);
+		            }
+		        }
+		    } else {
+				@profHash = @rawHash;
+			}
+
+        } else {
+            Immunix::Ycp::y2error("Couldn't open $profiledir/$dotProf");
+            exit 1;
+        }
+    }
+
+    return \@profHash;
+}
+
+sub getProfModes {
+
+    my $profList = shift;
+    my @profModeList = ();
+
+    for my $profName (@$profList) {
+
+        my $flag = undef;
+
+        next if (-d $profName);
+        next if ($profName =~ /^\./);
+        next if ($profName =~ /.save$|.new$/);
+
+        if ( open(PROFILE, "$profiledir/$profName")) {
+
+            while(<PROFILE>) {
+
+                if (m/^\s*\/\S+\s+(flags=\(.+\)\s+)*{\s*$/) {
+                    $flag = $1;
+                }
+
+                if ($flag) {
+                    $flag =~ s/flags=\((.+)\)/$1/;
+                    $flag =~ s/\s//g;
+                    last;            # only one profile except in /lib*/ld* which is a special case 
+                } 
+            }
+
+            close(PROFILE);
+
+        } else {
+            Immunix::Ycp::y2milestone( "Couldn't open profile $profName for reading.");
+        }
+
+        if (! $flag) { $flag = 'enforce'};
+
+        my $prof = {
+            'name' => $profName,
+            'mode' => $flag
+        };
+
+        # Don't add profile entries if the file doesn't exist
+        if ( $prof->{'name'} ) {
+	        	push(@profModeList, $prof);
+        }
+
+    }
+
+    return \@profModeList;
+}
+
+sub getProfStatus {
+
+	my $args = shift;
+    my $profList = getProfList($args);
+    my $profModeList = getProfModes($profList);
+
+    return $profModeList;
+}
+
+sub setProfMode {
+
+    my $args = shift;
+    my $ret = undef;
+
+	my $profMode = undef;
+
+	if ( $args->{'mode'} eq 'complain' ) {
+		$profMode = 'complain';
+	} else {
+		$profMode = '';
+	}
+
+	# Change just the profile listed, if an associated binary exists 
+    if ( $args->{'profile'} ) {
+        my $profName = getProfPath("$args->{'profile'}");
+
+        if ( badFileName($args->{'profile'}, $args->{'showall'} )) {
+            Immunix::Ycp::y2milestone("Bad profile: $profName. Skipping.");
+		} elsif ( $args->{'showall'} && $args->{'showall'} == 1 ) {
+            setprofileflags("$profiledir/$args->{'profile'}", "$profMode");
+		} else {
+
+	        if ($profMode eq 'complain') {
+	            Immunix::SubDomain::complain("$profName");
+	        } else {
+	            Immunix::SubDomain::enforce("$profName");
+	        }
+		}
+
+	# Change all profiles, regardless of whether the associated binary exists
+    } elsif ( $args->{'showall'} && $args->{'showall'} == 1 ) {
+
+        my $profHash = getProfHash($args);
+        for my $prof (@$profHash) {
+            setprofileflags("$profiledir/$prof->{'dot'}", "$profMode");
+        }
+
+	# Change all profiles with associated existing binaries
+    } elsif ( $args->{'all'} == 1 ) {
+
+        my $profHash = getProfHash($args);
+
+        for my $prof (@$profHash) {
+
+            if ( badFileName($prof->{'path'}), $args->{'showall'} ) {
+                Immunix::Ycp::y2milestone("Bad profile: $prof->{'path'}. Skipping.");
+            } elsif ($profMode eq 'complain') {
+                Immunix::SubDomain::complain("$prof->{'path'}");
+            } else {
+                Immunix::SubDomain::enforce("$prof->{'path'}");
+            }
+        }
+
+
+    } else {
+        my $error = "ag_complain: Profile name needed for changing complain mode is missing.  Exiting.";
+        Immunix::Ycp::y2milestone("$error");
+        exit 1;
+    }
+
+    return;
+}
+
+# Main
+################################################################################
+while ( <STDIN> ) {
+
+    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    if ($command && $path && $args) {
+
+        my $db = undef;
+
+		if ($args->{'mode'} && $args->{'mode'} =~ m/^(complain|enforce)$/  ) {
+			setProfMode($args);
+        } else {
+            $db = getProfStatus($args);
+        }
+
+        if ( defined($db) ) {
+            Immunix::Ycp::ycpReturn( $db );
+        } else {
+            Immunix::Ycp::ycpReturn("1");
+        }
+
+    } else {
+        my $error = "ag_complain: Unknown instruction or argument";
+        Immunix::Ycp::y2milestone("$error");
+        Immunix::Ycp::ycpReturn($error);
+        exit 1;
+    }
+
+}
+
+exit 0;
+
