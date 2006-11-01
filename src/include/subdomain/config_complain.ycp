@@ -1,0 +1,198 @@
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
+
+{
+textdomain "yast2-apparmor";
+
+string modeHelp = _("<p><b>Profile Mode Configuration</b><br>This tool allows you to set AppArmor profiles to either complain or enforce mode.</p><p>Complain mode is a profile training state that logs application activity, but does not restrict the application's behavior.</p><p>Profiles in enforce mode are protected by AppArmor.</p>");
+
+boolean showAll = false;			// Button for showing active or all profiles
+
+define void updateComplain(any id, string profile, string mode, boolean showAll) {
+
+	boolean error = false;
+    map<string,string> profCmd = $[ ];
+
+	if (id == `allEnforce || id == `allComplain) {
+		profCmd["all"] = "1";
+	} else if ( profile != "" ) {
+		profCmd["profile"] = profile;
+	} else {
+		Popup::Error( _("Couldn't recognize profile name: ") + profile );
+		return;
+	}
+
+	if  ( id == `toggle && mode != "" ) {
+		// Reverse modes for toggling
+		if ( mode == "enforce" ) {
+			profCmd["mode"] = "complain";
+		} else if (mode == "complain") {
+			profCmd["mode"] = "enforce";
+		} else {
+			error = true;
+			Popup::Error( _("Couldn't recognize mode: ") + mode );
+		}
+	} else if ( id != `toggle ) {
+		profCmd["mode"] = mode;
+	}
+
+	if ( showAll == true ) {
+		profCmd["showall"] = "1";
+	} else {
+		profCmd["showall"] = "0";
+	}
+
+	SCR::Write(.complain, profCmd);
+
+	return;
+}
+
+define list<term> getRecordList(boolean showAll) {
+
+    map<string,string> Settings = $[ ];
+    Settings["list"] = "1";
+
+	if ( showAll == true ) {
+		Settings["showall"] = "1";
+	} else {
+		Settings["showall"] = "0";
+	}
+
+    list<term> recList = [];
+    integer key = 1;
+
+	// restarts ag_complain agent if necessary
+	list <map> db = nil;
+	while ( db == nil ) {
+		db = (list <map>) SCR::Read (.complain, Settings);
+	}
+
+    foreach ( map record, db, {
+        recList = add( recList, `item( `id(key), record["name"]:nil, record["mode"]:nil ));
+        key = key + 1;
+    });
+
+	return recList;
+}
+
+define term getProfModeForm(list<term> recList, boolean showAll ) {
+
+    term allBtn = `PushButton(`id(`showAll), _("Show All Profiles") );
+	string allText = _("Configure Mode for Active Profiles");
+
+	if ( showAll && showAll == true ) {
+		allBtn = `PushButton(`id(`showAct), _("Show Active Profiles") );
+		allText = _("Configure Mode for All Profiles");
+	}
+
+    term modeForm =
+
+            `Frame( `id(`changeMode), allText,
+            //`Frame( `id(`changeMode), _("Configure Profile Mode"),
+            `VBox(
+            `VSpacing(2),
+            `HBox(
+               `VSpacing(10),
+               `Table(`id(`table), `opt(`notify), `header(_("Profile Name"), _("Mode")), recList)
+            ),
+            `VSpacing(0.5),
+            `HBox(
+				allBtn,
+                `PushButton(`id(`toggle), _("Toggle Mode") ),
+                `PushButton(`id(`allEnforce), _("Set All to Enforce") ),
+                `PushButton(`id(`allComplain), _("Set All to Complain") )
+            ))
+    );
+
+	return modeForm;
+}
+
+define term updateModeConfigForm(boolean showAll) {
+
+	list<term> recList = getRecordList(showAll);
+	term newModeForm = getProfModeForm(recList, showAll);
+
+	return newModeForm;
+}
+
+// Profile Mode Configuration -- Sets Complain and Enforce Behavior
+define symbol profileModeConfigForm() {
+
+	list<term> recList = getRecordList(showAll);
+	term modeForm = getProfModeForm(recList, showAll);
+
+    Wizard::SetContentsButtons( _("Profile Mode Configuration"), modeForm, modeHelp, _("Back"), _("&Done") );
+
+    map event = $[];
+    any id    = nil;
+
+    while( true ) {
+
+        event = UI::WaitForEvent();
+
+        id = event["ID"]:nil; // We'll need this often - cache it
+		string profile = nil;
+		string mode = nil;
+
+        if ( id == `abort || id == `cancel || id == `next || id == `back ) {
+			break;
+
+		} else if ( id == `showAll ) {
+
+			showAll = true;
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+            continue;
+
+		} else if ( id == `showAct ) {
+
+			showAll = false;
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+            continue;
+
+        } else if ( id == `next || id == `toggle) {
+
+            integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+            profile = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+            mode = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
+
+			updateComplain(id, profile, mode, showAll);
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+            continue;
+
+        } else if ( id == `allEnforce || id == `allComplain) {
+
+			profile = "";
+
+			if ( id == `allEnforce ) {
+				mode = "enforce";
+			} else {
+				mode = "complain";
+			}
+
+			updateComplain(id, profile, mode, showAll);
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+            continue;
+
+		} else if ( id == `table ) {
+
+			Popup::Message( _("Please select an action to perform from the buttons below.") );
+
+        } else {
+            y2error("Unexpected return code: %1", id);
+			break;
+        }
+    }
+
+	Wizard::CloseDialog();		// new
+    return (symbol) id;
+}
+
+/* EOF */
+}
