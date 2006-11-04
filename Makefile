@@ -16,22 +16,15 @@ all:
 COMMONDIR=../../common/
 THEMEDIR=
 
-include Make.rules
+include common/Make.rules
 
 COMMONDIR_EXISTS=$(strip $(shell [ -d ${COMMONDIR} ] && echo true))
 ifeq ($(COMMONDIR_EXISTS), true)
-Make.rules: $(COMMONDIR)/Make.rules src/locale/Make.rules src/po/Make.rules
-	ln -f $(COMMONDIR)/Make.rules .
-
-src/po/Make.rules: $(COMMONDIR)/Make-po.rules
-	make -C src/po Make.rules
-
-src/locale/Make.rules: $(COMMONDIR)/Make-po.rules
-	make -C src/locale Make.rules
-
+common/Make.rules: $(COMMONDIR)/Make.rules
+	ln -sf $(COMMONDIR) .
 endif
 
-SUBDIRS		= clients include scrconf desktop agents perl icons bin 
+SUBDIRS		= clients include scrconf desktop agents perl icons bin
 
 .PHONY:	install
 install:
@@ -63,4 +56,4 @@ install:
 
 .PHONY: clean
 clean:
-	rm -f $(TARBALL) ${NAME}-${VERSION}-*.tar.gz
+	rm -f $(TARBALL) ${NAME}-${VERSION}-*.tar.gz Make.rules
