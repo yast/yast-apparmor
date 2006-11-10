@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 # ------------------------------------------------------------------
 #
@@ -12,132 +12,94 @@
 
 ################################################################################
 # ag_sd_config
-#
-#	Version 0.51
 ################################################################################
 
-use Immunix::Ycp;
-use Immunix::Reports;
 use strict;
+use ycp;
+use Immunix::Notify;
+use Immunix::Reports;
 use Data::Dumper;
+use POSIX;
+use Locale::gettext;
+
+setlocale(LC_MESSAGES, "");
+textdomain("apparmor-utils");
 
 # Subroutines
 ################################################################################
-
 sub setSubdomain {
 
-	my $action = shift;
+  my $action = shift;
         my $errmsg = ""; 
         my $lines = 0; 
-	if ($action eq "enable") {
-	   if (-e "/sbin/rcapparmor") {
+  if ($action eq "enable") {
+     if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor start 2>&1 |");
-	   } else {
+     } else {
              open(RUN, "/sbin/rcsubdomain start 2>&1 |");
-	   }
+     }
            while (<RUN>) {  
              if (/FATAL:(.*)/) {    
                $errmsg = $1;  
              }  
-	   }
+     }
            close(RUN);
-	   if (-f "/etc/init.d/boot.apparmor") {
+     if (-f "/etc/init.d/boot.apparmor") {
              system("/sbin/insserv boot.apparmor");
-	   } else {
+     } else {
              system("/sbin/insserv boot.subdomain");
-	   }
-	   if (-f "/etc/init.d/aaeventd") {
+     }
+     if (-f "/etc/init.d/aaeventd") {
              system("/sbin/rcaaeventd start");
              system("/sbin/insserv aaeventd");
-	   }
-	} else {
-	   if (-e "/sbin/rcapparmor") {
+     }
+  } else {
+     if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor stop 2>&1 |");
-	   } else {
+     } else {
              open(RUN, "/sbin/rcsubdomain stop 2>&1 |");
-	   }
+     }
            while (<RUN>) {  
              if (/FATAL:(.*)/) {    
                $errmsg = $1;  
              }  
            }
            close(RUN);
-	   if (-f "/etc/init.d/boot.apparmor") {
+     if (-f "/etc/init.d/boot.apparmor") {
              system("/sbin/insserv -r boot.apparmor");
-	   } else {
+     } else {
              system("/sbin/insserv -r boot.subdomain");
-	   }
-	   if (-f "/etc/init.d/aaeventd") {
+     }
+     if (-f "/etc/init.d/aaeventd") {
              system("/sbin/rcaaeventd stop");
              system("/sbin/insserv -e aaeventd");
-	   }
-	}
-	return $errmsg;
+     }
+  }
+  return $errmsg;
 }
 
 sub setNotify {
 
-	my $action = shift;
+  my $action = shift;
 
-	return 0; 
+  return 0; 
 }
 
 sub setLearningMode {
 
-	my $action = shift;
-	my $rcscript = -f "/sbin/rcapparmor" ? "/sbin/rcapparmor"
-	  				     : "/sbin/rcsubdomain";
+  my $action = shift;
+  my $rcscript = -f "/sbin/rcapparmor" ? "/sbin/rcapparmor"
+                 : "/sbin/rcsubdomain";
 
-	if ($action eq "enable") {
-		system("$rcscript", "stop");
-		system("$rcscript", "complain");
-	} else {
-		system("$rcscript". "stop");
-		system("$rcscript", "start");
-	}
+  if ($action eq "enable") {
+    system("$rcscript", "stop");
+    system("$rcscript", "complain");
+  } else {
+    system("$rcscript". "stop");
+    system("$rcscript", "start");
+  }
 
     return 0;
-}
-
-sub setNotifySettings {
-  my $config = shift;
-
-  Immunix::Reports::enableEventD();
-  open(CFG, "> /etc/apparmor/notify.cfg") or die "can't write config info: $!";
-  if($config->{enable_terse} eq "yes") {
-    # if we didn't get passed a valid frequency, default to off
-    $config->{terse_freq}  ||= 0;
-    $config->{terse_level} ||= 0;
-    # default to including unknown events if we didn't get passed that setting
-    $config->{terse_unknown} = 1 unless defined $config->{terse_unknown};
-    print CFG "terse_freq $config->{terse_freq}\n";
-    print CFG "terse_email $config->{terse_email}\n";
-    print CFG "terse_level $config->{terse_level}\n";
-    print CFG "terse_unknown $config->{terse_unknown}\n";
-  }
-  if($config->{enable_summary} eq "yes") {
-    # if we didn't get passed a valid frequency, default to off
-    $config->{summary_freq} ||= 0;
-    $config->{summary_level} ||= 0;
-    # default to including unknown events if we didn't get passed that setting
-    $config->{summary_unknown} = 1 unless defined $config->{summary_unknown};
-    print CFG "summary_freq $config->{summary_freq}\n";
-    print CFG "summary_email $config->{summary_email}\n";
-    print CFG "summary_level $config->{summary_level}\n";
-    print CFG "summary_unknown $config->{summary_unknown}\n";
-  }
-  if($config->{enable_verbose} eq "yes") {
-    # if we didn't get passed a valid frequency, default to off
-    $config->{verbose_freq} ||= 0;
-    $config->{verbose_level} ||= 0;
-    # default to including unknown events if we didn't get passed that setting
-    $config->{verbose_unknown} = 1 unless defined $config->{verbose_unknown};
-    print CFG "verbose_freq $config->{verbose_freq}\n";
-    print CFG "verbose_email $config->{verbose_email}\n";
-    print CFG "verbose_level $config->{verbose_level}\n";
-    print CFG "verbose_unknown $config->{verbose_unknown}\n";
-  }
-  close(CFG);
 }
 
 # Main 
@@ -146,38 +108,42 @@ sub setNotifySettings {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $argument) = Immunix::Ycp::ParseCommand ($_);
-        Immunix::Ycp::y2debug ("command: $command, path: $path");
+  my ($command, $path, $argument) = ycp::ParseCommand ($_);
 
-	my $result = undef;
-	my $action = undef;
+  my $result = undef;
+  my $action = undef;
 
-	if ( $command && $path && $argument ) {
+  if ( $command && $path && $argument ) {
 
-		if(ref($argument) eq "HASH" && $argument->{"sd-set-notify"}) {
-			setNotifySettings($argument);
-			Immunix::Ycp::Return("true");
-			next;
-		}
+    if (ref($argument) eq "HASH" && $argument->{"set_notify"}) {
+      my ($ntSettings, $result) = Immunix::Notify::sanitize($argument);
 
-		($action) = (split(/:/, $argument))[1];
+      if ($result ne "success") {
+        ycp::Return($result);
+        next;
+      } else {
+        $result = Immunix::Notify::setNotifySettings($ntSettings);
+        ycp::Return($result);
+        next;
+      }
+    }
 
-	        Immunix::Ycp::y2milestone ("ag_sd_config=> Arg: $argument, Action: $action");
+    ($action) = (split(/:/, $argument))[1];
 
-		if ( $argument =~ /subdomain/ ) {
-			$result = setSubdomain($action);
-		} elsif ( $argument =~ /learning/ ) {
-			setLearningMode($action);
-		} elsif ( $argument eq 'sd-notify') {
-			setNotify($action);
-		} 
-	        Immunix::Ycp::y2milestone ("ag_sd_config=> DONE Arg: $argument, Action: $action");
-                if ( $result ) {
-                  Immunix::Ycp::Return( $result );
-                } else {
-                  Immunix::Ycp::Return("true");
-                }
-	} 
+    if ( $argument =~ /subdomain/ ) {
+      $result = setSubdomain($action);
+    } elsif ( $argument =~ /learning/ ) {
+      setLearningMode($action);
+    } elsif ( $argument eq 'sd-notify') {
+      setNotify($action);
+    } 
+
+    if ( $result ) {
+      ycp::Return( $result );
+    } else {
+      ycp::Return("true");
+    }
+  }
 }
 
 exit 0;

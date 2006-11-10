@@ -18,9 +18,16 @@
 ################################################################################
 
 use strict;
-use Immunix::Ycp;
+use ycp;
+use Immunix::Notify;
 use Immunix::SubDomain;
 use Data::Dumper;
+#use POSIX;
+#use Locale::gettext;
+
+#setlocale(LC_MESSAGES, "");
+#textdomain("apparmor-utils");
+
 
 # Subroutines
 ################################################################################
@@ -47,38 +54,6 @@ sub getSubdomainStatus {
   return $sdStatus;
 }
 
-sub getNotifySettings {
-
-  my $config = { };
-  if(open(CFG, "/etc/apparmor/notify.cfg")) {
-    while(<CFG>) {
-      chomp;
-      $config->{$1} = $2 if /^(\S+)\s+(.+)\s*$/;
-    }
-    close(CFG);
-  }
-
-  return $config;
-}
-
-
-sub getNotifyStatus {
-
-  my $config = getNotifySettings();
-
-  my $noteStatus = "disabled";
-
-  if($config->{terse_freq} && $config->{terse_freq} != 0) {
-    $noteStatus = "enabled";
-  } elsif($config->{summary_freq} && $config->{summary_freq} != 0) {
-    $noteStatus = "enabled";
-  } elsif($config->{verbose_freq} && $config->{verbose_freq} != 0) {
-    $noteStatus = "enabled";
-  } 
-
-  return $noteStatus;
-}
-
 sub profileSyntaxCheck {
    my $errlist = [];
    Immunix::SubDomain::checkIncludeSyntax($errlist);
@@ -91,10 +66,8 @@ sub profileSyntaxCheck {
 # Main 
 ################################################################################
 
-
-
 while ( <STDIN> ) {
-  my ($command, $path, $argument) = Immunix::Ycp::ParseCommand($_);
+  my ($command, $path, $argument) = ycp::ParseCommand($_);
 
   my $result = undef;
   my $donereturn = 0;
@@ -102,32 +75,33 @@ while ( <STDIN> ) {
     if ( $argument eq 'sd-all') {
       my %hResult = '';		# hashed result, duh 
       $hResult{'sd-status'} = getSubdomainStatus();
-      $hResult{'sd-notify'} = getNotifyStatus();
-      Immunix::Ycp::ycpReturnHashAsMap( %hResult );
+      $hResult{'sd-notify'} = Immunix::Notify::getNotifyStatus();
+      #ycp::ycpReturnHashAsMap( %hResult );
+      ycp::Return( %hResult );
       $donereturn = 1;
     } elsif ( $argument eq 'sd-status') {
       $result = getSubdomainStatus();
     } elsif ( $argument eq 'sd-notify') {
-      $result = getNotifyStatus();
+      $result = Immunix::Notify::getNotifyStatus();
     } elsif ( $command eq "Read" and $argument eq 'custom-includes') {
       Immunix::SubDomain::readconfig();
-      Immunix::Ycp::ycpReturn(\@Immunix::SubDomain::custom_includes);
+      ycp::ycpReturn(\@Immunix::SubDomain::custom_includes);
       $donereturn = 1;
     } elsif ( $command eq "Execute" and $argument eq 'profile-syntax-check') {
       $result = profileSyntaxCheck();
-      Immunix::Ycp::ycpReturn($result);
+      ycp::ycpReturn($result);
       $donereturn = 1;
     } elsif ( $argument eq 'sd-notify-settings') {
-      $result = getNotifySettings();
-      Immunix::Ycp::ycpReturn($result);
+      $result = Immunix::Notify::getNotifySettings();
+      ycp::Return($result);
       $donereturn = 1;
     }
-    Immunix::Ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
+    ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
   } else {
     my $ycpCmd = ycpGetCommand() || "";
     my $ycpArg = ycpGetArgType() || "";
     $result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
-    Immunix::Ycp::ycpReturnSkalarAsString( $result );
+    ycp::ycpReturnSkalarAsString( $result );
   }
   print "\n";
 }
