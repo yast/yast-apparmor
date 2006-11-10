@@ -40,7 +40,7 @@ define boolean checkProfileSyntax () {
              running ")
          + "<code>man apparmor.d</code></p>"
          + _("<p>Comprehensive documentation about AppArmor is available in \
-             the users guide for the distribution. This is available in the \
+             the Administration guide. This is available in the \
              directory: ")
          + "</p>"
          + "<code>/usr/share/doc/manual/suselinux-manual_LANGUAGE</code>. "
