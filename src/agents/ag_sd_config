@@ -72,7 +72,7 @@ sub setSubdomain {
      }
      if (-f "/etc/init.d/aaeventd") {
              system("/sbin/rcaaeventd stop");
-             system("/sbin/insserv -e aaeventd");
+             system("/sbin/insserv -r aaeventd");
      }
   }
   return $errmsg;
