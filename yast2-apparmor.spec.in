@@ -95,6 +95,11 @@ REPDIR3='/var/log/apparmor/reports-exported'
 %preun
 
 %changelog
+* Mon Nov 13 2006 David Drewelow<ddrewelow@suse.de> 2.0-7.12
+- Fixes for notification bugs (changed multiple files):
+  https://bugzilla.novell.com/show_bug.cgi?id=177039,
+  https://bugzilla.novell.com/show_bug.cgi?id=190891,
+  https://bugzilla.novell.com/show_bug.cgi?id=198359
 * Thu Oct 5 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.11
 - Add syntax checks for profiles and display to user.
 * Wed May 31 2006 Dominic Reynolds <dreynolds@suse.de> 2.0-7.10
