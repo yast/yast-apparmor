@@ -138,14 +138,11 @@ define list<term> getArrayList(string type, string repPath) {
     if ( type == "sirRep" || type == "essRep" || type == "audRep" ) {
         list <map> db = (list <map>) SCR::Read (.reports_parse, Settings);
 
-        //if (db == nil) { itemList =  add( itemList, `Label("No events to report.")); }
-
         foreach ( map record, db, {
             any strName = record["name"]:nil;
             any strTime = record["time"]:nil;
             string name = tostring(strName);
             string mytime = tostring(strTime);
-            //itemList = add( itemList, `item( `id(key), record["name"]:nil, record["time"]:nil ));
             itemList = add( itemList, `item( `id(key), record["name"]:nil, record["time"]:nil ));
             key = key + 1;
         });
@@ -165,14 +162,6 @@ define list<term> getArrayList(string type, string repPath) {
     } else {
 
 		Popup::Error( _("Unrecognized form request.") );
-		/*
-        list <map> db = (list <map>) SCR::Read (.FILLINTHEBLANK, Settings);
-
-        foreach ( map record, db, {
-            itemList = add( itemList, `item( `id(key), record["name"]:nil, record["host"]:nil, record["prog"]:nil));
-            key = key + 1;
-        });
-		*/
 
     }
 
@@ -823,7 +812,6 @@ define symbol mainReportForm() {
             `Label( _("AppArmor Reporting") ),
             `VSpacing(2),
             `VBox(
-				//`Left(`CheckBox( `id(`byprog), `opt(`notify), "Filter By Program Name" ))
 				`Left(`CheckBox( `id(`schedrep), `opt(`notify), _("Schedule Reports"), true )),
 				`Left(`CheckBox( `id(`viewrep), `opt(`notify), _("View Archived Reports") )),
 				`Left(`CheckBox( `id(`runrep), `opt(`notify), _("Run Reports") ))
@@ -877,16 +865,16 @@ define symbol mainReportForm() {
 // Form used to select the type of archived report to list
 define term viewForm(map archType, list itemList, string repPath) {
 
-	boolean sirBox = archType["sirBox"]:false;
-	boolean audBox = archType["audBox"]:false;
-	boolean essBox = archType["essBox"]:false;
+	boolean sirRep = archType["sirRep"]:false;
+	boolean audRep = archType["audRep"]:false;
+	boolean essRep = archType["essRep"]:false;
 
 	if ( repPath == "" ) {
 		repPath = "/var/log/apparmor/reports-archived/";
 	}
 
-	if ( audBox == false && essBox == false ) {
-		sirBox = true;
+	if ( audRep == false && essRep == false ) {
+		sirRep = true;
 	}
 
 	term vForm =
@@ -895,18 +883,28 @@ define term viewForm(map archType, list itemList, string repPath) {
         `HSpacing(60),   // make the table and thus the dialog wide enough
         `VSpacing(1),
         `HBox(
-            `CheckBox(`id(`sirBox), `opt(`notify, `immediate), _("SIR"), sirBox),
-            `CheckBox(`id(`audBox), `opt(`notify, `immediate), _("App Aud"), audBox),
-            `CheckBox(`id(`essBox), `opt(`notify, `immediate), _("ESS"), essBox)
+			`Frame( `id(`radioSelect), _("Choose a Report Type"),
+				`RadioButtonGroup(`id(`chooseRep), `HBox(
+					`HStretch(),
+					`RadioButton(`id(`sirRep), `opt(`notify, `immediate), _("SIR"), sirRep),
+			        `HSpacing(1),
+					`RadioButton(`id(`audRep), `opt(`notify, `immediate), _("App Aud"), audRep),
+			        `HSpacing(1),
+		            `RadioButton(`id(`essRep), `opt(`notify, `immediate), _("ESS"), essRep),
+			        `HSpacing(1),
+					`HStretch()
+             )))
         ),
+		`HStretch(),
         `VSpacing(1),
-        `HBox(
-            `VWeight( 1,
-                //`TextEntry(`id(`repPath), `opt(`notify, `immediate), _("Location of Archived Reports"), repPath )),
-                `TextEntry(`id(`repPath), _("Location of Archived Reports"), repPath )),
-            `Bottom( `VWeight( 1, `PushButton(`id(`accept), _("&Accept")) )),
-            `Bottom( `VWeight( 1, `PushButton(`id(`browse), _("&Browse")) ))
-        ),
+		`Left( `HBox(
+			`Frame( `id(`repFrame), _("Location of Archived Reports"),
+			`HBox(
+				`HWeight( 4, `Label(repPath)),
+		        `HSpacing(1),
+	            `HWeight( 1, `Bottom( `VWeight( 1, `PushButton(`id(`browse), _("&Browse"))))),
+				`HWeight( 5, `HStretch())
+		)))),
         `VSpacing(0.5),
         `VWeight( 10, `HBox(
             `VSpacing(1),
@@ -923,7 +921,7 @@ define term viewForm(map archType, list itemList, string repPath) {
 	return vForm;
 }
 
-define map<any,any> filterConfigForm(string name) {		//was reportConfigForm in 1.1
+define map<any,any> filterConfigForm(string name) {
 
     // Cheating way to set filters
     map<string,string> opts = $[];
@@ -1181,11 +1179,10 @@ define term displayRep(string type, integer curPage, string slastPage, list repo
 // View Archived Reports
 define symbol displayArchForm() {
 
-// START - Move to separate Routine - START
     map<string,boolean> archType = $[ ];
-    archType["sirBox"] = true;
-    archType["audBox"] = false;
-    archType["essBox"] = false;
+    archType["sirRep"] = true;
+    archType["audRep"] = false;
+    archType["essRep"] = false;
 
     map<string,string> Settings = $[ ];
     string readSched = "1";
@@ -1197,7 +1194,6 @@ define symbol displayArchForm() {
     list<term> itemList = [];
 	itemList = getArrayList(type,"");
 
-    //Wizard::SetContentsButtons( _("AppArmor Security Event Report"), viewForm(Settings, itemList), archHelpText, "Back", _("&Done") );
     Wizard::SetContentsButtons( _("AppArmor Security Event Report"), viewForm(archType, itemList, ""), archHelpText, _("Back"), _("&Done") );
 
 	map event = $[];
@@ -1208,6 +1204,7 @@ define symbol displayArchForm() {
     integer curPage = 1;
 
 	string formHelp = runHelp;
+
 
 	while( true ) {
 
@@ -1220,13 +1217,6 @@ define symbol displayArchForm() {
 			break;
 		} else if ( archId == `close || archId == `cancel || archId == `next) {
 			break;
-        } else if ( archId == `accept ) {
-
-			repPath = (string) UI::QueryWidget(`id(`repPath), `Value);
-			Settings["repPath"] = repPath;
-		    itemList = getArrayList(type,repPath);
-		    Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
-				viewForm(archType, itemList, repPath), archHelpText, _("Back"), _("&Done") );
 
         } else if ( archId == `repPath ) {
 
@@ -1252,47 +1242,40 @@ define symbol displayArchForm() {
             Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
 				viewForm(archType, itemList, repPath), archHelpText, _("Back"), _("&Done") );
 
-		} else if ( archId == `sirBox ) {
+		} else if ( archId == `sirRep ) {
 			formHelp = sirHelp;
-	        archType["sirBox"] = true;
-	        archType["audBox"] = false;
-	        archType["essBox"] = false;
+	        archType["sirRep"] = true;
+	        archType["audRep"] = false;
+	        archType["essRep"] = false;
 		    Settings["type"] = "sirRep";
 			type = Settings["type"]:nil;
 
 		    itemList = getArrayList(type,repPath);
 
-			/*
-			map<string,any> numPages = nil;
-			numPages["getNumPages"] = "1";
-			numPages = (map) SCR::Read (.logparse, numPages);
-			*/
-			//UI::ReplaceWidget(`id(`viewform), viewForm );
 		    Wizard::SetContentsButtons( _("View Archived SIR Report"), viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done") );
 
-		} else if ( archId == `audBox ) {
+		} else if ( archId == `audRep ) {
 			formHelp = audHelp;
-	        archType["sirBox"] = false;
-	        archType["audBox"] = true;
-	        archType["essBox"] = false;
+	        archType["sirRep"] = false;
+	        archType["audRep"] = true;
+	        archType["essRep"] = false;
 		    Settings["type"] = "audRep";
 			type = Settings["type"]:nil;
 
 		    itemList= getArrayList(type,"");
-		    Wizard::SetContentsButtons( _("View Archived AUD Report"), viewForm(archType,itemList,""),
-				formHelp, _("Back"), _("&Done") );
+		    Wizard::SetContentsButtons( _("View Archived AUD Report"), viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done") );
 
-		} else if ( archId == `essBox ) {
+		} else if ( archId == `essRep ) {
 			formHelp = essHelp;
-	        archType["sirBox"] = false;
-	        archType["audBox"] = false;
-	        archType["essBox"] = true;
+	        archType["sirRep"] = false;
+	        archType["audRep"] = false;
+	        archType["essRep"] = true;
 		    Settings["type"] = "essRep";
 			type = Settings["type"]:nil;
 
 		    itemList= getArrayList(type,"");
-		    Wizard::SetContentsButtons( _("View Archived ESS Report"), viewForm(archType,itemList,""),
-				formHelp, _("Back"), _("&Done") );
+		    Wizard::SetContentsButtons( _("View Archived AUD Report"), viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done") );
+
 
 		} else if ( archId == `view || archId == `viewall || archId == `table) {
 
@@ -1309,6 +1292,7 @@ define symbol displayArchForm() {
 			string checkPath = splitPath[size(splitPath)-1]:"";
 
 			string longLogName = "";
+
 
 			// Cat strings & check for trailing "/" in path
 			if ( logPath != "" ) {
@@ -1383,10 +1367,8 @@ define symbol displayArchForm() {
 		        list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
 
 		        foreach ( map repdata, db, {
-//			        reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["startdate"]:nil, repdata["enddate"]:nil, repdata["sevHi"]:nil, repdata["sevMean"]:nil, repdata["numEvents"], repdata["numRejects"]:nil ));
-			        reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["startdate"]:nil, repdata["enddate"]:nil,
-						repdata["numRejects"]:nil, repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
-		            key = key + 1;
+			        reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["startdate"]:nil, repdata["enddate"]:nil, repdata["numRejects"]:nil, repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
+					key = key + 1;
 			    });
 
 			    lastPage = getLastPage(type,Settings,"");
@@ -1457,9 +1439,6 @@ define symbol displayArchForm() {
             term lastForm = turnArchReportPage(curPage,lastPage);
 			Wizard::SetContentsButtons( _("AppArmor Report"), lastForm, formHelp, _("Back"), _("&Done") );
 			setPageButtons(curPage,lastPage);
-
-//		} else if ( archId == `table ) {
-// mark
 
         } else {
             y2error("Unexpected return code: %1", archId);
@@ -1824,7 +1803,6 @@ define void addSchedForm() {
                 UI::ChangeWidget(`id(`expPath), `Value, expPath);
 
             string name = (string) UI::QueryWidget(`id(`name), `Value);
-            //integer iMonthdate = (integer) UI::QueryWidget(`id(`monthdate), `Value);
             string monthdate = (string) UI::QueryWidget(`id(`monthdate), `Value);
             string weekday = (string) UI::QueryWidget(`id(`weekday), `Value);
             any iHours = (any) UI::QueryWidget(`id(`hour), `Value);
@@ -1919,8 +1897,6 @@ define void addSchedForm() {
 			string sdmode = (string) UI::QueryWidget(`id(`sdmode), `Label);
 			string mode = (string) UI::QueryWidget(`id(`mode), `Label);
             string sev = (string) UI::QueryWidget(`id(`sev), `Value);
-// mark
-
             string expType = (string) UI::QueryWidget(`id(`expType), `Value);
 
             if ( expType == "csv" ) {
@@ -2131,19 +2107,16 @@ define void editSchedForm() {
 
 	}
 
+	string edLabel = _("Edit Report Schedule for ") + sname;
+
     UI::OpenDialog(
 
     `ReplacePoint( `id(`editSchedRep),
 
     `VBox(
-        //`Label(`id(`name), _("Edit ") + sname + _(" Schedule") ),
-        `HBox( `Label(`id(`edname), _("Edit Report Schedule for ") ), `Label(`id(`name), sname) ),
+        `HBox( `Label(`id(`edname), edLabel) ),
         `VSpacing(1),
         `HBox(
-            //`IntField(`id(`monthdate), `opt(`notify, `immediate), _("Day of Month"), 0, 31, imday),
-            //`IntField(`id(`weekday), `opt(`notify, `immediate), "Day of Week", 0, 7, iwday),
-
-            // DWR MOD `ComboBox(`id(`monthdate), `opt(`notify, `immediate), "Day of Month",  [
             `ComboBox(`id(`monthdate), `opt(`notify), "Day of Month",  [
                 `item(`id(`md_00), _("All")),
                 `item(`id(`md_01), "1"), `item(`id(`md_02), "2"), `item(`id(`md_03), "3"),
@@ -2257,21 +2230,12 @@ define void editSchedForm() {
 
 			if ( spath == "1" ) {
 
-			/*
-            if ( email1 == "" && email2 == "" && email3 == "" ) {
-
-                Popup::Message( _("You must enter at least one email address .") );
-				continue;
-
-            } else { */
-
 				Settings = getSchedSettings(Settings);
 	            UI::ReplaceWidget(`editSchedRep, editFilterForm(Settings) );
 
 				// Special handling for ComboBoxes (sev)
 				if ( formatSev != "" ) { UI::ChangeWidget(`id(`sev), `Value, formatSev); }
 
-			//}
 			} else {
                 Popup::Error(_("The specified directory does not exist."));
 	            UI::ChangeWidget(`id(`expPath), `Value, oldExpPath);
@@ -2283,7 +2247,6 @@ define void editSchedForm() {
 
 			if ( sdmode != "" ) {
 				Settings["sdmode"] = sdmode;
-	            //UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: ") + sdmode) );
 	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode) );
 			}
 
@@ -2292,7 +2255,6 @@ define void editSchedForm() {
 			mode = popUpMode();
 			if ( mode != "" ) {
 				Settings["mode"] = mode;
-	            //UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), _("Mode: ") + mode) );
 	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), mode) );
 			}
 
@@ -2313,7 +2275,6 @@ define void editSchedForm() {
 
 			string spath = "0";
 
-			// New - Mar. 26, 2006 - debug
 			if ( sname == "Executive.Security.Summary" || sname == "Applications.Audit" ) {
 
 	            expPath = (string) UI::QueryWidget(`id(`expPath), `Value);
@@ -2335,8 +2296,6 @@ define void editSchedForm() {
             } else {
 
 
-			//list splitName = splitstring (name, " ");
-			//string checkName = splitName[size(splitName)-2]:"SIR";
 			if ( sname != "Executive.Security.Summary" && sname != "Applications.Audit" ) {
 
 	            string prog  = (string) UI::QueryWidget(`id(`prog), `Value);
@@ -2364,6 +2323,7 @@ define void editSchedForm() {
 				Settings = getSchedSettings(Settings);
 			}
 
+			Settings["name"] = sname;
             Settings["getconf"] = "";
             Settings["setconf"] = "1";
 
@@ -2379,7 +2339,6 @@ define void editSchedForm() {
             }
 
             any error = (any) SCR::Write(.reports_sched, Settings);
-            //SCR::Write(.reports_sched, Settings);
 
             if (is(error, string)) {
                 string erStr = tostring(error);
@@ -2515,15 +2474,14 @@ define symbol displaySchedForm() {
 
     term schedForm =
 
-//		`VBox(
-			`Frame( `id(`dosched), _("Schedule Reports"),
+		`Frame( `id(`dosched), _("Schedule Reports"),
 			`VBox(
-            //`Label("Schedule Reports" ),
             `VSpacing(2),
             `HBox(
                `VSpacing(10),
-               //DWR MOD `Table(`id(`table), `opt(`notify, `immediate ), `header(_("Report Name"), _("Day of Month"), _("Day of Week"), _("Hour"), _("Mins")), itemList)
-               `Table(`id(`table), `opt(`notify), `header(_("Report Name"), _("Day of Month"), _("Day of Week"), _("Hour"), _("Mins")), itemList)
+               `Table(`id(`table), `opt(`notify), `header(_("Report Name"),
+					_("Day of Month"), _("Day of Week"), _("Hour"), _("Mins")),
+					itemList)
 			),
             `VSpacing(0.5),
 			`HBox(
@@ -2537,8 +2495,8 @@ define symbol displaySchedForm() {
 			))
         );
 
-    Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm, mainHelp, _("Back"), _("&Next") );
-    //Wizard::SetContents( _("AppArmor - Report Scheduling"), schedForm, mainHelp, true, true);
+    Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm,
+		mainHelp, _("Back"), _("&Done") );
 
 	// Double-click tracking
 	integer newRecord = nil;
@@ -2563,6 +2521,7 @@ define symbol displaySchedForm() {
         } else if ( id == `runrep || id == `viewrep ) {
           break;
 		} else if ( id == `next ) {
+			id = `done;
 			break;
 		} else if ( id == `add ) {
 			addSchedForm();

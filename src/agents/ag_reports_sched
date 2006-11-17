@@ -35,9 +35,6 @@
 #       -Mode
 #
 ################################################################################
-
-my $Version="0.97";
-
 use strict;
 use Immunix::Ycp;
 use Immunix::Reports;
@@ -639,6 +636,14 @@ while ( <STDIN> ) {
 			$args->{'name'} = $1;
 		}
 
+		# Check that we have a report name
+		if ( $args->{'setconf'} || $args->{'add'} || $args->{'del'} ) {
+			unless ( $args->{'name'} ) {
+				Immunix::Ycp::y2milestone("Error:  no report name given.  Skipping update.");
+				$args = undef;
+			}
+		}
+
 		# Parse sdmode & mode labels
 		if ( $args->{'sdmode'} ) {
 			$args->{'sdmode'} =~ s/\&//g;
@@ -653,10 +658,9 @@ while ( <STDIN> ) {
 		}
 
 		if ( $args->{'getdupe'} && $args->{'getdupe'} == 1) {
-
 			$db = findDupeReportName("$args->{'name'}");
-
 		} 
+
         if ($args->{'getcron'} && $args->{'getcron'} == 1) {
 			$db = parseCron($args);				# Return list of all scheduled report crons
 		} elsif ( $args->{'getrep'} && $args->{'getrep'} ==1 ) {

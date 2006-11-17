@@ -305,7 +305,7 @@ define string popUpMode() {
 				`CheckBox(`id(`mmap), `opt(`notify, `immediate ), _("MMap"), false)
 			),
 			`HBox(
-				`PushButton(`id(`abort), _("&Abort") ),
+				`PushButton(`id(`cancel), _("&Cancel") ),
 				`PushButton(`id(`save), _("&Save") )
 			)
 		)
@@ -418,7 +418,7 @@ define string popUpSdMode() {
 				`CheckBox(`id(`audit),`opt(`notify, `immediate ), _("Audit"), false)
 			),
 			`HBox(
-				`PushButton(`id(`abort), `opt(`notify), _("&Abort") ),
+				`PushButton(`id(`cancel), `opt(`notify), _("&Cancel") ),
 				`PushButton(`id(`save), `opt(`notify), _("&Save") )
 			)
 		)
@@ -491,7 +491,7 @@ define string popUpSdMode() {
 	            UI::ChangeWidget(`id(`clear), `Value, false);
 			}
 
-        } else if ( id == `abort ) {
+        } else if ( id == `cancel ) {
 
             sdMode = mySdMode;
             break;
