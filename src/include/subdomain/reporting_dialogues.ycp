@@ -2117,7 +2117,7 @@ define void editSchedForm() {
         `HBox( `Label(`id(`edname), edLabel) ),
         `VSpacing(1),
         `HBox(
-            `ComboBox(`id(`monthdate), `opt(`notify), "Day of Month",  [
+            `ComboBox(`id(`monthdate), `opt(`notify), _("Day of Month"),  [
                 `item(`id(`md_00), _("All")),
                 `item(`id(`md_01), "1"), `item(`id(`md_02), "2"), `item(`id(`md_03), "3"),
                 `item(`id(`md_04), "4"),  `item(`id(`md_05), "5"), `item(`id(`md_06), "6"),
