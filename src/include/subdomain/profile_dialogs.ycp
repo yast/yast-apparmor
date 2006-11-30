@@ -441,13 +441,14 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
 
 
    string help1 = _("In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog.<p>");
-   string help2 = _("<b>Permission Definitions:</b><br><code> r - read <br> w - write<br>l - link<br>m - mmap PROT_EXEC<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (clean exec)<p>");
-   string help3 = _("<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p></li>");
-   string help4 = _("<b>File</b><br>Add a file entry to this profile<br>");
-   string help5 = _("<b>Directory</b><br>Add a directory entry to this profile<br>");
-   string help6 = _("<b>Capability</b><br>Add a capability entry to this profile<br>");
-   string help7 = _("<b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.<br>");
-   string helpHat = _("<b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.<br><p>");
+   string help2 = _("<b>Permission Definitions:</b><br><code> r - read <br> w - write<br>l - link<br>m - mmap PROT_EXEC<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (*clean exec)</code><p>");
+   string help3 = _("<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p>");
+   string help4 = _("<ul><li><b>File</b><br>Add a file entry to this profile</li>");
+   string help5 = _("<li><b>Directory</b><br>Add a directory entry to this profile</li>");
+   string help6 = _("<li><b>Capability</b><br>Add a capability entry to this profile</li>");
+   string help7 = _("<li><b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.</li>");
+   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.</li>");
+   string helpEdit = _("</ul><p><b>Edit Entry:</b><br>Edit the selected entry.<p>");
    string help8 = _("<b>Delete Entry:</b><br>Removes the selected entry from this profile.<p>");
    string help9 = _("<b>*Clean Exec</b><br>The Clean Exec option for the discrete profile and unconstrained execute permissions provide added security by stripping the enviroment that is inherited by the child program of specific variables. These variables are:");
    string help10 = "<ul> <li>GCONV_PATH</li><li>GETCONF_DIR</li><li>HOSTALIASES</li><li>LD_AUDIT</li><li>LD_DEBUG</li><li>LD_DEBUG_OUTPUT</li><li>LD_DYNAMIC_WEAK</li><li>LD_LIBRARY_PATH</li><li>LD_ORIGIN_PATH</li><li>LD_PRELOAD</li><li>LD_PROFILE</li><li>LD_SHOW_AUXV</li><li>LD_USE_LOAD_BIAS</li><li>LOCALDOMAIN</li><li>LOCPATH</li><li>MALLOC_TRACE</li><li>NLSPATH</li><li>RESOLV_HOST_CONF</li><li>RES_OPTION</li><li>TMPDIR</li><li>TZDIR</li></ul><p> ";
@@ -492,11 +493,11 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
          string help = "";
          string formtitle = "";
          if ( hat ) {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8 + help9 + help10;
-           formtitle = "AppArmor Hat Dialog";
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8 + helpEdit + help9 + help10;
+           formtitle = _("AppArmor Hat Dialog");
          } else {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat +  help8 + help9 + help10;
-           formtitle = "AppArmor Profile Dialog";
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat + helpEdit + help8 + help9 + help10;
+           formtitle = _("AppArmor Profile Dialog");
          }
         Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, "Back", _("&Done") );
 
