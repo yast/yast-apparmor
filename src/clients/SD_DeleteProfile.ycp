@@ -20,9 +20,9 @@ textdomain  "yast2-apparmor";
 
 define any DeleteProfileConfirmation() {
   string profilename = Settings["CURRENT_PROFILE"]:"";
-  if (Popup::YesNoHeadline( _("Delete profile confirmation"), _("Are you 
-sure you want to delete the profile ")
-		+ profilename + _(" ?\nAfter this operation the AppArmor module will reload the profile set.") ) )  {
+  if (Popup::YesNoHeadline( _("Delete profile confirmation"), 
+		_("Are you sure you want to delete the profile ") + profilename + 
+		_(" ?\nAfter this operation the AppArmor module will reload the profile set.") ) )  {
     y2milestone("Deleted " + profilename );
     boolean result = SCR::Write(.subdomain_profiles.delete, profilename);
     any result2 = SCR::Write(.subdomain_profiles.reload, "-");
@@ -37,7 +37,9 @@ define any MainSequence() ``{
    map profiles = (map) SCR::Read (.subdomain_profiles, "all");
 
    map aliases = $[
-        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a selection from the listed profiles and press Next to delete the profile.<p>"), _("Delete Profile - Choose profile to delete"), "subdomain/delete_profile")),
+        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a 
+		selection from the listed profiles and press Next to delete the profile.<p>"),
+		_("Delete Profile - Choose profile to delete"), "subdomain/delete_profile")),
         "deleteprofile"   : ``(DeleteProfileConfirmation()),
    ];
 
