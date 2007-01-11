@@ -37,7 +37,7 @@ use Immunix::Ycp;
 use Immunix::SubDomain;
 
 setlocale(LC_MESSAGES, "");
-textdomain("apparmor-utils");
+textdomain("yast2-apparmor");
 
 our $UI_Mode = "yast-agent";
 

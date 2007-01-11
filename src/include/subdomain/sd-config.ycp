@@ -32,154 +32,44 @@ define boolean safeFormat (string emailAddr) {
     return isSafe;
 }
 
-define symbol displayAppArmorConfig () {
-  // AppArmor Status
-  boolean sdIsEnabled = false;
-  boolean ntIsEnabled = false;
-  string subdomain = (string) SCR::Execute(.subdomain, "sd-status");
-  string sdEnStr = _("AppArmor is disabled");
+define boolean changeAppArmorState(boolean aaEnabled) {
 
-  if (subdomain == "enabled") {
-    sdIsEnabled = true;
-  sdEnStr = _("AppArmor is enabled");
-  }
+	any error = nil;
+	string sdAction = "";
 
-  // Notification Status
-  string evnotify = (string) SCR::Execute(.subdomain, "sd-notify");
-  string evEnStr = _("Notification is disabled");
-  if (evnotify == "enabled") {
-    ntIsEnabled = true;
-  evEnStr = _("Notification is enabled");
-  } else if (evnotify == "notinstalled") {
-    evnotify = "disabled";
-  }
+	if (aaEnabled == true) {
+		sdAction = "subdomain:enable";
+	} else {
+		sdAction = "subdomain:disable";
+	}
 
-  /* Network dialog caption */
-  string caption = _("AppArmor Configuration");
-  string help = _("<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement module is loaded and functioning.</p> <p><b>Security Event Notification</b><br>Configure this tool if you want to be notified by email when access violations have occurred.</p> <p><b>Profile Modes</b><br>Use this tool to change the way that AppArmor uses individual profiles.</p>");
+	error = SCR::Execute(.sdconf, sdAction);
 
-  term contents =
-  `HVCenter( `HBox(
-    `Frame(_("AppArmor Status"), `HBox(
-    `VBox(
-    `VSpacing(3), `HSpacing(2),
-        `HBox (
-        `HSpacing( `opt(`hstretch), 4 ),
-        `VBox(
-        `Frame ( _("Enable AppArmor"),
-            `HBox(
-            `HVCenter( `Label( `id(`sdlabel), sdEnStr + " ")),
-            `PushButton( `id(`sdconf), _("&Configure") )
-            )
-        ),
-        `VSpacing( 1 ),
-        `Frame ( _(" Enable Security Event Notification "),
-            `HBox(
-            `HVCenter( `Label( `id(`notifyLabel),  evEnStr )),
-            `PushButton( `id(`ntconf), _("C&onfigure") )
-            )
-        ),
+	if ( error != nil && is(error, string) ) {
 
-        `VSpacing( 1 ),
-        `Frame ( _("Configure Profile Modes"),
-          `HBox(
-            `Left(`HVCenter( `Label( `id(`notifyLabel), " " +  _("Set Profile Modes") ))),
-            `PushButton( `id(`modeconf), _("Co&nfigure") )
-          )
-        ),
-        `VSpacing(3), `HSpacing( 2 )
-      ),
-      `VSpacing(3),
-      `HSpacing( `opt(`hstretch), 4 )
-    )))
-  )));
+		string errorMsg = (string) error;
+		string popError = _("This operation generated the following error. Please check your installation and AppArmor profile settings.");
+		Popup::Message( popError+ "\n[" + errorMsg + "]");
+		aaEnabled = ! aaEnabled;
 
-  Wizard::CreateDialog();
-  Wizard::SetTitleIcon("apparmor/control_panel");
-  Wizard::SetContentsButtons(caption, contents, help, nil, _("&Done"));
-  Wizard::DisableBackButton();
+	}
 
-  while( true ) {
-  symbol ret = (symbol) UI::UserInput();
+	return aaEnabled;
+}
 
-        if ( ret == `abort || ret == `cancel || ret == `next) {
-            break;
-        } else if (ret == `sdconf ) {
+define void displayNotifyForm() {
 
-      boolean sdNotEnabled = false;
-      if (sdIsEnabled == false) {
-        sdNotEnabled = true;
-      }
-
-        UI::OpenDialog(
-          `VBox(
-            `Frame ( _("Enable AppArmor"),
-              `HBox(
-                `RadioButtonGroup(`id(`subdomain),
-                  `HBox(
-                    `VSpacing( `opt(`vstretch), 0.5),
-                    `Left(`RadioButton(`id(0), _("Disabled"), sdNotEnabled)),
-                    `Left(`RadioButton(`id(1), _("Enabled"), sdIsEnabled)),
-                    `VSpacing( `opt(`vstretch), 0.5)
-                   )
-                )
-            )),
-            `HBox (
-              `PushButton(`id(`abort), _("&Cancel") ),
-              `PushButton(`id(`ok),  _("&OK") )
-            ))
-
-        );
-
-        /* Popup dialog to turn SD on/off */
-        any sdInput = UI::UserInput();
-        any scrret = nil;
-        boolean sdorig = sdIsEnabled;
-
-        if (sdInput == `ok) {
-          any sdEnable = UI::QueryWidget(`id(`subdomain), `CurrentButton);
-          string sdAction = "";
-          if (sdEnable == 1) {
-            sdAction = "subdomain:enable";
-            sdIsEnabled = true;
-          } else {
-            sdAction = "subdomain:disable";
-            sdIsEnabled = false;
-          }
-          scrret = SCR::Execute(.sdconf, sdAction);
-        }
-        UI::CloseDialog();
-        if ( scrret != nil && is(scrret, string) ) {
-          // Error condition.
-          string errormsg = (string) scrret;
-          string popError = _("This operation generated the following error. Please check  your installation and AppArmor profile settings.");
-          Popup::Message( popError+ "\n[" + errormsg + "]");
-          sdIsEnabled = sdorig;
-        } else {
-          string sdLabelVal = "";
-          if ( sdIsEnabled == true ) {
-            sdLabelVal = _("AppArmor is enabled");
-          } else {
-            sdLabelVal = _("AppArmor is disabled") + " ";
-          }
-            UI::ChangeWidget( `id(`sdlabel), `Value, sdLabelVal );
-        }
-    } else if (ret == `ntconf ) {
-      //map<string,map> settings = (map<string,map>) SCR::Execute(.subdomain, "sd-notify-settings");
       map settings = (map) SCR::Execute(.subdomain, "sd-notify-settings");
 
       map<string,any> terse   = settings["terse"]:$[];
       map<string,any> summary = settings["summary"]:$[];
       map<string,any> verbose = settings["verbose"]:$[];
 
-      //foreach (string k, any v, terse, { string av = tostring(v); y2milestone("[appa] Terse Check: Type: %1, Val: %2", k,av); return av; });
-
       any t_freq = terse["terse_freq"]:0;
       any s_freq = summary["summary_freq"]:0;
       any v_freq = verbose["verbose_freq"]:0;
 
       boolean t_unknown = true;
-      //string t_poop = summary["terse_unknown"]:"1";
       any a_t_poop = (any) terse["terse_unknown"]:"1";
       string t_poop = tostring(a_t_poop);
       if(t_poop == "0") {
@@ -187,7 +77,6 @@ define symbol displayAppArmorConfig () {
       }
 
       boolean s_unknown = true;
-      //string s_poop = summary["summary_unknown"]:"1";
       any a_s_poop = terse["summary_unknown"]:"1";
       string s_poop = tostring(a_s_poop);
       if(s_poop == "0") {
@@ -195,7 +84,6 @@ define symbol displayAppArmorConfig () {
       }
 
       boolean v_unknown = true;
-      //string v_poop = verbose["verbose_unknown"]:"1";
       any a_v_poop = verbose["verbose_unknown"]:"1";
       string v_poop = tostring(a_v_poop);
       if(v_poop == "0") {
@@ -203,7 +91,7 @@ define symbol displayAppArmorConfig () {
       }
 
       list terse_items = [
-        `item(`id(0),      _("Disabled"),   t_freq==0?true:false),  
+        `item(`id(0),      _("Disabled"),   t_freq==0?true:false),
         `item(`id(60),     _("1 minute"),   t_freq==60?true:false),
         `item(`id(300),    _("5 minutes"),  t_freq==300?true:false),
         `item(`id(600),    _("10 minutes"), t_freq==600?true:false),
@@ -215,7 +103,7 @@ define symbol displayAppArmorConfig () {
       ];
 
       list summary_items = [
-        `item(`id(0),      _("Disabled"),   s_freq==0?true:false),  
+        `item(`id(0),      _("Disabled"),   s_freq==0?true:false),
         `item(`id(60),     _("1 minute"),   s_freq==60?true:false),
         `item(`id(300),    _("5 minutes"),  s_freq==300?true:false),
         `item(`id(600),    _("10 minutes"), s_freq==600?true:false),
@@ -227,7 +115,7 @@ define symbol displayAppArmorConfig () {
       ];
 
       list verbose_items = [
-        `item(`id(0),      _("Disabled"),   v_freq==0?true:false),  
+        `item(`id(0),      _("Disabled"),   v_freq==0?true:false),
         `item(`id(60),     _("1 minute"),   v_freq==60?true:false),
         `item(`id(300),    _("5 minutes"),  v_freq==300?true:false),
         `item(`id(600),    _("10 minutes"), v_freq==600?true:false),
@@ -419,24 +307,121 @@ define symbol displayAppArmorConfig () {
         break;
     }
 
-  } else if (ret == `modeconf ) {
+}
 
-    ret = profileModeConfigForm();
-    if ( ret == `back ) {
-      displayAppArmorConfig();
-    }
+define symbol displayAppArmorConfig () {
 
-    break;
+  // AppArmor Status
+  boolean aaEnabled = false;
+  boolean ntIsEnabled = false;
+  string subdomain = (string) SCR::Execute(.subdomain, "sd-status");
+  string sdEnStr = _("AppArmor is disabled");
 
-    } else {
-      y2milestone("Weird dialogue close--incl." + tostring(ret));
-    }
+  if (subdomain == "enabled") {
+    aaEnabled = true;
+	sdEnStr = _("AppArmor is enabled");
   }
-  UI::CloseDialog();
-  /* Finish */
-  y2milestone("AppArmor config module finished");
-  y2milestone("----------------------------------------");
 
+  // Notification Status
+  string evnotify = (string) SCR::Execute(.subdomain, "sd-notify");
+  string evEnStr = _("Notification is disabled");
+  if (evnotify == "enabled") {
+    ntIsEnabled = true;
+	evEnStr = _("Notification is enabled");
+  } else if (evnotify == "notinstalled") {
+    evnotify = "disabled";
+  }
+
+  /* Network dialog caption */
+  string caption = _("AppArmor Configuration");
+  string help = _("<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement module is loaded and functioning.</p> <p><b>Security Event Notification</b><br>Configure this tool if you want to be notified by email when access violations have occurred.</p> <p><b>Profile Modes</b><br>Use this tool to change the way that AppArmor uses individual profiles.</p>");
+
+  term contents =
+  `HVCenter(
+    `VBox(
+    `VSpacing(1), `HSpacing(2),
+        `HBox (
+	        `HSpacing( `opt(`hstretch), 2 ),
+	        `VBox(
+	            `Left(`CheckBox( `id(`aaState), `opt(`notify), ("&Enable AppArmor"), aaEnabled)),
+		        `VSpacing(1),
+
+				`Frame( `id(`aaEnableFrame), _("Configure AppArmor"),
+			        `HBox (
+				        `HSpacing( `opt(`hstretch), 4 ),
+						`VBox(
+					        `VSpacing(1),
+					        `Frame ( _("Security Event Notification"),
+					            `HBox(
+						            `VSpacing(1), `HSpacing(1),
+						            `HVCenter( `Label( `id(`notifyLabel),  evEnStr )),
+						            `PushButton( `id(`ntconf), _("C&onfigure")),
+						            `VSpacing(1), `HSpacing(1)
+					            )
+					        ),
+					        `VSpacing(1), `HSpacing(20),
+
+					        `Frame ( _("Configure Profile Modes"),
+					          `HBox(
+					            `VSpacing(1), `HSpacing(1),
+					            `Left(`HVCenter( `Label( `id(`notifyLabel), " " +  _("Set profile modes") ))),
+					            `PushButton( `id(`modeconf), _("Co&nfigure") ),
+					            `VSpacing(1), `HSpacing(1)
+					          )
+							),
+					        `VSpacing(1)
+						),
+				        `HSpacing( `opt(`hstretch), 4 )
+					))),
+		      `HSpacing( `opt(`hstretch), 2 )
+        ))
+  );
+
+	// May want to replace Wizard() with UI()
+	Wizard::CreateDialog();
+	Wizard::SetTitleIcon("apparmor/control_panel");
+	Wizard::SetContentsButtons(caption, contents, help, nil, _("&Done"));
+	Wizard::DisableBackButton();
+
+	UI::ChangeWidget(`id(`aaEnableFrame), `Enabled, aaEnabled);
+
+	while( true ) {
+
+		symbol ret = (symbol) UI::UserInput();
+
+		if ( ret == `abort || ret == `cancel || ret == `next) {
+            break;
+        } else if (ret == `aaState ) {
+
+			// Set AppArmor state: enabled|disabled
+			boolean requestedAaState = (boolean) UI::QueryWidget(`id(`aaState), `Value);
+
+			aaEnabled = changeAppArmorState(requestedAaState);
+
+			// These will match if the update was successful
+			if ( aaEnabled == requestedAaState ) {
+				UI::ChangeWidget(`id(`aaEnableFrame), `Enabled, aaEnabled);
+			}
+
+		} else if (ret == `ntconf ) {
+			displayNotifyForm();
+
+		} else if (ret == `modeconf ) {
+
+			ret = profileModeConfigForm();
+
+			if ( ret == `back ) {
+				displayAppArmorConfig();
+			}
+
+			break;
+
+		} else {
+			y2error("Unexpected return code: " + tostring(ret));
+		}
+  }
+
+  UI::CloseDialog();
   return nil;
 }
 

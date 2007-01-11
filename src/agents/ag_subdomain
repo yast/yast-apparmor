@@ -23,10 +23,10 @@ use Immunix::Notify;
 use Immunix::SubDomain;
 use Data::Dumper;
 #use POSIX;
-#use Locale::gettext;
+use Locale::gettext;
 
-#setlocale(LC_MESSAGES, "");
-#textdomain("apparmor-utils");
+setlocale(LC_MESSAGES, "");
+textdomain("yast2-apparmor");
 
 
 # Subroutines

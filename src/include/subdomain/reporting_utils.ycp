@@ -406,6 +406,7 @@ define string popUpMode() {
 define string popUpSdMode() {
 
 	string checkMode = (string) UI::QueryWidget(`id(`sdmode), `Label);
+	checkMode = filterchars(checkMode, "APRl");
     list splitMode = splitstring (checkMode, " ");
     string mySdMode = splitMode[size(splitMode)-1]:"R";
 
@@ -414,7 +415,7 @@ define string popUpSdMode() {
 			`HBox(
 				`CheckBox(`id(`clear), `opt(`notify, `immediate ), _("All"), false),
 				`CheckBox(`id(`permit), `opt(`notify, `immediate ), _("Permit"), false),
-				`CheckBox(`id(`reject),`opt(`notify, `immediate ), _("Reject"), true),
+				`CheckBox(`id(`reject),`opt(`notify, `immediate ), _("Reject"), false),
 				`CheckBox(`id(`audit),`opt(`notify, `immediate ), _("Audit"), false)
 			),
 			`HBox(

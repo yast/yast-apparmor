@@ -27,7 +27,7 @@ sub usage {
 
 # initialize the local poo
 setlocale(LC_MESSAGES, "");
-textdomain("apparmor-utils");
+textdomain("yast2-apparmor");
 
 setup_yast();
 

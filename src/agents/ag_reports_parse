@@ -35,7 +35,7 @@ use POSIX;
 use Locale::gettext;
 
 setlocale(LC_MESSAGES, "");
-textdomain("apparmor-utils");
+textdomain("yast2-apparmor");
 
 # Writes out file to allow for multiple pages in YaST form
 #	-For large number of entries in the array

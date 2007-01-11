@@ -501,7 +501,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat + helpEdit + help8 + help9 + help10;
            formtitle = _("AppArmor Profile Dialog");
          }
-        Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, _("Back"), _("&Done") );
+        Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, _("&Back"), _("&Done") );
 
 
 
