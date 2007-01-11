@@ -24,7 +24,7 @@ use POSIX;
 use Locale::gettext;
 
 setlocale(LC_MESSAGES, "");
-textdomain("apparmor-utils");
+textdomain("yast2-apparmor");
 
 use constant NTCONF => '/etc/apparmor/notify.cfg';
 

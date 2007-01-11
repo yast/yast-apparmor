@@ -23,7 +23,7 @@ use Immunix::SubDomain;
 
 # initialize the local poo
 setlocale(LC_MESSAGES, "");
-textdomain("apparmor-utils");
+textdomain("yast2-apparmor");
 
 setup_yast();
 
@@ -50,7 +50,7 @@ unless($sd_mountpoint) {
 $profiledir = get_full_path($profiledir);
   
 unless(-d $profiledir) {
-  fatal_error "Can't find subdomain profiles in $profiledir.";
+  fatal_error(sprintf(gettext("Can't find subdomain profiles in %s."), $profiledir));
 }
 
 # what are we profiling?
@@ -62,18 +62,18 @@ do {
   my $f = {
     description  =>
 
-"This wizard will help you create a new AppArmor security 
+gettext("This wizard will help you create a new AppArmor security 
 profile for an application, or you can use it to enhance 
 an existing profile by allowing AppArmor to learn new 
 application behavior. 
 
 Please enter the application name for which you would like
 to create a profile, or selecte Browse to find the 
-application on your system.",
-    file_label   => "&Application to Profile",
-    okay_label   => "&Create",
-    cancel_label => "&Abort",
-    browse_desc  => "Select Program to Profile",
+application on your system."),
+    file_label   => gettext("&Application to Profile"),
+    okay_label   => gettext("&Create"),
+    cancel_label => gettext("&Abort"),
+    browse_desc  => gettext("Select Program to Profile"),
   };
 
   my $profiling = UI_GetFile( $f );
@@ -92,18 +92,18 @@ application on your system.",
       chomp($fqdbin);
 
       unless(-x $fqdbin) {
-        UI_Important("The specified file is not executable.
+        UI_Important(gettext("The specified file is not executable.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.");
+Abort to cancel this wizard."));
       }
     } elsif(-d $profiling) {
-      UI_Important("The specified pathname is a directory.
+      UI_Important(gettext("The specified pathname is a directory.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.");
+Abort to cancel this wizard."));
     } else {
       if($profiling !~ /\//) {
         my $which = which($profiling);
@@ -113,11 +113,11 @@ Abort to cancel this wizard.");
       }
 
       unless(-f $fqdbin) {
-        UI_Important("The specified file does not exist.
+        UI_Important(gettext("The specified file does not exist.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.");
+Abort to cancel this wizard."));
       }
     }
 
@@ -187,7 +187,7 @@ while(not $done_profiling) {
 
   my $q = { };
   $q->{headers}   = [ gettext("Profiling"), $fqdbin ];
-  $q->{explanation} = "Please start the application to be profiled in
+  $q->{explanation} = gettext("Please start the application to be profiled in
 another window and exercise its functionality now.
 
 Once completed, select the 'Scan' option below in
@@ -195,7 +195,7 @@ order to scan the system logs for AppArmor events.
 
 For each AppArmor event, you will be given the
 opportunity to choose whether the access should be
-allowed or denied.";
+allowed or denied.");
   $q->{functions} = [ "CMD_SCAN", "CMD_FINISHED" ];
   $q->{default}   = "CMD_SCAN";
   my ($ans, $arg) = UI_PromptUser($q);

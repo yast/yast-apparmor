@@ -1986,12 +1986,8 @@ define void editSchedForm() {
     list<term> itemList = [];
     integer key = 1;
 
-    //list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
-    //map<string,string> db = (map<string,string>) SCR::Read (.reports_sched, Settings);
 	map <any,any> db = nil;
     db = (map) SCR::Read (.reports_sched, Settings );
-	//any aname = db["name"]:"";
-	//string sname = tostring(aname);
 	string sname = name;		// Don't know why this was pulled from db instead of name above
 	any amday = db["mday"]:nil;
 	any wday = db["wday"]:nil;
@@ -2005,7 +2001,6 @@ define void editSchedForm() {
 	if (amday != nil) { monthdate = tostring(amday); }
 	if (wday != nil) { swday = tostring(wday); }
 
-	//integer iwday = tointeger(wday);
 	integer ihour = 23;
 	integer imins = 59;
 	if (shour != nil) { ihour  = tointeger(shour); }
@@ -2045,7 +2040,7 @@ define void editSchedForm() {
 	any aprof = db2["prof"]:nil;
 	any apid = db2["pid"]:nil;
 	any ares = db2["res"]:nil;
-	any asev = db2["sev"]:nil;
+	any asev = db2["severity"]:nil;
 	any asdmode = db2["sdmode"]:nil;
 	any amode = db2["mode"]:nil;
 	any acsv = db2["csv"]:nil;
@@ -2131,17 +2126,9 @@ define void editSchedForm() {
                 `item(`id(`md_28), "28"), `item(`id(`md_29), "29"), `item(`id(`md_30), "30"),
                 `item(`id(`md_31), "31")
             ]),
-            // DWR MOD `ComboBox(`id(`weekday), `opt(`notify, `immediate), _("Day of Week"),  [
             `ComboBox(`id(`weekday), `opt(`notify), _("Day of Week"),  [
                 _("All"), _("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")
             ]),
-/*
-            `ComboBox(`id(`weekday), `opt(`notify, `immediate), "Run Weekly",  [
-                    `id(`wd_na), "-", `id(`wd_sun), "Sun", `id(`wd_mon), "Mon",
-                    `id(`wd_tue), "Tue", `id(`wd_wed), "Wed", `id(`wd_thu), "Thu",
-                    `id(`wd_fri), "Fri", `id(`wd_sat), "Sat"
-            ]),
-*/
             `IntField(`id(`hour), _("Hour"), 0, 23, ihour),
             `IntField(`id(`mins), _("Minute"), 0, 59, imins)
         ),
@@ -2162,19 +2149,9 @@ define void editSchedForm() {
             ]),
             `TextEntry(`id(`expPath), _("Location to store log."), expPath ),
             `Bottom( `VWeight( 1, `PushButton(`id(`browse), _("&Browse")) ))
-/*
-            `CheckBox(`id(`csv), _("Send reports in CSV Format"), csv),
-            `CheckBox(`id(`html), _("Send reports in HTML Format"), html)
-*/
         ),
         `VSpacing(1),
 		continueBtns
-/*
-        `HBox(
-             `PushButton(`id(`cancel), _("&Cancel") ),
-             `PushButton(`id(`fwd), _("N&ext") )
-        )
-*/
     )));
 
 	/**************************************************/
@@ -2216,7 +2193,6 @@ define void editSchedForm() {
             string email2 = (string) UI::QueryWidget(`id(`email2), `Value);
             string email3 = (string) UI::QueryWidget(`id(`email3), `Value);
 
-            // New - Mar. 26, 2006 - debug
             string spath = "0";
 
             expPath = (string) UI::QueryWidget(`id(`expPath), `Value);
@@ -2430,9 +2406,7 @@ define void updateSched() {
             `VSpacing(2),
             `HBox(
                `VSpacing(10),
-               // DWR MOD `Table(`id(`table), `opt(`notify, `immediate ), `header(_("Report Name"), _("Day of Month"), _("Day of Week"), _("Hour"), _("Mins") ), itemList)
                `Table(`id(`table), `opt(`notify), `header(_("Report Name"), _("Day of Month"), _("Day of Week"), _("Hour"), _("Mins") ), itemList)
-//               `Table(`id(`table), `opt(`notify, `immediate ), `header("Report Name", "Last Run", "Day of Month", "Day of Week", "Hours", "Mins"), reportlist)
 			),
             `VSpacing(0.5),
 			`HBox(
