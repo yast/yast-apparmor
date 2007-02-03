@@ -24,7 +24,7 @@ use POSIX;
 use Locale::gettext;
 
 setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
+textdomain("apparmor-utils");
 
 use constant NTCONF => '/etc/apparmor/notify.cfg';
 
@@ -48,7 +48,7 @@ sub updateFiles {
     if ( unlink("$oldFile") ) {
         if ( ! rename ("$newFile", "$oldFile") ) {
             if ( ! system('/bin/mv', "$newFile","$oldFile") ) {
-                Immunix::Ycp::y2error(sprintf(gettext("Failed copying %s."), $oldFile));
+                ycp::y2error(sprintf(gettext("Failed copying %s."), $oldFile));
                 return 1;
             }
         }
