@@ -20,8 +20,9 @@
 #####################################################################
 
 use strict;
+use ycp;
+
 use Immunix::SubDomain;
-use Immunix::Ycp;
 
 ################
 # Subroutines
@@ -65,50 +66,50 @@ sub newprofile {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $argument) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $argument) = ycp::ParseCommand ($_);
     $argument = "NONE" if ( ! $argument ); 
-    Immunix::Ycp::y2milestone ("DOM command: $command, path: $path, argument: $argument");
+    ycp::y2milestone ("DOM command: $command, path: $path, argument: $argument");
 
 	my $result = undef;
 	if ( $command && $path && $argument ) {
 		if ( $command eq "Read" and $argument eq "all") {
                    $UI_Mode = "yast";
                    Immunix::SubDomain::readprofiles();
-		   Immunix::Ycp::Return( \%sd );
+		   ycp::Return( \%sd );
 		} elsif ( $command eq "Read" and $path eq ".new" ) {
                    my $pfname = getprofilefilename($argument);
                    if  ( -e $pfname ) {
-                     Immunix::Ycp::Return("false");
+                     ycp::Return("false");
                    } else {   
                      newprofile( $argument );
-                     Immunix::Ycp::Return( "true" );
+                     ycp::Return( "true" );
 	           }	
                 } elsif ( $command eq "Read" ) {
                    my $pfname = getprofilefilename($argument);
                    if ( -e $pfname ) {
                      $UI_Mode = "yast";
                      Immunix::SubDomain::readprofiles();
-		     Immunix::Ycp::Return( $sd{$argument} );
+		     ycp::Return( $sd{$argument} );
                    } else { 
-		     Immunix::Ycp::Return( "false" );
+		     ycp::Return( "false" );
                    }
 		} elsif ( $command eq "Read") {
                     $UI_Mode = "yast";
                     Immunix::SubDomain::readprofile("$profiledir/$argument", \&$Immunix::SubDomain::fatal_error);
-		    Immunix::Ycp::Return( \%sd );
+		    ycp::Return( \%sd );
 		} elsif ( $command eq "Write" and $path eq ".delete") {
                   if ( $argument ne "" ) {
                     my $profilefile = getprofilefilename( $argument );
                     if ( -e $profilefile ) {
                       unlink( $profilefile );
                     }   
-		    Immunix::Ycp::Return( "true" );
+		    ycp::Return( "true" );
                   } else {
-		    Immunix::Ycp::Return( "false" );
+		    ycp::Return( "false" );
                   }
 		} elsif ( $command eq "Write" and $path eq ".reload") {
                      $result = system("/sbin/rcsubdomain reload > /dev/null 2>&1");
-		     Immunix::Ycp::Return( "true" );
+		     ycp::Return( "true" );
 		} elsif ( $command eq "Write") {
                     if ( (ref($argument) eq "HASH") ) {
                      my $profilename = "";
@@ -121,9 +122,9 @@ while ( <STDIN> ) {
                       $UI_Mode = "yast";
 		      $result = Immunix::SubDomain::writeprofile($profilename);
                      } else {
-		     Immunix::Ycp::Return( "false" );
+		     ycp::Return( "false" );
                      }  
-		     Immunix::Ycp::Return( "true" );
+		     ycp::Return( "true" );
                     }
 		} 
 	} else {
@@ -131,7 +132,7 @@ while ( <STDIN> ) {
 		my $ycpCmd = ycpGetCommand() || "";
 		my $ycpArg = ycpGetArgType() || "";
 		$result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
-		Immunix::Ycp::Return( $result );
+		ycp::Return( $result );
 	}
 }
 }

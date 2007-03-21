@@ -19,11 +19,12 @@
 
 use strict;
 use ycp;
+use Data::Dumper;
+use Locale::gettext;
+#use POSIX;
+
 use Immunix::Notify;
 use Immunix::SubDomain;
-use Data::Dumper;
-#use POSIX;
-use Locale::gettext;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");

@@ -29,10 +29,11 @@
 my $Version='0.61';
 
 use strict;
-use Immunix::Ycp;
-use Immunix::Reports;
-use POSIX;
 use Locale::gettext;
+use POSIX;
+use ycp;
+
+use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
@@ -73,7 +74,7 @@ sub writePagingFile {
 		close PF;
 
 	} else {
-		Immunix::Ycp::y2error(sprintf(gettext("ag_reports_parse: Couldn't open %s for writing."), $pagingFile));
+		ycp::y2error(sprintf(gettext("ag_reports_parse: Couldn't open %s for writing."), $pagingFile));
 	}
 
 	return;
@@ -140,13 +141,13 @@ sub getFileList {
 			#writePagingFile(\@dirList);
 			return \@dirList;
 		} else {
-			Immunix::Ycp::y2error(gettext("ag_reports_parse: No archived reports found."));
+			ycp::y2error(gettext("ag_reports_parse: No archived reports found."));
 			return $error;
 		}
 
 	} else {
 		$error = sprintf(gettext("ag_reports_parse: Can't open directory %s: %s"), $logDir, $!);
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
 			return $error;
 	}
 }
@@ -156,7 +157,7 @@ sub getFileList {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $args) = ycp::ParseCommand ($_);
 
     if ( $command && $path && $args ) {
 
@@ -164,27 +165,27 @@ while ( <STDIN> ) {
 
 		if ( $args->{'checkDb'} && $args->{'checkDb'} == 1 ) {
 			my $check = Immunix::Reports::checkEventDb();
-            Immunix::Ycp::ycpReturn( $check );
+            ycp::Return( $check );
 
         } elsif ( $args->{'getLastPage'} && $args->{'getLastPage'} == 1 ) {
 
 			my $ref = undef;
             $ref->{'numPages'} = Immunix::Reports::getNumPages($args);
-            Immunix::Ycp::ycpReturn( $ref );
+            ycp::Return( $ref );
 
         } elsif ( $args->{'checkFile'} && $args->{'checkFile'} == 1 ) {
 			my $fileCheck = Immunix::Reports::checkFileExists("$args->{'file'}");
-            Immunix::Ycp::ycpReturn( $fileCheck );
+            ycp::Return( $fileCheck );
 
 		} else {
 			my $dirList = getFileList($args);
-			Immunix::Ycp::ycpReturn( $dirList );
+			ycp::Return( $dirList );
 		}
 
     } else {
         my $error = sprintf( gettext("ag_reports_parse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
-        Immunix::Ycp::y2error("$error");
-        Immunix::Ycp::ycpReturn($error);
+        ycp::y2error("$error");
+        ycp::Return($error);
         exit 1;
     }
 
