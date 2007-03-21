@@ -36,10 +36,11 @@
 #
 ################################################################################
 use strict;
-use Immunix::Ycp;
-use Immunix::Reports;
-use POSIX;
 use Locale::gettext;
+use POSIX;
+use ycp;
+
+use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
@@ -68,7 +69,7 @@ sub setCronTab {
 		#system('/usr/bin/crontab', '-u root', "$cronFile");
 		system("/usr/bin/crontab -u root $cronFile");
 	} else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't find %s.  Unable to create crontab.  Exiting."), $cronFile));
+		ycp::y2error(sprintf(gettext("Couldn't find %s.  Unable to create crontab.  Exiting."), $cronFile));
 		exit 1; 
 	}
 
@@ -125,7 +126,7 @@ sub findDupeReportName {
         close CRON;
 
 	} else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
 		exit 1;
 	}
 
@@ -167,7 +168,7 @@ sub addCron {
 		close CRON;
 
     } else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
         return 1;
     }
 
@@ -238,14 +239,14 @@ sub addConf {
 
         } else {
             my $error = sprintf(gettext("Couldn't open %s.  Unable to add report: %s"), $newSchedConf, $args->{'name'});
-            Immunix::Ycp::y2error($error);
+            ycp::y2error($error);
             return 1;
         }
 
         close OCF;
 
     } else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
         return 1;
     }
 
@@ -263,7 +264,7 @@ sub addReport {
 
 	if ($dupe == 1) {
 		my $error = sprintf(gettext("Duplicate report name not allowed. Didn't schedule new report: %s"), $args->{'name'});
-		Immunix::Ycp::y2error("$error");
+		ycp::y2error("$error");
 		return 1;
 	}
 
@@ -278,9 +279,9 @@ sub addReport {
 
 	if ($error == 0) {
 		$error = addConf($args);
-		if ($error != 0) { Immunix::Ycp::y2error($error); }
+		if ($error != 0) { ycp::y2error($error); }
 	} else {
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
 		exit 1;
 	}
 
@@ -308,14 +309,14 @@ sub delCron {
 			close NCRON;
 
 		} else {
-			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedCron));
+			ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedCron));
 	        return 1;
 		}
 
 		close OCRON;
 
 	} else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
         return 1;
 	}
 
@@ -379,14 +380,14 @@ sub delConf {
             close NCF;
 
         } else {
-			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedConf));
+			ycp::y2error(sprintf(gettext("Couldn't open %s."), $newSchedConf));
             return 1;
         }
 
         close OCF;
 
     } else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedConf));
         return 1;
     }
 
@@ -405,9 +406,9 @@ sub delReport {
 
 	if ($error == 0) {
 		$error = delConf($name);
-		if ($error != 0) { Immunix::Ycp::y2error($error); }
+		if ($error != 0) { ycp::y2error($error); }
 	} else {
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
 		exit 1;
 	}
 
@@ -469,7 +470,7 @@ sub parseCron {
 		close CRON;
 
     } else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
         return 1;
     }
 
@@ -534,7 +535,7 @@ sub getCron {
 		close CRON;
 
     } else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s."), $schedCron));
         return 1;
     }
 
@@ -575,14 +576,14 @@ sub editCron {
 			close NCRON;
 
 		} else {
-			Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $newCron));
+			ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $newCron));
 			return 1;
 		}
 
 		close CRON;
 
 	} else {
-		Immunix::Ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $schedCron));
+		ycp::y2error(sprintf(gettext("Couldn't open %s.  No changes performed."), $schedCron));
 		return 1;
 	}
 
@@ -626,7 +627,7 @@ sub editSched {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $args) = ycp::ParseCommand ($_);
 
 	if ( $command && $path && $args ) {
 
@@ -639,7 +640,7 @@ while ( <STDIN> ) {
 		# Check that we have a report name
 		if ( $args->{'setconf'} || $args->{'add'} || $args->{'del'} ) {
 			unless ( $args->{'name'} ) {
-				Immunix::Ycp::y2milestone("Error:  no report name given.  Skipping update.");
+				ycp::y2milestone("Error:  no report name given.  Skipping update.");
 				$args = undef;
 			}
 		}
@@ -678,14 +679,14 @@ while ( <STDIN> ) {
 		}
 
 		if ( defined($db) ) {
-		    Immunix::Ycp::ycpReturn( $db );
+		    ycp::Return( $db );
 		} else {
-		    Immunix::Ycp::ycpReturn( "true" );
+		    ycp::Return( "true" );
 		}
 
     } else {
         my $error = sprintf( gettext("ag_reports_sched: Unknown instruction %s or arg: %s"), ycpGetCommand, ycpGetArgType);
-        Immunix::Ycp::ycpReturn($error);
+        ycp::Return($error);
     }
 }
 

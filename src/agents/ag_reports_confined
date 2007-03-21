@@ -10,9 +10,9 @@
 # ------------------------------------------------------------------
 
 use strict;
-use Immunix::Ycp;
-use POSIX;
 use Locale::gettext;
+use POSIX;
+use ycp;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
@@ -110,7 +110,7 @@ sub writePagingFile {
         close PF;
 
     } else {
-        Immunix::Ycp::y2error(sprintf(gettext("ag_reports_confined: Couldn't open %s for writing."), $pagingFile));
+        ycp::y2error(sprintf(gettext("ag_reports_confined: Couldn't open %s for writing."), $pagingFile));
     }
 
     return;
@@ -186,7 +186,7 @@ sub readAudLog {
 	    $logFile = $args->{'file'};
 	} else {
 		$error = gettext("readAudLog() wasn't passed an input file.");
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
         exit 1;
 	}
 
@@ -210,7 +210,7 @@ sub readAudLog {
 
     } else {
         $error = sprintf(gettext("readAudLog\(\) couldn't open %s."), $logFile);
-        Immunix::Ycp::y2error($error);
+        ycp::y2error($error);
         exit 1;
     }
 
@@ -268,7 +268,7 @@ sub getCfInfo {
 
 	} else {
 		my $error = sprintf(gettext("Can't run %s.  Exiting."), $cfApp);
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
 		return $error;
 	}
 
@@ -281,7 +281,7 @@ sub getCfInfo {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $args) = ycp::ParseCommand ($_);
 
     if ( $command && $path && $args ) {
 
@@ -300,12 +300,12 @@ while ( <STDIN> ) {
 		}
 
 		writePagingFile($db);
-	    Immunix::Ycp::ycpReturn( $db );
+	    ycp::Return( $db );
 
 	    } else {
 	        my $error = gettext("ag_reports_confined: Missing instruction or argument!");
-	        Immunix::Ycp::y2error($error);
-	        Immunix::Ycp::ycpReturn($error);
+	        ycp::y2error($error);
+	        ycp::Return($error);
 	        exit 1;
 	    }
 }

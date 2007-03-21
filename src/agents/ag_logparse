@@ -33,10 +33,11 @@
 my $Version='1.03';
 
 use strict;
-use Immunix::Reports;
-use Immunix::Ycp;
-use POSIX;
 use Locale::gettext;
+use POSIX;
+use ycp;
+
+use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
@@ -59,7 +60,7 @@ sub saveQuery {
 
 	} else {
 		my $error = gettext("Unable to open") . " $qLog " . gettext("Couldn't save query.");
-		Immunix::Ycp::y2error($error);
+		ycp::y2error($error);
 	}
 }
 
@@ -79,7 +80,7 @@ sub getSavedQuery {
 
     } else {
 		my $error = gettext("Unable to open") . " $qLog " . gettext("Couldn't retrieve query.");
-        Immunix::Ycp::y2error("Unable to open $qLog.  Couldn't retrieve query.");
+        ycp::y2error("Unable to open $qLog.  Couldn't retrieve query.");
     }
 
     # rewrite query for current page
@@ -217,7 +218,7 @@ sub exportReports {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $args) = ycp::ParseCommand ($_);
 
 	my $db = undef;
 	my $error = undef;
@@ -305,7 +306,7 @@ while ( <STDIN> ) {
 		#if ($args) {
 		#	my $argList = "";
 		#	for (sort keys(%$args) ) { $argList .= "$_ is $args->{$_}, "; }
-		#	Immunix::Ycp::y2milestone("Today's Available Args: $argList");
+		#	ycp::y2milestone("Today's Available Args: $argList");
 		#}
 		########################################	
 
@@ -353,7 +354,7 @@ while ( <STDIN> ) {
 				#$db = Immunix::Reports::getArchReport($args);
 
 			} else {
-		        Immunix::Ycp::y2error("ag_logparse - Unable to run archived reports: $error");
+		        ycp::y2error("ag_logparse - Unable to run archived reports: $error");
 			}
 
 		} elsif ($onDemand == 1) {
@@ -381,20 +382,20 @@ while ( <STDIN> ) {
 		}
 
 		if ( ! $error || ($error eq "0") ) {
-	        Immunix::Ycp::ycpReturn( $db );
+	        ycp::Return( $db );
 		} elsif ( $error ne "0" ) {
-		    Immunix::Ycp::y2error("ag_logparse: $error");
-		    Immunix::Ycp::ycpReturn( $error );
+		    ycp::y2error("ag_logparse: $error");
+		    ycp::Return( $error );
 			exit 1;
 		} else {
-		    Immunix::Ycp::ycpReturn( $error );
+		    ycp::Return( $error );
 		}
 
     } else {
         #my $error = sprintf( gettext("ag_logparse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
         my $error = "ag_logparse: Missing instruction or argument!";
-		Immunix::Ycp::y2error($error);
-        Immunix::Ycp::ycpReturn($error);
+		ycp::y2error($error);
+        ycp::Return($error);
 		exit 1;
     }
 

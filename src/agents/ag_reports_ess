@@ -24,10 +24,11 @@
 ################################################################################
 
 use strict;
-use Immunix::Ycp;
-use Immunix::Reports;
-use POSIX;
 use Locale::gettext;
+use POSIX;
+use ycp;
+
+use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
@@ -101,7 +102,7 @@ sub readEssLog {
         $logFile = $args->{'file'};
     } else {
         $error = gettext("readEssLog() wasn't passed an input file.");
-        Immunix::Ycp::y2error($error);
+        ycp::y2error($error);
         exit 1;
     }
 
@@ -125,7 +126,7 @@ sub readEssLog {
 
     } else {
         $error = sprintf(gettext("readEssLog() couldn't open %s"), $logFile);
-        Immunix::Ycp::y2error($error);
+        ycp::y2error($error);
         exit 1;
     }
 
@@ -137,7 +138,7 @@ sub readEssLog {
 
 while ( <STDIN> ) {
 
-    my ($command, $path, $args) = Immunix::Ycp::ParseCommand ($_);
+    my ($command, $path, $args) = ycp::ParseCommand ($_);
 
 	if ($command && $path && $args) {
 
@@ -155,12 +156,12 @@ while ( <STDIN> ) {
 			$db = Immunix::Reports::getEssStats($args);
 	    }
 
-	    Immunix::Ycp::ycpReturn( $db );
+	    ycp::Return( $db );
 
     } else {
         my $error = sprintf( gettext("ag_logparse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
-        Immunix::Ycp::y2error("$error");
-        Immunix::Ycp::ycpReturn($error);
+        ycp::y2error("$error");
+        ycp::Return($error);
         exit 1;
     }
 
