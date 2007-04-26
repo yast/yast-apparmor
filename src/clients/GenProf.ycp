@@ -214,13 +214,6 @@
         <li>TZDIR</li> </ul>
 ");
 
-
-
-
-
-
-
-
       list<string> headers     = agent_data["headers"]:[];
       list<string> options     = agent_data["options"]:[];
       list<string> functions   = agent_data["functions"]:["CMD_ABORT"];
@@ -311,7 +304,7 @@
       idx = 0;
       foreach (string option, options, ``{
         if(UI::QueryWidget(`id(idx), `Value) == true) {
-          answers["selected"] = option;
+          answers["selected"] = idx;
         }
         idx = idx + 1;
       });
