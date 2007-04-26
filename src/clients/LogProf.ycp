@@ -302,7 +302,7 @@
       map<string,string> answers = UI_RepositorySignInDialog( agent_data );
       SCR::Write(.genprof, answers);
 
-    } else if (type == "dialog-repo-view-profile") {
+    } else if (type == "dialog-view-profile") {
 
       map<string,string> answers = $[ ];
       UI_RepositoryViewProfile( agent_data );
