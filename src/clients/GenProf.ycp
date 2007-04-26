@@ -21,19 +21,22 @@
   string status = "";
 
   map CMDS = $[ ];
-  CMDS["CMD_ALLOW"]      = _("&Allow");
-  CMDS["CMD_DENY"]       = _("&Deny");
-  CMDS["CMD_ABORT"]      = _("Abo(r)t");
-  CMDS["CMD_FINISHED"]   = _("&Finish");
-  CMDS["CMD_INHERIT"]    = _("&Inherit");
-  CMDS["CMD_PROFILE"]    = _("&Profile");
-  CMDS["CMD_UNCONFINED"] = _("&Unconfined");
-  CMDS["CMD_NEW"]        = _("&Edit");
-  CMDS["CMD_GLOB"]       = _("&Glob");
-  CMDS["CMD_GLOBEXT"]    = _("Glob w/E&xt");
-  CMDS["CMD_ADDHAT"]     = _("&Add Requested Hat");
-  CMDS["CMD_USEDEFAULT"] = _("&Use Default Hat");
-  CMDS["CMD_SCAN"]       = _("&Scan system log for AppArmor events");
+  CMDS["CMD_ALLOW"]          = _("&Allow");
+  CMDS["CMD_DENY"]           = _("&Deny");
+  CMDS["CMD_ABORT"]          = _("Abo(r)t");
+  CMDS["CMD_FINISHED"]       = _("&Finish");
+  CMDS["CMD_INHERIT"]        = _("&Inherit");
+  CMDS["CMD_PROFILE"]        = _("&Profile");
+  CMDS["CMD_UNCONFINED"]     = _("&Unconfined");
+  CMDS["CMD_NEW"]            = _("&Edit");
+  CMDS["CMD_GLOB"]           = _("&Glob");
+  CMDS["CMD_GLOBEXT"]        = _("Glob w/E&xt");
+  CMDS["CMD_ADDHAT"]         = _("&Add Requested Hat");
+  CMDS["CMD_USEDEFAULT"]     = _("&Use Default Hat");
+  CMDS["CMD_SCAN"]           = _("&Scan system log for AppArmor events");
+  CMDS["CMD_VIEW_REPO"]      = _("&View Profile");
+  CMDS["CMD_USE_REPO"]       = _("&Use Profile");
+  CMDS["CMD_CREATE_PROFILE"] = _("&Create New Profile");
 
   if (!installAppArmorPackages()) {
     return;
@@ -311,6 +314,26 @@
 
       // tell the backend what they did
       SCR::Write(.genprof, answers);
+
+    } else if (type == "dialog-view-profile") {
+
+      string user = agent_data["user"]:"MISSING USER";
+      string profile = agent_data["profile"]:"MISSING PROFILE";
+      string default_ans  = agent_data["default"]:"b";
+
+      symbol focus = `focus_yes;
+      if (default_ans == "b") {
+        focus = `focus_no;
+      }
+      map answers = $[ ];
+      if (Popup::AnyQuestion(_("Profile created by user ") + user,
+        profile, _("&Use Profile"), _("&Back"), focus)) {
+        answers["answer"] = "u";
+      } else {
+        answers["answer"] = "b";
+      }
+      // write the answers for the last dialog
+      boolean written = SCR::Write(.genprof, answers);
 
     } else if (type == "dialog-yesno") {
 
