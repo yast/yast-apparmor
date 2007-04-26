@@ -85,8 +85,8 @@ while ( <STDIN> ) {
     } elsif ( $argument eq 'sd-notify') {
       $result = Immunix::Notify::getNotifyStatus();
     } elsif ( $command eq "Read" and $argument eq 'custom-includes') {
-      Immunix::SubDomain::readconfig();
-      ycp::ycpReturn(\@Immunix::SubDomain::custom_includes);
+      my $cfg = Immunix::SubDomain::read_config("logprof.conf");
+      ycp::ycpReturn(\@$cfg->{settings}{custom_includes});
       $donereturn = 1;
     } elsif ( $command eq "Execute" and $argument eq 'profile-syntax-check') {
       $result = profileSyntaxCheck();
