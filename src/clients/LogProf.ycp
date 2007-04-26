@@ -303,7 +303,7 @@
       idx = 0;
       foreach (string option, options, ``{
         if(UI::QueryWidget(`id(idx), `Value) == true) {
-          answers["selected"] = option;
+          answers["selected"] = idx;
         }
         idx = idx + 1;
       });
