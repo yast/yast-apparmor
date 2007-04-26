@@ -133,25 +133,9 @@ Abort to cancel this wizard."));
 
 } until($fqdbin && -x $fqdbin);
 
-# read the settings in /etc/logprof.conf
-readconfig();
-
 # make sure that the app they're requesting to profile is not marked as
 # not allowed to have it's own profile
-if($qualifiers{$fqdbin}) {
-  unless($qualifiers{$fqdbin} =~ /p/) {
-    fatal_error(sprintf(gettext(
-"\%s is currently marked as a program that should not have
-it's own profile.  Usually, programs are marked this way
-if creating a profile for them is likely to break the
-rest of the system.  If you know what you're doing and
-are certain you want to create a profile for this program,
-edit the corresponding entry in the [qualifiers] section
-in /etc/apparmor/logprof.conf."
-	    ), $fqdbin));
-  }
-}
-
+check_qualifiers($fqdbin);
 
 # load all the include files
 loadincludes();
