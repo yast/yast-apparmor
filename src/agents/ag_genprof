@@ -182,24 +182,33 @@ opportunity to choose whether the access should be
 allowed or denied.");
   $q->{functions} = [ "CMD_SCAN", "CMD_FINISHED" ];
   $q->{default}   = "CMD_SCAN";
-  my ($ans, $arg) = UI_PromptUser($q);
 
-  if($ans eq "CMD_SCAN") {
 
-    my $lp_ret = do_logprof_pass($logmark);
+  eval {
+    my ($ans, $arg) = UI_PromptUser($q);
+    if($ans eq "CMD_SCAN") {
 
-    $done_profiling = 1 if $lp_ret eq "FINISHED";
+      my $lp_ret = do_logprof_pass($logmark);
 
-  } else {
+      $done_profiling = 1 if $lp_ret eq "FINISHED";
 
-    # make them confirm the exit command
-    my $ans = UI_YesNo(gettext("Are you sure you want to exit?"), "n");
-    if($ans eq "y") {
-      $done_profiling = 1;
+    } else {
+
+      # make them confirm the exit command
+      my $ans = UI_YesNo(gettext("Are you sure you want to exit?"), "n");
+      if($ans eq "y") {
+        $done_profiling = 1;
+      }
+
     }
-
+  };
+  if ($@) {
+    if ($@ =~ /FINISHING/) {
+      $done_profiling = 1;
+    } else {
+      die $@;
+    }
   }
-
 }
   
 for my $p (sort keys %helpers) {
