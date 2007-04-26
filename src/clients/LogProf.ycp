@@ -14,29 +14,12 @@
   import "Sequencer";
   include "subdomain/apparmor_packages.ycp";
   include "subdomain/apparmor_profile_check.ycp";
+  include "subdomain/apparmor_ycp_utils.ycp";
   textdomain  "yast2-apparmor";
 
   boolean done  = false;
   string type   = "";
   string status = "";
-
-  map CMDS = $[ ];
-  CMDS["CMD_ALLOW"]          = _("&Allow");
-  CMDS["CMD_DENY"]           = _("&Deny");
-  CMDS["CMD_ABORT"]          = _("Abo&rt");
-  CMDS["CMD_FINISHED"]       = _("&Finish");
-  CMDS["CMD_INHERIT"]        = _("&Inherit");
-  CMDS["CMD_PROFILE"]        = _("&Profile");
-  CMDS["CMD_UNCONFINED"]     = _("&Unconfined");
-  CMDS["CMD_NEW"]            = _("&Edit");
-  CMDS["CMD_GLOB"]           = _("&Glob");
-  CMDS["CMD_GLOBEXT"]        = _("Glob w/E&xt");
-  CMDS["CMD_ADDHAT"]         = _("&Add Requested Hat");
-  CMDS["CMD_USEDEFAULT"]     = _("&Use Default Hat");
-  CMDS["CMD_SCAN"]           = _("&Scan system log for AppArmor events");
-  CMDS["CMD_VIEW_REPO"]      = _("&View Profile");
-  CMDS["CMD_USE_REPO"]       = _("&Use Profile");
-  CMDS["CMD_CREATE_PROFILE"] = _("&Create New Profile");
 
   if (!installAppArmorPackages()) {
     return;
@@ -215,7 +198,7 @@
         <li>TZDIR</li> </ul>
 
 ");
-                                            
+
       list<string> headers     = agent_data["headers"]:[];
       list<string> options     = agent_data["options"]:[];
       list<string> functions   = agent_data["functions"]:["CMD_ABORT"];
@@ -314,26 +297,35 @@
       // tell the backend what they did
       SCR::Write(.logprof, answers);
 
-    } else if (type == "dialog-view-profile") {
+    } else if (type == "dialog-repo-sign-in") {
 
-      string user = agent_data["user"]:"MISSING USER";
-      string profile = agent_data["profile"]:"MISSING PROFILE";
-      string default_ans  = agent_data["default"]:"b";
+      map<string,string> answers = UI_RepositorySignInDialog( agent_data );
+      SCR::Write(.genprof, answers);
 
-      symbol focus = `focus_yes;
-      if (default_ans == "b") {
-        focus = `focus_no;
-      }
-      map answers = $[ ];
-      if (Popup::AnyQuestion(_("Profile created by user ") + user,
-        profile, _("&Use Profile"), _("&Back"), focus)) {
-        answers["answer"] = "u";
-      } else {
-        answers["answer"] = "b";
-      }
-      // write the answers for the last dialog
-      boolean written = SCR::Write(.logprof, answers);
+    } else if (type == "dialog-repo-view-profile") {
 
+      map<string,string> answers = $[ ];
+      UI_RepositoryViewProfile( agent_data );
+      answers["answer"] = "okay";
+      SCR::Write(.genprof, answers);
+
+    } else if (type == "dialog-select-profiles") {
+
+      map<any,any> answers = UI_MultiProfileSelectionDialog( agent_data );
+      SCR::Write(.genprof, answers);
+
+    } else if (type == "long-dialog-message") {
+
+      map<string,string> answers = $[ ];
+      UI_LongMessage( agent_data );
+      answers["answer"] = "okay"; SCR::Write(.genprof, answers);
+
+    } else if (type == "short-dialog-message") {
+
+      map<string,string> answers = $[ ];
+      UI_ShortMessage( agent_data );
+      answers["answer"] = "okay";
+      SCR::Write(.genprof, answers);
 
     } else if (type == "dialog-yesno") {
 
@@ -469,8 +461,6 @@
       done = true;
 
     }
-
-
   } until ( done == true);
 
   Wizard::CloseDialog();
