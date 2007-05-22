@@ -1,0 +1,598 @@
+
+/*
+        Copyright (C) 2007 Novell Inc. All Rights Reserved.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of version 2 of the GNU General Public
+    License published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, contact Novell, Inc.
+
+ */
+
+
+import "Popup";
+textdomain "yast2-apparmor";
+
+
+  map CMDS = $[ ];
+  CMDS["CMD_ALLOW"]          = _("&Allow");
+  CMDS["CMD_DENY"]           = _("&Deny");
+  CMDS["CMD_ABORT"]          = _("Abo(r)t");
+  CMDS["CMD_FINISHED"]       = _("&Finish");
+  CMDS["CMD_INHERIT"]        = _("&Inherit");
+  CMDS["CMD_PROFILE"]        = _("&Profile");
+  CMDS["CMD_UNCONFINED"]     = _("&Unconfined");
+  CMDS["CMD_NEW"]            = _("&Edit");
+  CMDS["CMD_GLOB"]           = _("&Glob");
+  CMDS["CMD_GLOBEXT"]        = _("Glob w/E&xt");
+  CMDS["CMD_ADDHAT"]         = _("&Add Requested Hat");
+  CMDS["CMD_USEDEFAULT"]     = _("&Use Default Hat");
+  CMDS["CMD_SCAN"]           = _("&Scan system log for AppArmor events");
+  CMDS["CMD_VIEW_PROFILE"]   = _("&View Profile");
+  CMDS["CMD_USE_PROFILE"]    = _("&Use Profile");
+  CMDS["CMD_CREATE_PROFILE"] = _("&Create New Profile");
+  CMDS["CMD_UPDATE_PROFILE"] = _("&Update Profile");
+  CMDS["CMD_IGNORE_UPDATE"]  = _("&Ignore Update");
+  CMDS["CMD_SAVE_CHANGES"]   = _("&Save Changes");
+  CMDS["CMD_UPLOAD_CHANGES"] = _("&Upload Changes");
+  CMDS["CMD_VIEW_CHANGES"]   = _("&View Changes");
+  CMDS["CMD_ENABLE_REPO"]    = _("&Enable Repository");
+  CMDS["CMD_DISABLE_REPO"]   = _("&Disable Repository");
+  CMDS["CMD_ASK_NEVER"]      = _("&Never Ask Again");
+  CMDS["CMD_ASK_LATER"]      = _("Ask Me &Later");
+
+define boolean validEmailAddress ( string emailAddr, boolean allowlocal ) {
+
+    integer emailAddrLength = size(emailAddr);
+    boolean isSafe = false;
+
+    if ( allowlocal && regexpmatch( emailAddr, "^\/var\/mail\/\\w+$" )) {
+        isSafe = true;
+    } else if ((regexpmatch( emailAddr, "\\w+(-\\w+?)@\\w+" ) ||
+                regexpmatch( emailAddr, "/^(\\w+\.?)+\\w+\@(\\w+\.?)+\\w+$" ) ||
+                regexpmatch( emailAddr, "\\w+@\\w+" ) ||
+                !regexpmatch( emailAddr, "..+" )) &&
+                emailAddrLength < 129 ) {
+        isSafe = true;
+    }
+    return isSafe;
+}
+
+
+/** UI_RepositorySignInDialog
+  * Dialog to allow users to signin or register with an external AppArmor
+  * profile repository
+  *
+  * @param  agent_data - data from the backend
+  *                [ repo_url - string ]
+  * @return answers - map that contains:
+  *                [   newuser     => 1|0 - registering a new user?         ]
+  *                [   user        => username                              ]
+  *                [   pass        => password                              ]
+  *                [   email       => email address - if newuser = 1        ]
+  *                [   save_config => true/false - save this information on ]
+  *                [                  the system                            ]
+  *
+  **/
+define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
+    string repo_url = (string) agent_data["repo_url"]:"MISSING_REPO_URL";
+    term dialog =
+    `VBox(
+        `VSpacing(1),
+        `Top(`Label(_("AppArmor Profile Repository Setup") + "\n" + repo_url)),
+        `VBox(
+            `ReplacePoint(`id(`replace), `Empty())
+        ),
+        `VSpacing(1)
+    );
+
+    term  signin_box =
+      `VBox(
+          `HBox(
+              `HSpacing(1),
+              `Frame(`id(`signin_frame), _("Sign in to the repository"),
+                  `HBox(
+                      `HSpacing(0.5),
+                      `VBox(
+                          `TextEntry(`id(`username), _("Username")),
+                          `Password(`id(`password), _("Password")),
+                          `VSpacing(1),
+                          `HBox(
+                              `CheckBox(`id(`save_conf), `opt(`notify),
+                                         _("S&ave configuration")),
+                              `HSpacing( 0.5),
+                              `Left(`PushButton(`id(`signin_submit),
+                                                _("&Signin"))),
+                              `Right(`PushButton(`id(`signin_cancel),
+                                                 _("&Cancel"))),
+                              `HSpacing( 0.5)
+                          )
+                      ),
+                      `HSpacing(0.5)
+                  )
+              ),
+              `HSpacing(1)
+          ),
+        `VSpacing(1),
+        `PushButton(`id(`newuser),  _("&Register new user..."))
+      );
+
+    term  registration_box =
+      `VBox(
+          `HBox(
+              `HSpacing(1),
+              `Frame(`id(`register_frame), _("Register New User"),
+                  `HBox(
+                      `HSpacing(0.5),
+                      `VBox(
+                          `TextEntry(`id(`register_username),
+                                     _("Enter Username")),
+                          `TextEntry(`id(`register_email),
+                                      _("Enter Email Address")),
+                          `Password(`id(`register_password),
+                                     _("Enter Password")),
+                          `Password(`id(`register_password2),
+                                     _("Verify Password")),
+                          `VSpacing(1),
+                          `HBox(
+                              `HSpacing( 0.2),
+                              `CheckBox(`id(`save_conf_new), `opt(`notify),
+                                         _("S&ave configuration")),
+                              `Left(`PushButton(`id(`register_submit),
+                                                _("&Register"))),
+                              `Right(`PushButton(`id(`register_cancel),
+                                                 _("&Cancel"))),
+                              `HSpacing( 0.2)
+                          )
+                      ),
+                      `HSpacing( 0.5)
+                  )
+              ),
+              `HSpacing(1)
+          ),
+          `VSpacing(1),
+          `PushButton(`id(`signin),  _("&Signin as existing user..."))
+      );
+
+    UI::OpenDialog(`opt(`decorated), dialog);
+    UI::ReplaceWidget(`replace, signin_box);
+    map<string,string> answers = $[ ];
+    any input = nil;
+    repeat {
+        input = UI::UserInput();
+        if(input == `newreg) {
+            boolean new_registration =
+                    (boolean) UI::QueryWidget(`id(`newreg), `Value);
+            if ( new_registration == true ) {
+              UI::ChangeWidget(`id(`register_frame), `Enabled, true);
+              UI::ChangeWidget(`id(`signin_frame), `Enabled, false);
+            } else {
+              UI::ChangeWidget(`id(`register_frame), `Enabled, false);
+              UI::ChangeWidget(`id(`signin_frame), `Enabled, true);
+            }
+        } else if(input == `newuser) {
+            UI::ReplaceWidget(`replace, registration_box);
+            UI::ChangeWidget(`id(`register_email), `InputMaxLength, 129);
+        } else if(input == `signin) {
+            UI::ReplaceWidget(`replace, signin_box);
+            UI::ChangeWidget(`id(`register_email), `InputMaxLength, 129);
+        } else if(input == `signin_cancel || input == `register_cancel) {
+            answers["answer"]   = "cancel";
+        } else if ( input == `signin_submit ) {
+            string username = (string) UI::QueryWidget(`id(`username), `Value);
+            string password = (string) UI::QueryWidget(`id(`password), `Value);
+            string save_config =
+              (boolean) UI::QueryWidget(`id(`save_conf), `Value) ?  "y": "n";
+
+            if ( username == "" ) {
+                Popup::Error(_("Username is required"));
+            } else if ( password == "" ) {
+                Popup::Error(_("Password is required"));
+            } else {
+                y2milestone("APPARMOR : REPO - signon: \n\tusername [" +
+                            username +
+                            "]\n\tpassword [" +
+                            password + "]");
+                answers["newuser"] = "n";
+                answers["user"] = username;
+                answers["pass"] = password;
+                answers["save_config"] = save_config;
+                input = `done;
+            }
+        } else if ( input == `register_submit ) {
+            string username =
+              (string) UI::QueryWidget( `id(`register_username), `Value);
+            string password =
+              (string) UI::QueryWidget( `id(`register_password), `Value);
+            string password_verify =
+              (string) UI::QueryWidget( `id(`register_password2), `Value);
+            string email = (string) UI::QueryWidget( `id(`register_email),
+                                                     `Value );
+            string save_config =
+              (boolean) UI::QueryWidget( `id(`save_conf_new), `Value )
+              ?  "y": "n";
+
+            if ( username == "" ) {
+                Popup::Error( _("Username required for registration." ));
+            } else if ( email == "" ) {
+                Popup::Error( _("Email address required for registration." ));
+            } else if ( password == "" && password_verify == "" ) {
+                Popup::Error( _("Password is required for registration." ));
+            } else if ( password != password_verify ) {
+                Popup::Error( _("Passwords do not match. Please re-enter." ));
+            } else if ( ! validEmailAddress( email, false ) ) {
+                string err_email_format = _("Email address format invalid.\nEmail address must be less than 129 characters \n and of the format \"name@domain\". \n Please enter another address.");
+                Popup::Error( err_email_format );
+            } else {
+                y2milestone(
+                  "APPARMOR : REPO - new registration: \n\tusername [" +
+                  username + "]\n\tpassword [" + password +
+                  "]\n\temail [" + email + "]\n\tsave config [" +
+                   save_config + "]" );
+              answers["newuser"] = "y";
+              answers["pass"] = password;
+              answers["user"] = username;
+              answers["email"] = email;
+              answers["save_config"] = save_config;
+              input = `done;
+            }
+        } else {
+           y2milestone("APPARMOR : REPO - signon - no valid input[" +
+                       tostring(input) + "]");
+        }
+    } until ((input == `done) ||
+             (input == `register_cancel) ||
+             (input == `signin_cancel));
+    if ( input != `done ) {
+        answers["cancelled"] = "y";
+    }
+    UI::CloseDialog();
+    return( answers );
+}
+
+
+/** UI_RepositoryViewProfile
+  * Dialog to allow users to view a profile from the repository
+  * and display it in a small scrollable dialog
+  *
+  * @param agent_data - map data from the backend
+  *                 [ user         => string                              ]
+  *                 [ profile      => string contiaining profile contents ]
+  *                 [ profile_type => string INACTIVE_LOCAL|REPOSITORY    ]
+  *
+  * @return void
+  *
+  **/
+
+define void UI_RepositoryViewProfile( map<any,any> agent_data ) {
+
+    string user     = agent_data["user"]:"MISSING USER";
+    string profile  = agent_data["profile"]:"MISSING PROFILE";
+    string type     = agent_data["profile_type"]:"MISSING PROFILE";
+
+    string headline = "";
+    if ( type == "INACTIVE_LOCAL" ) {
+       headline =  _("Local inactive profile");
+    } else if ( type == "REPOSITORY" ) {
+       headline =  _("Profile created by user ") + user;
+    } else {
+       headline =  _("Local profile");
+    }
+
+
+    Popup::LongText ( headline, `RichText(`opt(`plainText), profile), 50, 20 );
+}
+
+
+/** UI_LongMessage
+  * Basic message dialog that will scroll long text
+  * @param  agent_data - map - data from backend
+  *                 [ headline - string ]
+  *                 [ message  - string ]
+  *
+  * @return void
+  **/
+
+define void UI_LongMessage( map<any,any> agent_data ) {
+
+    any user =  agent_data["user"]:nil;
+    string headline = agent_data["headline"]:"MISSING HEADLINE";
+    string message  = agent_data["message"]:"MISSING MESSAGE";
+
+    Popup::LongText(headline,`RichText(`opt(`plainText), message), 60, 40);
+
+}
+
+
+/** UI_ShortMessage
+  * Basic message dialog - no scrollbars
+  * @param  agent_data - map - data from backend
+  *                 [ headline - string ]
+  *                 [ message  - string ]
+  *
+  * @return void
+  **/
+
+define void UI_ShortMessage( map<any,any> agent_data ) {
+
+    any user =  agent_data["user"]:nil;
+    string headline = agent_data["headline"]:"MISSING HEADLINE";
+    string message  = agent_data["message"]:"MISSING MESSAGE";
+
+    Popup::AnyMessage(headline, message);
+
+}
+
+/** UI_ChangeLog_Dialog
+  * Takes a list of profiles and collects one or multiple changelog entries
+  * and returns them
+  *
+  * @param  agent_data - data from the backend
+  *           [ profiles - list of profile names                           ]
+  *
+  * @return   results    - map
+  *           [ STATUS            -  string - ok/cancel                    ]
+  *           [ SINGLE_CHANGELOG  -  string - set with changelog if user   ]
+  *           [                               selects a single changelog   ]
+  *
+  *           [ profile 1 name    -  string - changelog 1                  ]
+  *           [ profile 2 name    -  string - changelog 2                  ]
+  *           ...
+  *           [ profile n name    -  string - changelog n                  ]
+  *
+  **/
+define map<string,any> UI_ChangeLog_Dialog ( map<any,any> agent_data ) {
+    map<string,any> results = $[];
+    string main_label = _("Enter a changelog for the changes for ");
+    string main_label_single = _(" the selected profiles");
+    string checkbox_label = _("Individual changelogs per profile");
+    list<string> profiles = agent_data["profiles"]:[];
+
+    term dialog = `VBox(
+      `TextEntry(`id(`stringfield), main_label + "\n" + main_label_single),
+      `CheckBox(`id(`individual_changelogs), `opt(`notify), checkbox_label),
+      `VSpacing(0.5),
+      `HBox(
+            `HWeight(1, `PushButton(`id(`okay),
+                                    `opt(`default,
+                                    `key_F10),
+                                    _("&OK"))),
+            `HSpacing(2),
+            `HWeight(1, `PushButton(`id(`cancel), `opt(`key_F9), _("&Cancel")))
+        )
+     );
+     results["STATUS"] = "ok";
+     boolean single_changelog = true;
+     foreach( string profile_name, profiles, {
+           UI::OpenDialog(dialog);
+           if ( !single_changelog ) {
+                  UI::ChangeWidget(`id(`stringfield),
+                                   `Label,
+                                   main_label + "\n" +
+                                   profile_name);
+                  UI::ChangeWidget(`id(`individual_changelogs), `Value, true);
+           }
+           UI::SetFocus(`id(`stringfield));
+           any input = nil;
+           repeat {
+                 input = UI::UserInput();
+                 if ( input == `cancel ) {
+                       results["STATUS"] = "cancel";
+                       UI::CloseDialog();
+                       break;
+                 } else if ( input == `okay ) {
+                     if (((boolean) UI::QueryWidget(`id(`individual_changelogs),
+                                                    `Value)) == false ) {
+                         results["SINGLE_CHANGELOG"] =
+                           (string) UI::QueryWidget(`id(`stringfield), `Value);
+                         UI::CloseDialog();
+                     } else {
+                         results[profile_name] =
+                           (string) UI::QueryWidget(`id(`stringfield), `Value);
+                         UI::CloseDialog();
+                     }
+                 } else if ( input == `individual_changelogs ){
+                     if (((boolean) UI::QueryWidget(`id(`individual_changelogs),
+                                                    `Value)) == true ) {
+                         UI::ChangeWidget(`id(`stringfield),
+                                          `Label,
+                                          main_label + "\n"
+                                          + profile_name);
+                         single_changelog = false;
+                     } else {
+                         UI::ChangeWidget(`id(`stringfield),
+                                          `Label,
+                                          main_label + "\n"
+                                          + main_label_single);
+                     }
+                 }
+           } until ( input == `okay || `input == `cancel );
+           if ( single_changelog || input == `cancel ) {
+               break;
+           }
+     });
+     return( results );
+}
+
+/** UI_MultiProfileSelectionDialog
+  * Two pane dialog with a multi-selection box on the left
+  * and a long text on the right. Allows a list of profiles
+  * or profile changes to be viewed and selected for further
+  * processing - for example  uploading to the repository
+  *
+  * @param    agent_data - map - data from backend
+  *           [ title               - string - explanation of the forms use ]
+  *           [ get_changelog       - string true/false - prompt user to    ]
+  *           [                       supply changelogs                     ]
+  *           [ never_ask_again     - string true/false - add widget to let ]
+  *           [                       user select to never prompt again to  ]
+  *           [                       upload unselected profiles to the     ]
+  *           [                       repository                            ]
+  *           [ default_select      - string true/false - default value for ]
+  *           [                       profile selection                     ]
+  *           [ profiles            - map<string,string>                    ]
+  *
+  * @return   results    - map
+  *           [ STATUS           - string - ok/cancel                       ]
+  *           [ PROFILES         - list[string] - list of selected profiles ]
+  *           [ NEVER_ASK_AGAIN  - string - true/false - mark unselected    ]
+  *           [                    profiles as local only and don't prompt  ]
+  *           [                    to upload                                ]
+  *           [ CHANGELOG        - map[string,string] - changelog data from ]
+  *           [                    UI_ChangeLog_Dialog()                    ]
+  *
+  **/
+
+define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
+    string headline = agent_data["title"]:"MISSING TITLE";
+    string explanation = agent_data["explanation"]:"MISSING EXPLANATION";
+    boolean default_select = agent_data["default_select"]:false;
+    boolean get_changelog = agent_data["get_changelog"]:true;
+    boolean disable_ask_upload = agent_data["disable_ask_upload"]:false;
+    map<any,any> profiles = agent_data["profiles"]:$[];
+    map<any,any> results = $[];
+
+    list profile_list = [];
+    foreach ( string profile_name, string profile_contents,
+              (map<string,string>) profiles, {
+        profile_list = add( profile_list, `item( `id(profile_name),
+                            profile_name, default_select) );
+    });
+
+    term first_profile  = (term) profile_list[0]:nil;
+    string first_profile_name = first_profile[1]:"MISSING PROFILE NAME";
+    string profile_rules =
+      (string) profiles[first_profile_name]:"MISSING CONTENTS";
+    string disable_ask_upload_str =
+      _("&Don't ask again for unselected profiles");
+    map ui_capabilities = UI::GetDisplayInfo();
+    boolean in_ncurses = ui_capabilities["TextMode"]:true;;
+    term profile_contents_text = nil;
+    term explanation_text = nil;
+
+    if ( in_ncurses ) {
+         profile_contents_text =
+           `RichText( `id(`contents),`opt(`plainText), profile_rules);
+    } else {
+        profile_contents_text =
+          `VBox(
+              `VSpacing(1.25),
+              `RichText( `id(`contents),`opt(`plainText), profile_rules)
+           );
+    }
+    term control_widgets = nil;
+    if ( disable_ask_upload == true ) {
+        control_widgets =
+          `VBox(
+              `CheckBox(`id(`disable_ask_upload), `opt(`notify),
+                        disable_ask_upload_str),
+              `VSpacing(0.5),
+              `HBox(
+                  `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                  `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
+                                                     _("&Cancel"))))
+              )
+          );
+    } else {
+        if ( in_ncurses ) {
+            control_widgets =
+              `HBox(
+                  `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                  `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
+                                                     _("&Cancel"))))
+              );
+          } else {
+            control_widgets =
+              `VBox(
+                  `VSpacing(0.5),
+                  `HBox(
+                      `HWeight( 50, `HCenter(`PushButton(`id(`save),
+                                                         _("&OK")))),
+                      `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
+                                                         _("&Cancel"))))
+                  )
+              );
+          }
+    }
+
+    UI::OpenDialog(
+        `VBox(
+            `VSpacing(0.1),
+            `VWeight( 15, `Top(`Label(`id(`explanation), explanation))),
+            `VSpacing(0.2),
+            `VWeight( 70,
+                `HBox(
+                    `VSpacing( 1 ),
+                    `HSpacing( 0.5 ),
+                    `Frame( `id(`select_profiles), headline,
+                        `HBox(
+                            `HWeight( 40, `MinSize( 30, 15,
+                                `MultiSelectionBox( `id(`profiles),
+                                                    `opt(`notify),
+                                                    _("Profiles"),
+                                                    profile_list) )
+                            ),
+                            `HWeight( 60, profile_contents_text )
+                        )
+                    ),
+                    `HSpacing( 0.5 )
+                )
+            ),
+            `VSpacing( 0.2 ),
+            `VWeight( 15, control_widgets ),
+            `VSpacing( 0.2 )
+        )
+    );
+    UI::ChangeWidget( `id(`profiles), `CurrentValue, first_profile_name );
+
+    map event2 = $[];
+    any id2    = nil;
+    repeat
+    {
+        event2 = UI::WaitForEvent ();
+        id2 = event2["ID"]:nil;
+        if ( id2 == `profiles ) {
+            any itemid =  UI::QueryWidget( `id(`profiles), `CurrentItem );
+            string stritem = tostring( itemid );
+            string contents = profiles[stritem]:"MISSING CONTENTS";
+            UI::ChangeWidget( `id(`contents), `Value, contents );
+        }
+    }  until ( id2 == `save || id2 == `cancel );
+
+    list selected_profiles = [];
+    if (id2 == `save) {
+        list<any> selected_items =
+         (list<any>) UI::QueryWidget( `id(`profiles), `SelectedItems );
+        integer profile_index = 0;
+        foreach ( any p_name, selected_items, {
+              selected_profiles[profile_index] = tostring( p_name );
+              profile_index = profile_index + 1;
+        });
+        results["STATUS"] = "ok";
+        if (get_changelog) {
+            map<string,any> changelog_results =
+              UI_ChangeLog_Dialog( $["profiles":selected_profiles] );
+            if ( changelog_results["STATUS"]:"cancel" == "cancel" ) {
+                results["STATUS"] = "cancel";
+            } else {
+                results["CHANGELOG"] = changelog_results;
+                results["PROFILES"] = selected_profiles;
+            }
+        }
+        if (((boolean) UI::QueryWidget( `id(`disable_ask_upload), `Value ))
+             == true ) {
+            results["NEVER_ASK_AGAIN"] = "true";
+        }
+    } else if ( id2 == `cancel ) {
+        results["STATUS"] = "cancel";
+    }
+    UI::CloseDialog();
+    return results;
+}
