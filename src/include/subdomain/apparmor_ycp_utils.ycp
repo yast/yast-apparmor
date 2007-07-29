@@ -589,8 +589,9 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
                 results["PROFILES"] = selected_profiles;
             }
         }
-        if (((boolean) UI::QueryWidget( `id(`disable_ask_upload), `Value ))
-             == true ) {
+        if ( disable_ask_upload == true &&
+             ((boolean) UI::QueryWidget( `id(`disable_ask_upload), `Value ))
+               == true ) {
             results["NEVER_ASK_AGAIN"] = "true";
         }
     } else if ( id2 == `cancel ) {
