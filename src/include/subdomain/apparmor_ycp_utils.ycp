@@ -47,8 +47,8 @@ textdomain "yast2-apparmor";
   CMDS["CMD_DISABLE_REPO"]   = _("&Disable Repository");
   CMDS["CMD_ASK_NEVER"]      = _("&Never Ask Again");
   CMDS["CMD_ASK_LATER"]      = _("Ask Me &Later");
-  CMDS["CMD_ASK_YES"]        = _("&Yes");
-  CMDS["CMD_ASK_NO"]         = _("&No");
+  CMDS["CMD_YES"]            = _("&Yes");
+  CMDS["CMD_NO"]             = _("&No");
 
 
 define boolean validEmailAddress ( string emailAddr, boolean allowlocal ) {
