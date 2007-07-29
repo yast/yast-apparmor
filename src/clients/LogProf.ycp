@@ -300,32 +300,32 @@
     } else if (type == "dialog-repo-sign-in") {
 
       map<string,string> answers = UI_RepositorySignInDialog( agent_data );
-      SCR::Write(.genprof, answers);
+      SCR::Write(.logprof, answers);
 
     } else if (type == "dialog-view-profile") {
 
       map<string,string> answers = $[ ];
       UI_RepositoryViewProfile( agent_data );
       answers["answer"] = "okay";
-      SCR::Write(.genprof, answers);
+      SCR::Write(.logprof, answers);
 
     } else if (type == "dialog-select-profiles") {
 
       map<any,any> answers = UI_MultiProfileSelectionDialog( agent_data );
-      SCR::Write(.genprof, answers);
+      SCR::Write(.logprof, answers);
 
     } else if (type == "long-dialog-message") {
 
       map<string,string> answers = $[ ];
       UI_LongMessage( agent_data );
-      answers["answer"] = "okay"; SCR::Write(.genprof, answers);
+      answers["answer"] = "okay"; SCR::Write(.logprof, answers);
 
     } else if (type == "short-dialog-message") {
 
       map<string,string> answers = $[ ];
       UI_ShortMessage( agent_data );
       answers["answer"] = "okay";
-      SCR::Write(.genprof, answers);
+      SCR::Write(.logprof, answers);
 
     } else if (type == "dialog-yesno") {
 
