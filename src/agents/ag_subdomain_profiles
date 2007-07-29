@@ -95,7 +95,8 @@ while ( <STDIN> ) {
                    }
 		} elsif ( $command eq "Read") {
                     $UI_Mode = "yast";
-                    Immunix::SubDomain::readprofile("$profiledir/$argument", \&$Immunix::SubDomain::fatal_error);
+                    Immunix::SubDomain::readprofile("$profiledir/$argument",
+                    \&$Immunix::SubDomain::fatal_error, 1);
 		    ycp::Return( \%sd );
 		} elsif ( $command eq "Write" and $path eq ".delete") {
                   if ( $argument ne "" ) {
