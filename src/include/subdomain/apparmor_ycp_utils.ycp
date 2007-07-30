@@ -579,7 +579,7 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
               profile_index = profile_index + 1;
         });
         results["STATUS"] = "ok";
-        if (get_changelog) {
+        if (get_changelog == true) {
             map<string,any> changelog_results =
               UI_ChangeLog_Dialog( $["profiles":selected_profiles] );
             if ( changelog_results["STATUS"]:"cancel" == "cancel" ) {
@@ -588,6 +588,8 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
                 results["CHANGELOG"] = changelog_results;
                 results["PROFILES"] = selected_profiles;
             }
+        } else {
+            results["PROFILES"] = selected_profiles;
         }
         if ( disable_ask_upload == true &&
              ((boolean) UI::QueryWidget( `id(`disable_ask_upload), `Value ))
