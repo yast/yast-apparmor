@@ -29,14 +29,19 @@ Obsoletes: yast2-subdomain
 Provides: yast2-subdomain
 BuildRequires: update-desktop-files
 
+BuildRequires: yast2 yast2-devtools
 %if %{suse_version} > 1010 
-BuildRequires: yast2 yast2-devtools yast2-theme-openSUSE
+BuildRequires: yast2-theme-openSUSE
 %define themedir /usr/share/YaST2/theme/openSUSE
 %else
   %if %{suse_version} > 1000 
-BuildRequires: yast2 yast2-devtools yast2-theme-SuSELinux
-%define themedir /usr/share/YaST2/theme/SuSELinux
+    %if 0%{?sles_version} > 9
+BuildRequires: yast2-theme-NLD
+    %else
+BuildRequires: yast2-theme-SuSELinux
+    %endif
   %endif
+%define themedir /usr/share/YaST2/theme/SuSELinux
 %endif
 
 %description
