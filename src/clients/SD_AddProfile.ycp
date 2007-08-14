@@ -66,7 +66,7 @@ define any MainSequence() ``{
     map new_profile = (map) SCR::Read (.subdomain_profiles, Settings["CURRENT_PROFILE"]:"" );
     Settings["PROFILE_MAP"] = new_profile;
     Wizard::CreateDialog();
-    Wizard::SetTitleIcon("apparmor/add_profile");
+    Wizard::SetTitleIcon("apparmor_add_profile");
     any ret = Sequencer::Run(aliases, sequence);
     Wizard::CloseDialog();
     if ( ret == `abort ) {

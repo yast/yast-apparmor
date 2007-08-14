@@ -70,6 +70,21 @@ for f in `find $RPM_BUILD_ROOT/%{_prefix}/share/applications/YaST2/ -name "*.des
     fi
 done
 
+# make icons available to GNOME control center (hicolor theme)
+# (bug #212500)
+mkdir -p ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/22x22/apps
+mkdir -p ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/32x32/apps
+mkdir -p ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
+cd $RPM_BUILD_ROOT/%{themedir}/icons
+for dir in 22x22 32x32 48x48; do
+    cd $RPM_BUILD_ROOT/%{themedir}/icons/${dir}/apps
+    icons=$(ls *.png)
+    cd $RPM_BUILD_ROOT/usr/share/icons/hicolor/${dir}/apps
+    for icon in ${icons}; do
+	ln -s ../../../../YaST2/theme/current/icons/${dir}/apps/${icon} .
+    done
+done
+
 %clean 
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
@@ -84,6 +99,7 @@ done
 /usr/lib/YaST2/servers_non_y2
 /usr/lib/perl5/vendor_perl/*
 %{themedir}/icons
+/usr/share/icons/hicolor/
 %doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
 %config(noreplace) /etc/apparmor/reports.crontab

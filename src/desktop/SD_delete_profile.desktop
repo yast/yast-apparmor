@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/delete_profile
+Icon=apparmor_delete_profile
 Exec=/sbin/yast2 SD_DeleteProfile
 
 Name=Delete Profile

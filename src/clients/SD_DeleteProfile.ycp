@@ -53,7 +53,7 @@ define any MainSequence() ``{
     ];
 
     Wizard::CreateDialog();
-    Wizard::SetTitleIcon("apparmor/delete_profile");
+    Wizard::SetTitleIcon("apparmor_delete_profile");
     any ret = Sequencer::Run(aliases, sequence);
     Wizard::CloseDialog();
     Settings = remove( Settings, "CURRENT_PROFILE");
