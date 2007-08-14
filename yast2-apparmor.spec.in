@@ -93,8 +93,10 @@ done
 /usr/bin/*
 /usr/share/YaST2/clients
 /usr/share/YaST2/include/subdomain
+/usr/share/YaST2/include/apparmor-reports
 /usr/share/YaST2/scrconf
-/usr/share/applications/YaST2/
+/usr/share/YaST2/modules
+/usr/share/applications/YaST2
 /usr/share/applications/YaST2/groups
 /usr/lib/YaST2/servers_non_y2
 /usr/lib/perl5/vendor_perl/*

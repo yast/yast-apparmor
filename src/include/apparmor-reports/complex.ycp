@@ -1,0 +1,1454 @@
+/* ------------------------------------------------------------------------------
+ * Copyright (c) 2006 Novell, Inc. All Rights Reserved.
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of version 2 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, contact Novell, Inc.
+ *
+ * To contact Novell about this file by physical or electronic mail, you may find
+ * current contact information at www.novell.com.
+ * ------------------------------------------------------------------------------
+ */
+
+/**
+ * File:	include/apparmor-reports/complex.ycp
+ * Package:	Configuration of apparmor-reports
+ * Summary:	Dialogs definitions
+ * Authors:	David Drewelow <ddrewelow@suse.de>
+ *
+ * $Id: complex.ycp 29363 2006-03-24 08:20:43Z mzugec $
+ */
+
+{
+
+textdomain "yast2-apparmor";
+
+import "Label";
+import "Popup";
+import "Wizard";
+import "Wizard_hw";
+import "Confirm";
+import "AppArmorReports";
+
+include "apparmor-reports/helps.ycp";
+include "apparmor-reports/dialogs.ycp";
+
+string expPath = AppArmorReports::expPath;
+
+boolean Modified() {
+    return AppArmorReports::Modified();
+}
+
+boolean ReallyAbort() {
+    return !AppArmorReports::Modified() || Popup::ReallyAbort(true);
+}
+
+boolean PollAbort() {
+    return UI::PollInput() == `abort;
+}
+
+/**
+ * Read settings dialog
+ * @return `abort if aborted and `next otherwise
+ */
+symbol ReadDialog() {
+    Wizard::RestoreHelp(HELPS["read"]:"");
+    if (!Confirm::MustBeRoot()) return `abort;
+    boolean ret = AppArmorReports::Read();
+    return ret ? `next : `abort;
+}
+
+/**
+ * Write settings dialog
+ * @return `abort if aborted and `next otherwise
+ */
+symbol WriteDialog() {
+    Wizard::RestoreHelp(HELPS["write"]:"");
+    // AppArmorReports::AbortFunction = PollAbort;
+    boolean ret = AppArmorReports::Write();
+    return ret ? `next : `abort;
+}
+
+
+term schedFilterForm() {
+
+	return(
+     `VBox(
+        `VSpacing( 0.5 ),
+        `HBox(
+            `HWeight( 5, `TextEntry(`id(`prog), _("Program name") )),
+            `HWeight( 5, `TextEntry(`id(`prof), _("Profile name") )),
+            `HSpacing( `opt(`hstretch), 1)
+        ),
+        `VSpacing( 0.5 ),
+        `HBox(
+            `HWeight( 5, `TextEntry(`id(`pid), _("PID number") )),
+            `HWeight( 5, `TextEntry(`id(`res), _("Detail") ) ),
+            `HSpacing( `opt(`hstretch), 1)
+        ),
+        `VSpacing( 0.5 ),
+        `HBox(
+            `HWeight( 2,
+            `ComboBox(`id(`sev), _("Severity"),  [
+                _("All"), _("U"), _("00"), _("01"), _("02"), _("03"), _("04"),
+				_("05"), _("06"), _("07"), _("08"), _("09"), _("10")
+            ]) ),
+
+            `VBox(
+                `Label( _("Access Type: ") ),
+                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("R") ))
+            ),
+            `VBox(
+                `Label( _("Mode: ") ),
+                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
+            ),
+            `HSpacing( `opt(`hstretch), 1)
+        ),
+        `VSpacing( 1 )
+    ));
+}
+
+// Set a report schedule
+define term SchedForm (map<string,any> repDb) {
+
+	if (expPath == nil) {
+		expPath = "/var/log/apparmor/reports-exported/";
+	}
+
+	boolean exechourly = false;
+	boolean execdaily = false;
+	boolean execweekly = false;
+	boolean execmonthly = false;
+
+	if (repDb["schedule"]:"" == "hourly") {
+		exechourly = true;
+	} else if (repDb["schedule"]:"" == "daily") {
+		execdaily = true;
+	} else if (repDb["schedule"]:"" == "weekly") {
+		execweekly = true;
+	} else if (repDb["schedule"]:"" == "monthly") {
+		execmonthly = true;
+	}
+
+	boolean day_all = false;
+	boolean day_mon = false;
+	boolean day_tue = false;
+	boolean day_wed = false;
+	boolean day_thu = false;
+	boolean day_fri = false;
+	boolean day_sat = false;
+	boolean day_sun = false;
+
+	if ( repDb["execday"]:"" == "Sunday" ) {
+		day_sun = true;
+	} else if ( repDb["execday"]:"" == "Monday" ) {
+		day_mon = true;
+	} else if ( repDb["execday"]:"" == "Tuesday" ) {
+		day_tue = true;
+	} else if ( repDb["execday"]:"" == "Wednesday" ) {
+		day_wed = true;
+	} else if ( repDb["execday"]:"" == "Thursday" ) {
+		day_thu = true;
+	} else if ( repDb["execday"]:"" == "Friday" ) {
+		day_fri = true;
+	} else if ( repDb["execday"]:"" == "Satday" ) {
+		day_sat = true;
+	} else {
+		day_all = true;
+	}
+
+	integer execmin = repDb["execmin"]:0;
+	integer exechour = repDb["exechour"]:0;
+
+	boolean expTypeNone = false;
+	boolean expTypeCsv = false;
+	boolean expTypeHtml = false;
+	boolean expTypeBoth = false;
+
+	if (repDb["csv"]:"" == "1") {
+		expTypeCsv = true;
+	} else if (repDb["html"]:"" == "1") {
+		if (expTypeCsv == true) {
+			expTypeCsv = false;
+			expTypeBoth = true;
+		} else {
+			expTypeHtml = true;
+		}
+	} else {
+		expTypeNone = true;
+	}
+
+	return(
+
+    `ReplacePoint( `id(`addSchedRep), `VBox(
+        `TextEntry(`id(`name), _("Report Name"), repDb["name"]:""),
+        `VSpacing(2),
+        `Frame( "Set execution schedule", `HBox(
+	        `ComboBox(`id(`runschedule), `opt(`notify), _("Execution Schedule"), [
+	            `item(`id(`monthly), _("Monthly"), execmonthly),
+	            `item(`id(`weekly), _("Weekly"), execweekly),
+	            `item(`id(`daily), _("Daily"), execdaily),
+	            `item(`id(`hourly), _("Hourly"), exechourly)]),
+			monthDateBox(repDb),
+            `ComboBox(`id(`weekday), `opt(`notify), _("Day of Week"),  [
+                `item(`id(`weekday_all), _("All"), day_all),
+				`item(`id(`weekday_sun), _("Sunday"), day_sun),
+				`item(`id(`weekday_mon), _("Monday"), day_mon),
+				`item(`id(`weekday_tue), _("Tuesday"), day_tue),
+				`item(`id(`weekday_wed), _("Wednesday"), day_wed),
+				`item(`id(`weekday_thu), _("Thursday"), day_thu),
+				`item(`id(`weekday_fri), _("Friday"), day_fri),
+				`item(`id(`weekday_sat), _("Saturday"), day_sat)
+            ]),
+            `IntField(`id(`hour), `opt(`notify), _("Hour"), 00, 23, exechour),
+            `IntField(`id(`mins), `opt(`notify),  _("Minute"), 00, 59, execmin)
+        )),
+        `VSpacing(2),
+        `Frame("Report recipient email addresses", `HBox(
+            `VSpacing(1),
+            `TextEntry(`id(`email1), `opt(`notify), _("Email Target 1"), repDb["email1"]:""),
+            `TextEntry(`id(`email2), `opt(`notify), _("Email Target 2"), repDb["email2"]:""),
+            `TextEntry(`id(`email3), `opt(`notify), _("Email Target 3"), repDb["email3"]:"")
+        )),
+        `VSpacing(2),
+        `Frame("Path to save reports", `VSquash( `HBox(
+            `Bottom(`ComboBox(`id(`expType), `opt(`notify), _("Export Type"),  [
+                `item(`id(`exptypenone), _("None"), expTypeNone),
+				`item(`id(`exptypecsv), _("csv"), expTypeCsv),
+				`item(`id(`exptypehtml), _("html"), expTypeHtml),
+				`item(`id(`exptypeboth), _("Both"), expTypeBoth) ]
+			)),
+            `Bottom(`TextEntry(`id(`expPath), _("Location to store log."), expPath )),
+            `Bottom(`PushButton(`id(`browse), _("&Browse")))
+        ))),
+        `VSpacing(4),
+		`VBox(`Empty() )
+    )));
+
+}
+
+// Form for Creating or Editing Reports
+any AddEditDialog(string whatami) {
+
+    map<string,string> repInfo = $[];
+    map<string,any> schedDb = $[];
+
+    string caption = _("Add AppArmor Report");
+
+	if ( whatami == "edit") {
+		caption = _("Edit AppArmor Report");
+
+		integer itemselected =  ((integer) UI::QueryWidget(`id(`table),`CurrentItem));
+	    string repName  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+		repInfo["name"] = repName;
+	    repInfo["getconf"] = "1";
+	    repInfo["type"] = "schedRep";
+	    schedDb = (map<string,any>) SCR::Read (.reports_new, repInfo );
+	}
+
+    Wizard::SetContentsButtons( caption, SchedForm(schedDb), mainHelp,
+	Label::BackButton(), Label::NextButton());
+
+	UI::ChangeWidget(`id(`weekday), `Enabled, false);
+
+    any ret = nil;
+
+    while(true) {
+
+		ret = UI::UserInput();
+
+		if(ret == `abort || ret == `cancel || ret == `back) {
+		    break;
+		} else if(ret == `add) {
+            break;
+        } else if(ret == `edit) {
+            break;
+        } else if(ret == `next) {
+			AppArmorReports::configSettings();
+			AppArmorReports::addFilterSettings();
+			AppArmorReports::SaveSchedSettings();
+            break;
+        } else if ( ret == `runschedule ) {
+			AppArmorReports::UpdateDateWidgets();
+			continue;
+        } else if ( ret == `nil ) {
+			Popup::Message("Shouldn't get nil");
+			break;
+        } else {
+            y2error("unexpected retcode: %1", ret);
+            continue;
+        }
+    }
+
+    return ret;
+}
+
+// This is the main reporting form
+any SummaryDialog() {
+
+    string caption = _("AppArmor Report Management");
+    list summary = AppArmorReports::Summary();
+
+	Wizard::SetContentsButtons( _("AppArmor Security Event Report"), viewSchedForm(summary), mainHelp, Label::BackButton(), Label::FinishButton());
+	Wizard::DisableBackButton ();
+
+	AppArmorReports::ResetTable();
+
+    any ret = nil;
+    while(true) {
+
+		ret = UI::UserInput();
+
+		if(ret == `abort || ret == `cancel || ret == `back) {
+		    if(ReallyAbort()) break;
+		    else continue;
+	    } else if(ret == `configure_button) {
+	        any selected = UI::QueryWidget(`id(`detected_selbox), `CurrentItem);
+	        if(selected == `other) {
+	            ret = `other;
+	        } else {
+	            ret = `configure;
+	        }
+	        break;
+	    } else if(ret == `next) {
+	        break;
+		} else if (ret == `table ) {
+			AppArmorReports::ResetTable();
+	    } else if(ret == `add || ret ==`edit) {
+	        break;
+	    } else if(ret == `del) {
+
+			integer itemselected =  ((integer) UI::QueryWidget(`id(`table),`CurrentItem));
+		    string repName  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+			string confirmDel = _("Delete ") + repName + _("?");
+
+			if (Popup::YesNo(confirmDel)) {
+			    map<string,string> Settings = $[ ];
+			    Settings["del"] = "1";
+			    Settings["name"] = repName;
+				SCR::Write(.reports_new, Settings);
+			}
+
+	summary = [];
+    summary = AppArmorReports::Summary();
+
+	Wizard::SetContentsButtons( _("AppArmor Security Event Report"), viewSchedForm(summary), mainHelp, Label::BackButton(), Label::FinishButton());
+	Wizard::DisableBackButton ();
+
+	AppArmorReports::ResetTable();
+
+			// debug - change back to continue
+	        //continue;
+
+	    } else if(ret == `runreport) {
+			break;
+	    } else if(ret == `viewreport) {
+			break;
+	    } else {
+	        y2error("unexpected retcode: %1", ret);
+	        continue;
+	    }
+	}
+
+    return ret;
+}
+
+// Gets list of archived reports based on 'type'
+define list<term> getArrayList(string type, string repPath) {
+
+    map<string,string> Settings = $[ ];
+    string readSched = "1";
+    Settings["readSched"] = readSched;
+    Settings["type"] = type;
+
+	if ( repPath != "" ) {
+	    Settings["repPath"] = repPath;
+	}
+
+
+	// FIXME -- clean up type categories
+	if ( type == "ess" ) {
+		type = "ess";
+	} else if (type == "sir") {
+		type = "sir";
+	} else if (type == "aud") {
+		type = "aud";
+	}
+
+    list<term> itemList = [];
+    integer key = 1;
+
+    if ( type == "sir" || type == "ess" || type == "aud" ) {
+        list <map> db = (list <map>) SCR::Read (.reports_parse, Settings);
+
+        foreach ( map record, db, {
+            any strName = record["name"]:nil;
+            any strTime = record["time"]:nil;
+            string name = tostring(strName);
+            string mytime = tostring(strTime);
+            itemList = add( itemList, `item( `id(key), record["name"]:nil, record["time"]:nil ));
+            key = key + 1;
+        });
+
+    } else if (type == "schedRep") {
+
+        Settings["getcron"] = "1";
+
+        list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
+
+        foreach ( map record, db, {
+            itemList = add( itemList, `item( `id(key), record["name"]:nil, record["hour"]:nil, record["mins"]:nil,
+                         record["wday"]:nil, record["mday"]:nil ));
+            key = key + 1;
+        });
+
+    } else {
+		Popup::Error( _("Unrecognized form request: ") + type );
+    }
+
+    return itemList;
+}
+
+
+/* For On Demand Reports
+    - Returns list of terms corresponding to the type of report
+***********************************************************************/
+define list<term> getReportList(string type, map Settings) {
+
+    list<term> reportList = [];
+
+	if ( type == "aud" ) {
+
+		list <map> db = (list <map>) SCR::Read (.reports_confined, Settings);
+		integer key = 1;
+
+		foreach ( map repdata, db, {
+			reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["date"]:nil,
+				repdata["prog"]:nil, repdata["prof"]:nil, repdata["pid"]:nil, repdata["state"]:nil,
+				repdata["type"]:nil ));
+			key = key + 1;
+		});
+
+	} else if ( type == "ess" ) {
+
+		list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
+		integer key = 1;
+
+		foreach ( map repdata, db, {
+			reportList = add( reportList, `item( `id(key), repdata["host"]:nil,
+				repdata["startdate"]:nil, repdata["enddate"]:nil, repdata["numRejects"]:nil,
+				repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
+			key = key + 1;
+		});
+
+	} else {
+
+		list <map> db = (list <map>) SCR::Read (.logparse, Settings);
+		integer key = 1;
+
+		foreach ( map repdata, db, {
+			reportList = add( reportList, `item( `id(key), repdata["host"]:nil,
+				repdata["date"]:nil, repdata["prog"]:nil, repdata["profile"]:nil,
+				repdata["pid"]:nil,repdata["severity"]:nil, repdata["mode"]:nil,
+				repdata["resource"]:nil, repdata["sdmode"]:nil  ));
+			key = key + 1;
+		});
+
+		/* Original Stuff
+           term fwdForm = turnReportPage(name,curPage,slastPage,Settings);
+           Wizard::SetContentsButtons( _("AppArmor - Run Reports"), fwdForm,
+			  formHelp, _("Back"), _("&Done") );
+		   AppArmorReports::setPageButtons(curPage,lastPage);
+		*/
+	}
+
+	return reportList;
+}
+
+// Gets data for next or previous page of current report
+define term turnReportPage (string name, integer curPage, string slastPage, map Settings) {
+
+    list<term> reportList = [];
+
+    string currentPage = tostring( curPage );
+    Settings["name"] = name;
+    Settings["page"] = currentPage;
+    Settings["turnPage"] = "1";
+
+    integer key = 1;
+
+    list <map> db = (list <map>) SCR::Read (.logparse, Settings);
+
+    // New map is a list, not a hash
+    foreach ( map record, db, {
+        reportList = add( reportList, `item( `id(key), record["host"]:nil, record["date"]:nil, record["prog"]:nil,
+            record["profile"]:nil, record["pid"]:nil, record["severity"]:nil, record["mode"]:nil, record["resource"]:nil, record["sdmode"]:nil ));
+        key = key + 1;
+    });
+
+	string myLabel = _("On Demand Event Report - Page ") + currentPage + _(" of ") + slastPage;
+
+    term odForm =
+
+	`Frame( `id(`odpage), myLabel,
+
+		`VBox(
+            `HBox(
+                `VSpacing(10),
+				`Table(`id(`table), `opt(`keepSorting, `immediate ), `header( _("Host"), _("Date"), _("Program"),
+					_("Profile"), _("PID"), _("Severity"), _("Mode"), _("Detail"), _("Event Type") ), reportList),
+
+                `VSpacing(0.5)
+            ),
+            `HSpacing(`opt(`hstretch), 1.0),
+            `VSpacing(0.5),
+            `HBox(
+                `PushButton(`id(`prev), _("&Previous") ),
+                `PushButton(`id(`psort), _("&Sort") ),
+                `PushButton(`id(`fwd), _("&Forward") ),
+                `PushButton(`id(`goto), _("&Go to Page") )
+            ),
+            `VSpacing(1)
+    ));
+
+	return odForm;
+}
+
+// Main Report Form
+define symbol mainArchivedReportForm() {
+
+	map<string,string> Settings = $[];
+   map <any,any>  reportdata =  nil;
+   reportdata = (map) SCR::Read (.logparse, Settings );
+   list<term> reportlist = [];
+
+   foreach( integer key, map repdata, (map<integer,map>) reportdata, {
+     reportlist = add( reportlist, `item( `id(key), repdata["date"]:nil, repdata["prof"]:nil, repdata["pid"]:nil, repdata["mesg"]:nil));
+   });
+
+    string help1 = _("<b>AppArmor Security Events</b><p>
+                    This table displays the events found that match your search criteria.");
+
+
+	term contents_main_prof_form =
+	`VBox(
+		`Label( _("AppArmor Event Report Data") ),
+		`HBox(
+			`VSpacing(10),
+			`Table(`id(`table), `opt(`notify, `immediate ), `header(_("Date"),
+			_("Profile"), _("PID"), _("AppArmor Message") ), reportlist),
+		   `VSpacing(0.5)
+		)
+	);
+
+	Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+	contents_main_prof_form, help1, _("Back"), _("&Done") );
+
+	map event = $[];
+	any id    = nil;
+	while( true ) {
+
+        event = UI::WaitForEvent();
+        id    = event["ID"]:nil;
+
+        if ( id == `table ) {
+
+            if ( event["EventReason"]:nil == "Activated" ) {
+                integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+            }
+
+       } else if ( id == `abort || id == `cancel || id == `done ) {
+         break;
+       } else if ( id == `back || id == `next ) {
+         break;
+       } else {
+         y2error("Unexpected return code: %1", id);
+         continue;
+       }
+   }
+   return (symbol) id;
+}
+
+// Form used to select the type of archived report to list
+define term selectArchForm(map arch, list itemList, string repPath) {
+
+	boolean sir = arch["sir"]:false;
+	boolean aud = arch["aud"]:false;
+	boolean ess = arch["ess"]:false;
+
+	if ( repPath == "" ) {
+		repPath = "/var/log/apparmor/reports-archived/";
+	}
+
+	if ( aud == false && ess == false ) {
+		sir = true;
+	}
+
+	term vForm =
+    `ReplacePoint(`id(`viewform), `VBox(
+        `Label( _("View Archived Reports") ),
+        `HSpacing(60),   // make the table and thus the dialog wide enough
+        `VSpacing(1),
+        `HBox(
+			`Frame( `id(`radioSelect), _("Choose a Report Type"),
+				`RadioButtonGroup(`id(`chooseRep), `HBox(
+					`HStretch(),
+					`RadioButton(`id(`sir), `opt(`notify, `immediate), _("SIR"), sir),
+			        `HSpacing(1),
+					`RadioButton(`id(`aud), `opt(`notify, `immediate), _("App Aud"), aud),
+			        `HSpacing(1),
+		            `RadioButton(`id(`ess), `opt(`notify, `immediate), _("ESS"), ess),
+			        `HSpacing(1),
+					`HStretch()
+             )))
+        ),
+		`HStretch(),
+        `VSpacing(1),
+		`Left( `HBox(
+			`Frame( `id(`repFrame), _("Location of Archived Reports"),
+			`HBox(
+				//`HWeight( 4, `Label(repPath)),
+				`HWeight( 4, `TextEntry(`id(`repPath), "", repPath )),
+		        `HSpacing(1),
+	            `HWeight( 1, `Bottom( `VWeight( 1, `PushButton(`id(`browse),
+				_("&Browse"))))),
+				`HWeight( 5, `HStretch())
+		)))),
+        `VSpacing(0.5),
+        `VWeight( 10, `HBox(
+            `VSpacing(1),
+            `Table(`id(`table), `opt(`notify, `immediate), `header(_("Report"),
+			_("Date") ), itemList ) )
+        ),
+        `VSpacing(1),
+        `HBox(
+            `VSpacing(1),
+            `Left(`PushButton(`id(`view), _("&View"))),
+            `Left(`PushButton(`id(`viewall), _("View &All")))
+        )
+    ));
+
+	return vForm;
+}
+
+define term displayRep(string type, integer curPage, string slastPage,
+list reportList ) {
+
+    string myLabel = "";
+    string currentPage = tostring(curPage);
+    term myTable = nil;
+
+    if (type == "onDemand" || type == "sir") {
+		// Very poor i18n here
+        myLabel = _("On Demand Event Report - Page ") + currentPage + _(" of ") + slastPage;
+        myTable = `Table(`id(`table), `opt(`keepSorting, `immediate ), `header(_("Host"),
+		_("Date"), _("Program"), _("Profile"), _("PID"), _("Severity"), _("Mode"), _("Detail"),
+		_("Event Type")), reportList);
+    } else if (type == "archRep") {
+        myLabel = _("Archived Event Report - Page ") + currentPage + _(" of ") + slastPage;
+        myTable = `Table(`id(`table), `opt(`keepSorting, `immediate ), `header(_("Host"),
+		_("Date"), _("Program"), _("Profile"), _("PID"), _("Severity"), _("Mode"), _("Detail"),
+		_("Access Type")), reportList);
+    } else if (type == "aud" || type == "aud" ) {
+        myLabel = _("Applications Audit Report");
+        myTable = `Table(`id(`table), `opt(`notify, `immediate ), `header(_("Host"), _("Date"),
+		_("Program"), _("Profile"), _("PID"), _("State"), _("Type") ), reportList);
+    } else if (type == "ess" || type == "ess" ) {
+        if (reportList == nil) {
+            myLabel = _("Executive Security Summary");
+            myTable = `Table(`id(`table), `opt(`notify), `header(_("Query Results")),
+			_("No event information exists."));
+        } else {
+            myLabel = _("Executive Security Summary");
+            myTable = `Table(`id(`table), `opt(`notify, `immediate ), `header(_("Host"),
+			_("Start Date"), _("End Date"), _("Num Rejects"), _("Num Events"), _("Ave. Sev"),
+			_("High Sev") ), reportList);
+        }
+    }
+
+    term newPage =
+
+	`Frame( `id(`newpage), myLabel,
+
+		`VBox(
+            `HBox(
+                `VSpacing(10),
+                myTable,
+                `VSpacing(0.5)
+            ),
+            `HSpacing(`opt(`hstretch), 1.0),
+            `VSpacing(0.5),
+            `HBox(
+                `PushButton(`id(`prev), _("&Previous") ),
+                `PushButton(`id(`psort), _("&Sort") ),
+                `PushButton(`id(`fwd), _("&Forward") ),
+                `PushButton(`id(`goto), _("&Go to Page") )
+            ),
+            `VSpacing(1)
+	));
+
+    return newPage;
+}
+
+
+// View Archived Reports
+define symbol displayArchForm() {
+
+    map<string,boolean> arch = $[ ];
+    arch["sir"] = true;
+    arch["aud"] = false;
+    arch["ess"] = false;
+
+    map<string,string> Settings = $[ ];
+    string readSched = "1";
+	Settings["getcron"] = "0";
+    Settings["readSched"] = "1";
+    Settings["type"] = "sir";
+	string type = Settings["type"]:"";
+
+    list<term> itemList = [];
+	itemList = getArrayList(type,"");
+
+    Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+	selectArchForm(arch, itemList, ""), archHelpText, _("Back"), _("&Done") );
+
+	map event = $[];
+	any archId    = nil;
+
+	string repPath = "";
+	integer lastPage = 1;
+    integer curPage = 1;
+
+	string formHelp = runHelp;
+
+
+	while( true ) {
+
+	    event = UI::WaitForEvent( );
+
+	    archId = event["ID"]:nil;
+
+		if (archId == `back || archId == `abort || archId == `done) {
+			break;
+		} else if ( archId == `close || archId == `cancel || archId == `next) {
+			break;
+
+        } else if ( archId == `repPath ) {
+
+			repPath = (string) UI::QueryWidget(`id(`repPath), `Value);
+			Settings["repPath"] = repPath;
+		    itemList = getArrayList(type,repPath);
+		    Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+				selectArchForm(arch, itemList, repPath), archHelpText, _("Back"), _("&Done") );
+
+        } else if ( archId == `browse ) {
+
+            string selectFile = "";
+            selectFile = UI::AskForExistingDirectory( "/",  _("Select Directory"));
+
+            if ( selectFile != nil ) {
+                UI::ChangeWidget(`id(`repPath), `Value, selectFile);
+            }
+
+			// set new reppath
+			repPath = selectFile;
+            Settings["repPath"] = repPath;
+            itemList = getArrayList(type,repPath);
+            Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+				selectArchForm(arch, itemList, repPath), archHelpText, _("Back"), _("&Done") );
+
+		} else if ( archId == `sir ) {
+			formHelp = sirHelp;
+	        arch["sir"] = true;
+	        arch["aud"] = false;
+	        arch["ess"] = false;
+		    Settings["type"] = "sir";
+			type = Settings["type"]:nil;
+
+		    itemList = getArrayList(type,repPath);
+
+		    Wizard::SetContentsButtons( _("View Archived SIR Report"),
+			selectArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+		} else if ( archId == `aud ) {
+			formHelp = audHelp;
+	        arch["sir"] = false;
+	        arch["aud"] = true;
+	        arch["ess"] = false;
+		    Settings["type"] = "aud";
+			type = Settings["type"]:nil;
+
+		    itemList= getArrayList(type,"");
+		    Wizard::SetContentsButtons( _("View Archived AUD Report"),
+			selectArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+		} else if ( archId == `ess ) {
+			formHelp = essHelp;
+	        arch["sir"] = false;
+	        arch["aud"] = false;
+	        arch["ess"] = true;
+		    Settings["type"] = "ess";
+			type = Settings["type"]:nil;
+
+		    itemList= getArrayList(type,"");
+		    Wizard::SetContentsButtons( _("View Archived AUD Report"),
+			selectArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+
+		} else if ( archId == `view || archId == `viewall || archId == `table) {
+
+			if ( archId == `viewall ) {
+				Settings["single"] = "0";
+			} else {
+				Settings["single"] = "1";
+			}
+
+		    integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+		    string logFile  = (string) select((term) UI::QueryWidget(`id(`table),
+			`Item(itemselected)), 1, "");
+		    string logPath = (string) UI::QueryWidget(`id(`repPath), `Value);
+			list splitPath = splitstring (logPath, "/");
+			string checkPath = splitPath[size(splitPath)-1]:"";
+
+			string longLogName = "";
+
+			// Cat strings & check for trailing "/" in path
+			if ( logPath != "" ) {
+				if ( checkPath != "" ) {
+					longLogName = logPath + "/" + logFile;
+				} else {
+					longLogName = logPath + logFile;
+				}
+			}
+
+			if ( type == "sir" ) {
+
+				formHelp = sirHelp;
+				map<any,any> sirSettings = nil;
+				sirSettings =  setArchFilter();
+				if ( archId == `viewall ) { sirSettings["single"] = 0; }
+
+				// Force an exit if appropriate
+		        any breakCheck = sirSettings["break"]:nil;
+
+		        if ( breakCheck == "abort" ) {
+		            symbol myBreak = `abort;
+		            return myBreak;
+
+		        } else if ( breakCheck == "back" ) {
+		            symbol myBreak = `back;
+		            return myBreak;
+		        }
+
+				if ( repPath != "" ) {
+					sirSettings["repPath"] = repPath;
+				}
+
+				Wizard::SetContentsButtons( _("Security Incident Report"),
+				ShowArchForm(type,logFile,sirSettings), sirHelp, _("Back"), _("&Done") );
+				lastPage = getLastPage(type,Settings,"");		// check 'name'
+				AppArmorReports::setPageButtons(curPage,lastPage);
+
+			} else if ( type == "aud" ) {
+
+				formHelp = audHelp;
+				list<term> reportList = [];
+		        integer key = 1;
+			    Settings["page"] = "1";
+			    Settings["audArch"] = "1";
+			    Settings["turnPage"] = "1";
+			    Settings["file"] = logFile;
+
+		        list <map> db = (list <map>) SCR::Read (.reports_confined, Settings);
+
+		        foreach ( map repdata, db, {
+			        reportList = add( reportList, `item( `id(key), repdata["host"]:nil,
+					repdata["date"]:nil, repdata["prog"]:nil, repdata["prof"]:nil,
+					repdata["pid"]:nil, repdata["state"]:nil, repdata["type"]:nil  ));
+		            key = key + 1;
+			    });
+
+			    lastPage =  getLastPage(type,Settings,"");
+			    string slastPage = tostring(lastPage);
+
+				Wizard::SetContentsButtons( _("Applications Audit Report"),
+				displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"),
+				_("&Done") );
+				AppArmorReports::setPageButtons(curPage,lastPage);
+
+			} else if ( type == "ess" ) {
+
+				formHelp = essHelp;
+				list<term> reportList = [];
+		        integer key = 1;
+			    Settings["file"] = logFile;
+				Settings["essArch"] = "1";
+
+		        list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
+
+		        foreach ( map repdata, db, {
+			        reportList = add( reportList, `item( `id(key), repdata["host"]:nil,
+					repdata["startdate"]:nil, repdata["enddate"]:nil, repdata["numRejects"]:nil,
+					repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
+					key = key + 1;
+			    });
+
+			    lastPage = getLastPage(type,Settings,"");
+			    string slastPage = tostring(lastPage);
+
+				Wizard::SetContentsButtons( _("Executive Security Summary Report"),
+				displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"),
+				_("&Done") );
+				AppArmorReports::setPageButtons(curPage,lastPage);
+
+			} else {
+				Popup::Error( _("No recognized report type selected.  Try again.") );
+				continue;
+			}
+
+        } else if ( archId == `goto ) {
+
+			integer newPage = AppArmorReports::PopUpGoto(lastPage);
+
+			if ( newPage > 0 && newPage <= lastPage && newPage != curPage ) {
+				curPage = newPage;
+
+	            term fwdForm = turnArchReportPage(curPage,lastPage);
+	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, _("Back"), _("&Done") );
+	            AppArmorReports::setPageButtons(curPage,lastPage);
+			}
+
+        } else if ( archId == `psort ) {
+
+			string sortKey = AppArmorReports::PopUpSort(type);
+
+			if ( sortKey != nil && sortKey != "" ) {
+	            curPage = 1;
+	            map<string,string> sortCmd = $[];
+				sortCmd["sortKey"] = sortKey;
+	            sortCmd["sort"] = "1";
+	            any junk = SCR::Write(.logparse, sortCmd);
+	            term fwdForm = turnArchReportPage(curPage,lastPage);
+	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, _("Back"), _("&Done") );
+	            AppArmorReports::setPageButtons(curPage,lastPage);
+			}
+
+		} else if ( archId == `fwd ) {
+
+			curPage = curPage +1;
+            term fwdForm = turnArchReportPage(curPage,lastPage);
+			Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, formHelp, _("Back"), _("&Done") );
+
+			AppArmorReports::setPageButtons(curPage,lastPage);
+
+
+		} else if ( archId == `prev ) {
+
+            if ( curPage > 0 ) { curPage = curPage -1; }
+            term prevForm = turnArchReportPage(curPage,lastPage);
+			Wizard::SetContentsButtons( _("AppArmor Report"), prevForm, formHelp, _("Back"), _("&Done") );
+
+			AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else {
+            y2error("Unexpected return code: %1", archId);
+            continue;
+        }
+	}
+
+	if (archId != `back && archId != `abort && archId != `done) {
+		archId = `back;
+	}
+
+	return (symbol) archId;
+}
+
+
+any ViewReportDialog() {
+
+	// What type of form do we want to see?
+    integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+
+    string type = "";
+
+    if (name == "Security.Incident.Report") {
+        type = "sir";
+    } else if (name == "Applications.Audit") {
+        type = "aud";
+    } else if ( name == "Executive.Security.Summary") {
+        type = "ess";
+    } else {
+        type = "sir";
+    }
+
+    map<string,boolean> arch = $[ ];
+    arch["sir"] = true;
+    arch["aud"] = false;
+    arch["ess"] = false;
+
+    map<string,string> Settings = $[ ];
+    string readSched = "1";
+    Settings["getcron"] = "0";
+    Settings["readSched"] = "1";
+    Settings["type"] = type;
+    //Settings["type"] = "sir";
+    //string type = Settings["type"]:type;
+
+    list<term> itemList = [];
+    itemList = getArrayList(type,"");
+
+    Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+	ViewArchForm(arch, itemList, ""), archHelpText, _("Back"), _("&Done") );
+
+    map event = $[];
+    any archId    = nil;
+
+    string repPath = "";
+    integer lastPage = 1;
+    integer curPage = 1;
+
+    string formHelp = runHelp;
+
+
+    while( true ) {
+
+        //event = UI::WaitForEvent( timeout_millisec );
+        event = UI::WaitForEvent( );
+
+        archId = event["ID"]:nil; // We'll need this often - cache it
+
+        if (archId == `back || archId == `abort || archId == `done) {
+            break;
+        } else if ( archId == `close || archId == `cancel || archId == `next) {
+            break;
+
+        } else if ( archId == `repPath ) {
+
+            repPath = (string) UI::QueryWidget(`id(`repPath), `Value);
+            Settings["repPath"] = repPath;
+            itemList = getArrayList(type,repPath);
+            Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+                ViewArchForm(arch, itemList, repPath), archHelpText, _("Back"), _("&Done") );
+
+        } else if ( archId == `browse ) {
+
+            string selectFile = "";
+            selectFile = UI::AskForExistingDirectory( "/",  _("Select Directory"));
+
+            if ( selectFile != nil ) {
+                UI::ChangeWidget(`id(`repPath), `Value, selectFile);
+
+            }
+
+            // set new reppath
+            repPath = selectFile;
+            Settings["repPath"] = repPath;
+            itemList = getArrayList(type,repPath);
+            Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+                ViewArchForm(arch, itemList, repPath), archHelpText, _("Back"), _("&Done") );
+
+        } else if ( archId == `sir ) {
+            formHelp = sirHelp;
+            arch["sir"] = true;
+            arch["aud"] = false;
+            arch["ess"] = false;
+            Settings["type"] = "sir";
+            type = Settings["type"]:nil;
+
+            itemList = getArrayList(type,repPath);
+
+            Wizard::SetContentsButtons( _("View Archived SIR Report"), ViewArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+        } else if ( archId == `aud ) {
+            formHelp = audHelp;
+            arch["sir"] = false;
+            arch["aud"] = true;
+            arch["ess"] = false;
+            Settings["type"] = "aud";
+            type = Settings["type"]:nil;
+
+            itemList= getArrayList(type,"");
+            Wizard::SetContentsButtons( _("View Archived AUD Report"), ViewArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+        } else if ( archId == `ess ) {
+            formHelp = essHelp;
+            arch["sir"] = false;
+            arch["aud"] = false;
+            arch["ess"] = true;
+            Settings["type"] = "ess";
+            type = Settings["type"]:nil;
+
+            itemList= getArrayList(type,"");
+            Wizard::SetContentsButtons( _("View Archived AUD Report"), ViewArchForm(arch,itemList,""), formHelp, _("Back"), _("&Done") );
+
+
+        } else if ( archId == `view || archId == `viewall || archId == `table) {
+
+            if ( archId == `viewall ) {
+                Settings["single"] = "0";
+            } else {
+                Settings["single"] = "1";
+            }
+
+            integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+            string logFile  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+            string logPath = (string) UI::QueryWidget(`id(`repPath), `Value);
+            list splitPath = splitstring (logPath, "/");
+            string checkPath = splitPath[size(splitPath)-1]:"";
+
+            string longLogName = "";
+            // Cat strings & check for trailing "/" in path
+            if ( logPath != "" ) {
+                if ( checkPath != "" ) {
+                    longLogName = logPath + "/" + logFile;
+                } else {
+                    longLogName = logPath + logFile;
+                }
+            }
+
+            if ( type == "sir" ) {
+
+                formHelp = sirHelp;
+                map<any,any> sirSettings = nil;
+                sirSettings =  setArchFilter();
+                if ( archId == `viewall ) { sirSettings["single"] = 0; }
+
+                // Force an exit if appropriate
+                any breakCheck = sirSettings["break"]:nil;
+
+                if ( breakCheck == "abort" ) {
+                    symbol myBreak = `abort;
+                    return myBreak;
+
+                } else if ( breakCheck == "back" ) {
+                    symbol myBreak = `back;
+                    return myBreak;
+                }
+
+                if ( repPath != "" ) {
+                    sirSettings["repPath"] = repPath;
+                }
+
+                Wizard::SetContentsButtons( _("Security Incident Report"),
+				ShowArchForm(type,logFile,sirSettings), sirHelp, _("Back"), _("&Done") );
+
+                lastPage = getLastPage(type,Settings,"");       // check 'name'
+                AppArmorReports::setPageButtons(curPage,lastPage);
+
+            } else if ( type == "aud" ) {
+
+                formHelp = audHelp;
+                list<term> reportList = [];
+                integer key = 1;
+                Settings["page"] = "1";
+                Settings["audArch"] = "1";
+                Settings["turnPage"] = "1";
+                Settings["file"] = logFile;
+
+                list <map> db = (list <map>) SCR::Read (.reports_confined, Settings);
+
+                foreach ( map repdata, db, {
+                    reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["date"]:nil, repdata["prog"]:nil,
+                         repdata["prof"]:nil, repdata["pid"]:nil, repdata["state"]:nil, repdata["type"]:nil  ));
+                    key = key + 1;
+                });
+
+                lastPage =  getLastPage(type,Settings,"");
+                string slastPage = tostring(lastPage);
+
+                Wizard::SetContentsButtons( _("Applications Audit Report"), displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"), _("&Done") );
+                AppArmorReports::setPageButtons(curPage,lastPage);
+
+            } else if ( type == "ess" ) {
+
+                formHelp = essHelp;
+                list<term> reportList = [];
+                integer key = 1;
+                Settings["file"] = logFile;
+                Settings["essArch"] = "1";
+
+                list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
+
+                foreach ( map repdata, db, {
+                    reportList = add( reportList, `item( `id(key),
+					repdata["host"]:nil, repdata["startdate"]:nil,
+					repdata["enddate"]:nil, repdata["numRejects"]:nil,
+					repdata["numEvents"]:nil, repdata["sevMean"]:nil,
+					repdata["sevHi"]:nil ));
+                    key = key + 1;
+                });
+
+                lastPage = getLastPage(type,Settings,"");
+                string slastPage = tostring(lastPage);
+
+                Wizard::SetContentsButtons( _("Executive Security Summary Report"),
+				displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"),
+				_("&Done") );
+                AppArmorReports::setPageButtons(curPage,lastPage);
+
+            } else {
+                Popup::Error( _("No recognized report type selected.  Try again.") );
+                continue;
+            }
+
+        } else if ( archId == `goto ) {
+
+            integer newPage = AppArmorReports::PopUpGoto(lastPage);
+
+            if ( newPage > 0 && newPage <= lastPage && newPage != curPage ) {
+                curPage = newPage;
+                term fwdForm = turnArchReportPage(curPage,lastPage);
+
+                Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm,
+				runHelp, _("Back"), _("&Done") );
+
+                AppArmorReports::setPageButtons(curPage,lastPage);
+            }
+
+        } else if ( archId == `psort ) {
+
+            string sortKey = AppArmorReports::PopUpSort(type);
+
+            if ( sortKey != nil && sortKey != "" ) {
+                curPage = 1;
+                map<string,string> sortCmd = $[];
+                sortCmd["sortKey"] = sortKey;
+                sortCmd["sort"] = "1";
+                any junk = SCR::Write(.logparse, sortCmd);
+                term fwdForm = turnArchReportPage(curPage,lastPage);
+                Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, _("Back"), _("&Done") );
+                AppArmorReports::setPageButtons(curPage,lastPage);
+            }
+
+        } else if ( archId == `fwd ) {
+
+            curPage = curPage +1;
+            term fwdForm = turnArchReportPage(curPage,lastPage);
+            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, formHelp, _("Back"), _("&Done") );
+
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+
+        } else if ( archId == `prev ) {
+
+            if ( curPage > 0 ) { curPage = curPage -1; }
+            term prevForm = turnArchReportPage(curPage,lastPage);
+            Wizard::SetContentsButtons( _("AppArmor Report"), prevForm, formHelp, _("Back"), _("&Done") );
+
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else if ( archId == `first ) {
+
+            curPage = 1;
+            term firstForm = turnArchReportPage(curPage,lastPage);
+            Wizard::SetContentsButtons( _("AppArmor Report"), firstForm, formHelp, _("Back"), _("&Done") );
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else if ( archId == `last ) {
+
+            curPage = lastPage;
+            term lastForm = turnArchReportPage(curPage,lastPage);
+            Wizard::SetContentsButtons( _("AppArmor Report"), lastForm, formHelp, _("Back"), _("&Done") );
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else {
+            y2error("Unexpected return code: %1", archId);
+            continue;
+        }
+    }
+
+    if (archId != `back && archId != `abort && archId != `done) {
+        archId = `back;
+    }
+
+    return (symbol) archId;
+}
+
+//  Execute and Navigate Reports
+any RunReportDialog() {
+
+    any ret = nil;
+    integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
+    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string type = "";
+
+    if (name == "Security.Incident.Report") type = "sir";
+	else if (name == "Applications.Audit") type = "aud";
+	else if ( name == "Executive.Security.Summary") type = "ess";
+	else type = "sir";
+
+	if ( type != "aud" ) {
+		boolean dbActivated = checkEventDb();
+        if ( dbActivated == false ) { type = "noDb"; }
+    }
+
+    list<term> reportList = [];
+    map<any,any> Settings = $[ ];
+    integer curPage = 1;
+    integer lastPage = 1;
+    string slastPage = "1";
+
+    string formHelp = runHelp;
+    map <any,any>  reportdata =  nil;
+
+    if (type == "sir") {
+
+        // Draw the the tabbed forms
+        term contents = `VBox( "tab", `VStretch ());
+
+        list<map <string, any> > w = CWM::CreateWidgets (["tab"], (map <string, map <string, any> >)filter_descr);
+        string help = CWM::MergeHelps(w);
+        contents = CWM::PrepareDialog(contents, w);
+
+        Wizard::SetContentsButtons(_("Configure Report Filters"), contents,
+        _("Help, I'm being oppressed!"), Label::NextButton (), Label::NextButton ());
+        Wizard::HideBackButton();
+
+        ret = CWM::Run(w, $[ ]);
+        Wizard::RestoreBackButton ();
+
+        formHelp = sirHelp;
+        Settings["type"] = "onDemand";
+        Settings["turnPage"] = "0";
+
+        list <map> db = (list <map>) SCR::Read (.logparse, Settings);
+
+        integer key = 1;
+
+        foreach ( map repdata, db, {
+            reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["date"]:nil, repdata["prog"]:nil,
+                 repdata["profile"]:nil, repdata["pid"]:nil, repdata["severity"]:nil, repdata["mode"]:nil, repdata["resource"]:nil,
+                 repdata["sdmode"]:nil  ));
+            key = key + 1;
+        });
+
+    } else if ( type == "aud" ) {
+
+        formHelp = audHelp;
+        Settings["type"] = "onDemand";
+        Settings["turnPage"] = "0";
+
+        list <map> db = (list <map>) SCR::Read (.reports_confined, Settings);
+
+        integer key = 1;
+
+        foreach ( map repdata, db, {
+            reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["date"]:nil, repdata["prog"]:nil,
+                 repdata["prof"]:nil, repdata["pid"]:nil, repdata["state"]:nil, repdata["type"]:nil ));
+            key = key + 1;
+        });
+    } else if ( type == "ess" ) {
+
+        formHelp = essHelp;
+        Settings["type"] = "onDemand";
+        Settings["turnPage"] = "0";
+        list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
+
+        if (db != nil) {
+
+            integer key = 1;
+
+            foreach ( map repdata, db, {
+                reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["startdate"]:nil,
+                    repdata["enddate"]:nil, repdata["numRejects"]:nil, repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
+                key = key + 1;
+            });
+        }
+
+    }
+
+    if ( type == "noDb" ) {
+        Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayEmptyRep(), formHelp, _("Back"), _("&Done") );
+    } else {
+        lastPage =  getLastPage(type,Settings,name);
+        slastPage = tostring(lastPage);
+
+        Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayRep(type,
+		curPage,slastPage,reportList), formHelp, _("Back"), _("&Done") );
+        AppArmorReports::setPageButtons(curPage,lastPage);
+    }
+
+	// Report Navigation
+    while(true) {
+
+        // Grey out inappropriate paging buttons
+        if (curPage <= 1 ) {
+            UI::ChangeWidget(`id(`prev), `Enabled, false);
+            UI::ChangeWidget(`id(`psort), `Enabled, false);
+        } else if ( curPage >= lastPage ) {
+            UI::ChangeWidget(`id(`fwd), `Enabled, false);
+        }
+
+		ret = UI::UserInput();
+
+        if ( ret == `schedrep ) {
+            break;
+        } else if ( ret == `abort || ret == `cancel || ret == `back ||
+					ret == `done || ret == `next ) {
+            break;
+        } else if ( ret == `goto ) {
+
+            integer newPage = AppArmorReports::PopUpGoto(lastPage);
+
+            if ( newPage > 0 && newPage <= lastPage && newPage != curPage ) {
+                curPage = newPage;
+
+                term goForm = turnReportPage(name,curPage,slastPage,Settings);
+                Wizard::SetContentsButtons( _("AppArmor - Run Reports"), goForm,
+                    formHelp, _("Back"), _("&Done") );
+                AppArmorReports::setPageButtons(curPage,lastPage);
+            }
+
+        } else if ( ret == `psort ) {
+
+            string sortKey = AppArmorReports::PopUpSort(type);
+
+            if ( sortKey != nil && sortKey != "" ) {
+
+                curPage = 1;
+                Settings["type"] = "onDemand";
+                Settings["turnPage"] = "0";
+                Settings["sortKey"] = sortKey;
+                reportList = getReportList(type,Settings);
+
+                Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayRep(type,curPage,
+                    slastPage,reportList), formHelp, _("Back"), _("&Done") );
+                AppArmorReports::setPageButtons(curPage,lastPage);
+
+            }
+
+        } else if ( ret == `prev ) {
+
+            if ( curPage > 0 ) { curPage = curPage -1; }
+            term prevForm = turnReportPage(name,curPage,slastPage,Settings);
+            Wizard::SetContentsButtons( _("AppArmor - Run Reports"), prevForm,
+                formHelp, _("Back"), _("&Done") );
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else if ( ret == `fwd ) {
+            curPage = curPage + 1;
+            term fwdForm = turnReportPage(name,curPage,slastPage,Settings);
+            Wizard::SetContentsButtons( _("AppArmor - Run Reports"), fwdForm,
+            formHelp, _("Back"), _("&Done") );
+            AppArmorReports::setPageButtons(curPage,lastPage);
+
+        } else {
+            y2error("unexpected retcode: %1", ret);
+            continue;
+        }
+    }
+
+    return ret;
+}
+
+/* EOF */
+}
