@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/add_profile
+Icon=apparmor_add_profile
 Exec=/sbin/yast2 SD_AddProfile
 
 Name=Manually Add Profile

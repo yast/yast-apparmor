@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/control_panel
+Icon=apparmor_control_panel
 Exec=/sbin/yast2 subdomain 
 
 Name=AppArmor Control Panel

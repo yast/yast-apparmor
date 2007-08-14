@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/creation_wizzard
+Icon=apparmor_creation_wizard
 Exec=/sbin/yast2 GenProf
 
 Name=Add Profile Wizard

@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/update_wizzard
+Icon=apparmor_update_wizard
 Exec=/sbin/yast2 LogProf
 
 Name=Update Profile Wizard

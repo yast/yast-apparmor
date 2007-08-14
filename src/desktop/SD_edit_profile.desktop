@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor/edit_profile
+Icon=apparmor_edit_profile
 Exec=/sbin/yast2 SD_EditProfile
 
 Name=Edit Profile

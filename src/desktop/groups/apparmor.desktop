@@ -11,6 +11,6 @@ X-SuSE-YaST-Group=AppArmor
 X-SuSE-YaST-SortKey=50
 
 OnlyShowIn=X-SuSE-YaST;
-Icon=apparmor/app_armor
+Icon=apparmor_app_armor
 
 Name=Novell AppArmor

@@ -76,7 +76,7 @@ define any mainSequence() ``{
    ];
 
    Wizard::CreateDialog();
-   Wizard::SetTitleIcon("apparmor/view_profile");
+   Wizard::SetTitleIcon("apparmor_view_profile");
    any ret = Sequencer::Run(aliases, sequence);
    Wizard::CloseDialog();
    return ret;
