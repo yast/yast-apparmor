@@ -15,7 +15,7 @@ NAME=yast2-apparmor
 all:
 COMMONDIR=../../common/
 THEMEDIR=
-
+MODULES= src/modules/AppArmorReports.ybc
 include common/Make.rules
 
 COMMONDIR_EXISTS=$(strip $(shell [ -d ${COMMONDIR} ] && echo true))
@@ -24,13 +24,14 @@ common/Make.rules: $(COMMONDIR)/Make.rules
 	ln -sf $(COMMONDIR) .
 endif
 
-SUBDIRS		= clients include scrconf desktop agents perl icons bin
+SUBDIRS		= clients include scrconf desktop agents perl icons bin modules
 
 .PHONY:	install
-install:
+install: $(MODULES)
 	mkdir -p ${DESTDIR}/usr/share/YaST2/clients
 	mkdir -p ${DESTDIR}/usr/share/YaST2/include/subdomain
 	mkdir -p ${DESTDIR}/usr/share/YaST2/scrconf
+	mkdir -p ${DESTDIR}/usr/share/YaST2/modules
 	mkdir -p ${DESTDIR}/usr/share/applications/YaST2
 	mkdir -p ${DESTDIR}/usr/share/applications/YaST2/groups
 	mkdir -p ${DESTDIR}/usr/lib/YaST2/servers_non_y2
@@ -40,6 +41,7 @@ install:
 	mkdir -p ${DESTDIR}/${THEMEDIR}/icons/22x22/apps
 	mkdir -p ${DESTDIR}/usr/bin
 	mkdir -p ${DESTDIR}/etc/apparmor
+	cp -a src/modules/* ${DESTDIR}/usr/share/YaST2/modules/
 	cp -a src/clients/* ${DESTDIR}/usr/share/YaST2/clients/
 	cp -a src/include/* ${DESTDIR}/usr/share/YaST2/include/
 	cp -a src/scrconf/* ${DESTDIR}/usr/share/YaST2/scrconf/
@@ -52,7 +54,11 @@ install:
 	cp -a src/bin/* ${DESTDIR}/usr/bin
 	cp -a src/apparmor/* ${DESTDIR}/etc/apparmor
 	install -m 755 src/agents/* ${DESTDIR}/usr/lib/YaST2/servers_non_y2/
-	
+
+all: $(MODULES)
+   	
+src/modules/AppArmorReports.ybc:  src/modules/AppArmorReports.ycp
+	ycpc -c src/modules/AppArmorReports.ycp
 
 .PHONY: clean
 clean:
