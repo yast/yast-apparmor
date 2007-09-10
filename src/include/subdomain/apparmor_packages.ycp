@@ -23,8 +23,7 @@
 import "PackageSystem";
 
 list<string> __needed_packages =
-	["apparmor-parser", "apparmor-utils", "apparmor-profiles",
-	 "apparmor-docs"];
+	["apparmor-parser", "apparmor-utils", "apparmor-profiles"];
 
 define boolean installAppArmorPackages () {
 	return PackageSystem::CheckAndInstallPackagesInteractive (__needed_packages);
