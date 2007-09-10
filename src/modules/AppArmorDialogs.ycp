@@ -1,0 +1,9 @@
+{
+
+module "AppArmorDialogs";
+
+textdomain "yast2-apparmor";
+
+global define term busy_dialog = nil;
+
+}
