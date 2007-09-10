@@ -192,7 +192,6 @@ sub addConf {
 	        for ($args->{'prog'},$args->{'prof'},$args->{'pid'},$args->{'sev'},
 					$args->{'res'},$args->{'sdmode'},$args->{'mode'}) {
 
-				next unless $_;
 	            $_ =~ s/\s+//g;
 
 	            if ( ! $_ || $_ eq "NA" || $_ eq "" || $_ eq "All" ) {
@@ -634,7 +633,7 @@ while ( <STDIN> ) {
 
 		my $db = undef;
 
-		if ( $args->{'name'} && $args->{'name'} =~ /Edit\s+(\w.+)\s+Sched/ ) {
+		if ( $args->{'name'} =~ /Edit\s+(\w.+)\s+Sched/ ) {
 			$args->{'name'} = $1;
 		}
 

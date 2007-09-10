@@ -1,118 +1,16 @@
-/* ------------------------------------------------------------------------------
- * Copyright (c) 2006 Novell, Inc. All Rights Reserved.
- *
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of version 2 of the GNU General Public License as published by the
- * Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, contact Novell, Inc.
- *
- * To contact Novell about this file by physical or electronic mail, you may find
- * current contact information at www.novell.com.
- * ------------------------------------------------------------------------------
- */
-
-/**
- * File:	include/apparmor-reports/helps.ycp
- * Package:	Configuration of apparmor-reports
- * Summary:	Help text of all the dialogs
- * Authors:	David Drewelow <ddrewelow@suse.de>
- *
- * $Id: helps.ycp 27914 2006-02-13 14:32:08Z locilka $
- */
+/* ------------------------------------------------------------------
+*
+*    Copyright (C) 2002-2005 Novell/SUSE
+*
+*    This program is free software; you can redistribute it and/or
+*    modify it under the terms of version 2 of the GNU General Public 
+*    License published by the Free Software Foundation.
+*
+  ------------------------------------------------------------------*/
 
 {
 
-//textdomain  "yast2-apparmor";
-textdomain "apparmor-reports";
-
-map HELPS = $[
-
-    /* Read dialog help 1/2 */
-    "read" : _("<p><b><big>Initializing AppArmor Report Wizard</big></b><br>
-Please wait...<br></p>
-") +
-
-    /* Read dialog help 2/2 */
-    _("<p><b><big>Aborting Initialization:</big></b><br>
-Safely abort the configuration utility by pressing <b>Abort</b> now.</p>
-"),
-
-    /* Write dialog help 1/2 */
-    "write" : _("<p><b><big>Saving AppArmor Report Configuration</big></b><br>
-Please wait...<br></p>
-") +
-
-    /* Write dialog help 2/2 */
-_("<p><b><big>Aborting Saving:</big></b><br>
-Abort the save procedure by pressing <b>Abort</b>.
-An additional dialog informs whether it is safe to do so.
-</p>
-"),
-
-    /* Summary dialog help 1/3 */
-    "summary" : _("<p><b><big>AppArmor Reports Configuration</big></b><br>
-Configure reports here.<br></p>
-") +
-
-    /* Summary dialog help 2/3 */
-    _("<p><b><big>Adding a Report:</big></b><br>
-Choose a report from the list of AppArmor reports.
-</p>
-") +
-
-    /* Summary dialog help 3/3 */
-    _("<p><b><big>Editing or Deleting:</big></b><br>
-If you press <b>Edit</b>, an additional dialog in which to change
-the configuration opens.</p>
-"),
-
-    /* Overview dialog help 1/3 */
-    "overview" : _("<p><b><big>AppArmor Report Configuration Overview</big></b><br>
-Obtain an overview of installed apparmor reports. Additionally
-edit their configurations.<br></p>
-") +
-
-    /* Overview dialog help 2/3 */
-_("<p><b><big>Adding a report:</big></b><br>
-Press <b>Add</b> to configure a report.</p>") +
-
-    /* Overview dialog help 3/3 */
-_("<p><b><big>Editing or Deleting:</big></b><br>
-Choose a report to change or remove.
-Then press <b>Edit</b> or <b>Delete</b> as desired.</p>
-"),
-
-    /* Configure1 dialog help 1/2 */
-    "c1" : _("<p><b><big>Configuration Part One</big></b><br>
-Press <b>Next</b> to continue.
-<br></p>") +
-
-    /* Configure1 dialog help 2/2 */
-_("<p><b><big>Selecting Something</big></b><br>
-It is not possible. You must code it first. :-)
-</p>"),
-
-    /* Configure2 dialog help 1/2 */
-    "c2" : _("<p><b><big>Configuration Part Two</big></b><br>
-Press <b>Next</b> to continue.
-<br></p>
-") +
-
-    /* Configure2 dialog help 2/2 */
-_("<p><b><big>Selecting Something</big></b><br>
-It is not possible. You must code it first. :-)
-</p>"),
-
-];
-
-
+textdomain  "yast2-apparmor";
 
 string setArchHelp = _("The Report Configuration dialog enables you to filter the archived report selected in the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <br><br> <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the binary executable of the program of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the profile, the report will display the security events that are generated for the specified profile.  You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided.");
 
@@ -121,6 +19,9 @@ string runHelp = _("The AppArmor On-Demand Report screen displays an instantly g
 
 string filterCfHelp1 = _("The Report Configuration dialog enables you to filter the report selected in the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  <li>Enter the start and end dates that delineate the scope of the report.  <li>Enter other filtering parameters. See below for definitions of parameters.  </ol> The following definitions help you to enter the filtering parameters in the Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a program name or pattern that matches the name of the executable process of interest, the report will display security events that have occurred for a specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the name of the security profile that is applied to the rocess, the report will display the security events that are generated for the specified profile. You can use this to see what is being confined by a specific profile.<br><br> <b>PID Number:</b> Process ID number is a number that uniquely identifies one specific process or running program (this number is valid only during the lifetime of that process).<br><br> <b>Severity Level:</b>  Select the lowest severity level for security events that you would like to be included in the report. The selected severity level, and above, will be included in the reports.<br><br> <b>Detail:</b>  A source to which the profile has denied access.  This includes capabilities and files. You can use this field to report the resources are not allowed to be accessed by profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile grants to the program or process to which it is applied. The options are: r (read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access type describes what is actually happening with the security event. The options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> Enables you to export a CSV (comma separated values) or html file. The CSV file separates pieces of data in the log entries with commas using a standard data format for importing into table-oriented applications. You can enter a pathname for your exported report by typing in the full pathname in the field provided.<br><br>");
 
+
+/* START Help Section
+************************************************************/
 
 string repGenHelpText = _("<b>Generate Reports Help</b> <p>If there were, in fact, going to be any help for you (which, incidentally, there isn't going to be), then you would indeed find said help, here.<p> Thank you for your time, and have a nice day.");
 
@@ -151,5 +52,5 @@ string audHelp = _("<b>Applications Audit Report (AUD):</b> An auditing tool tha
 
 string essHelp = _("<b>Executive Security Summary (ESS):</b> A combined report, consisting of one or more high-level reports from one or more machines. This report can provide a single view of security events on multiple machines if each machine's data is copied to the reports archive directory, which is <b>/var/log/apparmor/reports-archived</b>. This report provides the host machine's IP address, the start and end dates of the polled events, total number of rejects, total number of events, average of severity levels reported, and the highest severity level reported. One line of the ESS report represents a range of SIR reports.<br><br> ");
 
-/* EOF */
 }
+
