@@ -18,8 +18,8 @@
 
 
 import "Popup";
+import "AppArmorDialogs";
 textdomain "yast2-apparmor";
-
 
   map CMDS = $[ ];
   CMDS["CMD_ALLOW"]          = _("&Allow");
@@ -601,4 +601,45 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
     }
     UI::CloseDialog();
     return results;
+}
+
+/** Form_BusyFeedbackDialog
+  *
+  * @param    agent_data - map - data from backend
+  *           [ title               - string - explanation of the forms use ]
+  *
+  * @return   results    - map
+  *           [ STATUS           - string - ok/cancel                       ]
+  *
+  **/
+
+define term Form_BusyFeedbackDialog( string message ) {
+        //`MinSize( 10, 4, `Image(`opt(`animated), movie, "animation" ),
+        //`Image(`opt(`animated), movie, "animation" ),
+    string movie =
+    "/usr/share/YaST2/theme/current/animations/ticks-endless.gif";
+    term busy_dialog =
+    `HBox(
+       //`MinSize( 10, 4, `Image(`opt(`animated), movie, "animation" ) ),
+       `Image(`opt(`animated), movie, "animation" ),
+       `Label( message )
+    );
+    return busy_dialog;
+}
+
+define void UI_BusyFeedbackStart(  map<any,any> agent_data ) {
+    string message = agent_data["message"]:"MISSING MESSAGE";
+    if ( AppArmorDialogs::busy_dialog != nil ) {
+      UI::CloseDialog();
+    }
+    AppArmorDialogs::busy_dialog = Form_BusyFeedbackDialog( message );
+    UI::OpenDialog( AppArmorDialogs::busy_dialog);
+    return;
+}
+
+define void UI_BusyFeedbackStop( ) {
+    if ( AppArmorDialogs::busy_dialog != nil ) {
+      UI::CloseDialog();
+      AppArmorDialogs::busy_dialog = nil;
+    }
 }

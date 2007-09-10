@@ -315,6 +315,20 @@
       map<any,any> answers = UI_MultiProfileSelectionDialog( agent_data );
       SCR::Write(.genprof, answers);
 
+    } else if (type == "dialog-busy-start") {
+
+      map<string,string> answers = $[ ];
+      UI_BusyFeedbackStart( agent_data );
+      answers["answer"] = "okay";
+      SCR::Write(.genprof, answers);
+
+    } else if (type == "dialog-busy-stop") {
+
+      map<string,string> answers = $[ ];
+      UI_BusyFeedbackStop( );
+      answers["answer"] = "okay";
+      SCR::Write(.genprof, answers);
+
     } else if (type == "long-dialog-message") {
 
       map<string,string> answers = $[ ];
