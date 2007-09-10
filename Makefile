@@ -15,7 +15,7 @@ NAME=yast2-apparmor
 all:
 COMMONDIR=../../common/
 THEMEDIR=
-MODULES= src/modules/AppArmorReports.ybc
+MODULES= src/modules/AppArmorDialogs.ybc
 include common/Make.rules
 
 COMMONDIR_EXISTS=$(strip $(shell [ -d ${COMMONDIR} ] && echo true))
@@ -57,6 +57,9 @@ install: $(MODULES)
 
 all: $(MODULES)
    	
+src/modules/AppArmorDialogs.ybc:  src/modules/AppArmorDialogs.ycp
+	ycpc -c src/modules/AppArmorDialogs.ycp
+
 src/modules/AppArmorReports.ybc:  src/modules/AppArmorReports.ycp
 	ycpc -c src/modules/AppArmorReports.ycp
 
