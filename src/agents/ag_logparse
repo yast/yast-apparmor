@@ -197,8 +197,6 @@ sub exportReports {
 		my $repName = getReportName($expDir);
 		my $header = getHeader($args,$filts);
 
-		#$rawLog = $expDir . $repName;
-
         if ( $args->{'exporttext'} && $args->{'exporttext'} eq '1') {
             $expLog = "$repName.csv";
             Immunix::Reports::exportLog($expLog,$db,$header->{'csv'});
@@ -226,6 +224,11 @@ while ( <STDIN> ) {
 	my $numEvents = '1000';		# Number of event records to return
 
     if ( $command && $path && $args ) {
+		# Arbitrary workaround until all the new code becomes active
+		if ( $args->{'mode'} ) {
+			$args->{'mode_req'} = $args->{'mode'};
+			delete($args->{'mode'});
+		}
 
 		# yast slows down horribly when passing large number of records
 		if ( $args->{'numEvents'} && $args->{'numEvents'} > 0 && $args->{'numEvents'} < 10001 ) {
@@ -284,13 +287,15 @@ while ( <STDIN> ) {
 	            $args->{'sdmode'} =~ s/AccessType//g;
 			}
         }
-        if ( $args->{'mode'} ) {
-			if ($args->{'mode'} eq "All") { 
-				$args->{'mode'} = "-"; 
+
+		# Only mode_req is used now
+		for ('mode_req', 'mode_deny' ) {
+	        if ( $args->{$_} && $args->{$_} eq "All" ) { 
+				$args->{$_} = "-"; 
 			} else {
-	            $args->{'mode'} =~ s/\&//g;
-	            $args->{'mode'} =~ s/Mode\://g;
-	            $args->{'mode'} =~ s/\s//g;
+	            $args->{$_} =~ s/\&//g;
+	            $args->{$_} =~ s/Mode\://g;
+	            $args->{$_} =~ s/\s//g;
 			}
         }
 
@@ -300,15 +305,6 @@ while ( <STDIN> ) {
 
 		my $sortKey = 'time';
 		if ( $args->{'sortKey'} ) { $sortKey = $args->{'sortKey'}; }
-
-		# debug
-		########################################	
-		#if ($args) {
-		#	my $argList = "";
-		#	for (sort keys(%$args) ) { $argList .= "$_ is $args->{$_}, "; }
-		#	ycp::y2milestone("Today's Available Args: $argList");
-		#}
-		########################################	
 
 		if ( $args->{'sort'} && $args->{'sort'} == 1 ) {
 
@@ -326,10 +322,6 @@ while ( <STDIN> ) {
 
 			} else {
 
-				# commented lines below work
-				#my $query = getSavedQuery($page);
-	            #$db = Immunix::Reports::getEvents($query);
-				#############################################
 				my $filts = Immunix::Reports::setFormFilters($args);
 				$filts = Immunix::Reports::rewriteFilters($filts);
 	            my $query = Immunix::Reports::getQuery($filts,$page,$sortKey,$numEvents);
@@ -351,7 +343,6 @@ while ( <STDIN> ) {
 			if ( ! $error || ($error && ($error eq '0')) ) {
 				$error = Immunix::Reports::parseLog($args);
 				delete($args->{'logFile'}); 
-				#$db = Immunix::Reports::getArchReport($args);
 
 			} else {
 		        ycp::y2error("ag_logparse - Unable to run archived reports: $error");
@@ -361,16 +352,12 @@ while ( <STDIN> ) {
 
             # Parse Events (On-Demand report from events db)
             ##################################################
-            #my $filts = Immunix::Reports::getSirFilters($args);
 			my $filts = Immunix::Reports::setFormFilters($args);
 			$filts = Immunix::Reports::rewriteFilters($filts);
             my $query = Immunix::Reports::getQuery($filts,$page,$sortKey,$numEvents);
             $db = Immunix::Reports::getEvents($query);
 
 			exportReports($args,$db,$filts);
-
-			# New - write out query for later use in page-turning
-			#saveQuery($query);
 
         } elsif ($args->{'getSirFilters'} && $args->{'getSirFilters'} == 1) {
 
@@ -392,7 +379,6 @@ while ( <STDIN> ) {
 		}
 
     } else {
-        #my $error = sprintf( gettext("ag_logparse: Unknown instruction %s or argument: %s"), ycpGetCommand, ycpGetArgType);
         my $error = "ag_logparse: Missing instruction or argument!";
 		ycp::y2error($error);
         ycp::Return($error);
