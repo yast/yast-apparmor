@@ -161,6 +161,11 @@ while ( <STDIN> ) {
 
     if ( $command && $path && $args ) {
 
+		if ( $args->{'mode'} ) {
+			$args->{'mode_req'} = $args->{'mode'};
+			delete($args->{'mode'});
+		}
+
 	    my $error = undef;
 
 		if ( $args->{'checkDb'} && $args->{'checkDb'} == 1 ) {

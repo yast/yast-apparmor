@@ -88,6 +88,38 @@ define integer getLastPage(string type, map Settings, string name) {
 	return lastPage;
 }
 
+define boolean CheckDate( integer day, integer month, integer year ) ``{
+
+    list mdays = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+    boolean ret = true;
+
+    if (year == nil || month == nil || day == nil)
+        return false;
+
+    ret = ret && month>=1 && month<=12;
+
+    if( year%4==0 && (year%100!=0 || year%400==0)) {
+        mdays[1] = 29;
+    }
+
+    ret = ret && day>=1 && day<=mdays[month-1]:0;
+    ret = ret && year>=1970 && year<2032;
+    return( ret );
+
+}
+
+// Make the table for displaying report data
+define term makeSirTable (list reportList) {
+    term myTable =
+    `Table(`id(`table), `opt(`keepSorting, `immediate ), `header(_("Host"),
+        _("Date"), _("Program"), _("Profile"), _("PID"), _("Severity"),
+        _("Mode Request"), _("Mode Deny"), _("Detail"), _("Event Type"),
+        _("Operation"), _("Attribute"), _("Additional Name"), _("Net Family"),
+        _("Net Protocol"), _("Net Socket Type")), reportList
+    );
+    return myTable;
+}
+
 define integer popUpGoto(integer lastPage) {
 
     UI::OpenDialog(
@@ -518,6 +550,59 @@ define string popUpSdMode() {
 
 	UI::CloseDialog();
 	return sdMode;
+}
+
+/* For On Demand Reports
+    - Returns list of terms corresponding to the type of report
+***********************************************************************/
+define list<term> getReportList(string type, map Settings) {
+
+    list<term> reportList = [];
+
+    if ( type == "aud" ) {
+
+        list <map> db = (list <map>) SCR::Read (.reports_confined, Settings);
+        integer key = 1;
+
+        foreach ( map repdata, db, {
+            reportList = add( reportList, `item( `id(key), repdata["host"]:nil, repdata["date"]:nil,
+                repdata["prog"]:nil, repdata["prof"]:nil, repdata["pid"]:nil, repdata["state"]:nil,
+                repdata["type"]:nil ));
+            key = key + 1;
+        });
+
+    } else if ( type == "ess" ) {
+
+        list <map> db = (list <map>) SCR::Read (.reports_ess, Settings);
+        integer key = 1;
+
+        foreach ( map repdata, db, {
+            reportList = add( reportList, `item( `id(key), repdata["host"]:nil,
+                repdata["startdate"]:nil, repdata["enddate"]:nil, repdata["numRejects"]:nil,
+                repdata["numEvents"]:nil, repdata["sevMean"]:nil, repdata["sevHi"]:nil ));
+            key = key + 1;
+        });
+
+    } else {
+
+        list <map> db = (list <map>) SCR::Read (.logparse, Settings);
+        integer key = 0;
+
+        foreach ( map record, db, {
+            reportList = add( reportList, `item( `id(key),
+                record["host"]:nil, record["date"]:nil, record["prog"]:nil,
+                record["profile"]:nil, record["pid"]:nil, record["severity"]:nil,
+                record["mode_req"]:nil, record["mode_deny"]:nil,
+                record["resource"]:nil, record["sdmode"]:nil, record["op"]:nil,
+                record["attr"]:nil, record["name_alt"]:nil, record["net_family"]:nil,
+                record["net_proto"]:nil, record["net_socktype"]:nil
+            ));
+            key = key + 1;
+        });
+
+    }
+
+    return reportList;
 }
 
 }
