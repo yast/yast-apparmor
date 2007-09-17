@@ -20,7 +20,9 @@ map<string,any> Settings = $[
 ];
 
 
-define map capabilityEntryPopup( map capmap, string linuxcapname, string profile )   {
+define map capabilityEntryPopup( map capmap,
+                                 string linuxcapname,
+                                 string profile )   {
                 map results = $[];
                 string lpname = linnametolp[linuxcapname]:"";
                 map cdef = capdefs[lpname]:nil;
@@ -99,8 +101,133 @@ define map capabilityEntryPopup( map capmap, string linuxcapname, string profile
 }
 
 
+define string networkEntryPopup( string rule )   {
+    integer listnum = 0;
+    list netlist = splitstring( rule, " " );
+    integer netrulesize = size( netlist );
+    string family = "";
+    string sockettype = "";
+    if ( netrulesize == 1 ) {
+        family = "All";
+    } else if ( netrulesize == 2 ) {
+      family = netlist[1]:"";
+    } else if ( netrulesize == 3 ) {
+        family = netlist[1]:"";
+        sockettype = netlist[2]:"";
+    }
 
-// 
+    list<term> famList =  [
+        `item( `id( `allfam ), _("All") ),
+        `item( `id( `inet ), "inet" ),
+        `item( `id( `inet6 ), "inet6" ),
+        `item( `id( `ax25 ), "ax25" ),
+        `item( `id( `ipx ), "ipx" ),
+        `item( `id( `appletalk ), "appletalk" ),
+        `item( `id( `netrom ), "netrom" ),
+        `item( `id( `bridge ), "bridge" ),
+        `item( `id( `atmpvc ), "atmpvc" ),
+        `item( `id( `x25 ), "x25" ),
+        `item( `id( `rose ), "rose" ),
+        `item( `id( `netbeui ), "netbeui" ),
+        `item( `id( `security ), "security" ),
+        `item( `id( `key ), "key" ),
+        `item( `id( `packet ), "packet" ),
+        `item( `id( `ash ), "ash" ),
+        `item( `id( `econet ), "econet" ),
+        `item( `id( `atmsvc ), "atmsvc" ),
+        `item( `id( `sna ), "sna" ),
+        `item( `id( `irda ), "irda" ),
+        `item( `id( `ppox ), "pppox" ),
+        `item( `id( `wanpipe ), "wanpipe" ),
+        `item( `id( `bluetooth ), "bluetooth" ),
+    ];
+
+    list<term> typeList =  [
+        `item( `id( `alltype ), _("All") ),
+        `item( `id( `stream ), "stream" ),
+        `item( `id( `dgram ), "dgram" ),
+        `item( `id( `seqpacket ), "seqpacket" ),
+        `item( `id( `rdm ), "rdm" ),
+        `item( `id( `raw ), "raw" ),
+        `item( `id( `packet ), "packet" ),
+        `item( `id( `dccp ), "dccp" ),
+    ];
+
+    map results = $[];
+
+    UI::OpenDialog(
+        `VBox(
+            `VSpacing( 1 ),
+		    `HBox(
+                `HCenter( `ComboBox( `id(`famItems),
+                                     `opt(`notify),
+                                       _("Network Family"),
+                                       famList
+                                     )
+                ),
+			    `HSpacing(`opt(`hstretch), 0.2),
+                `HCenter( `ComboBox( `id(`typeItems),
+                                     `opt(`notify),
+                                        _("Socket Type"),
+                                        typeList
+                                     )
+                )
+			),
+			`VSpacing(1),
+            `HBox(
+			    `HCenter(`PushButton(`id(`cancel), _("&Cancel"))),
+			    `HCenter(`PushButton(`id(`save), _("&Save")))
+            ),
+			`VSpacing(0.5)
+        )
+    );
+
+    if ( rule == "" || family == "All" ) {
+       UI::ChangeWidget( `famItems, `Value, `allfam );
+       UI::ChangeWidget( `typeItems, `Value, `alltype );
+       UI::ChangeWidget( `typeItems, `Enabled, false );
+    } else {
+       if ( family != "" ) {
+           UI::ChangeWidget( `famItems, `Value, symbolof(toterm(family)) );
+       }
+       if ( sockettype != "" ) {
+           UI::ChangeWidget( `typeItems, `Value, symbolof(toterm(sockettype)) );
+       }
+    }
+    map event2 = $[];
+    any id2    = nil; // We'll need this often - cache it
+    repeat
+    {
+      event2 = UI::WaitForEvent( timeout_millisec );
+      id2    = event2["ID"]:nil; // We'll need this often - cache it
+      if ( id2 == `famItems ) {
+          if ( tostring(UI::QueryWidget( `famItems, `Value )) == "`allfam" ) {
+              UI::ChangeWidget( `typeItems, `Value, `alltype );
+              UI::ChangeWidget( `typeItems, `Enabled, false );
+          } else {
+              UI::ChangeWidget( `typeItems, `Enabled, true );
+          }
+      }
+    }  until ( id2 == `save || id2 == `cancel );
+    if ( id2 == `save ) {
+        rule = "network";
+        string famselection = tostring(UI::QueryWidget( `famItems, `Value ));
+        string typeselection = tostring(UI::QueryWidget( `typeItems, `Value ));
+        if ( famselection != "`allfam" ) {
+            rule = rule + " " + regexpsub(famselection, "^`(.+)$", "\\1");
+            if ( typeselection != "`alltype" ) {
+                rule = rule + " " + regexpsub(typeselection, "^`(.+)$", "\\1");
+            }
+        }
+    } else {
+        rule = "";
+    }
+    UI::CloseDialog();
+    return rule;
+}
+
+
+//
 // Popup the Edit Profile Entry dialog
 // return a map containing PERM and FILE
 // for the updated permissions and filename
@@ -121,7 +248,7 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                     `HWeight( 60,
                        `VBox(
                         `TextEntry(`id(`filename), _("Enter or modify Filename")),
-			`HCenter(`PushButton(`id(`browse), _("&Browse") ))
+			            `HCenter(`PushButton(`id(`browse), _("&Browse") ))
                        )
                      ),
                      `HWeight( 40,
@@ -129,6 +256,8 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                          [  `item( `id(`read),    _("Read"), issubstring(perms, "r")),
                             `item( `id(`write),   _("Write"), issubstring(perms, "w")),
                             `item( `id(`link),    _("Link"), issubstring(perms, "l")),
+                            `item( `id(`append),  _("Append"), issubstring(perms, "a")),
+                            `item( `id(`lock),    _("Lock"), issubstring(perms, "k")),
                             `item( `id(`mmap),  _("MMap PROT_EXEC"), issubstring(perms, "m")),
                             `item( `id(`execute),  _("Execute"), issubstring(perms, "x")),
                             `item( `id(`inherit),  _("Inherit"), issubstring(perms, "i")),
@@ -172,23 +301,23 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                    //
                      if (  contains( selecteditems, `execute ) == false )  {
                        if ( contains( selecteditems, `inherit )) {
-                         selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
+                         selecteditems = filter (any k, selecteditems, { return (k != `inherit); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
                        if ( contains( selecteditems, `profile )) {
-                         selecteditems = filter (`k, selecteditems, { return (k != `profile); });
+                         selecteditems = filter (any k, selecteditems, { return (k != `profile); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
                        if ( contains( selecteditems, `unconstrained )) {
-                         selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
+                         selecteditems = filter (any k, selecteditems, { return (k != `unconstrained); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
                        if ( contains( selecteditems, `clean_unconstrained )) {
-                         selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
+                         selecteditems = filter (any k, selecteditems, { return (k != `clean_unconstrained); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
                        if ( contains( selecteditems, `clean_profile )) {
-                         selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
+                         selecteditems = filter (any k, selecteditems, { return (k != `clean_profile); });
                          UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                        }
                      } else if (!( contains( selecteditems, `inherit ) ||
@@ -217,42 +346,98 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                         selecteditems = prepend( selecteditems, `execute);
                         UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
                       } else if ( itemid == `profile ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `inherit); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                       { return (k != `clean_unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                             { return (k != `clean_profile); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                             { return (k != `unconstrained); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                       } else if ( itemid == `inherit ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `profile); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                            { return (k != `unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                       { return (k != `clean_unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                             { return (k != `clean_profile); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                       } else if ( itemid == `unconstrained ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `profile); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `inherit); });
+                        selecteditems =
+                            filter (any k,
+                                    selecteditems,
+                                    { return (k != `clean_unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `clean_profile); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                       } else if ( itemid == `clean_unconstrained ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_profile); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `profile); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `inherit); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `clean_profile); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                       } else if ( itemid == `clean_profile ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `profile); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `inherit); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `clean_unconstrained); });
-                        selecteditems = filter (`k, selecteditems, { return (k != `unconstrained); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `profile); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `inherit); });
+                        selecteditems =
+                            filter (any k,
+                                    selecteditems,
+                                    { return (k != `clean_unconstrained); });
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `unconstrained); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                      }
                   }  else if ( contains( selecteditems, `execute) ) {
-                        selecteditems = filter (`k, selecteditems, { return (k != `execute); });
-                        UI::ChangeWidget( `id(`perms), `SelectedItems, selecteditems );
+                        selecteditems = filter (any k,
+                                                selecteditems,
+                                                { return (k != `execute); });
+                        UI::ChangeWidget( `id(`perms),
+                                          `SelectedItems,
+                                          selecteditems );
                   }
                 }
-                // 
+                //
                 // Popup a dialog to let a user browse for a file
                 //
                 if ( id2 == `browse ) {
@@ -291,6 +476,12 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                  if  ( contains(selectedbits, `link ) ) {
                    newperms = newperms + "l" ;
                  }
+                 if  ( contains(selectedbits, `lock ) ) {
+                   newperms = newperms + "k" ;
+                 }
+                 if  ( contains(selectedbits, `append ) ) {
+                   newperms = newperms + "a" ;
+                 }
                  if  ( contains(selectedbits, `execute) ) {
                    if  ( contains(selectedbits, `profile) ) {
                       newperms = newperms + "p" ;
@@ -325,11 +516,79 @@ define map dirEntryPopup( string filename, string perms, string profile )   {
    return (map) pathEntryPopup( filename, perms, profile, "dir" );
 }
 
+
+define map deleteNetworkRule( map netRules, string rule ) {
+    list netlist = splitstring( rule, " " );
+    integer netrulesize = size( netlist );
+    string family = "";
+    string sockettype = "";
+
+    if ( netrulesize == 1 ) {
+        return ( $[] );
+    } else if ( netrulesize == 2 ) {
+      family = netlist[1]:"";
+      netRules = remove( netRules, family );
+    } else if ( netrulesize == 3 ) {
+        family = netlist[1]:"";
+        sockettype = netlist[2]:"";
+        any fam =  netRules[family]:nil;
+        if ( is( fam, map ) ) {
+            fam = remove( ((map) fam), sockettype );
+            netRules[family] = fam;
+        } else {
+            y2warning("deleteNetworkRule: deleting non-existing rule: " +
+                       rule);
+        }
+    }
+    return( netRules );
+}
+
+define map addNetworkRule( map netRules, string rule ) {
+    list netlist = splitstring( rule, " " );
+    integer netrulesize = size( netlist );
+    string family = "";
+    string sockettype = "";
+
+    if ( netrulesize == 1 ) {
+        return ( $["all":1] );
+    } else if ( netrulesize == 2 ) {
+        //string all_net = netRules["all"]:nil;
+        if ( netRules["all"]:nil != nil ) {
+            netRules = remove( netRules, "all" );
+        }
+        family = netlist[1]:"";
+        netRules[family] = "1";
+    } else if ( netrulesize == 3 ) {
+        if ( netRules["all"]:nil != nil ) {
+            netRules = remove( netRules, "all" );
+        }
+        family = netlist[1]:"";
+        sockettype = netlist[2]:"";
+        any any_fam = netRules[family]:nil;
+        map fam = nil;
+        if ( is( any_fam, map ) )  {
+           fam = (map) any_fam;
+        }
+        if ( fam == nil ) {
+            fam = $[];
+        }
+        fam[sockettype] = "1";
+        netRules[family] = fam;
+    }
+    return netRules;
+}
+
+define map editNetworkRule( map netRules, string old, string new ) {
+      netRules = deleteNetworkRule( netRules, old );
+      netRules = addNetworkRule( netRules, new );
+      return( netRules );
+}
+
 //
 // generateTableContents - generate the list that is used in the table to display the profile
 //
 
-define list<term> generateTableContents( map paths, map caps, map includes, map hats ) {
+define list<term> generateTableContents( map paths, map network, map caps, map includes, map hats ) {
     list<term> newlist = [];
     integer indx = 0;
 
@@ -346,7 +605,40 @@ define list<term> generateTableContents( map paths, map caps, map includes, map 
     foreach( string name, string val, (map<string,string>) paths, {
       newlist = add( newlist, `item( `id(indx), name, val));
       indx = indx+1;   });
-     return newlist;
+
+    foreach( string family, any any_fam, (map<string,any>) network, {
+        if ( is( any_fam, map ) ) {
+            foreach( string socktype, any any_type, (map<string,any>) any_fam,  {
+                newlist = add( newlist,
+                               `item( `id(indx),
+                                      "network " + family + " " + socktype,
+                                      ""
+                                    )
+                             );
+                indx = indx+1;
+            });
+        } else {
+            // Check for all network
+              if ( family == "all" ) {
+                  newlist = add( newlist,
+                                 `item( `id(indx),
+                                        "network",
+                                        ""
+                                      )
+                               );
+                  indx = indx+1;
+              } else {
+                  newlist = add( newlist,
+                                 `item( `id(indx),
+                                        "network " + family,
+                                        ""
+                                      )
+                               );
+                  indx = indx+1;
+              }
+      }
+    });
+    return newlist;
 }
 
 
@@ -367,7 +659,7 @@ define map collectHats(map profile, string pathname ) {
 
 
 //
-// Prompts the user for a hatname 
+// Prompts the user for a hatname
 // Side-Effect: sets Settings["CURRENT_HAT"]
 // returns true (hat entered)
 //         false (user aborted)
@@ -430,25 +722,26 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    if ( !hat ) {
      hats = collectHats( profile_map, pathname );
    }
-   map paths = (map) profile["path"]:$[];
-   map caps = (map) profile["capability"]:$[];
-   map includes = (map) profile["include"]:$[];
-   list<term> profilelist = generateTableContents( paths, caps, includes, hats );
-   foreach( string hatname, map hatd, (map<string,map>) hats, {
-        map capsh = (map) hatd["capability"]:$[];
-        foreach( string capname, integer capval, (map<string,integer>) capsh, {
-          y2milestone( "Cap for " + hatname + " " + capname);
-        });
-   });
+   map paths     = (map) profile["path"]:$[];
+   map caps      = (map) profile["capability"]:$[];
+   map includes  = (map) profile["include"]:$[];
+   map netdomain = (map) profile["netdomain"]:$[];
+   list<term> profilelist = generateTableContents( paths,
+                                                   netdomain,
+                                                   caps,
+                                                   includes,
+                                                   hats );
 
 
    string help1 = _("In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog.<p>");
-   string help2 = _("<b>Permission Definitions:</b><br><code> r - read <br> w - write<br>l - link<br>m - mmap PROT_EXEC<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (*clean exec)</code><p>");
+   string help2 = _("<b>Permission Definitions:</b><br><code> r - read <br> w -
+   write<br>l - link<br>m - mmap PROT_EXEC<br>k - file locking<br>a - file append<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (*clean exec)</code><p>");
    string help3 = _("<b>Add Entry:</b><br>Select the type of resource to add from the drop down list.<p>");
    string help4 = _("<ul><li><b>File</b><br>Add a file entry to this profile</li>");
    string help5 = _("<li><b>Directory</b><br>Add a directory entry to this profile</li>");
    string help6 = _("<li><b>Capability</b><br>Add a capability entry to this profile</li>");
    string help7 = _("<li><b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.</li>");
+   string help_net = _("<li><b>Network Entry</b><br>Add a network rule entry to this profile. This option will allow you to specificy network access privileges for the profile. You may specify a network address family and socket type.</li>");
    string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor User's Guide.</li>");
    string helpEdit = _("</ul><p><b>Edit Entry:</b><br>Edit the selected entry.<p>");
    string help8 = _("<b>Delete Entry:</b><br>Removes the selected entry from this profile.<p>");
@@ -458,6 +751,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
 
    integer listnum = 0;
    list<term> itemList =  [ `item( `id( `file ), _("&File") ),
+                            `item( `id( `net ), _("Network &Rule") ),
                             `item( `id( `dir ), _("&Directory") ),
                             `item( `id( `cap ), _("&Capability") ),
                             `item( `id( `include ), _("&Include File") ),
@@ -495,10 +789,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
          string help = "";
          string formtitle = "";
          if ( hat ) {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help8 + helpEdit + help9 + help10;
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help_net + help8 + helpEdit + help9 + help10;
            formtitle = _("AppArmor Hat Dialog");
          } else {
-           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + helpHat + helpEdit + help8 + help9 + help10;
+           help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help_net + helpHat + helpEdit + help8 + help9 + help10;
            formtitle = _("AppArmor Profile Dialog");
          }
         Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, _("&Back"), _("&Done") );
@@ -516,76 +810,83 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
         {
                 // Widget activated in the table
                 integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-                string filename = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
-                integer findcap = find( filename, "CAP_");
-                integer findinc = find( filename, "#include");
-                integer findhat = find( filename, "[+] ^");
-                string origfilename = filename;
+                string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+                integer findcap = find( rule, "CAP_");
+                integer findinc = find( rule, "#include");
+                integer findhat = find( rule, "[+] ^");
+                integer findnet = find( rule, "network");
+                string oldrule = rule;
                 if ( findcap == 0 ) {
-                    caps = capabilityEntryPopup( caps, filename, pathname );
+                    caps = capabilityEntryPopup( caps, rule, pathname );
                     profile["capability"] = caps;
-                    profile_map[pathname] = profile;
-                    Settings["PROFILE_MAP"] = profile_map;
-                    list<term> newtabledata = generateTableContents( paths, caps, includes, hats);
-                    UI::ChangeWidget( `id(`table), `Items, newtabledata );
                 } else if ( findinc == 0 ) {
                   Popup::Error(_("Include entries can not be edited. Please select add or delete to manage Include entries."));
                   continue;
                 } else if ( findhat == 0 ) {
-                  string hatToEdit = substring( filename, 5);
-                  y2milestone("Editing HAT saving" + hatToEdit );
+                  string hatToEdit = substring( rule, 5);
                   Settings["CURRENT_HAT"] = hatToEdit;
                   return `showhat;
+                } else if ( findnet == 0 ) {
+                  string newrule = networkEntryPopup( rule );
+                  if ( newrule != "" && newrule != rule ) {
+                      netdomain = editNetworkRule( netdomain, rule, newrule );
+                  }
+                  profile["netdomain"] = netdomain;
                 } else {
                   string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
-                  map results = fileEntryPopup( filename, perms, filename );
+                  map results = fileEntryPopup( rule, perms, pathname );
                   string newperms = "";
                   newperms = results["PERM"]:"";
-                  filename = results["FILE"]:"";
-                  if ( filename != "" ) {
-                    if ( filename != origfilename ) {
-                     paths = remove( paths, origfilename );
+                  rule = results["FILE"]:"";
+                  if ( rule != "" ) {
+                    if ( rule != oldrule ) {
+                     paths = remove( paths, oldrule );
                     }
-                    paths = add(paths, filename, newperms );
+                    paths = add(paths, rule, newperms );
                     profile["path"] = paths;
-                    profile_map[pathname] = profile;
-                    Settings["PROFILE_MAP"] = profile_map;
-                    list<term> newtabledata = generateTableContents( paths, caps, includes, hats);
-                    UI::ChangeWidget( `id(`table), `Items, newtabledata );
                   }
                }
+              profile_map[pathname] = profile;
+              Settings["PROFILE_MAP"] = profile_map;
+              list<term> profilelist = generateTableContents( paths,
+                                                              netdomain,
+                                                              caps,
+                                                              includes,
+                                                              hats );
+              UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `delete ) {
               integer selectedid =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-              string filename = (string) select((term) UI::QueryWidget(`id(`table), `Item(selectedid)), 1, "");
-              integer findcap = find( filename, "CAP_");
-              integer findinc = find( filename, "#include");
-              integer findhat = find( filename, "[+] ^");
+              string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(selectedid)), 1, "");
+              integer findcap = find( rule, "CAP_");
+              integer findinc = find( rule, "#include");
+              integer findhat = find( rule, "[+] ^");
+              integer findnet = find( rule, "network");
 
               if ( findcap == 0 ) {
-                 string capNameToDelete = linnametolp[filename]:"";
+                 string capNameToDelete = linnametolp[rule]:"";
                  caps = remove( caps, capNameToDelete );
                  profile["capability"] = caps;
-                 profile_map[pathname] = profile;
-                 Settings["PROFILE_MAP"] = profile_map;
               } else if ( findinc == 0 ) {
-                 string includeToRemove = substring( filename, 9);
+                 string includeToRemove = substring( rule, 9);
                  includes = remove( includes, includeToRemove );
                  profile["include"] = includes;
-                 profile_map[pathname] = profile;
-                 Settings["PROFILE_MAP"] = profile_map;
               } else if ( findhat == 0 ) {
-                 string hatToRemove = substring( filename, 5);
-                 y2milestone("Deleting HAT " + hatToRemove );
+                 string hatToRemove = substring( rule, 5);
                  profile_map = remove( profile_map, hatToRemove );
-                 Settings["PROFILE_MAP"] = profile_map;
-                 hats = remove(hats, hatToRemove);
+              } else if ( findnet == 0 ) {
+                  netdomain = deleteNetworkRule( netdomain, rule );
+                  profile["netdomain"] = netdomain;
               } else {
-                 paths = remove( paths, filename );
+                 paths = remove( paths, rule );
                  profile["path"] = paths;
-                 profile_map[pathname] = profile;
-                 Settings["PROFILE_MAP"] = profile_map;
-               }
-              list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+              }
+              profile_map[pathname] = profile;
+              Settings["PROFILE_MAP"] = profile_map;
+              list<term> profilelist = generateTableContents( paths,
+                                                              netdomain,
+                                                              caps,
+                                                              includes,
+                                                              hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `file || id == `dir ) {
               string addfname = "";
@@ -606,20 +907,27 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
               profile["path"] = paths;
               profile_map[pathname] = profile;
               Settings["PROFILE_MAP"] = profile_map;
-              list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+              list<term> profilelist = generateTableContents( paths,
+                                                              netdomain,
+                                                              caps,
+                                                              includes,
+                                                              hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `cap ) {
            caps = capabilityEntryPopup( caps, "", pathname );
            profile["capability"] = caps;
            profile_map[pathname] = profile;
            Settings["PROFILE_MAP"] = profile_map;
-           list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+           list<term> profilelist = generateTableContents( paths,
+                                                           netdomain,
+                                                           caps,
+                                                           includes,
+                                                           hats );
            UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `hat ) {
            if ( hat ) {
              Popup::Error(_("Hats can not have embedded hats."));
            }
-           y2milestone("Adding HAT ");
            boolean hatCreated = newHatNamePopup( pathname, hats );
            if ( hatCreated == true ) {
              return `showhat;
@@ -658,8 +966,26 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              profile["include"] = includes;
              profile_map[pathname] = profile;
              Settings["PROFILE_MAP"] = profile_map;
-             list<term> profilelist = generateTableContents( paths, caps, includes, hats );
+             list<term> profilelist = generateTableContents( paths,
+                                                             netdomain,
+                                                             caps,
+                                                             includes,
+                                                             hats );
              UI::ChangeWidget( `id(`table), `Items, profilelist );
+           }
+       } else if ( id == `net ) {
+           string newrule = networkEntryPopup( "" );
+           if ( newrule != "" ) {
+               netdomain = addNetworkRule( netdomain, newrule );
+               profile["netdomain"] = netdomain;
+               profile_map[pathname] = profile;
+               Settings["PROFILE_MAP"] = profile_map;
+               list<term> profilelist = generateTableContents( paths,
+                                                               netdomain,
+                                                               caps,
+                                                               includes,
+                                                               hats );
+               UI::ChangeWidget( `id(`table), `Items, profilelist );
            }
        } else if ( id == `abort || id == `cancel ) {
          break;
@@ -676,11 +1002,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              any result2 = SCR::Write(.subdomain_profiles.reload, "-");
            }
          } else {
-           y2milestone("Saving Hat");
            if ( ! haskey(hats, Settings["CURRENT_HAT"]:"") ) {
-      foreach( string capname, integer capval, (map<string,integer>) caps, {
-	      y2milestone( "Cap for " + pathname + " " + capname);
-      });
              profile["path"] = paths;
              profile["capability"] = caps;
              profile["include"] = includes;
@@ -732,7 +1054,7 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
    {
         event = UI::WaitForEvent( timeout_millisec );
         id    = event["ID"]:nil; // We'll need this often - cache it
-        if ( id == `next ) {
+        if ( id == `next  || id == `profilelist ) {
            profilename = tostring( UI::QueryWidget(`id(`profilelist), `CurrentItem) );
            if ( profilename != nil && profilename != "" ) {
              break;
@@ -750,9 +1072,10 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
             continue;
         }
     }
-    if ( id == `next ) {
+    if ( id == `next || id == `profilelist) {
        Settings["CURRENT_PROFILE"] =  profilename;
        Settings["PROFILE_MAP"] =  profiles[profilename]:nil;
+       id = `next;
     }
     UI::CloseDialog();
     return (symbol) id;
