@@ -1,0 +1,173 @@
+-------------------------------------------------------------------
+Mon Sep 17 06:01:09 CEST 2007 - dreynolds@suse.de
+
+- Fixes (#310454) to support new audit log format and new libapparmor1 - ddrewelow@suse.de
+- Bug #305735 Add support for network toggles, append, and locking  to the YaST2
+  EditProfile wizard.
+- Bug 302588 - 1 CD KDE version fails to install apparmor-docs
+
+-------------------------------------------------------------------
+Tue Aug 21 22:38:17 CEST 2007 - dreynolds@suse.de
+
+- Updated spec to set theme-dir based on dist (openSUSE/sles)
+
+-------------------------------------------------------------------
+Mon Aug 20 17:57:15 CEST 2007 - dreynolds@suse.de
+
+- sbeattie@suse.de
+  Fix for #212500 "y2controlcenter-gnome does not find AppArmor
+  icons" and its duplicate #297243 "Missing YaST icon: All app armor
+  icons".
+
+-------------------------------------------------------------------
+Mon Jul 30 05:05:01 CEST 2007 - dreynolds@suse.de
+
+- Numerous fixes for repository integration
+
+-------------------------------------------------------------------
+Mon Jul 16 16:25:52 CEST 2007 - dreynolds@suse.de
+
+- Add support for the AppArmor profile repository 
+  Fate: 300517
+-------------------------------------------------------------------
+Sat Nov 18 02:42:34 CET 2006 - ddrewelow@suse.de
+
+- Fixed an untranslated string 
+
+-------------------------------------------------------------------
+Sat Nov 18 00:09:03 CET 2006 - ddrewelow@suse.de
+
+- Fixed usability and reporting bugs
+  (bnc# 158599,171082,172624,173825)
+
+-------------------------------------------------------------------
+Tue Nov 14 23:38:21 CET 2006 - ddrewelow@suse.de
+
+- Added the missing complain.scr to fix: 
+  https://bugzilla.novell.com/show_bug.cgi?id=219898
+
+-------------------------------------------------------------------
+Mon Nov 13 23:45:49 CET 2006 - ddrewelow@suse.de
+
+- Fixes for notification bugs:
+  - configuration of e-mail recipient not saved in YaST
+    (bnc#177039)
+  - AppArmour - Security event Notification - email address fails
+    (bnc#190891)
+  - AppArmor unable to enter ANY notification email address
+    (bnc#198359)
+
+-------------------------------------------------------------------
+Sat Nov  4 00:20:35 CET 2006 - ddrewelow@suse.de
+
+- Add complain/enforce profile state toggle
+  Fate: 300719
+
+-------------------------------------------------------------------
+Mon Oct 16 19:46:23 CEST 2006 - dreynolds@suse.de
+
+- Add syntax checks for profiles and display error dialogs to user
+  Fate: 300906
+
+-------------------------------------------------------------------
+Tue Sep 19 07:03:31 CEST 2006 - aj@suse.de
+
+- Adjust for theming change.
+
+-------------------------------------------------------------------
+Tue Jun  6 01:24:50 CEST 2006 - dreynolds@suse.de
+
+- Fixes for https://bugzilla.novell.com/show_bug.cgi?id=175388, 
+  https://bugzilla.novell.com/show_bug.cgi?id=172061. Added support
+  for new profile syntax Px/Ux/m.
+
+-------------------------------------------------------------------
+Mon Apr  3 01:36:15 CEST 2006 - dreynolds@suse.de
+
+- Pickup fix for typo regression in profile_dialogs.ycp (thanks rudi) 
+- Remove libapparmor as a dependency for all yast wizards (#160518) 
+
+-------------------------------------------------------------------
+Sun Apr  2 16:57:00 CEST 2006 - ro@suse.de
+
+- fix typo in subdomain/profile_dialogs.ycp 
+
+-------------------------------------------------------------------
+Mon Mar 27 09:01:33 CEST 2006 - jmichael@suse.de
+
+- Split aaeventd startup into its own init script so we don't start
+  daemons while in the "boot" runlevel (#158613)
+- Fix broken notification help localization.
+
+-------------------------------------------------------------------
+Mon Mar 13 09:16:35 CET 2006 - dreynolds@suse.de
+
+
+- Don't check for event DB intialization when running the audit report.
+  (#155343)
+- Remove localized text in apparmor.desktop - as the desktop translation
+  is handled by the translation group.
+  https://bugzilla.novell.com/show_bug.cgi?id=151509
+- Changes the checks from /etc/subdomain.d to /etc/apparmor.d when
+  validated manual selection of #includes in the "Edit Profile" wizard.
+  (#152813)
+- Replace yast2-devel build-requires with yast2 yast2-devtools
+
+
+-------------------------------------------------------------------
+Wed Feb 15 01:43:15 CET 2006 - dreynolds@suse.de
+
+- Fixed typo in SD_EditProfie.ycp that was causing a syntax error in the wizard
+
+-------------------------------------------------------------------
+Mon Feb 13 05:45:44 CET 2006 - dreynolds@suse.de
+
+- Include counter (and time) in ag_genprof logmark
+- (sbeattie@suse.de) Install apparmor packages if not already installed (#137585)
+- (sbeattie@suse.de) Remove direct dependency on apparmor packages
+
+-------------------------------------------------------------------
+Mon Feb  6 07:50:42 CET 2006 - sbeattie@suse.de
+
+- Fix non-wrapping error-dialog (#146435)
+- Enable/start aaeventd if notification is enabled
+- (jmichael) Remove dead code
+
+-------------------------------------------------------------------
+Sun Jan 29 07:16:11 CET 2006 - sbeattie@suse.de
+
+- Add svn repo number to tarball name
+- (dreynolds) Removed AALite checks
+- (dreynolds) Fix regex warning
+- (dreynolds) Fix apparmor control panel to correctly tell if AA is
+  enabled/disabled (#145955)
+- disable autoyast support in aa configs (#116749)
+
+-------------------------------------------------------------------
+Wed Jan 25 21:49:35 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Mon Jan 23 08:28:10 CET 2006 - dreynolds@suse.de
+
+-  Added code to process events from the audit system in addition to syslog
+
+-------------------------------------------------------------------
+Tue Jan 17 04:48:00 CET 2006 - dreynolds@suse.de
+
+- Remove references to message catalog files - now provided by yast2-trans
+
+-------------------------------------------------------------------
+Fri Dec  9 07:39:01 CET 2005 - sbeattie@suse.de
+
+- fix gettext/textdomain() calls to refer to new messages filename
+- fix references to old package names within .po files
+
+-------------------------------------------------------------------
+Thu Dec  8 08:46:08 CET 2005 - sbeattie@suse.de
+
+- rename package to yast2-apparmor
+- relicense to GPL and LGPL for open source release
+- reset version to 2.0-1
+
