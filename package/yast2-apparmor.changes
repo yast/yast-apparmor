@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 22 14:32:55 CET 2008 - kmachalkova@suse.cz
+
+- Icons moved to yast2-theme package
+- 2.16.0
+
+-------------------------------------------------------------------
 Mon Sep 17 06:01:09 CEST 2007 - dreynolds@suse.de
 
 - Fixes (#310454) to support new audit log format and new libapparmor1 - ddrewelow@suse.de

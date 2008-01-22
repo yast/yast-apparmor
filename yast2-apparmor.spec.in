@@ -10,19 +10,7 @@ Provides: yast2-subdomain
 BuildRequires: update-desktop-files
 
 BuildRequires: yast2 yast2-devtools
-%if %{suse_version} > 1010 
-BuildRequires: yast2-theme-openSUSE
-%define themedir /usr/share/YaST2/theme/openSUSE
-%else
-  %if %{suse_version} > 1000 
-    %if 0%{?sles_version} > 9
-BuildRequires: yast2-theme-NLD
-    %else
-BuildRequires: yast2-theme-SuSELinux
-    %endif
-  %endif
-%define themedir /usr/share/YaST2/theme/SuSELinux
-%endif
+
 
 %description
 Yast2 forms and components for the management of Novell AppArmor profiles.
@@ -48,9 +36,6 @@ This package is part of a suite of tools that used to be named SubDomain.
 /usr/share/applications/YaST2
 /usr/lib/YaST2/servers_non_y2
 /usr/lib/perl5/vendor_perl/*
-# icons belong to yast2-theme-*, commenting out
-#%{themedir}/icons
-#/usr/share/icons/hicolor/
 # license is questionable, PDB says GPL v2 or later
 #%doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
