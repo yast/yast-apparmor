@@ -1,0 +1,4 @@
+This directory does not comply to usual yast subversion
+building conventions. It is here for SP2 bugfix purpose 
+only, in order not to loose track of the changes, yet
+do not fight with patches
