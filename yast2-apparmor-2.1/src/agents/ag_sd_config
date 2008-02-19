@@ -1,0 +1,153 @@
+#!/usr/bin/perl
+
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+################################################################################
+# ag_sd_config
+################################################################################
+
+use strict;
+use ycp;
+use Data::Dumper;
+use Locale::gettext;
+use POSIX;
+
+use Immunix::Notify;
+use Immunix::Reports;
+
+setlocale(LC_MESSAGES, "");
+textdomain("yast2-apparmor");
+
+# Subroutines
+################################################################################
+sub setSubdomain {
+
+  my $action = shift;
+        my $errmsg = ""; 
+        my $lines = 0; 
+  if ($action eq "enable") {
+     if (-e "/sbin/rcapparmor") {
+             open(RUN, "/sbin/rcapparmor start 2>&1 |");
+     } else {
+             open(RUN, "/sbin/rcsubdomain start 2>&1 |");
+     }
+           while (<RUN>) {  
+             if (/FATAL:(.*)/) {    
+               $errmsg = $1;  
+             }  
+     }
+           close(RUN);
+     if (-f "/etc/init.d/boot.apparmor") {
+             system("/sbin/insserv boot.apparmor");
+     } else {
+             system("/sbin/insserv boot.subdomain");
+     }
+     if (-f "/etc/init.d/aaeventd") {
+             system("/sbin/rcaaeventd start");
+             system("/sbin/insserv aaeventd");
+     }
+  } else {
+     if (-e "/sbin/rcapparmor") {
+             open(RUN, "/sbin/rcapparmor stop 2>&1 |");
+     } else {
+             open(RUN, "/sbin/rcsubdomain stop 2>&1 |");
+     }
+           while (<RUN>) {  
+             if (/FATAL:(.*)/) {    
+               $errmsg = $1;  
+             }  
+           }
+           close(RUN);
+     if (-f "/etc/init.d/boot.apparmor") {
+             system("/sbin/insserv -r boot.apparmor");
+     } else {
+             system("/sbin/insserv -r boot.subdomain");
+     }
+     if (-f "/etc/init.d/aaeventd") {
+             system("/sbin/rcaaeventd stop");
+             system("/sbin/insserv -r aaeventd");
+     }
+  }
+  return $errmsg;
+}
+
+sub setNotify {
+
+  my $action = shift;
+
+  return 0; 
+}
+
+sub setLearningMode {
+
+  my $action = shift;
+  my $rcscript = -f "/sbin/rcapparmor" ? "/sbin/rcapparmor"
+                 : "/sbin/rcsubdomain";
+
+  if ($action eq "enable") {
+    system("$rcscript", "stop");
+    system("$rcscript", "complain");
+  } else {
+    system("$rcscript". "stop");
+    system("$rcscript", "start");
+  }
+
+    return 0;
+}
+
+# Main 
+################################################################################
+
+
+while ( <STDIN> ) {
+
+  my ($command, $path, $argument) = ycp::ParseCommand ($_);
+
+  my $result = undef;
+  my $action = undef;
+
+  if ( $command && $path && $argument ) {
+
+    if (ref($argument) eq "HASH" && $argument->{"set_notify"}) {
+      my ($ntSettings, $result) = Immunix::Notify::sanitize($argument);
+
+      if ($result ne "success") {
+        ycp::Return($result);
+        next;
+      } else {
+        $result = Immunix::Notify::setNotifySettings($ntSettings);
+        ycp::Return($result);
+        next;
+      }
+    }
+
+    ($action) = (split(/:/, $argument))[1];
+
+    if ( $argument =~ /subdomain/ ) {
+      $result = setSubdomain($action);
+    } elsif ( $argument =~ /learning/ ) {
+      setLearningMode($action);
+    } elsif ( $argument eq 'sd-notify') {
+      setNotify($action);
+    } 
+
+    if ( $result ) {
+      ycp::Return( $result );
+    } else {
+      ycp::Return("true");
+    }
+  }
+}
+
+exit 0;
+
+
+

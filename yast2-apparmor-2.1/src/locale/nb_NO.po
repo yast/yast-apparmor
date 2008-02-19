@@ -1,0 +1,1055 @@
+# translation of yast2-apparmor.po to
+# translation of yast2-agents.po to
+# Olav Pettershagen <olav.pet@online.no>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: yast2-apparmor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-22 13:42-0700\n"
+"PO-Revision-Date: 2005-08-13 12:20+0200\n"
+"Last-Translator: Olav Pettershagen <olav.pet@online.no>\n"
+"Language-Team:  <nb@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+
+#: profile_dialogs.ycp:218 reporting_dialogues.ycp:1079
+#: reporting_dialogues.ycp:1756 reporting_dialogues.ycp:2054
+msgid "Select Directory"
+msgstr "Velg katalog"
+
+#: profile_dialogs.ycp:220
+msgid "Select File"
+msgstr "Velg fil"
+
+#: profile_dialogs.ycp:261
+msgid "Entry will not added. Entry name or permissions not defined."
+msgstr "Oppføringen vil ikke bli lagt til. Navn eller rettigheter ikke definert for oppføringen."
+
+#: profile_dialogs.ycp:336
+msgid "&Hat name to add"
+msgstr "&Paraplynavn som skal legges til"
+
+#: profile_dialogs.ycp:450 reporting_dialogues.ycp:678
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1066
+#: reporting_dialogues.ycp:1074 reporting_dialogues.ycp:1090
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 sd-config.ycp:79
+msgid "&Done"
+msgstr "&Fullført"
+
+#: profile_dialogs.ycp:478
+msgid ""
+"Include entries can not be edited. Please select add or delete to manage "
+"Include entries."
+msgstr ""
+"Inkluderingsoppføringer kan ikke redigeres. Velg Legg til eller Slett for å håndtere"
+"inkluderingsoppføringer."
+
+#: profile_dialogs.ycp:596
+msgid "Save changes to the Profile"
+msgstr "Lagre endringer i profilen"
+
+#: profile_dialogs.ycp:669
+msgid "You must select a profile to edit"
+msgstr "Du må velge en profil å redigere"
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report.  "
+msgstr ""
+"I rapportkonfigurasjonsdialogen kan du filtrere den arkiverte rapporten "
+"som ble valgt i forrige dialog.  For å filtrere etter <b>Dato-område:</b><br><br> "
+"<ol> <li>Klikk <b>Filtrer etter dato-område</b>. Feltene blir aktive.  "
+"<li>Angi start- og sluttdato for rapporten.  "
+
+#: profile_dialogs.ycp:574
+msgid "Select File To Include"
+msgstr "Velg fil som skal inkluderes"
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report.  "
+"<li>Enter other filtering parameters. See below for definitions of "
+"parameters.  </ol> The following definitions help you to enter the filtering "
+"parameters in the Report Configuration Dialog: <br><br> <b>Program Name "
+"Pattern:</b> When you enter a program name or pattern that matches the name "
+"of the binary executable of the program of interest, the report will display "
+"security events that have occurred for a specific program.<br><br> "
+"<b>Profile Name Pattern:</b> When you enter the name of the profile, the "
+"report will display the security events that are generated for the specified "
+"profile.  You can use this to see what is being confined by a specific "
+"profile.<br><br> <b>PID Number:</b> Process ID number is a number that "
+"uniquely identifies one specific process or running program (this number is "
+"valid only during the lifetime of that process).<br><br> <b>Severity Level:</"
+"b>  Select the lowest severity level for security events that you would like "
+"to be included in the report. The selected severity level, and above, will "
+"be included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided."
+msgstr ""
+"I rapportkonfigurasjonsdialogen kan du filtrere den arkiverte rapporten "
+"som ble valgt i forrige dialog.  For å filtrere etter <b>Dato-område:</b><br><br> "
+"<ol> <li>Klikk <b>Filtrer etter dato-område</b>. Feltene blir aktive.  "
+"<li>Angi start- og sluttdato for rapporten.  "
+"<li>Angi flere filtreringsparametere. Ulike parametere er definert nedenfor.  </ol> Bruk definisjonene for å angi filtreringsparametere i rapportkonfigurasjonsdialogen: <br><br> <b>Programnavn"
+"Mønster:</b> Når du angir et programnavn eller mønster som samsvarer med navnet til den binære kjørbare filen til det aktuelle programmet, vil rapporten vise sikkerhetshendelser som har inntruffet for et spesifisert program.<br><br> "
+"<b>Profilnavnmønster:</b> Når du angir navnet på profilen, vil rapporten vise sikkerhetshendelser som genereres for det spesifiserte programmet.  Du kan bruke dette for å se hvilke begrensninger en spesiell profil medfører.<br><br> <b>PID-nummer:</b> Prosess-ID-nummeret er et unikt nummer som identifiserer en spesifikk prosess eller et program som kjører (dette nummeret er gyldig så lenge prosessen er aktivert).<br><br> <b>Sikkerhetsnivå:</"
+"b>  Velg det laveste sikkerhetsnivået du vil ha med i rapporten. Det valgte sikkerhetsnivået og høyere nivåer vil bli inkludert i rapportene.<br><br> <b>Detalj</b>  En kilde som profilen har nektet tilgang til.  Dette omfatter egenskaper og filer. Du kan bruke dette feltet for å rapportere hvilke ressurser profilene ikke har tilgang til.<br><br> <b>Modus:</b> Modus er rettighetene som en profil gir til programmet eller prosessen den er tilordnet. Valgene er: r "
+"(lese) w (skrive) l (lenke) x (kjøre)<br><br> <b>Tilgangstype:</b> Tilgangstypen beskriver det som faktisk skjer under sikkerhetshendelsen. Valgene er: PERMITTING, REJECTING eller AUDITING.<br><br> <b>CSV eller HTML:</b> "
+"Gjør det mulig å eksportere en CSV- (verdier adskilt av komma) eller html-fil. CSV-filen skiller data i loggoppføringer med komma, og bruker et standard dataformat for import i tabellbaserte programmer. Du kan angi den fullstendige stien til din eksporterte rapport i redigeringsfeltet."
+
+#: report_helptext.ycp:8
+msgid ""
+"The AppArmor On-Demand Report screen displays an instantly generated version "
+"of one of the following reports.  <b>Executive Security Summary:</b> A "
+"combined report, consisting of one or more Security incident reports from "
+"one or more machines.  This report provides a single view of security events "
+"on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing "
+"tool that reports which application servers are running and whether the "
+"applications are confined by AppArmor. Application servers are applications "
+"that accept incoming network connections. <br><br> <b>Security Incident "
+"Report:</b> A report that displays application security for a single host.  "
+"It reports policy violations for locally confined applications during a "
+"specific time period. You can edit and customize this report, or add new "
+"versions."
+msgstr ""
+"Dialogen AppArmor-rapport på forespørsel viser en nylig generert versjon av ulike typer rapporter.  <b>Sikkerhetssammendrag for prosesser:</b> En kombinert rapport som består av én eller flere sikkerhetshendelsesrapporter fra én eller flere maskiner.  Denne rapporten sammenfatter sikkerhetshendelser på flere maskiner.<br><br> <b>Programovervåkingsrapport:</b> Et overvåkingsverktøy som rapporterer hvilke applikasjonsservere som kjører, og om programmene begrenses av AppArmor. Applikasjonsservere inneholder programmer som tar i mot innkommende nettverkstilkoblinger. <br><br> <b>Sikkerhetshendelsesrapport:</b> En rapport som viser programsikkerheten for en enkelt maskin.  "
+"Den rapporterer brudd på sikkerhetsretningslinjene i lokale programmer under et spesifisert tidsrom. Du kan redigere og tilpasse denne rapporten, eller legge til nye versjoner."
+
+#: report_helptext.ycp:10
+msgid ""
+"The Report Configuration dialog enables you to filter the report selected in "
+"the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click "
+"<b>Filter By Date Range</b>. The fields become active.  <li>Enter the start "
+"and end dates that delineate the scope of the report.  <li>Enter other "
+"filtering parameters. See below for definitions of parameters.  </ol> The "
+"following definitions help you to enter the filtering parameters in the "
+"Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a "
+"program name or pattern that matches the name of the executable process of "
+"interest, the report will display security events that have occurred for a "
+"specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the "
+"name of the security profile that is applied to the rocess, the report will "
+"display the security events that are generated for the specified profile. "
+"You can use this to see what is being confined by a specific profile."
+"<br><br> <b>PID Number:</b> Process ID number is a number that uniquely "
+"identifies one specific process or running program (this number is valid "
+"only during the lifetime of that process).<br><br> <b>Severity Level:</b>  "
+"Select the lowest severity level for security events that you would like to "
+"be included in the report. The selected severity level, and above, will be "
+"included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided.<br><br>"
+msgstr ""
+"I rapportkonfigurasjonsdialogen kan du filtrere rapporten som ble valgt i forrige dialog. Filtrere etter <b>Dato-område:</b><br><br> <ol> <li>Klikk "
+"<b>Filtrer etter dato-område</b>. Feltene blir aktive.  <li>Angi start- og sluttdatoen for rapporten.  <li>Angi flere filtreringsparametere. Se parameterdefinisjonene nedenfor.  </ol> Ved hjelp av følgende definisjoner kan du angi filtreringsparametere i rapportkonfigurasjonsdialogen: <b>Programnavnmønster:</b> Når du angir et "
+"programnavn eller mønster som samsvarer med navnet på den aktuelle kjørbare prosessen, vil rapporten vise sikkerhetshendelser i et bestemt program.<br><br> <b>Profilnavnmønster:</b> Når du angir navnet på sikkerhetsprofilen som benyttes for prosessen, vil rapporten vise sikkerhetshendelser som er generert for den aktuelle profilen. "
+"Bruk dette for å se hva som begrenses av en spesifikk profil."
+"<br><br> <b>PID-nummer:</b> Prosess-ID-nummeret er et unikt nummer som identifiserer en bestemt prosess eller et program som kjører (dette nummeret er gyldig så lenge prosessen er aktiv).<br><br> <b>Sikkerhetsnivå:</b>  "
+"Velg det laveste sikkerhetsnivået for sikkerhetshendelsene som skal være med i rapporten. Det valgte sikkerhetsnivået og høyere nivåer vil bli inkludert i rapporten.<br><br> <b>Detalj:</b> En kilde som profilen har nektet tilgang til.  Dette omfatter egenskaper og filer. Bruk dette feltet for å rapportere hvilke ressurser profilene ikke har tilgang til.<br><br> <b>Modus:</b> Modus er rettighetene som profilen gir til programmet eller prosessen den benyttes for. Valgene er: r "
+"(lese) w (skrive) l (lenke) x (kjøre)<br><br> <b>Tilgangstype:</b> Tilgangstypen beskriver det som faktisk skjer under sikkerhetshendelsen. Valgene er: PERMITTING, REJECTING eller AUDITING.<br><br> <b>CSV eller HTML:</b> "
+"Du kan eksportere en CSV- (verdier adskilt av komma) eller html-fil. CVS skiller data i loggoppføringer med komma, og bruker et standard dataformat for import i tabellbaserte programmer. Du kan angi en sti for den eksporterte rapporten ved å skrive inn hele filstien i feltet.<br><br>"
+
+#: report_helptext.ycp:13
+msgid ""
+"The summary of scheduled reports page shows us when reports are scheduled to "
+"run. Reports can be set to run monthly, weekly, daily, or hourly. The "
+"default settings are daily at midnight. The reports can also be emailed, "
+"upon completion, to up to three email recipients.<br><br> In the Set "
+"Schedule section, you can schedule the following three types of security "
+"reports:<br><br> <b>Executive Security Summary:</b> A combined report, "
+"consisting of one or more Security incident reports from one or more "
+"machines.  This report provides a single view of security events on multiple "
+"machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that "
+"reports which application servers are running and whether the applications "
+"are confined by AppArmor. Application servers are applications that accept "
+"incoming network connections. <br><br> <b>Security Incident Report:</b> A "
+"report that displays application security for a single host.  It reports "
+"policy violations for locally confined applications during a specific time "
+"period. You can edit and customize this report, or add new versions."
+msgstr "Sammendraget av planlagte rapporter viser når planlagte rapporter vil bli kjørt. Rapportene kan kjøres hver måned, hver uke, hver dag eller hver time. Standardinnstillingen er midnatt hver dag. Rapportene kan også sendes via e-post til tre mottakere når de er ferdige.<br><br> Du kan planlegge følgende tre typer sikkerhetsrapporter:<br><br> <b>Sikkerhetssammendrag for prosesser:</b> En kombinert rapport med én eller flere hendelsesrapporter fra én eller flere maskiner.  Denne rapporten viser sikkerhetshendelser fra flere maskiner på ett sted.<br><br> <b>Programovervåkingsrapport</b> Et overvåkingsverktøy som rapporterer hvilke applikasjonsservere som kjører og om programmene begrenses av AppArmor. Applikasjonsservere er programmer som tar i mot innkommende nettverkstilkoblinger. <br><br> <b>Sikkerhetshendelsesrapport:</b> En rapport som viser sikkerhetshendelser på en enkel vertsmaskin.  Den rapporterer brudd på sikkerhetsretningslinjene i lokale programmer i et definert tidsrom. Du kan redigere og tilpasse denne rapporten, eller legge til nye versjoner."
+
+#: report_helptext.ycp:15
+msgid ""
+" The View Archive Reports form enables you to view previously generated "
+"reports, located in the /var/log/apparmor/reports-archived directory. The "
+"checkboxes at the top of the form enable you to narrow-down the category of "
+"reports shown in the list to the following: SIR Reports, AUD Reports, or ESS "
+"Reports.  To see report details, select a report and click the <b>View</b> "
+"button.<br><br> You can view reports from one or more systems if you move "
+"the reports to the /var/log/apparmor/reports-archived directory."
+msgstr " I skjemaet Vis arkivrapporter kan du vise tidligere genererte rapporter som er lagret i katalogen /var/log/apparmor/reports-archived. Ved hjelp av avkryssingsboksene øverst kan du begrense rapportkategoriene i listen til følgende: SIR-rapporter, AUD-rapporter eller ESS-rapporter.  For å vise informasjon om rapportene, velg en rapport og klikk på <b>Vis</b>-knappen.<br><br> Du kan vise rapporter fra ett eller flere systemer hvis du flytter rapportene til katalogen /var/log/apparmor/reports-archived."
+
+#: report_helptext.ycp:27
+msgid "repConfHelp"
+msgstr "repConfHelp"
+
+#: report_helptext.ycp:28
+msgid ""
+"<b>Security Incident Report (SIR):</b> A report that displays security "
+"events of interest to an administrator. The SIR reports policy violations "
+"for locally confined applications during the specified time period. The SIR "
+"reports policy exceptions and policy engine state changes. These two types "
+"of security events are defined as follows: <ul> <li><b>Policy Exceptions:</"
+"b> When an application requests a resource that's not defined within its "
+"profile, a security event is generated.  <li><b>Policy Engine State Changes:"
+"</b> Enforces policy for applications and maintains its own state, including "
+"when engines start or stop, when a policy is reloaded, and when global "
+"security feature are enabled or disabled.  </ul> Select the report from the "
+"archive, then <b>View</b> to see the report details."
+msgstr ""
+"<b>Sikkerhetshendelsesrapport (SIR):</b> En rapport som viser sikkerhethendelser som administratoren kan være interessert i. SIR viser brudd på sikkerhetsretningslinjene i lokale programmer under den definerte tidsperioden. SIR "
+"viser unntak fra retningslinjene og statusendringer for retningslinjene. Disse to typene sikkerhetsendringer defineres på følgende måte: <ul> <li><b>Unntak fra retningslinjer:</"
+"b> En sikkerhetshendelse genereres når et program spør etter en ressurs som ikke er definert for denne profilen.  <li><b>Statusendring for sikkerhetssystem:"
+"</b> Gjennomfører retningslinjene for programmer og opprettholder status, bl.a. når systemet skal aktiveres/deaktiveres, når et sett retningslinjer skal lastes på nytt og når en global sikkerhetsfunksjon skal aktiveres eller deaktiveres.  </ul> Velg rapporten fra arkivet og klikk <b>Vis</b> for å se detaljert informasjon i rapporten."
+
+#: report_helptext.ycp:31
+msgid ""
+"<b>Applications Audit Report (AUD):</b> An auditing tool that reports which "
+"application servers are running and whether they are confined by AppArmor. "
+"Application servers are applications that accept incoming network "
+"connections. This report provides the host machine's IP Address, the date "
+"the Applications Audit Report ran, the name and path of the unconfined "
+"program or application server, the suggested profile or a placeholder for a "
+"profile for an unconfined program, the process ID number, The state of the "
+"program (confined or unconfined), and the type of confinement that the "
+"profile is performing (enforce/complain).<br><br> "
+msgstr ""
+"<b>Programovervåkingsrapport (AUD):</b> Et overvåkingsverktøy som rapporterer hvilke programmer som kjører og om de innskrenkes av AppArmor. "
+"Applikasjonsservere er programmer som tar i mot innkommende nettverkstilkoblinger. Denne rapporten angir vertsmaskinens IP-adresse, datoen da programovervåkingsrapporten ble kjørt, navnet og stien til det ubegrensede programmet eller applikasjonsserveren, foreslått profil eller profilplassholder for en profil eller et ubegrenset program, prosess-ID-nummer, programstatus (begrenset eller ubegrenset) og begrensningstypen som profilen utfører (overstyre/klage).<br><br> "
+
+#: report_helptext.ycp:33
+msgid ""
+"<b>Executive Security Summary (ESS):</b> A combined report, consisting of "
+"one or more high-level reports from one or more machines. This report can "
+"provide a single view of security events on multiple machines if each "
+"machine's data is copied to the reports archive directory, which is <b>/var/"
+"log/apparmor/reports-archived</b>. This report provides the host machine's "
+"IP address, the start and end dates of the polled events, total number of "
+"rejects, total number of events, average of severity levels reported, and "
+"the highest severity level reported. One line of the ESS report represents a "
+"range of SIR reports.<br><br> "
+msgstr ""
+"<b>Sikkerhetssammendrag for prosesser (ESS):</b> En kombinert rapport med én eller flere høynivårapporter fra én eller flere maskiner. Denne rapporten kan gi en samlet oversikt over sikkerhetshendelser på flere maskiner hvis informasjon fra alle maskinene kopieres til rapportens arkivkatalog, <b>/var/"
+"log/apparmor/reports-archived</b>. Denne rapporten angir vertsmaskinens"
+"IP-adresse, start- og sluttdato for overvåkede hendelser, totalt antall avvisninger, totalt antall hendelser, gjennomsnittet av rapporterte sikkerhetsnivåer og "
+"det høyeste sikkerhetsnivået som er rapportert. Hver linje i ESS-rapporten henviser til en serie SIR-rapporter.<br><br> "
+
+#: reporting_archived_dialogs.ycp:37
+msgid "Archived Security Incident Report - Page "
+msgstr "Arkivert sikkerhetshendelsesrapport - side "
+
+#: reporting_archived_dialogs.ycp:37 reporting_dialogues.ycp:414
+#: reporting_dialogues.ycp:968 reporting_dialogues.ycp:971
+msgid " of "
+msgstr " av "
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975 reporting_dialogues.ycp:985
+msgid "Host"
+msgstr "Vertsmaskin"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:803
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Date"
+msgstr "Dato"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Program"
+msgstr "Program"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "Profile"
+msgstr "Profil"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "PID"
+msgstr "PID"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:105
+#: reporting_dialogues.ycp:189 reporting_dialogues.ycp:226
+#: reporting_dialogues.ycp:272 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972 sd-config.ycp:261
+#: sd-config.ycp:274 sd-config.ycp:287
+msgid "Severity"
+msgstr "Alvorlighetsgrad"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Mode"
+msgstr "Modus"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:111
+#: reporting_dialogues.ycp:183 reporting_dialogues.ycp:220
+#: reporting_dialogues.ycp:278 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Detail"
+msgstr "Detalj"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Access Type"
+msgstr "Tilgangstype"
+
+#: reporting_archived_dialogs.ycp:53
+msgid "F&irst"
+msgstr "Fø&rste"
+
+#: reporting_archived_dialogs.ycp:54 reporting_dialogues.ycp:1005
+msgid "&Previous"
+msgstr "&Forrige"
+
+#: reporting_archived_dialogs.ycp:55
+msgid "&Sort"
+msgstr "&Sorter"
+
+#: reporting_archived_dialogs.ycp:56 reporting_dialogues.ycp:1007
+msgid "&Forward"
+msgstr "&Frem"
+
+#: reporting_archived_dialogs.ycp:57
+msgid "&Last"
+msgstr "&Siste"
+
+#: reporting_archived_dialogs.ycp:75 reporting_dialogues.ycp:243
+msgid "Filter By Date Range"
+msgstr "Filtrer etter dato-område"
+
+#: reporting_archived_dialogs.ycp:76 reporting_dialogues.ycp:244
+msgid " Select Date Range "
+msgstr " Velg dato-område "
+
+#: reporting_archived_dialogs.ycp:78 reporting_dialogues.ycp:246
+msgid "Enter Starting Date/Time"
+msgstr "Angi startdato/-tid"
+
+#: reporting_archived_dialogs.ycp:81 reporting_archived_dialogs.ycp:91
+#: reporting_dialogues.ycp:249 reporting_dialogues.ycp:259
+msgid "Hours"
+msgstr "Timer"
+
+#: reporting_archived_dialogs.ycp:82 reporting_archived_dialogs.ycp:92
+#: reporting_dialogues.ycp:250 reporting_dialogues.ycp:260
+msgid "Minutes"
+msgstr "Minutter"
+
+#: reporting_archived_dialogs.ycp:83 reporting_archived_dialogs.ycp:93
+#: reporting_dialogues.ycp:251 reporting_dialogues.ycp:261
+msgid "Day"
+msgstr "Dag"
+
+#: reporting_archived_dialogs.ycp:84 reporting_archived_dialogs.ycp:94
+#: reporting_dialogues.ycp:252 reporting_dialogues.ycp:262
+msgid "Month"
+msgstr "Måned"
+
+#: reporting_archived_dialogs.ycp:85 reporting_archived_dialogs.ycp:95
+#: reporting_dialogues.ycp:253 reporting_dialogues.ycp:263
+msgid "Year"
+msgstr "Ãr"
+
+#: reporting_archived_dialogs.ycp:88 reporting_dialogues.ycp:256
+msgid "Enter Ending Date"
+msgstr "Angi sluttdato"
+
+#: reporting_archived_dialogs.ycp:101 reporting_dialogues.ycp:176
+#: reporting_dialogues.ycp:213 reporting_dialogues.ycp:268
+#: reporting_dialogues.ycp:485
+msgid "Program name"
+msgstr "Programnavn"
+
+#: reporting_archived_dialogs.ycp:102 reporting_dialogues.ycp:177
+#: reporting_dialogues.ycp:214 reporting_dialogues.ycp:269
+msgid "Profile name"
+msgstr "Profilnavn"
+
+#: reporting_archived_dialogs.ycp:103 reporting_dialogues.ycp:182
+#: reporting_dialogues.ycp:219 reporting_dialogues.ycp:270
+msgid "PID number"
+msgstr "PID-nummer"
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:17
+#: reporting_dialogues.ycp:56 reporting_dialogues.ycp:69
+#: reporting_dialogues.ycp:70 reporting_dialogues.ycp:190
+#: reporting_dialogues.ycp:227 reporting_dialogues.ycp:273
+#: reporting_dialogues.ycp:829 reporting_dialogues.ycp:834
+#: reporting_dialogues.ycp:1548 reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1626 reporting_dialogues.ycp:1627
+#: reporting_dialogues.ycp:1628 reporting_dialogues.ycp:1657
+#: reporting_dialogues.ycp:1658 reporting_dialogues.ycp:1726
+#: reporting_dialogues.ycp:1913 reporting_dialogues.ycp:1928
+#: reporting_dialogues.ycp:1974 reporting_dialogues.ycp:1983
+#: reporting_dialogues.ycp:1987 reporting_dialogues.ycp:2001
+#: reporting_dialogues.ycp:2002 reporting_dialogues.ycp:2003
+#: reporting_utils.ycp:195 reporting_utils.ycp:341
+msgid "All"
+msgstr "Alle"
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:273
+msgid "U"
+msgstr "U"
+
+#: reporting_archived_dialogs.ycp:112 reporting_dialogues.ycp:229
+#: reporting_dialogues.ycp:279
+msgid "Access Type: R"
+msgstr "Tilgangstype: R"
+
+#: reporting_archived_dialogs.ycp:113 reporting_dialogues.ycp:230
+#: reporting_dialogues.ycp:280
+msgid "Mode: All"
+msgstr "Modus: Alle"
+
+#: reporting_archived_dialogs.ycp:120 reporting_dialogues.ycp:288
+#: reporting_dialogues.ycp:379 reporting_dialogues.ycp:1592
+#: reporting_dialogues.ycp:1952
+msgid "Export Type"
+msgstr "Eksporttype"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380 reporting_dialogues.ycp:1991
+msgid "None"
+msgstr "Ingen"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "csv"
+msgstr "csv"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "html"
+msgstr "html"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "Both"
+msgstr "Begge"
+
+#: reporting_archived_dialogs.ycp:123 reporting_dialogues.ycp:291
+#: reporting_dialogues.ycp:382 reporting_dialogues.ycp:1595
+#: reporting_dialogues.ycp:1955
+msgid "Location to store log."
+msgstr "Plassering for lagring av logg."
+
+#: reporting_archived_dialogs.ycp:124 reporting_dialogues.ycp:292
+#: reporting_dialogues.ycp:383 reporting_dialogues.ycp:797
+#: reporting_dialogues.ycp:1596 reporting_dialogues.ycp:1956
+msgid "&Accept"
+msgstr "&Godta"
+
+#: reporting_archived_dialogs.ycp:125 reporting_dialogues.ycp:293
+#: reporting_dialogues.ycp:384 reporting_dialogues.ycp:798
+#: reporting_dialogues.ycp:1597 reporting_dialogues.ycp:1957
+msgid "&Browse"
+msgstr "&Bla gjennom"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:831
+msgid "Report Configuration Dialog"
+msgstr "Rapportkonfigurasjonsdialog"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:832 reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "Back"
+msgstr "Tilbake"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:724 reporting_dialogues.ycp:832
+#: reporting_dialogues.ycp:1608 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "&Next"
+msgstr "&Neste"
+
+#: reporting_archived_dialogs.ycp:196 reporting_archived_dialogs.ycp:211
+msgid "February only has 28 days!  Fixing."
+msgstr "Februar har bare 28 dager! Fikser."
+
+#: reporting_archived_dialogs.ycp:199
+msgid "February only has 29 days!  Fixing."
+msgstr "February har bare 29 days!  Fikser."
+
+#: reporting_archived_dialogs.ycp:203 reporting_archived_dialogs.ycp:222
+msgid "Month only has 30 days!  Fixing."
+msgstr "Denne måneden har bare 30 dager! Fikser."
+
+#: reporting_archived_dialogs.ycp:216
+msgid "February only has 29 days!"
+msgstr "Februar har bare 29 dager!"
+
+#: reporting_dialogues.ycp:145
+msgid "Unrecognized form request."
+msgstr "Ukjent skjemaforspørsel."
+
+#: reporting_dialogues.ycp:193 reporting_dialogues.ycp:881
+#: reporting_dialogues.ycp:1699 reporting_dialogues.ycp:2033
+msgid "Access Type: "
+msgstr "Tilgangstype: "
+
+#: reporting_dialogues.ycp:195 reporting_dialogues.ycp:890
+#: reporting_dialogues.ycp:1708 reporting_dialogues.ycp:2041
+msgid "Mode: "
+msgstr "Modus: "
+
+#: reporting_dialogues.ycp:200 reporting_dialogues.ycp:235
+#: reporting_dialogues.ycp:1607 reporting_dialogues.ycp:1884
+#: reporting_dialogues.ycp:1894 reporting_dialogues.ycp:2143
+msgid "&Cancel"
+msgstr "&Avbryt"
+
+#: reporting_dialogues.ycp:201 reporting_dialogues.ycp:236
+#: reporting_dialogues.ycp:1895 reporting_utils.ycp:68 reporting_utils.ycp:131
+#: reporting_utils.ycp:203 reporting_utils.ycp:348
+msgid "&Save"
+msgstr "&Lagre"
+
+#: reporting_dialogues.ycp:414 reporting_dialogues.ycp:968
+msgid "On Demand Event Report - Page "
+msgstr "Hendelsesrapport på forespørsel - side "
+
+#: reporting_dialogues.ycp:483
+msgid "Filter By Program Name"
+msgstr "Filtrer etter programnavn"
+
+#: reporting_dialogues.ycp:489
+msgid "Export Report"
+msgstr "Eksporter rapport"
+
+#: reporting_dialogues.ycp:491
+msgid "Export File Location"
+msgstr "Eksporter filplassering"
+
+#: reporting_dialogues.ycp:492
+msgid "Select Export Format"
+msgstr "Velg eksportformat"
+
+#: reporting_dialogues.ycp:493
+msgid "CSV"
+msgstr "CSV"
+
+#: reporting_dialogues.ycp:494
+msgid "HTML"
+msgstr "HTML"
+
+#: reporting_dialogues.ycp:663
+msgid ""
+"<b>AppArmor Security Events</b><p>\n"
+"                    This table displays the events found that match your "
+"search criteria."
+msgstr ""
+"<b>AppArmor sikkerhetshendelser</b><p>\n"
+"                    Denne tabellen viser hendelser som samsvarer med dine søkekriterier."
+
+#: reporting_dialogues.ycp:670
+msgid "AppArmor Event Report Data"
+msgstr "AppArmor hendelsesrapportdata"
+
+#: reporting_dialogues.ycp:673
+msgid "AppArmor Message"
+msgstr "AppArmor-melding"
+
+#: reporting_dialogues.ycp:677 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1065
+#: reporting_dialogues.ycp:1073 reporting_dialogues.ycp:1089
+#: reporting_dialogues.ycp:2212 reporting_dialogues.ycp:2262
+msgid "AppArmor Security Event Report"
+msgstr "AppArmor sikkerhetshendelsesrapport"
+
+#: reporting_dialogues.ycp:713
+msgid "AppArmor Reporting"
+msgstr "AppArmor-rapportering"
+
+#: reporting_dialogues.ycp:717 reporting_dialogues.ycp:2241
+msgid "Schedule Reports"
+msgstr "Planlegg rapporter"
+
+#: reporting_dialogues.ycp:718 reporting_dialogues.ycp:784
+msgid "View Archived Reports"
+msgstr "Vis arkiverte rapporter"
+
+#: reporting_dialogues.ycp:719
+msgid "Run Reports"
+msgstr "Kjør rapporter"
+
+#: reporting_dialogues.ycp:788
+msgid "SIR"
+msgstr "SIR"
+
+#: reporting_dialogues.ycp:789
+msgid "App Aud"
+msgstr "AUD"
+
+#: reporting_dialogues.ycp:790
+msgid "ESS"
+msgstr "ESS"
+
+#: reporting_dialogues.ycp:796
+msgid "Location of Archived Reports"
+msgstr "Plassering av arkiverte rapporter"
+
+#: reporting_dialogues.ycp:803
+msgid "Report"
+msgstr "Rapport"
+
+#: reporting_dialogues.ycp:808
+msgid "&View"
+msgstr "&Vis"
+
+#: reporting_dialogues.ycp:809
+msgid "View &All"
+msgstr "Vis &alle"
+
+#: reporting_dialogues.ycp:971
+msgid "Archived Event Report - Page "
+msgstr "Arkivert hendelsesrapport - side "
+
+#: reporting_dialogues.ycp:974 reporting_dialogues.ycp:1209
+msgid "Applications Audit Report"
+msgstr "Programovervåkingsrapport"
+
+#: reporting_dialogues.ycp:976
+msgid "State"
+msgstr "Status"
+
+#: reporting_dialogues.ycp:976
+msgid "Type"
+msgstr "Type"
+
+#: reporting_dialogues.ycp:979 reporting_dialogues.ycp:984
+msgid "Executive Security Summary"
+msgstr "Sikkerhetssammendrag for prosesser"
+
+#: reporting_dialogues.ycp:980
+msgid "Query Results"
+msgstr "Forespørselsresultater"
+
+#: reporting_dialogues.ycp:980
+msgid "No event information exists."
+msgstr "Ingen hendelsesinformasjon finnes."
+
+#: reporting_dialogues.ycp:985
+msgid "Start Date"
+msgstr "Startdato"
+
+#: reporting_dialogues.ycp:986
+msgid "End Date"
+msgstr "Sluttdato"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Rejects"
+msgstr "Ant. avvisninger"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Events"
+msgstr "Ant. hendelser"
+
+#: reporting_dialogues.ycp:986
+msgid "Ave. Sev"
+msgstr "Gj. alv."
+
+#: reporting_dialogues.ycp:986
+msgid "High Sev"
+msgstr "Svært krit."
+
+#: reporting_dialogues.ycp:1004
+msgid "F&irst Page"
+msgstr "Fø&rste side"
+
+#: reporting_dialogues.ycp:1008
+msgid "&Last Page"
+msgstr "&Siste side"
+
+#: reporting_dialogues.ycp:1009
+msgid "&Go to Page"
+msgstr "&Gå til side"
+
+#: reporting_dialogues.ycp:1108
+msgid "View Archived SIR Report"
+msgstr "Vis arkivert SIR-rapport"
+
+#: reporting_dialogues.ycp:1119
+msgid "View Archived AUD Report"
+msgstr "Vis arkivert AUD-rapport"
+
+#: reporting_dialogues.ycp:1131
+msgid "View Archived ESS Report"
+msgstr "Vis arkivert ESS-rapport"
+
+#: reporting_dialogues.ycp:1183
+msgid "Security Incident Report"
+msgstr "Sikkerhetshendelsesrapport"
+
+#: reporting_dialogues.ycp:1232
+msgid "Executive Security Summary Report"
+msgstr "Sikkerhetssammendragsrapport for prosesser"
+
+#: reporting_dialogues.ycp:1236
+msgid "No recognized report type selected.  Try again."
+msgstr "Ingen kjent rapporttype valgt. Prøv igjen."
+
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+msgid "AppArmor Report"
+msgstr "AppArmor-rapport"
+
+#: reporting_dialogues.ycp:1412
+msgid "AppArmor On-Demand Report"
+msgstr "AppArmor-rapport på forespørsel"
+
+#: reporting_dialogues.ycp:1447 reporting_dialogues.ycp:1465
+#: reporting_dialogues.ycp:1475 reporting_dialogues.ycp:1482
+#: reporting_dialogues.ycp:1491 reporting_dialogues.ycp:1499
+msgid "AppArmor - Run Reports"
+msgstr "AppArmor - kjør rapporter"
+
+#: reporting_dialogues.ycp:1547 reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Day of Month"
+msgstr "Dag i måneden"
+
+#: reporting_dialogues.ycp:1575 reporting_dialogues.ycp:1927
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Day of Week"
+msgstr "Ukedag"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sun"
+msgstr "Søn"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Mon"
+msgstr "Man"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Tue"
+msgstr "Tir"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Wed"
+msgstr "Ons"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Thu"
+msgstr "Tor"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Fri"
+msgstr "Fre"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sat"
+msgstr "Lør"
+
+#: reporting_dialogues.ycp:1578 reporting_dialogues.ycp:1937
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Hour"
+msgstr "Time"
+
+#: reporting_dialogues.ycp:1579 reporting_dialogues.ycp:1938
+msgid "Minute"
+msgstr "Minutt"
+
+#: reporting_dialogues.ycp:1584 reporting_dialogues.ycp:1943
+msgid "Email Target 1"
+msgstr "E-postdestinasjon 1"
+
+#: reporting_dialogues.ycp:1585 reporting_dialogues.ycp:1944
+msgid "Email Target 2"
+msgstr "E-postdestinasjon 2"
+
+#: reporting_dialogues.ycp:1586 reporting_dialogues.ycp:1945
+msgid "Email Target 3"
+msgstr "Epostdestinasjon 3"
+
+#: reporting_dialogues.ycp:1675
+msgid "Only one contiguous space allowed in report names."
+msgstr "Du kan ikke bruke flere mellomrom etter hverandre i rapportnavn."
+
+#: reporting_dialogues.ycp:1677
+msgid ""
+"These characters are not allowed in report names: \"`~!@#$%^&*()[{]};:'\","
+"<>?/|\""
+msgstr ""
+"Følgende tegn er ikke tillatt i rapportnavn: \"`~!@#$%^&*()[{]};:'\","
+"<>?/|\""
+
+#: reporting_dialogues.ycp:1679
+msgid "Only 128 characters are allowed in report names."
+msgstr "Bare 128 tegn er tillatt i rapportnavn."
+
+#: reporting_dialogues.ycp:1681
+msgid "You must enter a name for the report."
+msgstr "Du må angi et navn for rapporten."
+
+#: reporting_dialogues.ycp:1683
+msgid "You must enter at least one email address."
+msgstr "Du må angi minst én e-postadresse."
+
+#: reporting_dialogues.ycp:1689
+msgid "Each report name should be unique."
+msgstr "Hvert rapportnavn må være unikt."
+
+#: reporting_dialogues.ycp:1885
+msgid "N&ext"
+msgstr "N&este"
+
+#: reporting_dialogues.ycp:1905
+msgid "Edit "
+msgstr "Rediger "
+
+#: reporting_dialogues.ycp:1905
+msgid " Schedule"
+msgstr " Planlegg"
+
+#: reporting_dialogues.ycp:1975
+msgid "R"
+msgstr "R"
+
+#: reporting_dialogues.ycp:2014 reporting_dialogues.ycp:2093
+msgid "You must enter at least one email address ."
+msgstr "Du må angi minst én e-postadresse."
+
+#: reporting_dialogues.ycp:2108
+msgid "Error: "
+msgstr "Feil: "
+
+#: reporting_dialogues.ycp:2135
+msgid "Delete Confirmation"
+msgstr "Bekreft sletting"
+
+#: reporting_dialogues.ycp:2139
+msgid "Are you sure you want to delete: "
+msgstr "Er du sikker på at du vil slette: "
+
+#: reporting_dialogues.ycp:2139
+msgid "?"
+msgstr "?"
+
+#: reporting_dialogues.ycp:2144
+msgid "&Delete"
+msgstr "&Slett"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Report Name"
+msgstr "Rapportnavn"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Mins"
+msgstr "Min."
+
+#: reporting_dialogues.ycp:2202 reporting_dialogues.ycp:2252
+msgid "View Archive"
+msgstr "Vis arkiv"
+
+#: reporting_dialogues.ycp:2203 reporting_dialogues.ycp:2253
+msgid "Run Now"
+msgstr "Kjør nå"
+
+#: reporting_dialogues.ycp:2206 reporting_dialogues.ycp:2256
+msgid "Add"
+msgstr "Legg til"
+
+#: reporting_dialogues.ycp:2207 reporting_dialogues.ycp:2257
+msgid "Edit"
+msgstr "Rediger"
+
+#: reporting_dialogues.ycp:2208 reporting_dialogues.ycp:2258
+msgid "Delete"
+msgstr "Slett"
+
+#: reporting_dialogues.ycp:2306
+msgid "Cannot delete a stock report."
+msgstr "Kan ikke slett en standardrapport."
+
+#: reporting_utils.ycp:64
+msgid "Enter a Page to Move to."
+msgstr "Angi et sidetall å gå til."
+
+#: reporting_utils.ycp:67 reporting_utils.ycp:130 reporting_utils.ycp:202
+#: reporting_utils.ycp:347
+msgid "&Abort"
+msgstr "&Avbryt"
+
+#: reporting_utils.ycp:196
+msgid "Read"
+msgstr "Lese"
+
+#: reporting_utils.ycp:197
+msgid "Write"
+msgstr "Skrive"
+
+#: reporting_utils.ycp:198
+msgid "Link"
+msgstr "Lenke"
+
+#: reporting_utils.ycp:199
+msgid "Execute"
+msgstr "Kjøre"
+
+#: reporting_utils.ycp:342
+msgid "Permit"
+msgstr "Tillat"
+
+#: reporting_utils.ycp:343
+msgid "Reject"
+msgstr "Avvis"
+
+#: reporting_utils.ycp:344
+msgid "Audit"
+msgstr "Overvåk"
+
+#: sd-config.ycp:12
+msgid "AppArmor is disabled"
+msgstr "AppArmor er deaktivert"
+
+#: sd-config.ycp:16
+msgid "AppArmor is enabled"
+msgstr "AppArmor er aktivert"
+
+#: sd-config.ycp:27
+msgid "Notification is disabled"
+msgstr "Varsling er deaktivert"
+
+#: sd-config.ycp:30
+msgid "Notification is enabled"
+msgstr "Varsling er aktivert"
+
+#: sd-config.ycp:36
+msgid "AppArmor Configuration"
+msgstr "AppArmor-konfigurasjon"
+
+#: sd-config.ycp:37
+msgid ""
+"<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy "
+"enforcement module is loaded and functioning.</p> <p><b>Security Event "
+"Notification</b><br>When an access violation occurs, configure this tool if "
+"you want to be notified via email. </p>"
+msgstr "<p><b>AppArmor-status</b><br>Dette viser om AppArmor-modulen er lastet og aktivert.</p> <p><b>Varsling av sikkerhetshendelse</b><br>Du kan konfigurere dette verktøyet hvis du vil bli varslet om brudd på tilgangsrettigheter. </p>"
+
+#: sd-config.ycp:40
+msgid "AppArmor Status"
+msgstr "AppArmor-status"
+
+#: sd-config.ycp:47
+msgid "Enable AppArmor"
+msgstr "Aktiver AppArmor"
+
+#: sd-config.ycp:51 sd-config.ycp:66
+msgid "&Configure"
+msgstr "&Konfigurer"
+
+#: sd-config.ycp:62
+msgid "Enable Security Event Notification"
+msgstr "Aktiver varsling av sikkerhetshendelser"
+
+#: sd-config.ycp:215 sd-config.ycp:227 sd-config.ycp:239
+msgid "Disabled"
+msgstr "Deaktivert"
+
+#: sd-config.ycp:216 sd-config.ycp:228 sd-config.ycp:240
+msgid "1 minute"
+msgstr "1 minutt"
+
+#: sd-config.ycp:217 sd-config.ycp:229 sd-config.ycp:241
+msgid "5 minutes"
+msgstr "5 minutter"
+
+#: sd-config.ycp:218 sd-config.ycp:230 sd-config.ycp:242
+msgid "10 minutes"
+msgstr "10 minutter"
+
+#: sd-config.ycp:219 sd-config.ycp:231 sd-config.ycp:243
+msgid "15 minutes"
+msgstr "15 minutter"
+
+#: sd-config.ycp:220 sd-config.ycp:232 sd-config.ycp:244
+msgid "30 minutes"
+msgstr "30 minutter"
+
+#: sd-config.ycp:221 sd-config.ycp:233 sd-config.ycp:245
+msgid "1 hour"
+msgstr "1 time"
+
+#: sd-config.ycp:222 sd-config.ycp:234 sd-config.ycp:246
+msgid "1 day"
+msgstr "1 dag"
+
+#: sd-config.ycp:223 sd-config.ycp:235 sd-config.ycp:247
+msgid "1 week"
+msgstr "1 uke"
+
+#: sd-config.ycp:259 sd-config.ycp:272 sd-config.ycp:285
+msgid "Frequency"
+msgstr "Frekvens"
+
+#: sd-config.ycp:260 sd-config.ycp:273 sd-config.ycp:286
+msgid "Email Address"
+msgstr "E-postadresse"
+
+#: sd-config.ycp:264 sd-config.ycp:277 sd-config.ycp:290
+msgid "Include Unknown Severity Events"
+msgstr "Ta med ukjente sikkerhetshendelser"
+
+#: sd-config.ycp:303
+msgid "Security Event Notification"
+msgstr "Varsling av sikkerhetshendelser"
+
+#: sd-config.ycp:303
+msgid "&Ok"
+msgstr "&Ok"
+

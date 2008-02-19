@@ -1,0 +1,3 @@
+59 23 * * *	/usr/bin/reportgen.pl "Executive.Security.Summary"
+59 23 * * *	/usr/bin/reportgen.pl "Applications.Audit"
+59 23 * * *	/usr/bin/reportgen.pl "Security.Incident.Report"

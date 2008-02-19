@@ -1,0 +1,1024 @@
+# yast2-apparmor locale file
+# Copyright (C) 2005 Novell INC.
+# This file is distributed under the same license as the yast2-apparmor package.
+# David Drewelow <davidd@immunix.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: yast2-apparmor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-22 13:42-0700\n"
+"PO-Revision-Date: 2005-08-19 10:54+0000\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: profile_dialogs.ycp:218 reporting_dialogues.ycp:1079
+#: reporting_dialogues.ycp:1756 reporting_dialogues.ycp:2054
+msgid "Select Directory"
+msgstr "选择目录"
+
+#: profile_dialogs.ycp:220
+msgid "Select File"
+msgstr "选择文件"
+
+#: profile_dialogs.ycp:261
+msgid "Entry will not added. Entry name or permissions not defined."
+msgstr "将不添加项。未定义项的名称或许可权限。"
+
+#: profile_dialogs.ycp:336
+msgid "&Hat name to add"
+msgstr "要添加的 Hat 名称(&H)"
+
+#: profile_dialogs.ycp:450 reporting_dialogues.ycp:678
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1066
+#: reporting_dialogues.ycp:1074 reporting_dialogues.ycp:1090
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 sd-config.ycp:79
+msgid "&Done"
+msgstr "完成(&D)"
+
+#: profile_dialogs.ycp:478
+msgid ""
+"Include entries can not be edited. Please select add or delete to manage "
+"Include entries."
+msgstr "无法编辑包含的项。请选择\"添加\"或\"删除\"来管理包含的项。"
+
+#: profile_dialogs.ycp:574
+msgid "Select File To Include"
+msgstr "选择要包含的文件"
+
+#: profile_dialogs.ycp:596
+msgid "Save changes to the Profile"
+msgstr "将更改保存到简报"
+
+#: profile_dialogs.ycp:669
+msgid "You must select a profile to edit"
+msgstr "必须选择要编辑的简报"
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report.  "
+msgstr "报告配置”对话框使您可以过滤在前一屏幕中选择的已存档的报告。"
+"要按 <b>日期范围</b>过滤：<br><br> <li>请单击<b>按日期范围"
+"过滤</b>。这将激活相关字段。<li>输入表示报告范围的开始和结束"
+"日期。"
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report.  "
+"<li>Enter other filtering parameters. See below for definitions of "
+"parameters.  </ol> The following definitions help you to enter the filtering "
+"parameters in the Report Configuration Dialog: <br><br> <b>Program Name "
+"Pattern:</b> When you enter a program name or pattern that matches the name "
+"of the binary executable of the program of interest, the report will display "
+"security events that have occurred for a specific program.<br><br> "
+"<b>Profile Name Pattern:</b> When you enter the name of the profile, the "
+"report will display the security events that are generated for the specified "
+"profile.  You can use this to see what is being confined by a specific "
+"profile.<br><br> <b>PID Number:</b> Process ID number is a number that "
+"uniquely identifies one specific process or running program (this number is "
+"valid only during the lifetime of that process).<br><br> <b>Severity Level:</"
+"b>  Select the lowest severity level for security events that you would like "
+"to be included in the report. The selected severity level, and above, will "
+"be included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided."
+msgstr "\"报告配置\"对话框使您能够过滤在以前屏幕中选择的档案报告。要按<b>日期范围</b>过滤：<br><br><ol><li>单击<b>按日期范围过滤</b>。该字段变为活动状态。<li>输入描述报告范围的开始和结束日期。<li>输入其他过滤参数。参考以下的参数定义。</ol>以下的定义有助于您在\"报告配置\"对话框中输入过滤参数：<br><br><b>程序名称模式：</b> 当您输入的程序名称或模式与所涉及的程序的二进制可执行文件的名称相匹配时，报告将显示针对特定程序发生的安全性事件。<br><br><b>简报名称模式：</b>当您输入简报名称时，报告将显示针对指定简报生成的安全性事件。由此您可以看到特定简报所限制的内容。<br><br><b>PID 号：</b> 进程 ID 号是一个编号，用来唯一标识某个特定进程或正在运行的程序（此编号仅在该进程的有效期内有效）。<br><br><b>严重性级别：</b>请为您想包含在报告中的安全性事件选择最低的严重性级别。选定的严重性级别以及在其之上的级别将包含在报告中。<br><br> <b>细节：</b>已被简报拒绝的访问所针对的源。这包含功能和文件。您可以使用此字段，以报告简报尚未允许访问的资源。<br><br><b>方式：</b>\"方式\"是简报授予应用程序或进程并在其上应用的许可权限。其选项为：r（读取） w（写入） l（链接） x（执行）<br><br><b>访问类型：</b>访问类型描述了安全性事件真正发生的内容。其选项为：允许、拒绝或审计。<br><br><b>CSV 或 HTML：</b>  使您能够导出 CSV（逗号分隔值）或 html 文件。CSV 文件使用标准数据格式，将日志项中的数据片段用逗号分隔开，以便于导入面向表的应用程序。您可以输入导出报告的路径名，方法是在提供的字段中输入它的完整路径名。"
+
+#: report_helptext.ycp:8
+msgid ""
+"The AppArmor On-Demand Report screen displays an instantly generated version "
+"of one of the following reports.  <b>Executive Security Summary:</b> A "
+"combined report, consisting of one or more Security incident reports from "
+"one or more machines.  This report provides a single view of security events "
+"on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing "
+"tool that reports which application servers are running and whether the "
+"applications are confined by AppArmor. Application servers are applications "
+"that accept incoming network connections. <br><br> <b>Security Incident "
+"Report:</b> A report that displays application security for a single host.  "
+"It reports policy violations for locally confined applications during a "
+"specific time period. You can edit and customize this report, or add new "
+"versions."
+msgstr ""
+"AppArmor 随选报告屏幕显示了下列一种报告的随即生成的版本。<b>执行安全性摘要：</b>一份合成的报告，由来自一台或多台计算机的一份或多份安全性事件报告组成。此报告使您能在单个视图中查看多台计算机上的安全性事件。<br><br><b>应用程序审计报告：</b>一种审计工具，可以报告正在运行的应用程序服务器及这些应用程序是否受 AppArmor 限制。应用程序服务器是一些应用程序，它们接受进来的网络连接。<br><br><b>安全性事件报告：</b> 一份显示单个主机的应用程序安全性的报告。报告特定时间段内本地限制的应用程序的策略违例。您可以编辑并自定义该报告，或添加新的版本。"
+
+#: report_helptext.ycp:10
+msgid ""
+"The Report Configuration dialog enables you to filter the report selected in "
+"the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click "
+"<b>Filter By Date Range</b>. The fields become active.  <li>Enter the start "
+"and end dates that delineate the scope of the report.  <li>Enter other "
+"filtering parameters. See below for definitions of parameters.  </ol> The "
+"following definitions help you to enter the filtering parameters in the "
+"Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a "
+"program name or pattern that matches the name of the executable process of "
+"interest, the report will display security events that have occurred for a "
+"specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the "
+"name of the security profile that is applied to the rocess, the report will "
+"display the security events that are generated for the specified profile. "
+"You can use this to see what is being confined by a specific profile."
+"<br><br> <b>PID Number:</b> Process ID number is a number that uniquely "
+"identifies one specific process or running program (this number is valid "
+"only during the lifetime of that process).<br><br> <b>Severity Level:</b>  "
+"Select the lowest severity level for security events that you would like to "
+"be included in the report. The selected severity level, and above, will be "
+"included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided.<br><br>"
+msgstr "\"报告配置\"对话框使您能够过滤在以前屏幕中选择的报告。要按<b>日期范围</b>过滤：<br><br><ol><li>单击<b>按日期范围过滤</b>。该字段变为活动状态。<li>输入描述报告范围的开始和结束日期。<li>输入其他过滤参数。参考以下的参数定义。</ol>以下的定义有助于您在\"报告配置\"对话框中输入过滤参数：<b>程序名称模式：</b> 当您输入的程序名称或模式与所涉及的可执行进程的名称相匹配，报告将显示针对特定程序发生的安全性事件。<br><br><b>简报名称模式：</b>当您输入应用于进程的安全性简报名称时，报告将显示针对特定简报生成的安全性事件。由此您可以看到特定简报所限制的内容。<br><br><b>PID 号：</b> 进程 ID 号是一个编号，用来唯一标识某个特定进程或正在运行的程序（此编号仅在该进程的有效期内有效）。<br><br><b>严重性级别：</b>请为您想包含在报告中的安全性事件选择最低的严重性级别。选定的严重性级别以及在其之上的级别将包含在报告中。<br><br><b>细节：</b>已被简报拒绝的访问所针对的源。这包含功能和文件。您可以使用此字段，以报告简报尚未允许访问的资源。<br><br><b>方式：</b>\"方式\"是简报授予应用程序或进程并在其上应用的许可权限。其选项为：r（读取） w（写入） l（链接） x（执行）<br><br> <b>访问类型：</b>访问类型描述了安全性事件真正发生的内容。其选项为：允许、拒绝或审计。<br><br><b>CSV 或 HTML：</b>可以能够您导出 CSV（逗号分隔值）或 html 文件。CSV 文件使用标准数据格式，将日志项中的数据片段用逗号分隔开，以便于导入面向表的应用程序。您可以输入导出报告的路径名，方法是在提供的字段中输入它的完整路径名。<br><br>"
+
+#: report_helptext.ycp:13
+msgid ""
+"The summary of scheduled reports page shows us when reports are scheduled to "
+"run. Reports can be set to run monthly, weekly, daily, or hourly. The "
+"default settings are daily at midnight. The reports can also be emailed, "
+"upon completion, to up to three email recipients.<br><br> In the Set "
+"Schedule section, you can schedule the following three types of security "
+"reports:<br><br> <b>Executive Security Summary:</b> A combined report, "
+"consisting of one or more Security incident reports from one or more "
+"machines.  This report provides a single view of security events on multiple "
+"machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that "
+"reports which application servers are running and whether the applications "
+"are confined by AppArmor. Application servers are applications that accept "
+"incoming network connections. <br><br> <b>Security Incident Report:</b> A "
+"report that displays application security for a single host.  It reports "
+"policy violations for locally confined applications during a specific time "
+"period. You can edit and customize this report, or add new versions."
+msgstr "\"日程安排报告\"页摘要显示将报告安排在何时运行。可以设置每月、每周、每天或每小时运行报告一次。默认的设置为每天午夜运行。报告也可以在完成后以电子邮件的形式发出，最多可以发送给三个收件人。<br><br> 在\"设置日程表\"部分中，您可以安排以下三种类型安全性报告的日程：<br><br><b>执行安全性摘要：</b>一份合成的报告，由来自一台或多台计算机的一份或多份安全性事件报告组成。此报告使您能在单个视图中查看多台计算机上的安全性事件。<br><br><b>应用程序审计报告：</b>一种审计工具，可以报告正在运行的应用程序服务器及这些应用程序是否受 AppArmor 限制。应用程序服务器是一些应用程序，它们接受进来的网络连接。<br><br><b>安全性事件报告：</b>一份显示单个主机的应用程序安全性的报告。报告特定时间段内本地限制的应用程序的策略违例。您可以编辑并自定义该报告，或添加新的版本。"
+
+#: report_helptext.ycp:15
+msgid ""
+" The View Archive Reports form enables you to view previously generated "
+"reports, located in the /var/log/apparmor/reports-archived directory. The "
+"checkboxes at the top of the form enable you to narrow-down the category of "
+"reports shown in the list to the following: SIR Reports, AUD Reports, or ESS "
+"Reports.  To see report details, select a report and click the <b>View</b> "
+"button.<br><br> You can view reports from one or more systems if you move "
+"the reports to the /var/log/apparmor/reports-archived directory."
+msgstr " \"查看档案报告\"表单使您能够查看以前生成的报告，这些报告在 /var/log/apparmor/reports-archived 目录下。表单之上的复选框使您能够将列表中显示的报告的种类缩减到以下几种：SIR 报告、AUD 报告或 ESS 报告。要查看报告的细节，请选择一份报告并单击<b>查看</b>按钮。<br><br> 如果将报告移动到 /var/log/apparmor/reports-archived 目录下，您便可以查看一个或多个系统中的报告。"
+
+#: report_helptext.ycp:27
+msgid "repConfHelp"
+msgstr "repConfHelp"
+
+#: report_helptext.ycp:28
+msgid ""
+"<b>Security Incident Report (SIR):</b> A report that displays security "
+"events of interest to an administrator. The SIR reports policy violations "
+"for locally confined applications during the specified time period. The SIR "
+"reports policy exceptions and policy engine state changes. These two types "
+"of security events are defined as follows: <ul> <li><b>Policy Exceptions:</"
+"b> When an application requests a resource that's not defined within its "
+"profile, a security event is generated.  <li><b>Policy Engine State Changes:"
+"</b> Enforces policy for applications and maintains its own state, including "
+"when engines start or stop, when a policy is reloaded, and when global "
+"security feature are enabled or disabled.  </ul> Select the report from the "
+"archive, then <b>View</b> to see the report details."
+msgstr "<b>安全性事件报告 (SIR)：</b>一份显示管理员感兴趣的安全性事件的报告。SIR 报告指定时间段内本地限制的应用程序的策略违例。SIR 报告策略异常和策略引擎状态的更改。这两种安全性事件的定义如下：<ul> <li><b>策略异常：</ b>当应用程序请求使用未在简报中定义的资源时，将生成安全性事件。<li><b>策略引擎状态更改：</b>对应用程序强制应用策略并保持其自身状态，包括何时启动或停止引擎、何时重新装载策略以及何时启用或禁用全局安全性功能。</ul>从档案中选择报告，然后单击<b>查看</b>以查看报告的细节。"
+
+#: report_helptext.ycp:31
+msgid ""
+"<b>Applications Audit Report (AUD):</b> An auditing tool that reports which "
+"application servers are running and whether they are confined by AppArmor. "
+"Application servers are applications that accept incoming network "
+"connections. This report provides the host machine's IP Address, the date "
+"the Applications Audit Report ran, the name and path of the unconfined "
+"program or application server, the suggested profile or a placeholder for a "
+"profile for an unconfined program, the process ID number, The state of the "
+"program (confined or unconfined), and the type of confinement that the "
+"profile is performing (enforce/complain).<br><br> "
+msgstr "<b>应用程序审计报告 (AUD)：</b>一种审计工具，可以报告正在运行的应用程序服务器及其是否受 AppArmor 限制。应用程序服务器是一组应用程序，它们接受进来的网络连接。此报告提供了主机计算机的 IP 地址、应用程序审计报告运行的时间、未受限程序或应用程序服务器的名称和路径、建议的简报或未受限程序简报的占位符、进程 ID 号、程序状态（受限或未受限）以及简报正在执行的限制类型（强制/抱怨）。<br><br> "
+
+#: report_helptext.ycp:33
+msgid ""
+"<b>Executive Security Summary (ESS):</b> A combined report, consisting of "
+"one or more high-level reports from one or more machines. This report can "
+"provide a single view of security events on multiple machines if each "
+"machine's data is copied to the reports archive directory, which is <b>/var/"
+"log/apparmor/reports-archived</b>. This report provides the host machine's "
+"IP address, the start and end dates of the polled events, total number of "
+"rejects, total number of events, average of severity levels reported, and "
+"the highest severity level reported. One line of the ESS report represents a "
+"range of SIR reports.<br><br> "
+msgstr "<b>执行安全性摘要 (ESS)：</b>一份合成的报告，由来自一台或多台计算机的一份或多份高级别报告组成。如果将每台计算机的数据复制到报告档案目录 <b>/var/ log/apparmor/reports-archived</b>，则此报告将使您能在单个视图中查看多台计算机上的安全性事件。此报告提供了主机计算机的 IP 地址、轮循事件的开始和结束日期、拒绝的总次数、事件总数、报告的平均严重性级别以及报告的最高严重性级别。ESS 报告的一行表示一系列 SIR 报告。<br><br> "
+
+#: reporting_archived_dialogs.ycp:37
+msgid "Archived Security Incident Report - Page "
+msgstr "存档的安全性事件报告 － 页"
+
+#: reporting_archived_dialogs.ycp:37 reporting_dialogues.ycp:414
+#: reporting_dialogues.ycp:968 reporting_dialogues.ycp:971
+msgid " of "
+msgstr "/"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975 reporting_dialogues.ycp:985
+msgid "Host"
+msgstr "主机"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:803
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Date"
+msgstr "日期"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Program"
+msgstr "程序"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "Profile"
+msgstr "简报"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "PID"
+msgstr "PID"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:105
+#: reporting_dialogues.ycp:189 reporting_dialogues.ycp:226
+#: reporting_dialogues.ycp:272 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972 sd-config.ycp:261
+#: sd-config.ycp:274 sd-config.ycp:287
+msgid "Severity"
+msgstr "严重性"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Mode"
+msgstr "方式"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:111
+#: reporting_dialogues.ycp:183 reporting_dialogues.ycp:220
+#: reporting_dialogues.ycp:278 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Detail"
+msgstr "细节"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Access Type"
+msgstr "访问类型"
+
+#: reporting_archived_dialogs.ycp:53
+msgid "F&irst"
+msgstr "第一个(&I)"
+
+#: reporting_archived_dialogs.ycp:54 reporting_dialogues.ycp:1005
+msgid "&Previous"
+msgstr "前一个(&P)"
+
+#: reporting_archived_dialogs.ycp:55
+msgid "&Sort"
+msgstr "排序(&S)"
+
+#: reporting_archived_dialogs.ycp:56 reporting_dialogues.ycp:1007
+msgid "&Forward"
+msgstr "正向(&F)"
+
+#: reporting_archived_dialogs.ycp:57
+msgid "&Last"
+msgstr "最后一个(&L)"
+
+#: reporting_archived_dialogs.ycp:75 reporting_dialogues.ycp:243
+msgid "Filter By Date Range"
+msgstr "按日期范围过滤"
+
+#: reporting_archived_dialogs.ycp:76 reporting_dialogues.ycp:244
+msgid " Select Date Range "
+msgstr "选择日期范围"
+
+#: reporting_archived_dialogs.ycp:78 reporting_dialogues.ycp:246
+msgid "Enter Starting Date/Time"
+msgstr "输入开始日期/时间"
+
+#: reporting_archived_dialogs.ycp:81 reporting_archived_dialogs.ycp:91
+#: reporting_dialogues.ycp:249 reporting_dialogues.ycp:259
+msgid "Hours"
+msgstr "小时"
+
+#: reporting_archived_dialogs.ycp:82 reporting_archived_dialogs.ycp:92
+#: reporting_dialogues.ycp:250 reporting_dialogues.ycp:260
+msgid "Minutes"
+msgstr "分钟"
+
+
+#: reporting_archived_dialogs.ycp:83 reporting_archived_dialogs.ycp:93
+#: reporting_dialogues.ycp:251 reporting_dialogues.ycp:261
+msgid "Day"
+msgstr "天"
+
+
+#: reporting_archived_dialogs.ycp:84 reporting_archived_dialogs.ycp:94
+#: reporting_dialogues.ycp:252 reporting_dialogues.ycp:262
+msgid "Month"
+msgstr "月"
+
+#: reporting_archived_dialogs.ycp:85 reporting_archived_dialogs.ycp:95
+#: reporting_dialogues.ycp:253 reporting_dialogues.ycp:263
+msgid "Year"
+msgstr "年"
+
+#: reporting_archived_dialogs.ycp:88 reporting_dialogues.ycp:256
+msgid "Enter Ending Date"
+msgstr "输入结束日期"
+
+#: reporting_archived_dialogs.ycp:101 reporting_dialogues.ycp:176
+#: reporting_dialogues.ycp:213 reporting_dialogues.ycp:268
+#: reporting_dialogues.ycp:485
+msgid "Program name"
+msgstr "程序名"
+
+#: reporting_archived_dialogs.ycp:102 reporting_dialogues.ycp:177
+#: reporting_dialogues.ycp:214 reporting_dialogues.ycp:269
+msgid "Profile name"
+msgstr "简报名称"
+
+#: reporting_archived_dialogs.ycp:103 reporting_dialogues.ycp:182
+#: reporting_dialogues.ycp:219 reporting_dialogues.ycp:270
+msgid "PID number"
+msgstr "PID 号："
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:17
+#: reporting_dialogues.ycp:56 reporting_dialogues.ycp:69
+#: reporting_dialogues.ycp:70 reporting_dialogues.ycp:190
+#: reporting_dialogues.ycp:227 reporting_dialogues.ycp:273
+#: reporting_dialogues.ycp:829 reporting_dialogues.ycp:834
+#: reporting_dialogues.ycp:1548 reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1626 reporting_dialogues.ycp:1627
+#: reporting_dialogues.ycp:1628 reporting_dialogues.ycp:1657
+#: reporting_dialogues.ycp:1658 reporting_dialogues.ycp:1726
+#: reporting_dialogues.ycp:1913 reporting_dialogues.ycp:1928
+#: reporting_dialogues.ycp:1974 reporting_dialogues.ycp:1983
+#: reporting_dialogues.ycp:1987 reporting_dialogues.ycp:2001
+#: reporting_dialogues.ycp:2002 reporting_dialogues.ycp:2003
+#: reporting_utils.ycp:195 reporting_utils.ycp:341
+msgid "All"
+msgstr "全部"
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:273
+msgid "U"
+msgstr "U"
+
+#: reporting_archived_dialogs.ycp:112 reporting_dialogues.ycp:229
+#: reporting_dialogues.ycp:279
+msgid "Access Type: R"
+msgstr "访问类型：R"
+
+#: reporting_archived_dialogs.ycp:113 reporting_dialogues.ycp:230
+#: reporting_dialogues.ycp:280
+msgid "Mode: All"
+msgstr "方式：全部"
+
+#: reporting_archived_dialogs.ycp:120 reporting_dialogues.ycp:288
+#: reporting_dialogues.ycp:379 reporting_dialogues.ycp:1592
+#: reporting_dialogues.ycp:1952
+msgid "Export Type"
+msgstr "导出类型"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380 reporting_dialogues.ycp:1991
+msgid "None"
+msgstr "无"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "csv"
+msgstr "csv"
+
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "html"
+msgstr "html"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "Both"
+msgstr "都"
+
+#: reporting_archived_dialogs.ycp:123 reporting_dialogues.ycp:291
+#: reporting_dialogues.ycp:382 reporting_dialogues.ycp:1595
+#: reporting_dialogues.ycp:1955
+msgid "Location to store log."
+msgstr "存储日志的位置。"
+
+#: reporting_archived_dialogs.ycp:124 reporting_dialogues.ycp:292
+#: reporting_dialogues.ycp:383 reporting_dialogues.ycp:797
+#: reporting_dialogues.ycp:1596 reporting_dialogues.ycp:1956
+msgid "&Accept"
+msgstr "接受(&A)"
+
+#: reporting_archived_dialogs.ycp:125 reporting_dialogues.ycp:293
+#: reporting_dialogues.ycp:384 reporting_dialogues.ycp:798
+#: reporting_dialogues.ycp:1597 reporting_dialogues.ycp:1957
+msgid "&Browse"
+msgstr "浏览(&B)"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:831
+msgid "Report Configuration Dialog"
+msgstr "\"报告配置\"对话框"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:832 reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "Back"
+msgstr "后退"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:724 reporting_dialogues.ycp:832
+#: reporting_dialogues.ycp:1608 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "&Next"
+msgstr "下一步(&N)"
+
+#: reporting_archived_dialogs.ycp:196 reporting_archived_dialogs.ycp:211
+msgid "February only has 28 days!  Fixing."
+msgstr "二月只有 28 天！正在修复。"
+
+#: reporting_archived_dialogs.ycp:199
+msgid "February only has 29 days!  Fixing."
+msgstr "二月只有 29 天！正在修复。"
+
+#: reporting_archived_dialogs.ycp:203 reporting_archived_dialogs.ycp:222
+msgid "Month only has 30 days!  Fixing."
+msgstr "该月只有 30 天！正在修复。"
+
+#: reporting_archived_dialogs.ycp:216
+msgid "February only has 29 days!"
+msgstr "二月只有 29 天！"
+
+#: reporting_dialogues.ycp:145
+msgid "Unrecognized form request."
+msgstr "表单请求未被识别。"
+
+#: reporting_dialogues.ycp:193 reporting_dialogues.ycp:881
+#: reporting_dialogues.ycp:1699 reporting_dialogues.ycp:2033
+msgid "Access Type: "
+msgstr "访问类型："
+
+#: reporting_dialogues.ycp:195 reporting_dialogues.ycp:890
+#: reporting_dialogues.ycp:1708 reporting_dialogues.ycp:2041
+msgid "Mode: "
+msgstr "方式："
+
+#: reporting_dialogues.ycp:200 reporting_dialogues.ycp:235
+#: reporting_dialogues.ycp:1607 reporting_dialogues.ycp:1884
+#: reporting_dialogues.ycp:1894 reporting_dialogues.ycp:2143
+msgid "&Cancel"
+msgstr "取消(&C)"
+
+#: reporting_dialogues.ycp:201 reporting_dialogues.ycp:236
+#: reporting_dialogues.ycp:1895 reporting_utils.ycp:68 reporting_utils.ycp:131
+#: reporting_utils.ycp:203 reporting_utils.ycp:348
+msgid "&Save"
+msgstr "保存(&S)"
+
+#: reporting_dialogues.ycp:414 reporting_dialogues.ycp:968
+msgid "On Demand Event Report - Page "
+msgstr "随选事件报告 － 页"
+
+#: reporting_dialogues.ycp:483
+msgid "Filter By Program Name"
+msgstr "按程序名过滤"
+
+#: reporting_dialogues.ycp:489
+msgid "Export Report"
+msgstr "导出报告"
+
+#: reporting_dialogues.ycp:491
+msgid "Export File Location"
+msgstr "导出文件位置"
+
+#: reporting_dialogues.ycp:492
+msgid "Select Export Format"
+msgstr "选择导出格式"
+
+#: reporting_dialogues.ycp:493
+msgid "CSV"
+msgstr "CSV"
+
+#: reporting_dialogues.ycp:494
+msgid "HTML"
+msgstr "HTML"
+
+#: reporting_dialogues.ycp:663
+msgid ""
+"<b>AppArmor Security Events</b><p>\n"
+"                    This table displays the events found that match your "
+"search criteria."
+msgstr "<b>AppArmor 安全性事件</b><p>\n                    此表显示已找到的符合您的搜索准则的事件。"
+
+#: reporting_dialogues.ycp:670
+msgid "AppArmor Event Report Data"
+msgstr "AppArmor 事件报告数据"
+
+#: reporting_dialogues.ycp:673
+msgid "AppArmor Message"
+msgstr "AppArmor 讯息"
+
+#: reporting_dialogues.ycp:677 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1065
+#: reporting_dialogues.ycp:1073 reporting_dialogues.ycp:1089
+#: reporting_dialogues.ycp:2212 reporting_dialogues.ycp:2262
+msgid "AppArmor Security Event Report"
+msgstr "AppArmor 安全性事件报告"
+
+#: reporting_dialogues.ycp:713
+msgid "AppArmor Reporting"
+msgstr "AppArmor 报告"
+
+#: reporting_dialogues.ycp:717 reporting_dialogues.ycp:2241
+msgid "Schedule Reports"
+msgstr "日程表报告"
+
+#: reporting_dialogues.ycp:718 reporting_dialogues.ycp:784
+msgid "View Archived Reports"
+msgstr "查看存档报告"
+
+#: reporting_dialogues.ycp:719
+msgid "Run Reports"
+msgstr "运行报告"
+
+#: reporting_dialogues.ycp:788
+msgid "SIR"
+msgstr "SIR"
+
+#: reporting_dialogues.ycp:789
+msgid "App Aud"
+msgstr "App Aud"
+
+#: reporting_dialogues.ycp:790
+msgid "ESS"
+msgstr "ESS"
+
+#: reporting_dialogues.ycp:796
+msgid "Location of Archived Reports"
+msgstr "存档报告的位置"
+
+#: reporting_dialogues.ycp:803
+msgid "Report"
+msgstr "报告"
+
+#: reporting_dialogues.ycp:808
+msgid "&View"
+msgstr "查看(&V)"
+
+#: reporting_dialogues.ycp:809
+msgid "View &All"
+msgstr "查看全部(&A)"
+
+#: reporting_dialogues.ycp:971
+msgid "Archived Event Report - Page "
+msgstr "存档事件报告 － 页"
+
+#: reporting_dialogues.ycp:974 reporting_dialogues.ycp:1209
+msgid "Applications Audit Report"
+msgstr "应用程序审计报告"
+
+#: reporting_dialogues.ycp:976
+msgid "State"
+msgstr "状态"
+
+#: reporting_dialogues.ycp:976
+msgid "Type"
+msgstr "类型"
+
+#: reporting_dialogues.ycp:979 reporting_dialogues.ycp:984
+msgid "Executive Security Summary"
+msgstr "执行安全性摘要"
+
+#: reporting_dialogues.ycp:980
+msgid "Query Results"
+msgstr "查询结果"
+
+#: reporting_dialogues.ycp:980
+msgid "No event information exists."
+msgstr "不存在事件信息。"
+
+#: reporting_dialogues.ycp:985
+msgid "Start Date"
+msgstr "开始日期"
+
+#: reporting_dialogues.ycp:986
+msgid "End Date"
+msgstr "结束日期"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Rejects"
+msgstr "拒绝次数"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Events"
+msgstr "事件数"
+
+#: reporting_dialogues.ycp:986
+msgid "Ave. Sev"
+msgstr "平均严重性级别"
+
+#: reporting_dialogues.ycp:986
+msgid "High Sev"
+msgstr "高严重性级别"
+
+#: reporting_dialogues.ycp:1004
+msgid "F&irst Page"
+msgstr "首页(&I)"
+
+#: reporting_dialogues.ycp:1008
+msgid "&Last Page"
+msgstr "末页(&L)"
+
+#: reporting_dialogues.ycp:1009
+msgid "&Go to Page"
+msgstr "转到页(&G)"
+
+#: reporting_dialogues.ycp:1108
+msgid "View Archived SIR Report"
+msgstr "查看已存档的 SIR 报告"
+
+#: reporting_dialogues.ycp:1119
+msgid "View Archived AUD Report"
+msgstr "查看已存档的 AUD 报告"
+
+#: reporting_dialogues.ycp:1131
+msgid "View Archived ESS Report"
+msgstr "查看已存档的 ESS 报告"
+
+#: reporting_dialogues.ycp:1183
+msgid "Security Incident Report"
+msgstr "安全性事件报告"
+
+#: reporting_dialogues.ycp:1232
+msgid "Executive Security Summary Report"
+msgstr "执行安全性摘要报告"
+
+#: reporting_dialogues.ycp:1236
+msgid "No recognized report type selected.  Try again."
+msgstr "没有选择已识别的报告类型。请重试。"
+
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+msgid "AppArmor Report"
+msgstr "AppArmor 报告"
+
+#: reporting_dialogues.ycp:1412
+msgid "AppArmor On-Demand Report"
+msgstr "AppArmor 随选报告"
+
+#: reporting_dialogues.ycp:1447 reporting_dialogues.ycp:1465
+#: reporting_dialogues.ycp:1475 reporting_dialogues.ycp:1482
+#: reporting_dialogues.ycp:1491 reporting_dialogues.ycp:1499
+msgid "AppArmor - Run Reports"
+msgstr "AppArmor － 运行报告"
+
+#: reporting_dialogues.ycp:1547 reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Day of Month"
+msgstr "日期"
+
+#: reporting_dialogues.ycp:1575 reporting_dialogues.ycp:1927
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Day of Week"
+msgstr "星期几"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sun"
+msgstr "星期日"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Mon"
+msgstr "星期一"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Tue"
+msgstr "星期二"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Wed"
+msgstr "星期三"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Thu"
+msgstr "星期四"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Fri"
+msgstr "星期五"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sat"
+msgstr "星期六"
+
+#: reporting_dialogues.ycp:1578 reporting_dialogues.ycp:1937
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Hour"
+msgstr "小时"
+
+#: reporting_dialogues.ycp:1579 reporting_dialogues.ycp:1938
+msgid "Minute"
+msgstr "分钟"
+
+#: reporting_dialogues.ycp:1584 reporting_dialogues.ycp:1943
+msgid "Email Target 1"
+msgstr "电子邮件目标 1"
+
+#: reporting_dialogues.ycp:1585 reporting_dialogues.ycp:1944
+msgid "Email Target 2"
+msgstr "电子邮件目标 2"
+
+#: reporting_dialogues.ycp:1586 reporting_dialogues.ycp:1945
+msgid "Email Target 3"
+msgstr "电子邮件目标 3"
+
+#: reporting_dialogues.ycp:1675
+msgid "Only one contiguous space allowed in report names."
+msgstr "在报告名称中仅允许有一个相邻的空格。"
+
+#: reporting_dialogues.ycp:1677
+msgid ""
+"These characters are not allowed in report names: \"`~!@#$%^&*()[{]};:'\","
+"<>?/|\""
+msgstr "以下字符不允许出现在报告名中：\"`~!@#$%^&*()[{]};:'\", <>?/|\""
+
+#: reporting_dialogues.ycp:1679
+msgid "Only 128 characters are allowed in report names."
+msgstr "报告名仅允许有 128 个字符。"
+
+#: reporting_dialogues.ycp:1681
+msgid "You must enter a name for the report."
+msgstr "您必须为该报告输入报告名。"
+
+#: reporting_dialogues.ycp:1683
+msgid "You must enter at least one email address."
+msgstr "您必须至少输入一个电子邮件地址。"
+
+#: reporting_dialogues.ycp:1689
+msgid "Each report name should be unique."
+msgstr "每个报告名必须唯一。"
+
+#: reporting_dialogues.ycp:1885
+msgid "N&ext"
+msgstr "下一步(&E)"
+
+#: reporting_dialogues.ycp:1905
+msgid "Edit "
+msgstr "编辑"
+
+#: reporting_dialogues.ycp:1905
+msgid " Schedule"
+msgstr "日程表"
+
+#: reporting_dialogues.ycp:1975
+msgid "R"
+msgstr "R"
+
+#: reporting_dialogues.ycp:2014 reporting_dialogues.ycp:2093
+msgid "You must enter at least one email address ."
+msgstr "您必须至少输入一个电子邮件地址。"
+
+#: reporting_dialogues.ycp:2108
+msgid "Error: "
+msgstr "错误："
+
+#: reporting_dialogues.ycp:2135
+msgid "Delete Confirmation"
+msgstr "删除确认"
+
+#: reporting_dialogues.ycp:2139
+msgid "Are you sure you want to delete: "
+msgstr "是否确定要删除："
+
+#: reporting_dialogues.ycp:2139
+msgid "?"
+msgstr "?"
+
+#: reporting_dialogues.ycp:2144
+msgid "&Delete"
+msgstr "删除(&D)"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Report Name"
+msgstr "报告名"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Mins"
+msgstr "分钟"
+
+#: reporting_dialogues.ycp:2202 reporting_dialogues.ycp:2252
+msgid "View Archive"
+msgstr "查看档案"
+
+#: reporting_dialogues.ycp:2203 reporting_dialogues.ycp:2253
+msgid "Run Now"
+msgstr "立即运行"
+
+#: reporting_dialogues.ycp:2206 reporting_dialogues.ycp:2256
+msgid "Add"
+msgstr "添加"
+
+#: reporting_dialogues.ycp:2207 reporting_dialogues.ycp:2257
+msgid "Edit"
+msgstr "编辑"
+
+#: reporting_dialogues.ycp:2208 reporting_dialogues.ycp:2258
+msgid "Delete"
+msgstr "删除"
+
+#: reporting_dialogues.ycp:2306
+msgid "Cannot delete a stock report."
+msgstr "无法删除库存报告。"
+
+#: reporting_utils.ycp:64
+msgid "Enter a Page to Move to."
+msgstr "输入要跳转的页数。"
+
+#: reporting_utils.ycp:67 reporting_utils.ycp:130 reporting_utils.ycp:202
+#: reporting_utils.ycp:347
+msgid "&Abort"
+msgstr "中止(&A)"
+
+#: reporting_utils.ycp:196
+msgid "Read"
+msgstr "读取"
+
+#: reporting_utils.ycp:197
+msgid "Write"
+msgstr "写入"
+
+#: reporting_utils.ycp:198
+msgid "Link"
+msgstr "链接"
+
+#: reporting_utils.ycp:199
+msgid "Execute"
+msgstr "执行"
+
+#: reporting_utils.ycp:342
+msgid "Permit"
+msgstr "允许"
+
+#: reporting_utils.ycp:343
+msgid "Reject"
+msgstr "拒绝"
+
+#: reporting_utils.ycp:344
+msgid "Audit"
+msgstr "审计"
+
+#: sd-config.ycp:12
+msgid "AppArmor is disabled"
+msgstr "AppArmor 已禁用"
+
+#: sd-config.ycp:16
+msgid "AppArmor is enabled"
+msgstr "AppArmor 已启用"
+
+#: sd-config.ycp:27
+msgid "Notification is disabled"
+msgstr "通知已禁用"
+
+#: sd-config.ycp:30
+msgid "Notification is enabled"
+msgstr "通知已启用"
+
+#: sd-config.ycp:36
+msgid "AppArmor Configuration"
+msgstr "AppArmor 配置"
+
+#: sd-config.ycp:37
+msgid ""
+"<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy "
+"enforcement module is loaded and functioning.</p> <p><b>Security Event "
+"Notification</b><br>When an access violation occurs, configure this tool if "
+"you want to be notified via email. </p>"
+msgstr "<p><b>AppArmor 状态</b><br>报告 AppArmor 策略强制模块是否已装载和运作。</p> <p><b>安全性事件通知</b><br>发生访问违例时，如果想通过电子邮件收到通知，请配置该工具。</p>"
+
+#: sd-config.ycp:40
+msgid "AppArmor Status"
+msgstr "AppArmor 状态"
+
+#: sd-config.ycp:47
+msgid "Enable AppArmor"
+msgstr "启用 AppArmor"
+
+#: sd-config.ycp:51 sd-config.ycp:66
+msgid "&Configure"
+msgstr "配置(&C)"
+
+#: sd-config.ycp:62
+msgid "Enable Security Event Notification"
+msgstr "启用安全性事件通知"
+
+#: sd-config.ycp:215 sd-config.ycp:227 sd-config.ycp:239
+msgid "Disabled"
+msgstr "已禁用"
+
+#: sd-config.ycp:216 sd-config.ycp:228 sd-config.ycp:240
+msgid "1 minute"
+msgstr "1 分钟"
+
+#: sd-config.ycp:217 sd-config.ycp:229 sd-config.ycp:241
+msgid "5 minutes"
+msgstr "5 分钟"
+
+#: sd-config.ycp:218 sd-config.ycp:230 sd-config.ycp:242
+msgid "10 minutes"
+msgstr "10 分钟"
+
+#: sd-config.ycp:219 sd-config.ycp:231 sd-config.ycp:243
+msgid "15 minutes"
+msgstr "15 分钟"
+
+#: sd-config.ycp:220 sd-config.ycp:232 sd-config.ycp:244
+msgid "30 minutes"
+msgstr "30 分钟"
+
+#: sd-config.ycp:221 sd-config.ycp:233 sd-config.ycp:245
+msgid "1 hour"
+msgstr "1 小时"
+
+#: sd-config.ycp:222 sd-config.ycp:234 sd-config.ycp:246
+msgid "1 day"
+msgstr "1 天"
+
+#: sd-config.ycp:223 sd-config.ycp:235 sd-config.ycp:247
+msgid "1 week"
+msgstr "1 周"
+
+#: sd-config.ycp:259 sd-config.ycp:272 sd-config.ycp:285
+msgid "Frequency"
+msgstr "频率"
+
+#: sd-config.ycp:260 sd-config.ycp:273 sd-config.ycp:286
+msgid "Email Address"
+msgstr "电子邮件地址"
+
+#: sd-config.ycp:264 sd-config.ycp:277 sd-config.ycp:290
+msgid "Include Unknown Severity Events"
+msgstr "包含未知的安全性事件"
+
+#: sd-config.ycp:303
+msgid "Security Event Notification"
+msgstr "安全性事件通知"
+
+#: sd-config.ycp:303
+msgid "&Ok"
+msgstr "确定(&O)"
+

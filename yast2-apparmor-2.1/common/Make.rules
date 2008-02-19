@@ -1,0 +1,289 @@
+# $Id: Make.rules 927 2007-08-16 23:11:01Z steve-beattie $
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2005 Novell/SUSE
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public 
+#    License published by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, contact Novell, Inc.
+# ------------------------------------------------------------------
+# Make.rules - common make targets and variables for building the SHASS
+# product.
+#
+# NOTES:
+#   - must define the package NAME before including this file.
+#   - After checking in to cvs, you'll need to delele the hardlinked
+#     Make.rules files that already exist in the individual application
+#     directories
+
+DISTRIBUTION=AppArmor
+VERSION=2.1
+
+# OVERRIDABLE variables
+# Set these variables before including Make.rules to change its behavior
+#   SPECFILE - for packages that have a non-standard specfile name
+#   EXTERNAL_PACKAGE - for packages that have upstream versions that
+#   	we're locally modifying (e.g. imnxcerttool/gnutls).
+#
+# use 'make BUILDIR=/some/where/else/' to override the /usr/src/redhat
+# location -- it *should* pick out the right thing to do based on the
+# .rpmmacros file, but you can still use BUILDDIR to override that.
+TESTBUILDDIR=$(shell [ -f ${HOME}/.rpmmacros ] && awk '/^%_topdir/ {print $$2}' ${HOME}/.rpmmacros)
+ifndef BUILDDIR
+BUILDDIR=$(shell if [ -d "${TESTBUILDDIR}" ] ; then \
+		    echo ${TESTBUILDDIR} | sed "s^/$$^^" ; \
+		  elif [ -d "/usr/src/redhat" ] ; then \
+		    echo "/usr/src/redhat" ; \
+		  elif [ -d "/usr/src/packages" ] ; then \
+		    echo "/usr/src/packages" ; \
+		  else \
+		    echo "/tmp/${NAME}"  ; \
+		  fi ;)
+endif
+RPMHOSTVENDOR=$(shell rpm --eval "%{_host_vendor}")
+ifndef DISTRO
+DISTRO=$(shell if [ -f /etc/slackware-version ] ; then \
+		  echo slackware ; \
+	       elif [ -f /etc/debian_version ] ; then \
+	       	  echo debian ;\
+	       elif [ ${RPMHOSTVENDOR} = "suse" ] ; then \
+	          echo suse ;\
+	       elif [ ${RPMHOSTVENDOR} = "redhat" ] ; then \
+	          echo rhel4 ;\
+	       else \
+	          echo unknown ;\
+	       fi)
+endif
+RPMARG=--define "_topdir $(BUILDDIR:/=)" \
+        --define "vendor NOVELL, Inc." \
+	--define "distribution ${DISTRIBUTION}" \
+	--define "debug_package %{nil}" \
+	--define "immunix_version ${VERSION}" \
+	$(shell [ -d ${BUILDDIR}/BUILDROOT ] && echo --define \"buildroot $(BUILDDIR:/=)/BUILDROOT\") \
+	$(shell [ -n "${DISTRO}" ] && echo --define \"distro ${DISTRO}\")
+
+#REPO_VERSION=$(shell if [ -x /usr/bin/svn ] ; then \
+#			if ! /usr/bin/svn info -r HEAD . 2> /dev/null | grep "^Last Changed Rev:" | sed "s/^Last Changed Rev: //" ; then \
+#				/usr/bin/svn info . 2> /dev/null | grep "^Last Changed Rev:" | sed "s/^Last Changed Rev: //" ; \
+#			fi ; \
+#		      fi)
+REPO_VERSION=$(shell if [ -x /usr/bin/svn ] ; then \
+				/usr/bin/svn info . 2> /dev/null | grep "^Last Changed Rev:" | sed "s/^Last Changed Rev: //" ; \
+		      fi)
+REPO_URL=$(shell if [ -x /usr/bin/svn ] ; then \
+			/usr/bin/svn info . 2> /dev/null | grep "^URL:" | sed "s/^URL: //" ; \
+		 fi)
+COMMON_REPO_URL=$(shell if [ -x /usr/bin/svn ] ; then \
+			/usr/bin/svn info $(COMMONDIR)  2> /dev/null | grep "^URL:" | sed "s/^URL: //" ; \
+		 fi)
+
+ifdef EXTERNAL_PACKAGE
+RPMARG+=--define "_sourcedir $(shell pwd)"
+endif
+
+ifndef SPECFILE
+SPECFILE        = $(NAME).spec
+endif
+RELEASE = $(shell rpm -q --specfile --define "_sourcedir ." ${RPMARG} --qf "%{RELEASE}" ${SPECFILE})
+RELEASE_DIR	= $(NAME)-$(VERSION)
+TARBALL		= $(NAME)-$(VERSION)-${REPO_VERSION}.tar.gz
+TAR		= /bin/tar czvp -h --exclude .svn --exclude CVS --exclude .cvsignore --exclude ${TARBALL} --exclude ${RELEASE_DIR}/${RELEASE_DIR}  $(shell test -f ${NAME}.exclude && echo "-X ${NAME}.exclude")
+LDCONFIG	= /sbin/ldconfig
+
+CVSPKG_VERSION=$(shell rpm -q --specfile --define "_sourcedir ." ${RPMARG} ${SPECFILE} | head -1 | tr "." "_")
+
+RPMSUBDIRS=SOURCES SPECS BUILD BUILDROOT SRPMS RPMS/i386 RPMS/i586 \
+        RPMS/i686 RPMS/athlon RPMS/noarch RPMS/x86_64
+BUILDRPMSUBDIRS=$(foreach subdir, $(RPMSUBDIRS), $(BUILDDIR:/=)/$(subdir))
+
+.PHONY: cvs_tag
+cvs_tag:
+	cvs tag IMMUNIX-${CVSPKG_VERSION}
+
+.PHONY: checkin
+checkin:
+	if cvs -q up -d | grep -q "^\?" ; then echo "Hey! You have" \
+		"files in the directory you have not added into cvs."; exit 1; \
+	fi
+	cvs ci
+	make cvs_tag
+
+ifdef EXTERNAL_PACKAGE
+.PHONY: rpm
+rpm: clean $(BUILDRPMSUBDIRS)
+	rpmbuild -ba ${RPMARG} ${SPECFILE}
+
+else
+.PHONY: rpm
+rpm: clean $(TARBALL) $(BUILDRPMSUBDIRS)
+	cp $(TARBALL) $(BUILDDIR)/SOURCES/
+	cp ${SPECFILE} $(BUILDDIR)/SPECS/
+	rpmbuild -ba ${RPMARG} ${SPECFILE}
+
+.PHONY: ${SPECFILE}
+${SPECFILE}: ${SPECFILE}.in
+	sed -e "s/@@immunix_version@@/${VERSION}/g" \
+	    -e "s/@@repo_version@@/${REPO_VERSION}/g" $< > $@
+
+${TARBALL}: clean ${SPECFILE}
+	-rm -rf $(RELEASE_DIR)
+	mkdir $(RELEASE_DIR)
+	$(TAR) . | tar xz -C $(RELEASE_DIR)
+	$(TAR) -f $@ $(RELEASE_DIR)
+	rm -rf $(RELEASE_DIR)
+
+ifndef OVERRIDE_TARBALL
+.PHONY: tarball
+tarball: clean $(TARBALL)
+endif
+
+.PHONY: dist
+dist: clean $(SPECFILE)
+	-rm -rf $(RELEASE_DIR)
+	svn export -r $(REPO_VERSION) $(REPO_URL) $(RELEASE_DIR)
+	svn export $(COMMON_REPO_URL) $(RELEASE_DIR)/common
+	make -C $(RELEASE_DIR) $(SPECFILE) REPO_VERSION=${REPO_VERSION} COMMONDIR_EXISTS=false
+	$(TAR) -f $(TARBALL) $(RELEASE_DIR)
+	rm -rf $(RELEASE_DIR)
+
+endif
+
+.PHONY: version
+.SILENT: version
+version:
+	 rpm -q --define "_sourcedir ." ${RPMARG} --specfile ${SPECFILE}
+
+.PHONY: build_dir 
+build_dir: $(BUILDRPMSUBDIRS)
+
+$(BUILDRPMSUBDIRS):
+	mkdir -p $(BUILDRPMSUBDIRS)
+
+.PHONY: _clean
+.SILENT: _clean
+_clean:
+	-rm -f ${NAME}-${VERSION}-*.tar.gz
+	-rm -f ${MANPAGES} *.[0-9].gz ${HTMLMANPAGES} pod2htm*.tmp
+
+# =====================
+# manpages
+# =====================
+
+POD2MAN                         = /usr/bin/pod2man
+POD2HTML                        = /usr/bin/pod2html
+MANDIR                          = /usr/share/man
+DOCDIR                          = /usr/share/doc/${NAME}-${VERSION}
+
+# get list of directory numbers based on definition of MANPAGES variable
+MANDIRS=$(sort $(foreach dir, 1 2 3 4 5 6 7 8, $(patsubst %.${dir}, ${dir}, $(filter %.${dir}, ${MANPAGES}))))
+HTMLMANPAGES=$(foreach manpage, ${MANPAGES}, ${manpage}.html)
+
+.PHONY: install_manpages
+install_manpages: $(MANPAGES)
+	$(foreach dir, ${MANDIRS}, \
+	     install -d ${DESTDIR}/${MANDIR}/man${dir} ; \
+	     install -m 644 $(filter %.${dir}, ${MANPAGES}) ${DESTDIR}/${MANDIR}/man${dir}; \
+	     $(foreach aa_page, $(filter %.${dir}, ${AA_MANPAGES}), \
+	     	ln -sf $(aa_page) ${DESTDIR}/${MANDIR}/man${dir}/${aa_page:%=aa-%};))
+
+%.1: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=1 > $@
+
+%.2: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=2 > $@
+
+%.3: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=3 > $@
+
+%.4: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=4 > $@
+
+%.5: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=5 > $@
+
+%.6: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=6 > $@
+
+%.7: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=7 > $@
+
+%.8: %.pod
+	$(POD2MAN) $< --release=NOVELL/SUSE --center=AppArmor --section=8 > $@
+
+%.1.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.2.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.3.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.4.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.5.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.6.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.7.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+%.8.html: %.pod
+	$(POD2HTML) --header --css apparmor.css --infile=$< --outfile=$@
+
+# =====================
+# Slackware poo
+# =====================
+.PHONY: slack
+slack: 
+	rm -rf ${BUILDDIR}
+	mkdir -p ${BUILDDIR}/install
+	make install DESTDIR=${BUILDDIR} DISTRO=slackware
+	# comment line is there so grep always has something to match
+	( echo "# install script pulled from ${SPECFILE}" ; rpm -q --specfile --define "_sourcedir ." ${RPMARG} --qf "%{POSTIN}\n" ${SPECFILE}) | grep -v "^(none)$$" >> ${BUILDDIR}/install/doinst.sh
+	( cd ${BUILDDIR} && makepkg -l y -c y -p ${PWD}/${NAME}-${VERSION}-${RELEASE}.tgz )
+
+# =====================
+# Debian poo
+# =====================
+.PHONY: deb
+deb: ${TARBALL}
+	rm -rf ${BUILDDIR}
+	mkdir -p ${BUILDDIR}
+	tar -xvzf ${TARBALL} -C ${BUILDDIR} 
+	( cd ${BUILDDIR}/${RELEASE_DIR} && sh -c "DEBFULLNAME='NOVELL, Inc' dh_make -e apparmor-general@forge.novell.com --library -f ~/svn/immunix/immunix/libimmunix/libimmunix-2.0.tar.gz << EOM \
+\
+EOM" )
+	make ${NAME}-deb -C ${BUILDDIR}/${RELEASE_DIR}
+	# ( cd ${BUILDDIR}/${RELEASE_DIR} && dpkg-buildpackage -b -sd -rfakeroot)
+
+DEBIAN_DISTRO=stable
+
+DEB_CHANGELOG_OUTPUT="${NAME} (${VERSION}-${RELEASE}) ${DEBIAN_DISTRO}; urgency=low\n\
+    \n   * Automatically generated by the AppArmor Build System.\n\
+    \n -- AppArmor Development Team <apparmor-general@forge.novell.com> $(shell date -R)"
+
+
+.PHONY: debian/changelog
+debian/changelog: 
+	echo -e ${DEB_CHANGELOG_OUTPUT} > $@ 
+
+A2PS_ARGS=-Ec -g --line-numbers=1
+ENSCRIPT_ARGS=-C -2jGr -f Courier6 -E
+%.c.ps: %.c
+	#a2ps ${A2PS_ARGS} $< -o $@
+	enscript ${ENSCRIPT_ARGS} -o $@ $<
+
+%.pm.ps: %.pm
+	enscript ${ENSCRIPT_ARGS} -o $@ $<

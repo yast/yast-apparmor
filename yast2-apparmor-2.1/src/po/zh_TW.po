@@ -1,0 +1,202 @@
+# yast2-apparmor locale file
+# Copyright (C) 2005 Novell INC.
+# This file is distributed under the same license as the yast2-apparmor package.
+# David Drewelow <davidd@immunix.com>, 2005.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: apparmor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-22 13:42-0701\n"
+"PO-Revision-Date: 2005-08-18 13:42-0701\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ag_logparse:63 ag_logparse:83
+msgid "Unable to open"
+msgstr "無法開啟"
+
+#: ag_logparse:63
+msgid "Couldn't save query."
+msgstr "無法儲存查詢。"
+
+#: ag_logparse:83
+msgid "Couldn't retrieve query."
+msgstr "無法擷取查詢。"
+
+#: ag_reports_confined:104
+#, c-format
+msgid "ag_reports_confined: Couldn't open %s for writing."
+msgstr "ag_reports_confined：無法開啟 %s 進行寫入。"
+
+#: ag_reports_confined:130
+#, c-format
+msgid "Failure in readMultiAudLog() - couldn't open %s."
+msgstr "readMultiAudLog() 發生錯誤 - 無法開啟 %s。"
+
+#: ag_reports_confined:143
+#, c-format
+msgid "Problem in readMultiAudLog\\(\\) - couldn't open %s\\/%s."
+msgstr "readMultiAudLog\\(\\) 發生問題 - 無法開啟 %s\\/%s。"
+
+#: ag_reports_confined:177
+msgid "readAudLog() wasn't passed an input file."
+msgstr "readAudLog() 並未傳遞至輸入檔案。"
+
+#: ag_reports_confined:201
+#, c-format
+msgid "readAudLog\\(\\) couldn't open %s."
+msgstr "readAudLog\\(\\) 無法開啟 %s。"
+
+#: ag_reports_confined:259
+#, c-format
+msgid "Can't run %s.  Exiting."
+msgstr "無法執行 %s。正在離開。"
+
+#: ag_reports_ess:57
+msgid "Failure in readMultiEssLog() - couldn't open"
+msgstr "readMultiEssLog() 發生錯誤 - 無法開啟"
+
+#: ag_reports_ess:70
+msgid "Problem in readMultiEssLog() - couldn't open"
+msgstr "readMultiEssLog() 發生錯誤 - 無法開啟"
+
+#: ag_reports_ess:105
+msgid "readEssLog() wasn't passed an input file."
+msgstr "readEssLog() 並未傳遞至輸入檔案。"
+
+#: ag_reports_ess:129
+msgid "readEssLog() couldn't open $logFile"
+msgstr "readEssLog() 無法開啟 $logFile"
+
+#: ag_reports_ess:163
+#, c-format
+msgid "ag_logparse: Unknown instruction %s or argument: %s"
+msgstr "ag_logparse：未知的指示 %s 或引數：%s"
+
+#: ag_reports_parse:78
+#, c-format
+msgid "ag_reports_parse: Couldn't open %s for writing."
+msgstr "ag_reports_parse：無法開啟 %s 進行寫入。"
+
+#: ag_reports_parse:145
+msgid "ag_reports_parse: No archived reports found."
+msgstr "ag_reports_parse：找不到已歸檔報告。"
+
+
+#: ag_reports_parse:150
+#, c-format
+msgid "ag_reports_parse: Can't open directory %s: %s"
+msgstr "ag_reports_parse：無法開啟目錄 %s：%s"
+
+#: ag_reports_parse:179
+#, c-format
+msgid "ag_reports_parse: Unknown instruction %s or argument: %s"
+msgstr "ag_reports_parse：未知的指示 %s 或引數：%s"
+
+#: ag_reports_sched:76
+#, c-format
+msgid "Couldn't find %s.  Unable to create crontab.  Exiting."
+msgstr "找不到 %s。無法建立 crontab。正在離開。"
+
+#: ag_reports_sched:133 ag_reports_sched:175 ag_reports_sched:253
+#: ag_reports_sched:316 ag_reports_sched:323 ag_reports_sched:387
+#: ag_reports_sched:394 ag_reports_sched:477 ag_reports_sched:542
+#, c-format
+msgid "Couldn't open %s."
+msgstr "無法開啟 %s。"
+
+#: ag_reports_sched:245
+#, c-format
+msgid "Couldn't open %s.  Unable to add report: %s"
+msgstr "無法開啟 %s。無法新增報告：%s"
+
+#: ag_reports_sched:270
+#, c-format
+msgid "Duplicate report name not allowed. Didn't schedule new report: %s"
+msgstr "不允許重複的報告名稱。未排程新報告：%s"
+
+#: ag_reports_sched:583 ag_reports_sched:590
+#, c-format
+msgid "Couldn't open %s.  No changes performed."
+msgstr "無法開啟 %s。未執行任何變更。"
+
+#: ag_reports_sched:685
+#, c-format
+msgid "ag_reports_sched: Unknown instruction %s or arg: %s"
+msgstr "ag_reports_sched：未知的指示 %s 或引數：%s"
+
+#: Reports.pm:246 Reports.pm:1328
+#, perl-format
+msgid "DBI Execution failed: %s."
+msgstr "DBI 執行失敗：%s."
+
+#: Reports.pm:272
+#, perl-format
+msgid "Couldn't open file: %s."
+msgstr "無法開啟檔案：%s."
+
+#: Reports.pm:276
+msgid "No type value passed.  Unable to determine page count."
+msgstr "未傳遞類別值。無法判斷頁數。"
+
+#: Reports.pm:346
+#, perl-format
+msgid "Failed copying %s."
+msgstr "複製 %s 失敗。"
+
+#: Reports.pm:459
+#, perl-format
+msgid "Export Log Error: Couldn't open %s"
+msgstr "匯出記錄錯誤：無法開啟 %s"
+
+#: Reports.pm:483
+msgid "Fatal error.  No report name given. Exiting."
+msgstr "嚴重錯誤。未取得報告名稱。正在離開。"
+
+#: Reports.pm:489
+#, perl-format
+msgid ""
+"Unable to get configuration info for %s.\n"
+"                Unable to find %s."
+msgstr "無法取得 %s 的組態資訊。\n                無法尋找 %s。"
+
+#: Reports.pm:530
+#, perl-format
+msgid "Failed to parse: %s."
+msgstr "剖析失敗：%s."
+
+#: Reports.pm:539
+#, perl-format
+msgid "Fatal Error.  Couldn't open %s."
+msgstr "嚴重錯誤。無法開啟 %s。"
+
+#: Reports.pm:587
+#, perl-format
+msgid "Fatal Error.  Can't run %s.  Exiting."
+msgstr "嚴重錯誤。無法執行 %s。正在離開。"
+
+#: Reports.pm:608
+#, perl-format
+msgid "Fatal Error.  No directory, %s, found.  Exiting."
+msgstr "嚴重錯誤。找不到目錄 %s。正在離開。"
+
+#: Reports.pm:630
+#, perl-format
+msgid "Fatal Error.  Couldn't open %s.  Exiting"
+msgstr "嚴重錯誤。無法開啟 %s。正在離開"
+
+#: Reports.pm:658 Reports.pm:671 Reports.pm:681
+#, perl-format
+msgid "DBI Execution failed: %s"
+msgstr "DBI 執行失敗：%s"
+
+#: Reports.pm:1434
+#, perl-format
+msgid "Fatal Error.  getArchReport() couldn't open %s"
+msgstr "嚴重錯誤。getArchReport() 無法開啟 %s"
+

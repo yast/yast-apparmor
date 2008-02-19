@@ -1,0 +1,1023 @@
+# yast2-apparmor locale file
+# Copyright (C) 2005 Novell INC.
+# This file is distributed under the same license as the yast2-apparmor package.
+# David Drewelow <davidd@immunix.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: yast2-apparmor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-22 13:42-0700\n"
+"PO-Revision-Date: 2005-08-19 10:54+0000\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: profile_dialogs.ycp:218 reporting_dialogues.ycp:1079
+#: reporting_dialogues.ycp:1756 reporting_dialogues.ycp:2054
+msgid "Select Directory"
+msgstr "Selezionare una directory"
+
+#: profile_dialogs.ycp:220
+msgid "Select File"
+msgstr "Selezionare un file"
+
+#: profile_dialogs.ycp:261
+msgid "Entry will not added. Entry name or permissions not defined."
+msgstr "La voce non verrà aggiunta. Nome voce o autorizzazioni non definite."
+
+#: profile_dialogs.ycp:336
+msgid "&Hat name to add"
+msgstr "Nome &Hat da aggiungere"
+
+#: profile_dialogs.ycp:450 reporting_dialogues.ycp:678
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1066
+#: reporting_dialogues.ycp:1074 reporting_dialogues.ycp:1090
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 sd-config.ycp:79
+msgid "&Done"
+msgstr "&Fatto"
+
+#: profile_dialogs.ycp:478
+msgid ""
+"Include entries can not be edited. Please select add or delete to manage "
+"Include entries."
+msgstr "Impossibile modificare le voci include. Selezionare Aggiungi o Elimina per gestire le voci Include."
+
+#: profile_dialogs.ycp:574
+msgid "Select File To Include"
+msgstr "Selezionare i file da includere"
+
+#: profile_dialogs.ycp:596
+msgid "Save changes to the Profile"
+msgstr "Salvare le modifiche del profilo"
+
+#: profile_dialogs.ycp:669
+msgid "You must select a profile to edit"
+msgstr "Selezionare un profilo da modificare"
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report."
+msgstr ""
+"La finestra di dialogo Configurazione rapporti consente di filtrare il rapporto archiviato "
+"selezionato nella schermata precedente.  Per filtrare per <b>Intervallo di date:</b><br><br> "
+"<ol> <li>fare clic su <b>Filtra per intervallo di date</b>. I campi diventano attivi.  "
+"<li>Immettere le date di inizio e di fine che specificano l'ambito del rapporto."
+
+#: report_helptext.ycp:5
+msgid ""
+"The Report Configuration dialog enables you to filter the archived report "
+"selected in the previous screen.  To filter by <b>Date Range:</b><br><br> "
+"<ol> <li>Click <b>Filter By Date Range</b>. The fields become active.  "
+"<li>Enter the start and end dates that delineate the scope of the report.  "
+"<li>Enter other filtering parameters. See below for definitions of "
+"parameters.  </ol> The following definitions help you to enter the filtering "
+"parameters in the Report Configuration Dialog: <br><br> <b>Program Name "
+"Pattern:</b> When you enter a program name or pattern that matches the name "
+"of the binary executable of the program of interest, the report will display "
+"security events that have occurred for a specific program.<br><br> "
+"<b>Profile Name Pattern:</b> When you enter the name of the profile, the "
+"report will display the security events that are generated for the specified "
+"profile.  You can use this to see what is being confined by a specific "
+"profile.<br><br> <b>PID Number:</b> Process ID number is a number that "
+"uniquely identifies one specific process or running program (this number is "
+"valid only during the lifetime of that process).<br><br> <b>Severity Level:</"
+"b>  Select the lowest severity level for security events that you would like "
+"to be included in the report. The selected severity level, and above, will "
+"be included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided."
+msgstr "La finestra di dialogo Configurazione rapporti permette di filtrare il rapporto archiviato selezionato nella schermata precedente.  Per filtrare per <b>Intervallo di date:</b><br><br>  <ol> <li>fare clic su <b>Filtra per intervallo di date</b>. I campi diventano attivi.   <li>Immettere le date di inizio e di fine che specificano l'ambito del rapporto.   <li>Immettere altri parametri di filtro. Vedere di seguito per una definizione dei parametri.  </ol> Le seguenti definizioni sono utili per scegliere i parametri di filtro da immettere nella finestra di dialogo Configurazione rapporti: <br><br> <b>Schema del nome programma:</b> quando si immette un nome di programma o uno schema che corrisponde al nome del file binario eseguibile del programma desiderato, il rapporto visualizza gli eventi di protezione che si sono verificati per il programma.<br><br>  <b>Schema del nome profilo:</b> quando si immette il nome del profilo, il rapporto visualizza gli eventi di protezione generati per il profilo.  Questa opzione permette di verificare ciò che si riferisce a un profilo specifico.<br><br> <b>Numero PID:</b> l'ID processo è un numero che identifica univocamente un processo specifico o un programma in esecuzione (questo numero è valido solo durante la vita utile del processo).<br><br> <b>Livello di protezione:</ b> selezionare il livello di protezione più basso per gli eventi di protezione da includere nel rapporto. Il livello di protezione selezionato e quelli superiori verranno inclusi nei rapporti.<br><br> <b>Dettaglio:</b>  origine a cui il profilo ha negato l'accesso.  Sono compresi sia le funzioni che i file. È possibile usare questo campo per evidenziare le risorse non accessibili ai profili.<br><br> <b>Modo:</b> il modo rappresenta l'autorizzazione che il profilo concede al programma o al processo al quale è applicato. Le opzioni sono: r  (lettura) w (scrittura) l (collegamento) x (esecuzione)<br><br> <b>Tipo di accesso:</b> il tipo di accesso descrive cosa accade effettivamente con l'evento di protezione. Le opzioni sono: AUTORIZZAZIONE, RIFIUTO o CONTROLLO.<br><br> <b>CSV o HTML:</b>  permette di esportare in un file CSV (valori separati da virgola) o HTML. Il file CSV separa sezioni di dati nelle voci del registro mediante virgole usando un formato dati standard per l'importazione in applicazioni orientate alle tabelle. È possibile immettere un nome di percorso per il rapporto esportato digitando il nome percorso completo nel campo corrispondente."
+
+#: report_helptext.ycp:8
+msgid ""
+"The AppArmor On-Demand Report screen displays an instantly generated version "
+"of one of the following reports.  <b>Executive Security Summary:</b> A "
+"combined report, consisting of one or more Security incident reports from "
+"one or more machines.  This report provides a single view of security events "
+"on multiple machines.<br><br> <b>Applications Audit Report:</b> An auditing "
+"tool that reports which application servers are running and whether the "
+"applications are confined by AppArmor. Application servers are applications "
+"that accept incoming network connections. <br><br> <b>Security Incident "
+"Report:</b> A report that displays application security for a single host.  "
+"It reports policy violations for locally confined applications during a "
+"specific time period. You can edit and customize this report, or add new "
+"versions."
+msgstr "La schermata Rapporto AppArmor su richiesta visualizza una versione immediate di uno dei seguenti rapporti.  <b>Riepilogo di protezione Executive:</b> rapporto combinato che comprende uno o più incidenti di protezione di uno o più computer.  Questo rapporto fornisce una vista unica degli eventi di protezione su più computer.<br><br> <b>Rapporto di controllo applicazioni:</b> strumento di controllo che segnala quali server per applicazioni sono in esecuzione e se le applicazioni sono limitate da AppArmor. I server per applicazioni sono applicazioni che accettano connessioni di rete entranti. <br><br> <b>Rapporto incidenti di protezione:</b> rapporto che visualizza la protezione dell'applicazione per i singoli host.   Visualizza le violazioni delle politiche per le applicazioni locali entro un intervallo specifico. È possibile modificare e personalizzare il rapporto oppure aggiungere nuove versioni."
+
+#: report_helptext.ycp:10
+msgid ""
+"The Report Configuration dialog enables you to filter the report selected in "
+"the previous screen. To filter by <b>Date Range:</b><br><br> <ol> <li>Click "
+"<b>Filter By Date Range</b>. The fields become active.  <li>Enter the start "
+"and end dates that delineate the scope of the report.  <li>Enter other "
+"filtering parameters. See below for definitions of parameters.  </ol> The "
+"following definitions help you to enter the filtering parameters in the "
+"Report Configuration Dialog: <b>Program Name Pattern:</b> When you enter a "
+"program name or pattern that matches the name of the executable process of "
+"interest, the report will display security events that have occurred for a "
+"specific program.<br><br> <b>Profile Name Pattern:</b> When you enter the "
+"name of the security profile that is applied to the rocess, the report will "
+"display the security events that are generated for the specified profile. "
+"You can use this to see what is being confined by a specific profile."
+"<br><br> <b>PID Number:</b> Process ID number is a number that uniquely "
+"identifies one specific process or running program (this number is valid "
+"only during the lifetime of that process).<br><br> <b>Severity Level:</b>  "
+"Select the lowest severity level for security events that you would like to "
+"be included in the report. The selected severity level, and above, will be "
+"included in the reports.<br><br> <b>Detail:</b>  A source to which the "
+"profile has denied access.  This includes capabilities and files. You can "
+"use this field to report the resources are not allowed to be accessed by "
+"profiles.<br><br> <b>Mode:</b> The Mode is the permission that the profile "
+"grants to the program or process to which it is applied. The options are: r "
+"(read) w (write) l (link) x (execute)<br><br> <b>Access Type:</b> The access "
+"type describes what is actually happening with the security event. The "
+"options are: PERMITTING, REJECTING, or AUDITING.<br><br> <b>CSV or HTML:</b> "
+"Enables you to export a CSV (comma separated values) or html file. The CSV "
+"file separates pieces of data in the log entries with commas using a "
+"standard data format for importing into table-oriented applications. You can "
+"enter a pathname for your exported report by typing in the full pathname in "
+"the field provided.<br><br>"
+msgstr "La finestra di dialogo Configurazione rapporti permette di filtrare il rapporto selezionato nella schermata precedente. Per filtrare per <b>Intervallo di date:</b><br><br> <ol> <li>fare clic su <b>Filtra per intervallo di date</b>. I campi diventano attivi.  <li>Immettere le date di inizio e di fine che specificano l'ambito del rapporto.  <li>Immettere altri parametri di filtro. Vedere di seguito per una definizione dei parametri.  </ol> Le seguenti definizioni sono utili per scegliere i parametri di filtro da immettere nella finestra di dialogo Configurazione rapporti: <b>Schema del nome programma:</b> quando si immette un nome di programma o uno schema che corrisponde al nome del processo eseguibile desiderato, il rapporto visualizza gli eventi di protezione che si sono verificati per un programma specifico.<br><br> <b>Schema del nome profilo:</b> quando si immette il nome del profilo di sicurezza applicato al processo, il rapporto visualizza gli eventi di protezione generati per il profilo specificato.  Questa opzione permette di verificare ciò che si riferisce a un profilo specifico. <br><br> <b>Numero PID:</b> l'ID processo è un numero che identifica univocamente un processo specifico o un programma in esecuzione (questo numero è valido solo durante la vita utile del processo).<br><br> <b>Livello di protezione:</b>   selezionare il livello di protezione più basso per gli eventi di protezione da includere nel rapporto. Il livello di protezione selezionato e quelli superiori verranno inclusi nei rapporti.<br><br> <b>Dettaglio:</b>  origine a cui il profilo ha negato l'accesso.  Sono compresi sia le funzioni che i file. È possibile usare questo campo per evidenziare le risorse non accessibili ai profili.<br><br> <b>Modo:</b> il modo rappresenta l'autorizzazione che il profilo concede al programma o al processo al quale è applicato. Le opzioni sono: r  (lettura) w (scrittura) l (collegamento) x (esecuzione)<br><br> <b>Tipo di accesso:</b> il tipo di accesso descrive cosa accade effettivamente con l'evento di protezione. Le opzioni sono: AUTORIZZAZIONE, RIFIUTO o CONTROLLO.<br><br> <b>CSV o HTML:</b>  permette di esportare in un file CSV (valori separati da virgola) o HTML. Il file CSV separa sezioni di dati nelle voci del registro mediante virgole usando un formato dati standard per l'importazione in applicazioni orientate alle tabelle. È possibile immettere il nome del percorso del rapporto esportato digitando il nome del percorso complete nel campo corrispondente.<br><br>"
+
+#: report_helptext.ycp:13
+msgid ""
+"The summary of scheduled reports page shows us when reports are scheduled to "
+"run. Reports can be set to run monthly, weekly, daily, or hourly. The "
+"default settings are daily at midnight. The reports can also be emailed, "
+"upon completion, to up to three email recipients.<br><br> In the Set "
+"Schedule section, you can schedule the following three types of security "
+"reports:<br><br> <b>Executive Security Summary:</b> A combined report, "
+"consisting of one or more Security incident reports from one or more "
+"machines.  This report provides a single view of security events on multiple "
+"machines.<br><br> <b>Applications Audit Report:</b> An auditing tool that "
+"reports which application servers are running and whether the applications "
+"are confined by AppArmor. Application servers are applications that accept "
+"incoming network connections. <br><br> <b>Security Incident Report:</b> A "
+"report that displays application security for a single host.  It reports "
+"policy violations for locally confined applications during a specific time "
+"period. You can edit and customize this report, or add new versions."
+msgstr "Il riepilogo dei rapporti pianificati mostra quando è stata pianificata l'esecuzione dei rapporti. I rapporti possono essere eseguiti mensilmente, settimanalmente, giornalmente o su base oraria. Le impostazioni predefinite sono giornalmente e mezzanotte. Al termine, i rapporti possono anche essere inviati per e-mail a un massimo di tre destinatari.<br><br> Nella sezione Imposta pianificazione, è possibile pianificare i seguenti tre tipi di rapporti di protezione:<br><br> <b>Riepilogo di protezione Executive:</b> rapporto combinato che comprende uno o più rapporti di incidenti di protezione di uno o più computer.  Questo rapporto fornisce una vista unica degli eventi di protezione su più computer.<br><br> <b>Rapporto di controllo applicazioni:</b> strumento di controllo che segnala quali server per applicazioni sono in esecuzione e quali applicazioni sono limitate da AppArmor. I server per applicazioni sono server che accettano le connessioni di rete entranti. <br><br> <b>Rapporto incidenti di sicurezza:</b> rapporto che visualizza la protezione dell'applicazione per i singoli host.  Segnala le violazioni delle politiche per le applicazioni locali entro un intervallo di tempo specifico. È possibile modificare e personalizzare il rapporto o aggiungere nuove versioni."
+
+#: report_helptext.ycp:15
+msgid ""
+" The View Archive Reports form enables you to view previously generated "
+"reports, located in the /var/log/apparmor/reports-archived directory. The "
+"checkboxes at the top of the form enable you to narrow-down the category of "
+"reports shown in the list to the following: SIR Reports, AUD Reports, or ESS "
+"Reports.  To see report details, select a report and click the <b>View</b> "
+"button.<br><br> You can view reports from one or more systems if you move "
+"the reports to the /var/log/apparmor/reports-archived directory."
+msgstr " Il modulo Visualizzazione dei rapporti archiviati permette di visualizzare i rapporti già generati, situati nella directory /var/log/apparmor/reports-archived. Le caselle di controllo nella parte superiore del modulo permettono di restringere la categoria dei rapporti visualizzati nell'elenco alle seguenti categorie: Rapporti SIR, Rapporti AUD o Rapporti ESS.  Per visualizzare i dettagli del rapporto, selezionare un rapporto e fare clic sul pulsante <b>Visualizza</b>.<br><br> È possibile visualizzare i rapporti da uno o più sistemi spostando i rapporti nella directory /var/log/apparmor/reports-archived."
+
+#: report_helptext.ycp:27
+msgid "repConfHelp"
+msgstr "repConfHelp"
+
+#: report_helptext.ycp:28
+msgid ""
+"<b>Security Incident Report (SIR):</b> A report that displays security "
+"events of interest to an administrator. The SIR reports policy violations "
+"for locally confined applications during the specified time period. The SIR "
+"reports policy exceptions and policy engine state changes. These two types "
+"of security events are defined as follows: <ul> <li><b>Policy Exceptions:</"
+"b> When an application requests a resource that's not defined within its "
+"profile, a security event is generated.  <li><b>Policy Engine State Changes:"
+"</b> Enforces policy for applications and maintains its own state, including "
+"when engines start or stop, when a policy is reloaded, and when global "
+"security feature are enabled or disabled.  </ul> Select the report from the "
+"archive, then <b>View</b> to see the report details."
+msgstr "<b>Rapporto incidenti di protezione (SIR):</b> rapporto che visualizza gli incidenti di protezione di interesse dell'amministratore. Il Rapporto SIR segnala le violazioni delle politiche per le applicazioni locali entro un intervallo di tempo specifico. Questo rapporto segnala le eccezioni delle politiche e le modificato dello stato del motore delle politiche. Questi due tipi di eventi di protezione sono definiti come segue: <ul> <li><b>Eccezioni politiche:</ b> viene generato un evento di protezione quando un'applicazione richiede una risorsa non definite nel profilo.  <li><b>Modifiche dello stato del motore delle politiche: </b> applica la politica per le applicazioni e mantiene il proprio stato, compresi gli avvii o gli arresti dei motori, quando viene ricaricata una politica o quando le funzioni di protezione vengono abilitate e disabilitate.  </ul> Selezionare il rapporto dall'archivio, quindi premere <b>Visualizza</b> per visualizzare i dettagli del rapporto."
+
+#: report_helptext.ycp:31
+msgid ""
+"<b>Applications Audit Report (AUD):</b> An auditing tool that reports which "
+"application servers are running and whether they are confined by AppArmor. "
+"Application servers are applications that accept incoming network "
+"connections. This report provides the host machine's IP Address, the date "
+"the Applications Audit Report ran, the name and path of the unconfined "
+"program or application server, the suggested profile or a placeholder for a "
+"profile for an unconfined program, the process ID number, The state of the "
+"program (confined or unconfined), and the type of confinement that the "
+"profile is performing (enforce/complain).<br><br> "
+msgstr "<b>Rapporto di controllo applicazioni (AUD):</b> strumento di controllo che segnala quali server per applicazioni sono in esecuzione e limitati da AppArmor.  I server per applicazioni sono applicazioni che accettano le connessioni di rete in entrata. Questo rapporto fornisce l'indirizzo IP dell'host, la data, il tipo di rapporto di controllo eseguito, il nome e il percorso del programma o del server per applicazioni non limitato, l'ID del processo, lo stato del programma (limitato e non limitato) e il tipo di limitazione applicato dal profilo (applicazione/rifiuto).<br><br> "
+
+#: report_helptext.ycp:33
+msgid ""
+"<b>Executive Security Summary (ESS):</b> A combined report, consisting of "
+"one or more high-level reports from one or more machines. This report can "
+"provide a single view of security events on multiple machines if each "
+"machine's data is copied to the reports archive directory, which is <b>/var/"
+"log/apparmor/reports-archived</b>. This report provides the host machine's "
+"IP address, the start and end dates of the polled events, total number of "
+"rejects, total number of events, average of severity levels reported, and "
+"the highest severity level reported. One line of the ESS report represents a "
+"range of SIR reports.<br><br> "
+msgstr "<b>Riepilogo della protezione Executive (ESS):</b> rapporto combinato costituito da uno o più rapporti di alto livello riferiti a uno o più computer. Questo rapporto può fornire una vista unica di più eventi di protezione riferiti a più computer, se i dati di ciascun computer vengono copiati nella directory di archiviazione dei rapporti, ovvero <b>/var/ log/apparmor/reports-archived</b>. Questo rapporto fornisce l'indirizzo IP del computer host, le date di inizio e fine degli eventi in polling, il numero totale di rifiuti e il livello di gravità più elevato identificato. Ciascuna riga del rapporto ESS rappresenta un intervallo di rapporti ESS.<br><br> "
+
+#: reporting_archived_dialogs.ycp:37
+msgid "Archived Security Incident Report - Page "
+msgstr "Rapporto degli incidenti di protezione archiviati - Pagina"
+
+#: reporting_archived_dialogs.ycp:37 reporting_dialogues.ycp:414
+#: reporting_dialogues.ycp:968 reporting_dialogues.ycp:971
+msgid " of "
+msgstr "di"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975 reporting_dialogues.ycp:985
+msgid "Host"
+msgstr "Host"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:803
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Date"
+msgstr "Data"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:426
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+#: reporting_dialogues.ycp:975
+msgid "Program"
+msgstr "Programma"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "Profile"
+msgstr "Profilo"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:673 reporting_dialogues.ycp:969
+#: reporting_dialogues.ycp:972 reporting_dialogues.ycp:976
+msgid "PID"
+msgstr "PID"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:105
+#: reporting_dialogues.ycp:189 reporting_dialogues.ycp:226
+#: reporting_dialogues.ycp:272 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972 sd-config.ycp:261
+#: sd-config.ycp:274 sd-config.ycp:287
+msgid "Severity"
+msgstr "Gravità"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Mode"
+msgstr "Modo"
+
+#: reporting_archived_dialogs.ycp:47 reporting_archived_dialogs.ycp:111
+#: reporting_dialogues.ycp:183 reporting_dialogues.ycp:220
+#: reporting_dialogues.ycp:278 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Detail"
+msgstr "Dettaglio"
+
+#: reporting_archived_dialogs.ycp:47 reporting_dialogues.ycp:427
+#: reporting_dialogues.ycp:969 reporting_dialogues.ycp:972
+msgid "Access Type"
+msgstr "Tipo di accesso"
+
+#: reporting_archived_dialogs.ycp:53
+msgid "F&irst"
+msgstr "P&rimo"
+
+#: reporting_archived_dialogs.ycp:54 reporting_dialogues.ycp:1005
+msgid "&Previous"
+msgstr "&Precedente"
+
+#: reporting_archived_dialogs.ycp:55
+msgid "&Sort"
+msgstr "&Ordina"
+
+#: reporting_archived_dialogs.ycp:56 reporting_dialogues.ycp:1007
+msgid "&Forward"
+msgstr "&Avanti"
+
+#: reporting_archived_dialogs.ycp:57
+msgid "&Last"
+msgstr "&Ultimo"
+
+#: reporting_archived_dialogs.ycp:75 reporting_dialogues.ycp:243
+msgid "Filter By Date Range"
+msgstr "Filtra per intervallo di date"
+
+#: reporting_archived_dialogs.ycp:76 reporting_dialogues.ycp:244
+msgid " Select Date Range "
+msgstr "Selezionare l'intervallo date"
+
+#: reporting_archived_dialogs.ycp:78 reporting_dialogues.ycp:246
+msgid "Enter Starting Date/Time"
+msgstr "Immettere la data/ora di inizio"
+
+#: reporting_archived_dialogs.ycp:81 reporting_archived_dialogs.ycp:91
+#: reporting_dialogues.ycp:249 reporting_dialogues.ycp:259
+msgid "Hours"
+msgstr "Ore"
+
+#: reporting_archived_dialogs.ycp:82 reporting_archived_dialogs.ycp:92
+#: reporting_dialogues.ycp:250 reporting_dialogues.ycp:260
+msgid "Minutes"
+msgstr "Minuti"
+
+
+#: reporting_archived_dialogs.ycp:83 reporting_archived_dialogs.ycp:93
+#: reporting_dialogues.ycp:251 reporting_dialogues.ycp:261
+msgid "Day"
+msgstr "Giorno"
+
+
+#: reporting_archived_dialogs.ycp:84 reporting_archived_dialogs.ycp:94
+#: reporting_dialogues.ycp:252 reporting_dialogues.ycp:262
+msgid "Month"
+msgstr "Mese"
+
+#: reporting_archived_dialogs.ycp:85 reporting_archived_dialogs.ycp:95
+#: reporting_dialogues.ycp:253 reporting_dialogues.ycp:263
+msgid "Year"
+msgstr "Anno"
+
+#: reporting_archived_dialogs.ycp:88 reporting_dialogues.ycp:256
+msgid "Enter Ending Date"
+msgstr "Immettere la data di fine"
+
+#: reporting_archived_dialogs.ycp:101 reporting_dialogues.ycp:176
+#: reporting_dialogues.ycp:213 reporting_dialogues.ycp:268
+#: reporting_dialogues.ycp:485
+msgid "Program name"
+msgstr "Nome del programma"
+
+#: reporting_archived_dialogs.ycp:102 reporting_dialogues.ycp:177
+#: reporting_dialogues.ycp:214 reporting_dialogues.ycp:269
+msgid "Profile name"
+msgstr "Nome del profilo"
+
+#: reporting_archived_dialogs.ycp:103 reporting_dialogues.ycp:182
+#: reporting_dialogues.ycp:219 reporting_dialogues.ycp:270
+msgid "PID number"
+msgstr "Numero PID"
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:17
+#: reporting_dialogues.ycp:56 reporting_dialogues.ycp:69
+#: reporting_dialogues.ycp:70 reporting_dialogues.ycp:190
+#: reporting_dialogues.ycp:227 reporting_dialogues.ycp:273
+#: reporting_dialogues.ycp:829 reporting_dialogues.ycp:834
+#: reporting_dialogues.ycp:1548 reporting_dialogues.ycp:1576
+#: reporting_dialogues.ycp:1626 reporting_dialogues.ycp:1627
+#: reporting_dialogues.ycp:1628 reporting_dialogues.ycp:1657
+#: reporting_dialogues.ycp:1658 reporting_dialogues.ycp:1726
+#: reporting_dialogues.ycp:1913 reporting_dialogues.ycp:1928
+#: reporting_dialogues.ycp:1974 reporting_dialogues.ycp:1983
+#: reporting_dialogues.ycp:1987 reporting_dialogues.ycp:2001
+#: reporting_dialogues.ycp:2002 reporting_dialogues.ycp:2003
+#: reporting_utils.ycp:195 reporting_utils.ycp:341
+msgid "All"
+msgstr "Tutti"
+
+#: reporting_archived_dialogs.ycp:106 reporting_dialogues.ycp:273
+msgid "U"
+msgstr "U"
+
+#: reporting_archived_dialogs.ycp:112 reporting_dialogues.ycp:229
+#: reporting_dialogues.ycp:279
+msgid "Access Type: R"
+msgstr "Tipo di accesso: R"
+
+#: reporting_archived_dialogs.ycp:113 reporting_dialogues.ycp:230
+#: reporting_dialogues.ycp:280
+msgid "Mode: All"
+msgstr "Modo: Tutti"
+
+#: reporting_archived_dialogs.ycp:120 reporting_dialogues.ycp:288
+#: reporting_dialogues.ycp:379 reporting_dialogues.ycp:1592
+#: reporting_dialogues.ycp:1952
+msgid "Export Type"
+msgstr "Tipo di esportazione"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380 reporting_dialogues.ycp:1991
+msgid "None"
+msgstr "Nessuno"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "csv"
+msgstr "csv"
+
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "html"
+msgstr "html"
+
+#: reporting_archived_dialogs.ycp:121 reporting_dialogues.ycp:289
+#: reporting_dialogues.ycp:380
+msgid "Both"
+msgstr "Entrambi"
+
+#: reporting_archived_dialogs.ycp:123 reporting_dialogues.ycp:291
+#: reporting_dialogues.ycp:382 reporting_dialogues.ycp:1595
+#: reporting_dialogues.ycp:1955
+msgid "Location to store log."
+msgstr "Posizione in cui salvare il registro."
+
+#: reporting_archived_dialogs.ycp:124 reporting_dialogues.ycp:292
+#: reporting_dialogues.ycp:383 reporting_dialogues.ycp:797
+#: reporting_dialogues.ycp:1596 reporting_dialogues.ycp:1956
+msgid "&Accept"
+msgstr "&Accetta"
+
+#: reporting_archived_dialogs.ycp:125 reporting_dialogues.ycp:293
+#: reporting_dialogues.ycp:384 reporting_dialogues.ycp:798
+#: reporting_dialogues.ycp:1597 reporting_dialogues.ycp:1957
+msgid "&Browse"
+msgstr "&Sfoglia"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:831
+msgid "Report Configuration Dialog"
+msgstr "Finestra di dialogo Configurazione rapporti"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:832 reporting_dialogues.ycp:1038
+#: reporting_dialogues.ycp:1108 reporting_dialogues.ycp:1120
+#: reporting_dialogues.ycp:1132 reporting_dialogues.ycp:1183
+#: reporting_dialogues.ycp:1209 reporting_dialogues.ycp:1232
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+#: reporting_dialogues.ycp:1412 reporting_dialogues.ycp:1448
+#: reporting_dialogues.ycp:1466 reporting_dialogues.ycp:1476
+#: reporting_dialogues.ycp:1483 reporting_dialogues.ycp:1491
+#: reporting_dialogues.ycp:1499 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "Back"
+msgstr "Indietro"
+
+#: reporting_archived_dialogs.ycp:145 reporting_dialogues.ycp:497
+#: reporting_dialogues.ycp:724 reporting_dialogues.ycp:832
+#: reporting_dialogues.ycp:1608 reporting_dialogues.ycp:2212
+#: reporting_dialogues.ycp:2262
+msgid "&Next"
+msgstr "&Avanti"
+
+#: reporting_archived_dialogs.ycp:196 reporting_archived_dialogs.ycp:211
+msgid "February only has 28 days!  Fixing."
+msgstr "Febbraio ha solo 28 giorni!  Correzione in corso."
+
+#: reporting_archived_dialogs.ycp:199
+msgid "February only has 29 days!  Fixing."
+msgstr "Febbraio ha solo 29 giorni!  Correzione in corso."
+
+#: reporting_archived_dialogs.ycp:203 reporting_archived_dialogs.ycp:222
+msgid "Month only has 30 days!  Fixing."
+msgstr "Il mese ha solo 30 giorni!  Correzione in corso."
+
+#: reporting_archived_dialogs.ycp:216
+msgid "February only has 29 days!"
+msgstr "Febbraio ha solo 29 giorni!"
+
+#: reporting_dialogues.ycp:145
+msgid "Unrecognized form request."
+msgstr "Richiesta modulo non riconosciuta."
+
+#: reporting_dialogues.ycp:193 reporting_dialogues.ycp:881
+#: reporting_dialogues.ycp:1699 reporting_dialogues.ycp:2033
+msgid "Access Type: "
+msgstr "Tipo di accesso:"
+
+#: reporting_dialogues.ycp:195 reporting_dialogues.ycp:890
+#: reporting_dialogues.ycp:1708 reporting_dialogues.ycp:2041
+msgid "Mode: "
+msgstr "Modo:"
+
+#: reporting_dialogues.ycp:200 reporting_dialogues.ycp:235
+#: reporting_dialogues.ycp:1607 reporting_dialogues.ycp:1884
+#: reporting_dialogues.ycp:1894 reporting_dialogues.ycp:2143
+msgid "&Cancel"
+msgstr "&Annulla"
+
+#: reporting_dialogues.ycp:201 reporting_dialogues.ycp:236
+#: reporting_dialogues.ycp:1895 reporting_utils.ycp:68 reporting_utils.ycp:131
+#: reporting_utils.ycp:203 reporting_utils.ycp:348
+msgid "&Save"
+msgstr "&Salva"
+
+#: reporting_dialogues.ycp:414 reporting_dialogues.ycp:968
+msgid "On Demand Event Report - Page "
+msgstr "Rapporto eventi su richiesta - Pagina"
+
+#: reporting_dialogues.ycp:483
+msgid "Filter By Program Name"
+msgstr "Filtra per nome programma"
+
+#: reporting_dialogues.ycp:489
+msgid "Export Report"
+msgstr "Esporta rapporto"
+
+#: reporting_dialogues.ycp:491
+msgid "Export File Location"
+msgstr "Esporta posizione file"
+
+#: reporting_dialogues.ycp:492
+msgid "Select Export Format"
+msgstr "Selezionare il formato esportazione"
+
+#: reporting_dialogues.ycp:493
+msgid "CSV"
+msgstr "CSV"
+
+#: reporting_dialogues.ycp:494
+msgid "HTML"
+msgstr "HTML"
+
+#: reporting_dialogues.ycp:663
+msgid ""
+"<b>AppArmor Security Events</b><p>\n"
+"                    This table displays the events found that match your "
+"search criteria."
+msgstr "<b>Eventi di protezione AppArmor</b><p>\n                    Questa tabella visualizza gli eventi che soddisfano i criteri di ricerca."
+
+#: reporting_dialogues.ycp:670
+msgid "AppArmor Event Report Data"
+msgstr "Data del rapporto eventi AppArmor"
+
+#: reporting_dialogues.ycp:673
+msgid "AppArmor Message"
+msgstr "Messaggio AppArmor"
+
+#: reporting_dialogues.ycp:677 reporting_dialogues.ycp:724
+#: reporting_dialogues.ycp:1038 reporting_dialogues.ycp:1065
+#: reporting_dialogues.ycp:1073 reporting_dialogues.ycp:1089
+#: reporting_dialogues.ycp:2212 reporting_dialogues.ycp:2262
+msgid "AppArmor Security Event Report"
+msgstr "Rapporto degli eventi di protezione AppArmor"
+
+#: reporting_dialogues.ycp:713
+msgid "AppArmor Reporting"
+msgstr "Creazione di rapporti AppArmor"
+
+#: reporting_dialogues.ycp:717 reporting_dialogues.ycp:2241
+msgid "Schedule Reports"
+msgstr "Pianifica rapporti"
+
+#: reporting_dialogues.ycp:718 reporting_dialogues.ycp:784
+msgid "View Archived Reports"
+msgstr "Visualizza rapporti archiviati"
+
+#: reporting_dialogues.ycp:719
+msgid "Run Reports"
+msgstr "Esegui rapporti"
+
+#: reporting_dialogues.ycp:788
+msgid "SIR"
+msgstr "SIR"
+
+#: reporting_dialogues.ycp:789
+msgid "App Aud"
+msgstr "App Aud"
+
+#: reporting_dialogues.ycp:790
+msgid "ESS"
+msgstr "ESS"
+
+#: reporting_dialogues.ycp:796
+msgid "Location of Archived Reports"
+msgstr "Posizione dei rapporti archiviati"
+
+#: reporting_dialogues.ycp:803
+msgid "Report"
+msgstr "Rapporto"
+
+#: reporting_dialogues.ycp:808
+msgid "&View"
+msgstr "&Visualizza"
+
+#: reporting_dialogues.ycp:809
+msgid "View &All"
+msgstr "Visualizza &tutti"
+
+#: reporting_dialogues.ycp:971
+msgid "Archived Event Report - Page "
+msgstr "Rapporto eventi archiviato - Pagina"
+
+#: reporting_dialogues.ycp:974 reporting_dialogues.ycp:1209
+msgid "Applications Audit Report"
+msgstr "Rapporto di controllo applicazioni"
+
+#: reporting_dialogues.ycp:976
+msgid "State"
+msgstr "Stato"
+
+#: reporting_dialogues.ycp:976
+msgid "Type"
+msgstr "Tipo"
+
+#: reporting_dialogues.ycp:979 reporting_dialogues.ycp:984
+msgid "Executive Security Summary"
+msgstr "Riepilogo di sicurezza Executive"
+
+#: reporting_dialogues.ycp:980
+msgid "Query Results"
+msgstr "Risultati della query"
+
+#: reporting_dialogues.ycp:980
+msgid "No event information exists."
+msgstr "Non esistono informazioni sugli eventi."
+
+#: reporting_dialogues.ycp:985
+msgid "Start Date"
+msgstr "Data di inizio"
+
+#: reporting_dialogues.ycp:986
+msgid "End Date"
+msgstr "Data di fine"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Rejects"
+msgstr "N. rifiuti"
+
+#: reporting_dialogues.ycp:986
+msgid "Num Events"
+msgstr "N. eventi"
+
+#: reporting_dialogues.ycp:986
+msgid "Ave. Sev"
+msgstr "Grav. media"
+
+#: reporting_dialogues.ycp:986
+msgid "High Sev"
+msgstr "Grav. alta"
+
+#: reporting_dialogues.ycp:1004
+msgid "F&irst Page"
+msgstr "P&rima pagina"
+
+#: reporting_dialogues.ycp:1008
+msgid "&Last Page"
+msgstr "&Ultima pagina"
+
+#: reporting_dialogues.ycp:1009
+msgid "&Go to Page"
+msgstr "&Vai alla pagina"
+
+#: reporting_dialogues.ycp:1108
+msgid "View Archived SIR Report"
+msgstr "Visualizza rapporto SIR archiviato"
+
+#: reporting_dialogues.ycp:1119
+msgid "View Archived AUD Report"
+msgstr "Visualizza rapporto AUD archiviato"
+
+#: reporting_dialogues.ycp:1131
+msgid "View Archived ESS Report"
+msgstr "Visualizza rapporto ESS archiviato"
+
+#: reporting_dialogues.ycp:1183
+msgid "Security Incident Report"
+msgstr "Rapporto incidenti di protezione"
+
+#: reporting_dialogues.ycp:1232
+msgid "Executive Security Summary Report"
+msgstr "Rapporto di riepilogo protezione Executive"
+
+#: reporting_dialogues.ycp:1236
+msgid "No recognized report type selected.  Try again."
+msgstr "Non è stato selezionato un tipo di rapporto riconosciuto.  Riprovare."
+
+#: reporting_dialogues.ycp:1248 reporting_dialogues.ycp:1263
+#: reporting_dialogues.ycp:1271 reporting_dialogues.ycp:1280
+#: reporting_dialogues.ycp:1288 reporting_dialogues.ycp:1295
+msgid "AppArmor Report"
+msgstr "Rapporto AppArmor"
+
+#: reporting_dialogues.ycp:1412
+msgid "AppArmor On-Demand Report"
+msgstr "Rapporto AppArmor su richiesta"
+
+#: reporting_dialogues.ycp:1447 reporting_dialogues.ycp:1465
+#: reporting_dialogues.ycp:1475 reporting_dialogues.ycp:1482
+#: reporting_dialogues.ycp:1491 reporting_dialogues.ycp:1499
+msgid "AppArmor - Run Reports"
+msgstr "AppArmor - Esegui rapporti"
+
+#: reporting_dialogues.ycp:1547 reporting_dialogues.ycp:2197
+#: reporting_dialogues.ycp:2248
+msgid "Day of Month"
+msgstr "Giorno del mese"
+
+#: reporting_dialogues.ycp:1575 reporting_dialogues.ycp:1927
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Day of Week"
+msgstr "Giorno della settimana"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sun"
+msgstr "Dom"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Mon"
+msgstr "Lun"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Tue"
+msgstr "Mar"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Wed"
+msgstr "Mer"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Thu"
+msgstr "Gio"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Fri"
+msgstr "Ven"
+
+#: reporting_dialogues.ycp:1576 reporting_dialogues.ycp:1928
+msgid "Sat"
+msgstr "Sab"
+
+#: reporting_dialogues.ycp:1578 reporting_dialogues.ycp:1937
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Hour"
+msgstr "Ora"
+
+#: reporting_dialogues.ycp:1579 reporting_dialogues.ycp:1938
+msgid "Minute"
+msgstr "Minuto"
+
+#: reporting_dialogues.ycp:1584 reporting_dialogues.ycp:1943
+msgid "Email Target 1"
+msgstr "Destinazione e-mail 1"
+
+#: reporting_dialogues.ycp:1585 reporting_dialogues.ycp:1944
+msgid "Email Target 2"
+msgstr "Destinazione e-mail 2"
+
+#: reporting_dialogues.ycp:1586 reporting_dialogues.ycp:1945
+msgid "Email Target 3"
+msgstr "Destinazione e-mail 3"
+
+#: reporting_dialogues.ycp:1675
+msgid "Only one contiguous space allowed in report names."
+msgstr "Possono essere usati solo spazi contigui nei nomi dei rapporti."
+
+#: reporting_dialogues.ycp:1677
+msgid ""
+"These characters are not allowed in report names: \"`~!@#$%^&*()[{]};:'\","
+"<>?/|\""
+msgstr "I seguenti caratteri non possono essere usati per i nomi dei rapporti: \"`~!@#$%^&*()[{]};:'\", <>?/|\""
+
+#: reporting_dialogues.ycp:1679
+msgid "Only 128 characters are allowed in report names."
+msgstr "I nomi dei rapporti possono contenere solo 128 caratteri."
+
+#: reporting_dialogues.ycp:1681
+msgid "You must enter a name for the report."
+msgstr "Immettere un nome per il rapporto."
+
+#: reporting_dialogues.ycp:1683
+msgid "You must enter at least one email address."
+msgstr "Specificare almeno un indirizzo e-mail."
+
+#: reporting_dialogues.ycp:1689
+msgid "Each report name should be unique."
+msgstr "I nomi dei rapporti devono essere univoci."
+
+#: reporting_dialogues.ycp:1885
+msgid "N&ext"
+msgstr "A&vanti"
+
+#: reporting_dialogues.ycp:1905
+msgid "Edit "
+msgstr "Modifica"
+
+#: reporting_dialogues.ycp:1905
+msgid " Schedule"
+msgstr "Pianifica"
+
+#: reporting_dialogues.ycp:1975
+msgid "R"
+msgstr "R"
+
+#: reporting_dialogues.ycp:2014 reporting_dialogues.ycp:2093
+msgid "You must enter at least one email address ."
+msgstr "Immettere almeno un indirizzo e-mail."
+
+#: reporting_dialogues.ycp:2108
+msgid "Error: "
+msgstr "Errore:"
+
+#: reporting_dialogues.ycp:2135
+msgid "Delete Confirmation"
+msgstr "Elimina conferma"
+
+#: reporting_dialogues.ycp:2139
+msgid "Are you sure you want to delete: "
+msgstr "Eliminare:"
+
+#: reporting_dialogues.ycp:2139
+msgid "?"
+msgstr "?"
+
+#: reporting_dialogues.ycp:2144
+msgid "&Delete"
+msgstr "&Elimina"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Report Name"
+msgstr "Nome del rapporto"
+
+#: reporting_dialogues.ycp:2197 reporting_dialogues.ycp:2248
+msgid "Mins"
+msgstr "Min"
+
+#: reporting_dialogues.ycp:2202 reporting_dialogues.ycp:2252
+msgid "View Archive"
+msgstr "Visualizza archivio"
+
+#: reporting_dialogues.ycp:2203 reporting_dialogues.ycp:2253
+msgid "Run Now"
+msgstr "Esegui"
+
+#: reporting_dialogues.ycp:2206 reporting_dialogues.ycp:2256
+msgid "Add"
+msgstr "Aggiungi"
+
+#: reporting_dialogues.ycp:2207 reporting_dialogues.ycp:2257
+msgid "Edit"
+msgstr "Modifica"
+
+#: reporting_dialogues.ycp:2208 reporting_dialogues.ycp:2258
+msgid "Delete"
+msgstr "Elimina"
+
+#: reporting_dialogues.ycp:2306
+msgid "Cannot delete a stock report."
+msgstr "Impossibile eliminare un rapporto azionario."
+
+#: reporting_utils.ycp:64
+msgid "Enter a Page to Move to."
+msgstr "Immettere la pagina da visualizzare."
+
+#: reporting_utils.ycp:67 reporting_utils.ycp:130 reporting_utils.ycp:202
+#: reporting_utils.ycp:347
+msgid "&Abort"
+msgstr "&Interrompi"
+
+#: reporting_utils.ycp:196
+msgid "Read"
+msgstr "Leggi"
+
+#: reporting_utils.ycp:197
+msgid "Write"
+msgstr "Scrivi"
+
+#: reporting_utils.ycp:198
+msgid "Link"
+msgstr "Collega"
+
+#: reporting_utils.ycp:199
+msgid "Execute"
+msgstr "Esegui"
+
+#: reporting_utils.ycp:342
+msgid "Permit"
+msgstr "Autorizza"
+
+#: reporting_utils.ycp:343
+msgid "Reject"
+msgstr "Rifiuta"
+
+#: reporting_utils.ycp:344
+msgid "Audit"
+msgstr "Controlla"
+
+#: sd-config.ycp:12
+msgid "AppArmor is disabled"
+msgstr "AppArmor è disabilitato"
+
+#: sd-config.ycp:16
+msgid "AppArmor is enabled"
+msgstr "AppArmor è abilitato"
+
+#: sd-config.ycp:27
+msgid "Notification is disabled"
+msgstr "La notifica è disabilitata"
+
+#: sd-config.ycp:30
+msgid "Notification is enabled"
+msgstr "La notifica è abilitata"
+
+#: sd-config.ycp:36
+msgid "AppArmor Configuration"
+msgstr "Configurazione di AppArmor"
+
+#: sd-config.ycp:37
+msgid ""
+"<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy "
+"enforcement module is loaded and functioning.</p> <p><b>Security Event "
+"Notification</b><br>When an access violation occurs, configure this tool if "
+"you want to be notified via email. </p>"
+msgstr "<p><b>Stato AppArmor</b><br>Indica se il modulo di applicazione delle politiche AppArmor è caricato e funzionante.</p> <p><b>Notifica evento di protezione</b><br>Configurare questo strumento per ricevere per e-mail una notifica delle violazioni di accesso. </p>"
+
+#: sd-config.ycp:40
+msgid "AppArmor Status"
+msgstr "Stato AppArmor"
+
+#: sd-config.ycp:47
+msgid "Enable AppArmor"
+msgstr "Abilita AppArmor"
+
+#: sd-config.ycp:51 sd-config.ycp:66
+msgid "&Configure"
+msgstr "&Configura"
+
+#: sd-config.ycp:62
+msgid "Enable Security Event Notification"
+msgstr "Attiva notifica evento di protezione"
+
+#: sd-config.ycp:215 sd-config.ycp:227 sd-config.ycp:239
+msgid "Disabled"
+msgstr "Disabilitato"
+
+#: sd-config.ycp:216 sd-config.ycp:228 sd-config.ycp:240
+msgid "1 minute"
+msgstr "1 minuto"
+
+#: sd-config.ycp:217 sd-config.ycp:229 sd-config.ycp:241
+msgid "5 minutes"
+msgstr "5 minuti"
+
+#: sd-config.ycp:218 sd-config.ycp:230 sd-config.ycp:242
+msgid "10 minutes"
+msgstr "10 minuti"
+
+#: sd-config.ycp:219 sd-config.ycp:231 sd-config.ycp:243
+msgid "15 minutes"
+msgstr "15 minuti"
+
+#: sd-config.ycp:220 sd-config.ycp:232 sd-config.ycp:244
+msgid "30 minutes"
+msgstr "30 minuti"
+
+#: sd-config.ycp:221 sd-config.ycp:233 sd-config.ycp:245
+msgid "1 hour"
+msgstr "1 ora"
+
+#: sd-config.ycp:222 sd-config.ycp:234 sd-config.ycp:246
+msgid "1 day"
+msgstr "1 giorno"
+
+#: sd-config.ycp:223 sd-config.ycp:235 sd-config.ycp:247
+msgid "1 week"
+msgstr "1 settimana"
+
+#: sd-config.ycp:259 sd-config.ycp:272 sd-config.ycp:285
+msgid "Frequency"
+msgstr "Frequenza"
+
+#: sd-config.ycp:260 sd-config.ycp:273 sd-config.ycp:286
+msgid "Email Address"
+msgstr "Indirizzo e-mail"
+
+#: sd-config.ycp:264 sd-config.ycp:277 sd-config.ycp:290
+msgid "Include Unknown Severity Events"
+msgstr "Includi eventi di protezione sconosciuti"
+
+#: sd-config.ycp:303
+msgid "Security Event Notification"
+msgstr "Notifica eventi di protezione"
+
+#: sd-config.ycp:303
+msgid "&Ok"
+msgstr "&Ok"
