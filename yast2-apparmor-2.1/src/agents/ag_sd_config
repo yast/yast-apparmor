@@ -24,7 +24,7 @@ use Immunix::Notify;
 use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
+textdomain("apparmor-utils");
 
 # Subroutines
 ################################################################################

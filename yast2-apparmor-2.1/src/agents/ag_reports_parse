@@ -36,7 +36,7 @@ use ycp;
 use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
+textdomain("apparmor-utils");
 
 # Writes out file to allow for multiple pages in YaST form
 #	-For large number of entries in the array

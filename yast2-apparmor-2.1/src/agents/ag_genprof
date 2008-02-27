@@ -23,7 +23,7 @@ use Immunix::SubDomain;
 
 # initialize the local poo
 setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
+textdomain("apparmor-utils");
 
 setup_yast();
 
