@@ -40,7 +40,7 @@ use ycp;
 use Immunix::Reports;
 
 setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
+textdomain("apparmor-utils");
 
 use constant DEBUGGING => 0;
 
