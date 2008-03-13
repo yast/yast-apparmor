@@ -178,8 +178,8 @@ define term editFilterForm (map Settings) {
 	string pid = Settings["pid"]:"";
 	string res = Settings["res"]:"";
 	string sdmode = Settings["sdmode"]:"R";
-	string mode = Settings["mode"]:"All";
-	string sev = Settings["sev"]:"All";
+	string mode = Settings["mode"]:_("All");
+	string sev = Settings["sev"]:_("All");
 
     term eForm = `VBox(
 
@@ -251,7 +251,7 @@ term schedFilterForm =
 			),
 			`VBox(
 	            `Label( _("Mode: ") ),
-                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), "All" ))
+                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
 			),
 
             //`HWeight( 4, `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: R") ))),
@@ -311,7 +311,7 @@ term filterForm =
             ),
             `VBox(
                 `Label( _("Mode: ") ),
-                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), "All" ))
+                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
             ),
 
 
@@ -340,8 +340,8 @@ define term filterForm2(string name, map<any,any> preFilters) {
 	any aprof = preFilters["profile"]:nil;
 	any apid = preFilters["pid"]:nil;
 	any ares = preFilters["resource"]:nil;
-	any amode = preFilters["mode"]:"All";
-	any asdmode = preFilters["sdmode"]:"All";
+	any amode = preFilters["mode"]:_("All");
+	any asdmode = preFilters["sdmode"]:_("All");
 
 	string prog = "";
 	string prof = "";
@@ -356,8 +356,8 @@ define term filterForm2(string name, map<any,any> preFilters) {
 	if ( ares != nil )  { res  = tostring(ares); }
 	if ( amode != nil )  { mode = tostring(amode); }
 	if ( asdmode != nil )  { sdmode = tostring(asdmode); }
-	if (sdmode == "-") { sdmode = "All"; }
-	if (mode == "-") { mode = "All"; }
+	if (sdmode == "-") { sdmode = _("All"); }
+	if (mode == "-") { mode = _("All"); }
 
 	term ff2 =
      `Top(`VBox(
@@ -856,7 +856,7 @@ define map<any,any> filterConfigForm(string name) {
 		UI::ChangeWidget(`id(`sev), `Value, sev);
 	}
 
-	string mode = "All";
+	string mode = _("All");
 	string sdmode = "R";
 
 	Settings = $[ ];
@@ -953,7 +953,7 @@ define map<any,any> filterConfigForm(string name) {
 	        if ( program_name != "" ) { Settings["prog"] = program_name; }
 	        if ( profile != "" ) { Settings["profile"] = profile; }
 	        if ( pid != "" ) { Settings["pid"] = pid; }
-	        if ( sev != "" && sev != "All" ) { Settings["severity"] = sev; }
+	        if ( sev != "" && sev != _("All") ) { Settings["severity"] = sev; }
 	        if ( res != "" ) { Settings["resource"] = res; }
 	        if ( sdmode != "" ) { Settings["sdmode"] = sdmode; }
 	        if ( mode != "" ) { Settings["mode"] = mode; }
@@ -1685,7 +1685,7 @@ define void addSchedForm() {
         )
     )));
 
-	string mode = "All";
+	string mode = _("All");
 	string sdmode = "R";
     integer timeout_millisec = 20 * 1000;
     map event = $[];
@@ -1911,8 +1911,8 @@ define void editSchedForm() {
 	any smins = db["mins"]:nil;
 
     string oldRepName = sname;
-	string swday = "All";
-	string monthdate = "All";
+	string swday = _("All");
+	string monthdate = _("All");
 
 	if (amday != nil) { monthdate = tostring(amday); }
 	if (wday != nil) { swday = tostring(wday); }
@@ -1970,7 +1970,7 @@ define void editSchedForm() {
 	if ( asev != nil ) { Settings["sev"] = tostring(asev); }
 	if ( asdmode != nil ) { Settings["sdmode"] = tostring(asdmode); }
 	if ( asdmode == nil || asdmode == "-" ) {
-		Settings["sdmode"] = "All";
+		Settings["sdmode"] = _("All");
 	}
 	if ( amode != nil ) { Settings["mode"] = tostring(amode); }
 
@@ -1995,7 +1995,7 @@ define void editSchedForm() {
 	// Special handling for sev
 	string formatSev = "";
         if ( asev != nil ) { formatSev = tostring(asev); }
-	if ( formatSev != "" && formatSev != "U" && formatSev != "All" && formatSev != nil) {
+	if ( formatSev != "" && formatSev != "U" && formatSev != _("All") && formatSev != nil) {
 		formatSev = "0" + formatSev;
 	}
 
