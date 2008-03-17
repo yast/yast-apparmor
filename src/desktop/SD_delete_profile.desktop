@@ -21,3 +21,4 @@ Exec=/sbin/yast2 SD_DeleteProfile
 
 Name=Delete Profile
 GenericName=AppArmor Configuration 
+StartupNotify=true

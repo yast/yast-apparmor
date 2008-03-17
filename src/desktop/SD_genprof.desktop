@@ -21,3 +21,4 @@ Exec=/sbin/yast2 GenProf
 
 Name=Add Profile Wizard
 GenericName=Profile Wizard
+StartupNotify=true

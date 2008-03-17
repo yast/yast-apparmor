@@ -21,3 +21,4 @@ Exec=/sbin/yast2 SD_EditProfile
 
 Name=Edit Profile
 GenericName=AppArmor Configuration 
+StartupNotify=true
