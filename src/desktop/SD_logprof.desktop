@@ -21,3 +21,4 @@ Exec=/sbin/yast2 LogProf
 
 Name=Update Profile Wizard
 GenericName=Update Profiles
+StartupNotify=true

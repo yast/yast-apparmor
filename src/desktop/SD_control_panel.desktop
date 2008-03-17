@@ -21,3 +21,4 @@ Exec=/sbin/yast2 subdomain
 
 Name=AppArmor Control Panel
 GenericName=AppArmor Control Panel 
+StartupNotify=true

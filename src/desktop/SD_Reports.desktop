@@ -21,3 +21,4 @@ Exec=/sbin/yast2 SD_Report
 
 Name=AppArmor Reports
 GenericName=AppArmor Configuration 
+StartupNotify=true
