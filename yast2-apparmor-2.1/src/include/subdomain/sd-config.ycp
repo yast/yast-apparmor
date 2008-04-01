@@ -343,7 +343,7 @@ define symbol displayAppArmorConfig () {
         `HBox (
 	        `HSpacing( `opt(`hstretch), 2 ),
 	        `VBox(
-	            `Left(`CheckBox( `id(`aaState), `opt(`notify), ("&Enable AppArmor"), aaEnabled)),
+	            `Left(`CheckBox( `id(`aaState), `opt(`notify), _("&Enable AppArmor"), aaEnabled)),
 		        `VSpacing(1),
 
 				`Frame( `id(`aaEnableFrame), _("Configure AppArmor"),
