@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Apr  2 14:59:51 CEST 2008 - kmachalkova@suse.cz
+
+- i18n: additional strings marked for translation (bnc#371052) 
+- Archived reports: improved UI layout to prevent string cut-off
+  (bnc#368175) 
+- Fixed typos (bnc#374628)
+- 2.16.1
+
+-------------------------------------------------------------------
 Mon Mar 17 12:43:32 CET 2008 - jsrain@suse.cz
 
 - added 'StartupNotify=true' to the desktop file (bnc #304964)
