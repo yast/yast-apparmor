@@ -800,16 +800,15 @@ define term viewForm(map archType, list itemList, string repPath) {
 					`HStretch()
              )))
         ),
-		`HStretch(),
         `VSpacing(1),
-		`Left( `HBox(
-			`Frame( `id(`repFrame), _("Location of Archived Reports"),
-			`HBox(
-				`HWeight( 4, `Label(repPath)),
-		        `HSpacing(1),
-	            `HWeight( 1, `Bottom( `VWeight( 1, `PushButton(`id(`browse), _("&Browse"))))),
-				`HWeight( 5, `HStretch())
-		)))),
+	`Frame( `id(`repFrame), _("Location of Archived Reports"),
+	      `HBox(
+		`Left(`Label(repPath)),
+	        `HSpacing(1),
+	        `Left(`PushButton(`id(`browse), _("&ZirafaSnehulakOpica"))),
+	        `HStretch()
+	       )
+        ),
         `VSpacing(0.5),
         `VWeight( 10, `HBox(
             `VSpacing(1),
