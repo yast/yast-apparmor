@@ -68,7 +68,7 @@ an existing profile by allowing AppArmor to learn new
 application behavior. 
 
 Please enter the application name for which you would like
-to create a profile, or selecte Browse to find the 
+to create a profile, or select Browse to find the 
 application on your system."),
     file_label   => gettext("&Application to Profile"),
     okay_label   => gettext("&Create"),

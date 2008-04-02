@@ -112,7 +112,7 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
                                          _("S&ave configuration")),
                               `HSpacing( 0.5),
                               `Left(`PushButton(`id(`signin_submit),
-                                                _("&Signin"))),
+                                                _("&Sign in"))),
                               `Right(`PushButton(`id(`signin_cancel),
                                                  _("&Cancel"))),
                               `HSpacing( 0.5)
