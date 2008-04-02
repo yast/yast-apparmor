@@ -805,7 +805,7 @@ define term viewForm(map archType, list itemList, string repPath) {
 	      `HBox(
 		`Left(`Label(repPath)),
 	        `HSpacing(1),
-	        `Left(`PushButton(`id(`browse), _("&ZirafaSnehulakOpica"))),
+	        `Left(`PushButton(`id(`browse), _("&Browse"))),
 	        `HStretch()
 	       )
         ),
