@@ -11,6 +11,7 @@
 
 import "Wizard";
 import "Popup";
+import "Label";
 include "subdomain/report_helptext.ycp";
 textdomain  "yast2-apparmor";
 
@@ -128,8 +129,8 @@ define integer popUpGoto(integer lastPage) {
                 `TextEntry(`id(`gotoPage), _("Enter a Page to Move to."), "")
             ),
             `HBox(
-                `PushButton(`id(`abort), `opt(`notify), _("&Abort") ),
-                `PushButton(`id(`save), `opt(`notify), _("&Save") )
+                `PushButton(`id(`abort), `opt(`notify), Label::AbortButton() ),
+                `PushButton(`id(`save), `opt(`notify), Label::SaveButton() )
             )
 		)
 	);
@@ -281,8 +282,8 @@ define string popUpSort(string type) {
                 )
             ),
             `HBox(
-                `PushButton(`id(`abort), _("&Abort") ),
-                `PushButton(`id(`save), _("&Save") )
+                `PushButton(`id(`abort), Label::AbortButton() ),
+                `PushButton(`id(`save), Label::SaveButton() )
             )
         )
     );
@@ -337,8 +338,8 @@ define string popUpMode() {
 				`CheckBox(`id(`mmap), `opt(`notify, `immediate ), _("MMap"), false)
 			),
 			`HBox(
-				`PushButton(`id(`cancel), _("&Cancel") ),
-				`PushButton(`id(`save), _("&Save") )
+				`PushButton(`id(`cancel), Label::CancelButton() ),
+				`PushButton(`id(`save), Label::SaveButton() )
 			)
 		)
 	);
@@ -451,8 +452,8 @@ define string popUpSdMode() {
 				`CheckBox(`id(`audit),`opt(`notify, `immediate ), _("Audit"), false)
 			),
 			`HBox(
-				`PushButton(`id(`cancel), `opt(`notify), _("&Cancel") ),
-				`PushButton(`id(`save), `opt(`notify), _("&Save") )
+				`PushButton(`id(`cancel), `opt(`notify), Label::CancelButton() ),
+				`PushButton(`id(`save), `opt(`notify), Label::SaveButton() )
 			)
 		)
 	);

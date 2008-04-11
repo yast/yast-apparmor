@@ -11,6 +11,7 @@
 
 import "Wizard";
 import "Popup";
+import "Label";
 include "subdomain/reporting_utils.ycp";
 include "subdomain/report_helptext.ycp";
 include "subdomain/reporting_archived_dialogs.ycp";
@@ -215,8 +216,8 @@ define term editFilterForm (map Settings) {
         ),
         `VSpacing( 1 ),
         `HBox(
-            `PushButton(`id(`cancel), _("&Cancel") ),
-            `PushButton(`id(`save), _("&Save") )
+            `PushButton(`id(`cancel), Label::CancelButton() ),
+            `PushButton(`id(`save), Label::SaveButton() )
         )
     );
 
@@ -260,8 +261,8 @@ term schedFilterForm =
         ),
         `VSpacing( 1 ),
         `HBox(
-            `PushButton(`id(`cancel), _("&Cancel") ),
-            `PushButton(`id(`save), _("&Save") )
+            `PushButton(`id(`cancel), Label::CancelButton() ),
+            `PushButton(`id(`save), Label::SaveButton() )
         )
     );
 
@@ -538,7 +539,7 @@ define symbol reportConfigForm() {
             `Left(`CheckBox(`id(`exportHtml),  _("HTML"), true))
        )
     );
-    Wizard::SetContentsButtons( _("Report Configuration Dialog"), contents_report_config_form, repConfHelp, _("Back"), _("&Next") );
+    Wizard::SetContentsButtons( _("Report Configuration Dialog"), contents_report_config_form, repConfHelp, Label::BackButton(), Label::NextButton() );
 
    Settings = $[ ];
    map event = $[];
@@ -679,7 +680,7 @@ define symbol mainArchivedReportForm() {
                           )
 		     );
          Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
-				contents_main_prof_form, help1, _("Back"), _("&Done") );
+				contents_main_prof_form, help1, Label::BackButton(), _("&Done") );
 
 
 	map event = $[];
@@ -724,7 +725,7 @@ define symbol mainReportForm() {
                 `VSpacing(0.5)
         );
 
-    Wizard::SetContentsButtons( _("AppArmor Security Event Report"), mainForm, mainHelp, _("Back"), _("&Next") );
+    Wizard::SetContentsButtons( _("AppArmor Security Event Report"), mainForm, mainHelp, Label::BackButton(), Label::NextButton() );
 
 	map event = $[];
 	any id    = nil;
@@ -842,7 +843,7 @@ define map<any,any> filterConfigForm(string name) {
 	if ( sev == "-" ) { sev = _("All"); }
 
 	Wizard::SetContentsButtons( _("Report Configuration Dialog"),
-		filterForm2(name,preFilters), filterCfHelp1, _("Back"), _("&Next") );
+		filterForm2(name,preFilters), filterCfHelp1, Label::BackButton(), Label::NextButton() );
 
 	if ( sev != "" && sev != _("All") ) {
 		if ( sev != "U" ) {
@@ -1137,7 +1138,7 @@ define symbol displayArchForm() {
 	itemList = getArrayList(type,"");
 
     Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
-	viewForm(archType, itemList, ""), archHelpText, _("Back"), _("&Done") );
+	viewForm(archType, itemList, ""), archHelpText, Label::BackButton(), _("&Done") );
 
 	map event = $[];
 	any archId    = nil;
@@ -1166,7 +1167,7 @@ define symbol displayArchForm() {
 			Settings["repPath"] = repPath;
 		    itemList = getArrayList(type,repPath);
 		    Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
-				viewForm(archType, itemList, repPath), archHelpText, _("Back"), _("&Done") );
+				viewForm(archType, itemList, repPath), archHelpText, Label::BackButton(), _("&Done") );
 
         } else if ( archId == `browse ) {
 
@@ -1182,7 +1183,7 @@ define symbol displayArchForm() {
             Settings["repPath"] = repPath;
             itemList = getArrayList(type,repPath);
             Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
-				viewForm(archType, itemList, repPath), archHelpText, _("Back"),
+				viewForm(archType, itemList, repPath), archHelpText, Label::BackButton(),
 				_("&Done") );
 
 		} else if ( archId == `sirRep ) {
@@ -1196,7 +1197,7 @@ define symbol displayArchForm() {
 		    itemList = getArrayList(type,repPath);
 
 		    Wizard::SetContentsButtons( _("View Archived SIR Report"),
-				viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done"));
+				viewForm(archType,itemList,""), formHelp, Label::BackButton(), _("&Done"));
 
 		} else if ( archId == `audRep ) {
 			formHelp = audHelp;
@@ -1208,7 +1209,7 @@ define symbol displayArchForm() {
 
 		    itemList= getArrayList(type,"");
 		    Wizard::SetContentsButtons( _("View Archived AUD Report"),
-				viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done"));
+				viewForm(archType,itemList,""), formHelp, Label::BackButton(), _("&Done"));
 
 		} else if ( archId == `essRep ) {
 			formHelp = essHelp;
@@ -1220,7 +1221,7 @@ define symbol displayArchForm() {
 
 		    itemList= getArrayList(type,"");
 		    Wizard::SetContentsButtons( _("View Archived AUD Report"),
-				viewForm(archType,itemList,""), formHelp, _("Back"), _("&Done"));
+				viewForm(archType,itemList,""), formHelp, Label::BackButton(), _("&Done"));
 
 
 		} else if ( archId == `view || archId == `viewall || archId == `table) {
@@ -1273,7 +1274,7 @@ define symbol displayArchForm() {
 				}
 
 				Wizard::SetContentsButtons( _("Security Incident Report"),
-					viewArchForm(type,logFile,sirSettings), sirHelp, _("Back"), _("&Done"));
+					viewArchForm(type,logFile,sirSettings), sirHelp, Label::BackButton(), _("&Done"));
 
 				lastPage = getLastPage(type,Settings,"");		// check 'name'
 				setPageButtons(curPage,lastPage);
@@ -1301,7 +1302,7 @@ define symbol displayArchForm() {
 			    string slastPage = tostring(lastPage);
 
 				Wizard::SetContentsButtons( _("Applications Audit Report"),
-					displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"),
+					displayRep(type,curPage,slastPage,reportList), formHelp, Label::BackButton(),
 					_("&Done") );
 				setPageButtons(curPage,lastPage);
 
@@ -1326,7 +1327,7 @@ define symbol displayArchForm() {
 			    string slastPage = tostring(lastPage);
 
 				Wizard::SetContentsButtons( _("Executive Security Summary Report"),
-					displayRep(type,curPage,slastPage,reportList), formHelp, _("Back"),
+					displayRep(type,curPage,slastPage,reportList), formHelp, Label::BackButton(),
 					_("&Done") );
 				setPageButtons(curPage,lastPage);
 
@@ -1343,7 +1344,7 @@ define symbol displayArchForm() {
 				curPage = newPage;
 
 	            term fwdForm = turnArchReportPage(curPage,lastPage);
-	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, _("Back"), _("&Done") );
+	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, Label::BackButton(), _("&Done") );
 	            setPageButtons(curPage,lastPage);
 			}
 
@@ -1358,7 +1359,7 @@ define symbol displayArchForm() {
 	            sortCmd["sort"] = "1";
 	            any junk = SCR::Write(.logparse, sortCmd);
 	            term fwdForm = turnArchReportPage(curPage,lastPage);
-	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, _("Back"), _("&Done") );
+	            Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, runHelp, Label::BackButton(), _("&Done") );
 	            setPageButtons(curPage,lastPage);
 			}
 
@@ -1366,7 +1367,7 @@ define symbol displayArchForm() {
 
 			curPage = curPage +1;
             term fwdForm = turnArchReportPage(curPage,lastPage);
-			Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, formHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("AppArmor Report"), fwdForm, formHelp, Label::BackButton(), _("&Done") );
 
 			setPageButtons(curPage,lastPage);
 
@@ -1375,7 +1376,7 @@ define symbol displayArchForm() {
 
             if ( curPage > 0 ) { curPage = curPage -1; }
             term prevForm = turnArchReportPage(curPage,lastPage);
-			Wizard::SetContentsButtons( _("AppArmor Report"), prevForm, formHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("AppArmor Report"), prevForm, formHelp, Label::BackButton(), _("&Done") );
 
 			setPageButtons(curPage,lastPage);
 
@@ -1383,14 +1384,14 @@ define symbol displayArchForm() {
 
 			curPage = 1;
             term firstForm = turnArchReportPage(curPage,lastPage);
-			Wizard::SetContentsButtons( _("AppArmor Report"), firstForm, formHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("AppArmor Report"), firstForm, formHelp, Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
 		} else if ( archId == `last ) {
 
 			curPage = lastPage;
             term lastForm = turnArchReportPage(curPage,lastPage);
-			Wizard::SetContentsButtons( _("AppArmor Report"), lastForm, formHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("AppArmor Report"), lastForm, formHelp, Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
         } else {
@@ -1508,10 +1509,10 @@ define symbol displayRunForm() {
 
 	if ( type == "noDb" ) {
 		Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayEmptyRep(type),
-		formHelp, _("Back"), _("&Done") );
+		formHelp, Label::BackButton(), _("&Done") );
 	} else if ( type == "noList" ) {
 		Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayEmptyRep(type),
-		formHelp, _("Back"), _("&Done") );
+		formHelp, Label::BackButton(), _("&Done") );
 	} else {
 
 	    lastPage =  getLastPage(type,Settings,name);
@@ -1519,7 +1520,7 @@ define symbol displayRunForm() {
 
 	    Wizard::SetContentsButtons( _("AppArmor On-Demand Report"),
 			displayRep(type,curPage,slastPage,reportList), formHelp,
-			_("Back"), _("&Done") );
+			Label::BackButton(), _("&Done") );
 		setPageButtons(curPage,lastPage);
 	}
 
@@ -1556,7 +1557,7 @@ define symbol displayRunForm() {
 
 		        term goForm = turnReportPage(name,curPage,slastPage,Settings);
 	            Wizard::SetContentsButtons( _("AppArmor - Run Reports"), goForm,
-					formHelp, _("Back"), _("&Done") );
+					formHelp, Label::BackButton(), _("&Done") );
 				setPageButtons(curPage,lastPage);
 			}
 
@@ -1575,7 +1576,7 @@ define symbol displayRunForm() {
 				reportList = getReportList(type,Settings);
 
 		        Wizard::SetContentsButtons( _("AppArmor On-Demand Report"), displayRep(type,curPage,
-					slastPage,reportList), formHelp, _("Back"), _("&Done") );
+					slastPage,reportList), formHelp, Label::BackButton(), _("&Done") );
 		        setPageButtons(curPage,lastPage);
 
 			}
@@ -1585,14 +1586,14 @@ define symbol displayRunForm() {
             if ( curPage > 0 ) { curPage = curPage -1; }
             term prevForm = turnReportPage(name,curPage,slastPage,Settings);
 		    Wizard::SetContentsButtons( _("AppArmor - Run Reports"), prevForm,
-				formHelp, _("Back"), _("&Done") );
+				formHelp, Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
         } else if ( id == `fwd ) {
             curPage = curPage + 1;
             term fwdForm = turnReportPage(name,curPage,slastPage,Settings);
 		    Wizard::SetContentsButtons( _("AppArmor - Run Reports"), fwdForm,
-				formHelp, _("Back"), _("&Done") );
+				formHelp, Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
 		} else if ( id == `first ) {
@@ -1601,7 +1602,7 @@ define symbol displayRunForm() {
 			slastPage = tostring(lastPage);
             term firstForm = turnReportPage(name,curPage,slastPage,Settings);
 			Wizard::SetContentsButtons( _("AppArmor - Run Reports"), firstForm, formHelp,
-				_("Back"), _("&Done") );
+				Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
 		} else if ( id == `last ) {
@@ -1610,7 +1611,7 @@ define symbol displayRunForm() {
 			slastPage = tostring(lastPage);
             term lastForm = turnReportPage(name,curPage,slastPage,Settings);
 			Wizard::SetContentsButtons( _("AppArmor - Run Reports"), lastForm, formHelp,
-				_("Back"), _("&Done") );
+				Label::BackButton(), _("&Done") );
 			setPageButtons(curPage,lastPage);
 
         } else {
@@ -1679,8 +1680,8 @@ define void addSchedForm() {
         ),
         `VSpacing(1),
         `HBox(
-             `PushButton(`id(`cancel), _("&Cancel") ),
-             `PushButton(`id(`next), _("&Next") )
+             `PushButton(`id(`cancel), Label::CancelButton() ),
+             `PushButton(`id(`next), Label::NextButton() )
         )
     )));
 
@@ -2001,7 +2002,7 @@ define void editSchedForm() {
 	term continueBtns =
 
         `HBox(
-             `PushButton(`id(`cancel), _("&Cancel") ),
+             `PushButton(`id(`cancel), Label::CancelButton() ),
              `PushButton(`id(`fwd), _("N&ext") )
         );
 
@@ -2011,8 +2012,8 @@ define void editSchedForm() {
 
 		continueBtns =
         `HBox(
-             `PushButton(`id(`cancel), _("&Cancel") ),
-             `PushButton(`id(`save), _("&Save") )
+             `PushButton(`id(`cancel), Label::CancelButton() ),
+             `PushButton(`id(`save), Label::SaveButton() )
         );
 
 	}
@@ -2268,8 +2269,8 @@ define void delSchedForm() {
         ),
         `VSpacing(1),
         `HBox(
-             `PushButton(`id(`cancel), _("&Cancel") ),
-             `PushButton(`id(`del), _("&Delete") )
+             `PushButton(`id(`cancel), Label::CancelButton() ),
+             `PushButton(`id(`del), Label::DeleteButton() )
         )
     ));
 
@@ -2330,14 +2331,14 @@ define void updateSched() {
 				`PushButton(`id(`runrep), _("Run Now") )
 			),
 			`HBox(
-				`PushButton(`id(`add), _("Add") ),
-				`PushButton(`id(`edit), _("Edit") ),
-				`PushButton(`id(`delete), _("Delete") )
+				`PushButton(`id(`add), Label::AddButton() ),
+				`PushButton(`id(`edit), Label::EditButton() ),
+				`PushButton(`id(`delete), Label::DeleteButton() )
 			)
         );
 
     Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm,
-	mainHelp, _("Back"), _("&Next") );
+	mainHelp, Label::BackButton(), Label::NextButton() );
 
 	return;
 }
@@ -2380,14 +2381,14 @@ define symbol displaySchedForm() {
 				`PushButton(`id(`runrep), _("Run Now") )
 			),
 			`HBox(
-				`PushButton(`id(`add), _("Add") ),
-				`PushButton(`id(`edit), _("Edit") ),
-				`PushButton(`id(`delete), _("Delete") )
+				`PushButton(`id(`add), Label::AddButton() ),
+				`PushButton(`id(`edit), Label::EditButton() ),
+				`PushButton(`id(`delete), Label::DeleteButton() )
 			))
         );
 
     Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm,
-		mainHelp, _("Back"), _("&Done") );
+		mainHelp, Label::BackButton(), _("&Done") );
 
 	// Double-click tracking
 	integer newRecord = nil;
@@ -2416,7 +2417,7 @@ define symbol displaySchedForm() {
 			break;
 		} else if ( id == `add ) {
 			addSchedForm();
-		    //Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm, mainHelp, "Back", _("&Next") );
+		    //Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm, mainHelp, "Back", Label::NextButton() );
 			updateSched();
 			continue;
 

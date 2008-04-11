@@ -9,6 +9,7 @@
   ------------------------------------------------------------------*/
 {
 import "Wizard";
+import "Label";
 import "Popup";
 import "Sequencer";
 include "subdomain/apparmor_packages.ycp";

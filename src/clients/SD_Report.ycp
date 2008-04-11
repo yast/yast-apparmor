@@ -11,6 +11,7 @@
 
 import "Wizard";
 import "Popup";
+import "Label";
 import "Sequencer";
 include "subdomain/apparmor_packages.ycp";
 include "subdomain/apparmor_profile_check.ycp";

@@ -10,6 +10,7 @@
 {
 import "Wizard";
 import "Popup";
+import "Label";
 include "subdomain/capabilities.ycp";
 textdomain  "yast2-apparmor";
 
@@ -56,8 +57,8 @@ define map capabilityEntryPopup( map capmap,
                   ),
                   `VSpacing( 0.5 ),
                   `HBox(
-                    `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
-                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), _("&Cancel"))))
+                    `HWeight( 50, `HCenter(`PushButton(`id(`save), Label::OKButton()))),
+                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), Label::CancelButton())))
                   ),
                   `VSpacing( `opt(`hstretch), 0.5 )
                 )
@@ -175,8 +176,8 @@ define string networkEntryPopup( string rule )   {
 			),
 			`VSpacing(1),
             `HBox(
-			    `HCenter(`PushButton(`id(`cancel), _("&Cancel"))),
-			    `HCenter(`PushButton(`id(`save), _("&Save")))
+			    `HCenter(`PushButton(`id(`cancel), Label::CancelButton())),
+			    `HCenter(`PushButton(`id(`save), Label::SaveButton()))
             ),
 			`VSpacing(0.5)
         )
@@ -274,8 +275,8 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                   ),
                   `VSpacing( 0.5 ),
                   `HBox(
-                    `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
-                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), _("&Cancel"))))
+                    `HWeight( 50, `HCenter(`PushButton(`id(`save), Label::OKButton()))),
+                    `HWeight( 50, `HCenter(`PushButton(`id(`cancel), Label::CancelButton())))
                   ),
                   `VSpacing( `opt(`hstretch), 0.5 )
                 )
@@ -685,7 +686,7 @@ term intro = `VBox(
           `HBox(
             `HSpacing(`opt(`hstretch), 0.1),
             `HCenter(`PushButton(`id(`create), _("&Create Hat"))),
-            `HCenter(`PushButton(`id(`abort), _("&Abort"))),
+            `HCenter(`PushButton(`id(`abort), Label::AbortButton())),
             `HSpacing(`opt(`hstretch), 0.1),
             `VSpacing(1)
           )
@@ -795,7 +796,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            help = help1 + help2 + help3 + help4 + help5 + help6 + help7 + help_net + helpHat + helpEdit + help8 + help9 + help10;
            formtitle = _("AppArmor Profile Dialog");
          }
-        Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, _("&Back"), _("&Done") );
+        Wizard::SetContentsButtons( formtitle, contents_main_profile_form, help, Label::BackButton(), _("&Done") );
 
 
 
