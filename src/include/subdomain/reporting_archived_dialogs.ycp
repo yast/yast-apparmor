@@ -12,6 +12,7 @@
 
 import "Wizard";
 import "Popup";
+import "Label";
 include "subdomain/report_helptext.ycp";
 include "subdomain/reporting_utils.ycp";
 textdomain  "yast2-apparmor";
@@ -117,7 +118,7 @@ define term filterArchForm() {
                 _("None"), _("csv"), _("html"), _("Both")
             ]),
             `TextEntry(`id(`expPath), _("Location to store log."), expPath ),
-            `Bottom( `VWeight( 1, `PushButton(`id(`accept), _("&Accept")) )),
+            `Bottom( `VWeight( 1, `PushButton(`id(`accept), Label::AcceptButton()) )),
             `Bottom( `VWeight( 1, `PushButton(`id(`browse), _("&Browse")) ))
         )
     ));
@@ -131,7 +132,7 @@ define map<any,any> setArchFilter() {
 
 	term archForm = filterArchForm();
     Wizard::SetContentsButtons( _("Report Configuration Dialog"), archForm,
-		setArchHelp, _("Back"), _("&Next") );
+		setArchHelp, Label::BackButton(), Label::NextButton() );
 
 	UI::ChangeWidget(`id(`bydate_frame), `Enabled, false);
 

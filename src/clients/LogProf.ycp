@@ -352,7 +352,7 @@
       }
 
       map answers = $[ ];
-      if(Popup::AnyQuestion(Popup::NoHeadline(), question, _("&Yes"), _("&No"), focus)) {
+      if(Popup::AnyQuestion(Popup::NoHeadline(), question, Label::YesButton(), Label::NoButton(), focus)) {
         answers["answer"] = "y";
       } else {
         answers["answer"] = "n";
@@ -369,9 +369,9 @@
       term dialog = `VBox(
                     `TextEntry(`id (`stringfield), label, default_value),
                     `HBox(
-                      `HWeight(1, `PushButton(`id(`okay), `opt(`default, `key_F10), _("&Okay"))),
+                      `HWeight(1, `PushButton(`id(`okay), `opt(`default, `key_F10), Label::OKButton())),
                       `HSpacing(2),
-                      `HWeight(1, `PushButton(`id(`cancel), `opt(`key_F9), _("&Cancel")))
+                      `HWeight(1, `PushButton(`id(`cancel), `opt(`key_F9), Label::CancelButton()))
                       )
                   );
 

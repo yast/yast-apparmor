@@ -17,6 +17,7 @@
  */
 
 
+import "Label";
 import "Popup";
 import "AppArmorDialogs";
 textdomain "yast2-apparmor";
@@ -25,7 +26,7 @@ textdomain "yast2-apparmor";
   CMDS["CMD_ALLOW"]          = _("&Allow");
   CMDS["CMD_DENY"]           = _("&Deny");
   CMDS["CMD_ABORT"]          = _("Abo(r)t");
-  CMDS["CMD_FINISHED"]       = _("&Finish");
+  CMDS["CMD_FINISHED"]       = Label::FinishButton();
   CMDS["CMD_INHERIT"]        = _("&Inherit");
   CMDS["CMD_PROFILE"]        = _("&Profile");
   CMDS["CMD_UNCONFINED"]     = _("&Unconfined");
@@ -47,8 +48,8 @@ textdomain "yast2-apparmor";
   CMDS["CMD_DISABLE_REPO"]   = _("&Disable Repository");
   CMDS["CMD_ASK_NEVER"]      = _("&Never Ask Again");
   CMDS["CMD_ASK_LATER"]      = _("Ask Me &Later");
-  CMDS["CMD_YES"]            = _("&Yes");
-  CMDS["CMD_NO"]             = _("&No");
+  CMDS["CMD_YES"]            = Label::YesButton();
+  CMDS["CMD_NO"]             = Label::NoButton();
 
 
 define boolean validEmailAddress ( string emailAddr, boolean allowlocal ) {
@@ -105,7 +106,7 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
                       `HSpacing(0.5),
                       `VBox(
                           `TextEntry(`id(`username), _("Username")),
-                          `Password(`id(`password), _("Password")),
+                          `Password(`id(`password), Label::Password()),
                           `VSpacing(1),
                           `HBox(
                               `CheckBox(`id(`save_conf), `opt(`notify),
@@ -114,7 +115,7 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
                               `Left(`PushButton(`id(`signin_submit),
                                                 _("&Sign in"))),
                               `Right(`PushButton(`id(`signin_cancel),
-                                                 _("&Cancel"))),
+                                                 Label::CancelButton())),
                               `HSpacing( 0.5)
                           )
                       ),
@@ -151,7 +152,7 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
                               `Left(`PushButton(`id(`register_submit),
                                                 _("&Register"))),
                               `Right(`PushButton(`id(`register_cancel),
-                                                 _("&Cancel"))),
+                                                 Label::CancelButton())),
                               `HSpacing( 0.2)
                           )
                       ),
@@ -366,9 +367,9 @@ define map<string,any> UI_ChangeLog_Dialog ( map<any,any> agent_data ) {
             `HWeight(1, `PushButton(`id(`okay),
                                     `opt(`default,
                                     `key_F10),
-                                    _("&OK"))),
+                                    Label::OKButton())),
             `HSpacing(2),
-            `HWeight(1, `PushButton(`id(`cancel), `opt(`key_F9), _("&Cancel")))
+            `HWeight(1, `PushButton(`id(`cancel), `opt(`key_F9), Label::CancelButton()))
         )
      );
      results["STATUS"] = "ok";
@@ -498,18 +499,18 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
                         disable_ask_upload_str),
               `VSpacing(0.5),
               `HBox(
-                  `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                  `HWeight( 50, `HCenter(`PushButton(`id(`save), Label::OKButton()))),
                   `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
-                                                     _("&Cancel"))))
+                                                     Label::CancelButton())))
               )
           );
     } else {
         if ( in_ncurses ) {
             control_widgets =
               `HBox(
-                  `HWeight( 50, `HCenter(`PushButton(`id(`save), _("&OK")))),
+                  `HWeight( 50, `HCenter(`PushButton(`id(`save), Label::OKButton()))),
                   `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
-                                                     _("&Cancel"))))
+                                                     Label::CancelButton())))
               );
           } else {
             control_widgets =
@@ -517,9 +518,9 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
                   `VSpacing(0.5),
                   `HBox(
                       `HWeight( 50, `HCenter(`PushButton(`id(`save),
-                                                         _("&OK")))),
+                                                         Label::OKButton()))),
                       `HWeight( 50, `HCenter(`PushButton(`id(`cancel),
-                                                         _("&Cancel"))))
+                                                         Label::CancelButton())))
                   )
               );
           }

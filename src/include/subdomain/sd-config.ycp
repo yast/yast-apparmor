@@ -12,6 +12,8 @@ include "subdomain/config_complain.ycp";
 include "subdomain/event_notification_helptext.ycp";
 textdomain "yast2-apparmor";
 
+import "Label";
+
 define boolean safeFormat (string emailAddr) {
 
     boolean isSafe = false;
@@ -179,7 +181,7 @@ define void displayNotifyForm() {
       );
 
       Wizard::CreateDialog();
-      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, nil, _("&OK"));
+      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, nil, Label::OKButton());
       Wizard::DisableBackButton();
 
       any ntInput = nil;

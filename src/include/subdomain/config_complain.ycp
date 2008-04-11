@@ -11,6 +11,8 @@
 {
 textdomain "yast2-apparmor";
 
+import "Label";
+
 string modeHelp = _("<p><b>Profile Mode Configuration</b><br>This tool allows you to set AppArmor profiles to either complain or enforce mode.</p><p>Complain mode is a profile training state that logs application activity, but does not restrict the application's behavior.</p><p>Profiles in enforce mode are protected by AppArmor.</p>");
 
 boolean showAll = false;			// Button for showing active or all profiles
@@ -128,7 +130,7 @@ define symbol profileModeConfigForm() {
 	list<term> recList = getRecordList(showAll);
 	term modeForm = getProfModeForm(recList, showAll);
 
-    Wizard::SetContentsButtons( _("Profile Mode Configuration"), modeForm, modeHelp, _("Back"), _("&Done") );
+    Wizard::SetContentsButtons( _("Profile Mode Configuration"), modeForm, modeHelp, Label::BackButton(), _("&Done") );
 
     map event = $[];
     any id    = nil;
@@ -147,13 +149,13 @@ define symbol profileModeConfigForm() {
 		} else if ( id == `showAll ) {
 
 			showAll = true;
-			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
 		} else if ( id == `showAct ) {
 
 			showAll = false;
-			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
         } else if ( id == `next || id == `toggle) {
@@ -163,7 +165,7 @@ define symbol profileModeConfigForm() {
             mode = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
 
 			updateComplain(id, profile, mode, showAll);
-			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
         } else if ( id == `allEnforce || id == `allComplain) {
@@ -177,7 +179,7 @@ define symbol profileModeConfigForm() {
 			}
 
 			updateComplain(id, profile, mode, showAll);
-			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, _("Back"), _("&Done") );
+			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
 		} else if ( id == `table ) {
