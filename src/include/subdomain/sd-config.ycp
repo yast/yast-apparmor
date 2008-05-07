@@ -366,7 +366,7 @@ define symbol displayAppArmorConfig () {
 					        `Frame ( _("Configure Profile Modes"),
 					          `HBox(
 					            `VSpacing(1), `HSpacing(1),
-					            `Left(`HVCenter( `Label( `id(`notifyLabel), " " +  _("Set profile modes") ))),
+					            `Left(`HVCenter( `Label( `id(`modesLabel), " " +  _("Set profile modes") ))),
 					            `PushButton( `id(`modeconf), _("Co&nfigure") ),
 					            `VSpacing(1), `HSpacing(1)
 					          )
