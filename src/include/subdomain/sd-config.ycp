@@ -181,7 +181,7 @@ define void displayNotifyForm() {
       );
 
       Wizard::CreateDialog();
-      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, nil, Label::OKButton());
+      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, Label::BackButton(), Label::OKButton());
       Wizard::DisableBackButton();
 
       any ntInput = nil;
@@ -382,7 +382,7 @@ define symbol displayAppArmorConfig () {
 	// May want to replace Wizard() with UI()
 	Wizard::CreateDialog();
 	Wizard::SetTitleIcon("apparmor/control_panel");
-	Wizard::SetContentsButtons(caption, contents, help, nil, _("&Done"));
+	Wizard::SetContentsButtons(caption, contents, help, Label::BackButton(), _("&Done"));
 	Wizard::DisableBackButton();
 
 	UI::ChangeWidget(`id(`aaEnableFrame), `Enabled, aaEnabled);
@@ -410,13 +410,9 @@ define symbol displayAppArmorConfig () {
 
 		} else if (ret == `modeconf ) {
 
-			ret = profileModeConfigForm();
+			 profileModeConfigForm();
 
-			if ( ret == `back ) {
-				displayAppArmorConfig();
-			}
-
-			break;
+			//displayAppArmorConfig();
 
 		} else {
 			y2error("Unexpected return code: " + tostring(ret));
