@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri May  9 11:07:57 CEST 2008 - kmachalkova@suse.cz
+
+- Use button labels from Label:: module (thanks, msvec)
+- Removed 2 widgets with the same ID ( AA general setup module failed
+  to launch ) (bnc #383792)
+- Removed other sources of YUI exceptions: correct opening/closing 
+  dialogs, fixed event loop, no 'nil' button labels 
+- 2.16.2
+
+-------------------------------------------------------------------
 Wed Apr  2 14:59:51 CEST 2008 - kmachalkova@suse.cz
 
 - i18n: additional strings marked for translation (bnc#371052) 
