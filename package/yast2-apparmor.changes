@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon May 12 17:37:05 CEST 2008 - kmachalkova@suse.cz
+
+- Make reportgen.pl executable again (opensuse.org svn migration
+  regression - bnc#157814)
+- Integrating jjohansen's patch for UI support of late AA backend 
+  features (FaTE#300560, FaTE#300571)
+- 2.16.3
+
+-------------------------------------------------------------------
 Fri May  9 11:07:57 CEST 2008 - kmachalkova@suse.cz
 
 - Use button labels from Label:: module (thanks, msvec)
