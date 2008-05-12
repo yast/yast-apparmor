@@ -1,7 +1,7 @@
-usrbin_DATA = \
+usrbin_SCRIPTS = \
 	reportgen.pl
 
 usrbindir = /usr/bin/
 
-EXTRA_DIST = $(usrbin_DATA)
+EXTRA_DIST = $(usrbin_SCRIPTS)
 
