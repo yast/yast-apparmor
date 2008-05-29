@@ -129,11 +129,14 @@ while ( <STDIN> ) {
                     }
 		} 
 	} else {
-
-		my $ycpCmd = ycpGetCommand() || "";
-		my $ycpArg = ycpGetArgType() || "";
-		$result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
-		ycp::Return( $result );
+              #ycpGetCommand and ycpGetArgType is obsolete, we have those
+              #from ycp::ParseCommand
+              if ($command eq "result") {
+  	         exit 0;
+              } else {
+		  $result = "Unknown instruction $command or argument: $argument\n";
+		  ycp::Return( $result );
+	     } 
 	}
 }
 }
