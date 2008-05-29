@@ -97,11 +97,16 @@ while ( <STDIN> ) {
       $donereturn = 1;
     }
     ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
-  } else {
-    my $ycpCmd = ycpGetCommand() || "";
-    my $ycpArg = ycpGetArgType() || "";
-    $result = "Unknown instruction $ycpCmd or argument: $ycpArg\n";
-    ycp::ycpReturnSkalarAsString( $result );
+  } 
+  else {
+      #ycpGetCommand and ycpGetArgType is obsolete, we have those
+      #from ycp::ParseCommand
+      if ($command eq "result") {
+  	exit 0;
+      } else { 
+          $result = "Unknown instruction $command or argument: $argument\n";
+          ycp::ycpReturnSkalarAsString( $result );
+      }
   }
   print "\n";
 }
