@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 29 16:01:09 CEST 2008 - kmachalkova@suse.cz
+
+- Have ag_subdomain and ag_subdomain_profiles understand `result
+  command so they can be correctly terminated by y2base (bnc#393957) 
+- 2.16.4
+
+-------------------------------------------------------------------
 Fri May 16 16:40:22 CEST 2008 - jsrain@suse.cz
 
 - added categories Settings and System into desktop file
