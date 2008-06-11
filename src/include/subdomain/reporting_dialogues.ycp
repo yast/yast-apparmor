@@ -1220,7 +1220,7 @@ define symbol displayArchForm() {
 			type = Settings["type"]:nil;
 
 		    itemList= getArrayList(type,"");
-		    Wizard::SetContentsButtons( _("View Archived AUD Report"),
+		    Wizard::SetContentsButtons( _("View Archived ESS Report"),
 				viewForm(archType,itemList,""), formHelp, Label::BackButton(), _("&Done"));
 
 
