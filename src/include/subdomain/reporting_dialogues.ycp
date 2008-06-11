@@ -775,7 +775,7 @@ define term viewForm(map archType, list itemList, string repPath) {
 	boolean audRep = archType["audRep"]:false;
 	boolean essRep = archType["essRep"]:false;
 
-	if ( repPath == "" ) {
+	if ( repPath == "" || repPath == nil ) {
 		repPath = "/var/log/apparmor/reports-archived/";
 	}
 
@@ -1176,15 +1176,15 @@ define symbol displayArchForm() {
 
             if ( selectFile != nil ) {
                 UI::ChangeWidget(`id(`repPath), `Value, selectFile);
-            }
-
-			// set new reppath
-			repPath = selectFile;
-            Settings["repPath"] = repPath;
-            itemList = getArrayList(type,repPath);
-            Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
+	        // set new reppath
+	        repPath = selectFile;
+                Settings["repPath"] = repPath;
+                itemList = getArrayList(type,repPath);
+                Wizard::SetContentsButtons( _("AppArmor Security Event Report"),
 				viewForm(archType, itemList, repPath), archHelpText, Label::BackButton(),
 				_("&Done") );
+            }
+
 
 		} else if ( archId == `sirRep ) {
 			formHelp = sirHelp;
