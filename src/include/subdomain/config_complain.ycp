@@ -134,6 +134,7 @@ define symbol profileModeConfigForm() {
 
     map event = $[];
     any id    = nil;
+    boolean modified = false;
 
     while( true ) {
 
@@ -143,10 +144,24 @@ define symbol profileModeConfigForm() {
 		string profile = nil;
 		string mode = nil;
 
-        if ( id == `abort || id == `cancel || id == `next || id == `back ) {
+        if ( id == `abort || id == `cancel || id == `back ) {
 			break;
 
-		} else if ( id == `showAll ) {
+	} else if ( id == `next ) {
+		integer ret = -1;
+	        if ( modified )
+		    ret = (integer) SCR::Execute (.target.bash, "/sbin/rcsubdomain reload > /dev/null 2>&1");
+		else {
+		    y2milestone("No change to Apparmor profile modes - nothing to do.");
+		    break;
+		}
+	        if ( ret == 0)
+		    y2milestone("Apparmor profiles reloaded succesfully.");
+		else 
+		    y2error("Reloading Apparmor profiles failed with exit code %1", ret);
+
+		break;
+	} else if ( id == `showAll ) {
 
 			showAll = true;
 			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
@@ -158,13 +173,13 @@ define symbol profileModeConfigForm() {
 			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
-        } else if ( id == `next || id == `toggle) {
-
+        } else if ( id == `toggle) {
             integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
             profile = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
             mode = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
 
 			updateComplain(id, profile, mode, showAll);
+			modified = true;
 			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
@@ -179,6 +194,7 @@ define symbol profileModeConfigForm() {
 			}
 
 			updateComplain(id, profile, mode, showAll);
+			modified = true;
 			Wizard::SetContentsButtons( _("Configure Profile Mode"), updateModeConfigForm(showAll), modeHelp, Label::BackButton(), _("&Done") );
             continue;
 
