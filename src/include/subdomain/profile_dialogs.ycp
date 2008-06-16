@@ -646,15 +646,17 @@ define list<term> generateTableContents( map paths, map network, map caps, map i
 define map collectHats(map profile, string pathname ) {
   map<string,any> hats = $[];
   y2debug("collecting hats for " + pathname);
-  foreach( string resname, any resource, (map<string,any>) profile,  {
-    if ( resname != pathname ) {
-      map<any,any> hat = tomap(resource);
-      if ( hat != nil ) {
-        y2debug("HAT " + resname);
-        hats = add(hats, resname, resource);
+  if( profile != nil){
+    foreach( string resname, any resource, (map<string,any>) profile,  {
+      if ( resname != pathname ) {
+        map<any,any> hat = tomap(resource);
+        if ( hat != nil ) {
+          y2debug("HAT " + resname);
+          hats = add(hats, resname, resource);
+        }
       }
-    }
-  });
+    });
+  }
   return hats;
 }
 
@@ -1010,6 +1012,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              profile_map[pathname] = profile;
              Settings["PROFILE_MAP"] = profile_map;
            }
+           return `next;
          }
          break;
        } else {

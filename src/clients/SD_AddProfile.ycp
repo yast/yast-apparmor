@@ -46,7 +46,8 @@ define any MainSequence() ``{
 
    map profiles = nil;
    map aliases = $[
-        "showprofile"   : ``(DisplayProfileForm(Settings["CURRENT_PROFILE"]:"", false))
+        "showprofile"   : ``(DisplayProfileForm(Settings["CURRENT_PROFILE"]:"", false)),
+        "showHat"       : ``(DisplayProfileForm(Settings["CURRENT_HAT"]:"", true))
    ];
 
    map sequence = $[
@@ -54,8 +55,14 @@ define any MainSequence() ``{
         "showprofile" : $[
                `abort : `abort,
                `next : `finish,
+               `showhat : "showHat",
                `finish : `finish,
         ],
+        "showHat" : $[
+            `abort : `abort,
+            `next : "showprofile",
+            `finish : `next,
+        ]
     ];
 
     boolean created_new_profile = CreateNewProfile();
