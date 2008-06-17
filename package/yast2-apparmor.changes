@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jun 17 17:21:08 CEST 2008 - kmachalkova@suse.cz
+
+- AA reports: Do not mess up the whole dialog up when user decides
+  to cancel 'Browse' operation ( pass 'nil' filename) (bnc#397851) 
+- Set the reporting dialog title correctly (bnc#397872)
+- Reload subdomain upon exit from profile mode configuration dialog 
+  (if modified) (bnc#369249)
+- Make adding hats to newly added (manually created) profiles work 
+  (bnc#397881)
+- 2.17.0
+
+-------------------------------------------------------------------
 Thu May 29 16:01:09 CEST 2008 - kmachalkova@suse.cz
 
 - Have ag_subdomain and ag_subdomain_profiles understand `result
