@@ -21,6 +21,14 @@
   string type   = "";
   string status = "";
 
+  // no command line support #269891
+  if (size(WFM::Args()) > 0 )
+  {
+    import "CommandLine";
+    CommandLine::Init($[], WFM::Args());
+    return;
+  }
+
   if (!installAppArmorPackages()) {
     return;
   }
