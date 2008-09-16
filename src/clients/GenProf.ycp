@@ -21,6 +21,14 @@
   string type   = "";
   string status = "";
 
+  // no command line support #269891
+  if (size(WFM::Args()) > 0 )
+  {
+	import "CommandLine";
+	CommandLine::Init($[], WFM::Args());
+	return;
+  }
+
   if (!installAppArmorPackages()) {
     return;
   }
@@ -50,6 +58,7 @@
   repeat {
 
     agent_data  = (map) SCR::Read(.genprof);
+    y2internal("%1", agent_data );
 
     string type = (string) agent_data["type"]:"error";
     if(type == "initial_handshake") {

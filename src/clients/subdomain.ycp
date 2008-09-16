@@ -23,6 +23,14 @@ import "Wizard";
 include "subdomain/apparmor_packages.ycp";
 include "subdomain/sd-config.ycp";
 
+// no command line support #269891
+if (size(WFM::Args()) > 0 )
+{
+    import "CommandLine";
+    CommandLine::Init($[], WFM::Args());
+    return;
+}
+
 if (!installAppArmorPackages()) {
   return;
 }
