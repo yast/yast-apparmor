@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Sep 16 16:16:47 CEST 2008 - kmachalkova@suse.cz
+
+- Have all clients understand 'help' commandline option 
+  (bnc#269891 & friends) (many thanks, stano)
+- Reference to up-to-date docs (bnc#177615)
+- 2.17.1
+
+-------------------------------------------------------------------
 Tue Jun 17 17:21:08 CEST 2008 - kmachalkova@suse.cz
 
 - AA reports: Do not mess up the whole dialog up when user decides
