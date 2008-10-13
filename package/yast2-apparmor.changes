@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 13 10:27:37 CEST 2008 - locilka@suse.cz
+
+- Fixed help texts (bnc#430521).
+
+-------------------------------------------------------------------
 Tue Sep 16 16:16:47 CEST 2008 - kmachalkova@suse.cz
 
 - Have all clients understand 'help' commandline option 
