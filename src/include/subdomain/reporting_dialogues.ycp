@@ -1644,18 +1644,18 @@ define void addSchedForm() {
         `VSpacing(1),
         `HBox(
             `ComboBox(`id(`monthdate), `opt(`notify), _("Day of Month"),  [
-                 `item(`id(`md_00)), _("All"),
-                `item(`id(`md_01)), "1", `item(`id(`md_02)), "2", `item(`id(`md_03)), "3",
-                `item(`id(`md_04)), "4", `item(`id(`md_05)), "5", `item(`id(`md_06)), "6",
-                `item(`id(`md_07)), "7", `item(`id(`md_08)), "8", `item(`id(`md_09)), "9",
-                `item(`id(`md_10)), "10", `item(`id(`md_11)), "11", `item(`id(`md_12)), "12",
-                `item(`id(`md_13)), "13", `item(`id(`md_14)), "14", `item(`id(`md_15)), "15",
-                `item(`id(`md_16)), "16", `item(`id(`md_17)), "17", `item(`id(`md_18)), "18",
-                `item(`id(`md_19)), "19", `item(`id(`md_20)), "20", `item(`id(`md_21)), "21",
-                `item(`id(`md_22)), "22", `item(`id(`md_23)), "23", `item(`id(`md_24)), "24",
-                `item(`id(`md_25)), "25", `item(`id(`md_26)), "26", `item(`id(`md_27)), "27",
-                `item(`id(`md_28)), "28", `item(`id(`md_29)), "29", `item(`id(`md_30)), "30",
-                `item(`id(`md_31)), "31" ]),
+                 `item(`id(`md_00), _("All")),
+                `item(`id(`md_01), "1"), `item(`id(`md_02), "2"), `item(`id(`md_03), "3"),
+                `item(`id(`md_04), "4"), `item(`id(`md_05), "5"), `item(`id(`md_06), "6"),
+                `item(`id(`md_07), "7"), `item(`id(`md_08), "8"), `item(`id(`md_09), "9"),
+                `item(`id(`md_10), "10"), `item(`id(`md_11), "9"), `item(`id(`md_12), "12"),
+                `item(`id(`md_13), "13"), `item(`id(`md_14), "14"), `item(`id(`md_15), "15"),
+                `item(`id(`md_16), "16"), `item(`id(`md_17), "17"), `item(`id(`md_18), "18"),
+                `item(`id(`md_19), "19"), `item(`id(`md_20), "20"), `item(`id(`md_21), "21"),
+                `item(`id(`md_22), "22"), `item(`id(`md_23), "23"), `item(`id(`md_24), "24"),
+                `item(`id(`md_25), "25"), `item(`id(`md_26), "26"), `item(`id(`md_27), "27"),
+                `item(`id(`md_28), "28"), `item(`id(`md_29), "29"), `item(`id(`md_30), "30"),
+                `item(`id(`md_31), "31") ]),
             `ComboBox(`id(`weekday), `opt(`notify), _("Day of Week"),  [
                 _("All"), _("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")
             ]),
@@ -2417,7 +2417,7 @@ define symbol displaySchedForm() {
 			break;
 		} else if ( id == `add ) {
 			addSchedForm();
-		    //Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm, mainHelp, "Back", Label::NextButton() );
+		    Wizard::SetContentsButtons( _("AppArmor Security Event Report"), schedForm, mainHelp, Label::BackButton(), Label::NextButton() );
 			updateSched();
 			continue;
 
