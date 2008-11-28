@@ -636,7 +636,7 @@ while ( <STDIN> ) {
 
 		my $db = undef;
 
-		if ( $args->{'name'} =~ /Edit\s+(\w.+)\s+Sched/ ) {
+		if ( defined( $args->{'name'}) && $args->{'name'} =~ /Edit\s+(\w.+)\s+Sched/ ) {
 			$args->{'name'} = $1;
 		}
 
