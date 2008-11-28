@@ -31,14 +31,9 @@
 ################################################################################
 
 use strict;
-use Locale::gettext;
-use POSIX;
 use ycp;
 
 use Immunix::SubDomain;
-
-setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
 
 our $UI_Mode = "yast-agent";
 

@@ -15,8 +15,6 @@
 use strict;
 use Data::Dumper;
 use Getopt::Long;
-use Locale::gettext;
-use POSIX;
 
 use Immunix::SubDomain;
 
@@ -24,10 +22,6 @@ sub usage {
   UI_Info("usage: $0 [ -d /path/to/profiles ] [ -f /path/to/logfile ] [ -m \"mark in log to start processing after\"");
   exit 0;
 }
-
-# initialize the local poo
-setlocale(LC_MESSAGES, "");
-textdomain("yast2-apparmor");
 
 setup_yast();
 
