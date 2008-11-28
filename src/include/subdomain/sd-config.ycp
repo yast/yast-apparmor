@@ -10,29 +10,10 @@
 {
 include "subdomain/config_complain.ycp";
 include "subdomain/event_notification_helptext.ycp";
+include "subdomain/apparmor_ycp_utils.ycp";
 textdomain "yast2-apparmor";
 
 import "Label";
-
-define boolean safeFormat (string emailAddr) {
-
-    boolean isSafe = false;
-    integer emailAddrLength = size(emailAddr);
-
-    // Allow only name@host formats
-    if ( emailAddrLength > 128 ) {
-        Popup::Error( _("Email address is too long.  Please enter another address.") );
-    } else if ( ! regexpmatch(emailAddr, "..+") &&
-		regexpmatch(emailAddr, "/^(\w+\.?)+\w+\@(\w+\.?)+\w+$") ) {
-        isSafe = true;
-	} else if ( regexpmatch(emailAddr, "\\w+@\\w+") ) {
-        isSafe = true;
-    } else {
-        Popup::Error( _("Error in email address format.  Please use \"name@host\" format.") );
-    }
-
-    return isSafe;
-}
 
 define boolean changeAppArmorState(boolean aaEnabled) {
 
@@ -214,7 +195,7 @@ define void displayNotifyForm() {
           if ( t_email == nil || t_email == "" )  {
              Popup::Error( _("An email address is required for each selected notification method.") );
              continue;
-          } else if ( ! safeFormat(t_email) ) {
+          } else if ( ! checkEmailAddress( t_email ) ) {
             continue;
           }
 
@@ -240,7 +221,7 @@ define void displayNotifyForm() {
           if ( s_email == nil || s_email == "" )  {
             Popup::Error( _("An email address is required for each selected notification method.") );
             continue;
-          } else if ( ! safeFormat(s_email) ) {
+          } else if ( ! checkEmailAddress(s_email) ) {
             continue;
           }
 
@@ -265,7 +246,7 @@ define void displayNotifyForm() {
           if ( v_email == nil || v_email == "" )  {
             Popup::Error( _("An email address is required for each selected notification method.") );
             continue;
-          } else if (! safeFormat(v_email) ) {
+          } else if (! checkEmailAddress(v_email) ) {
             continue;
           }
 
