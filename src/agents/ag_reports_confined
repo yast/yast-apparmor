@@ -14,6 +14,9 @@ use Locale::gettext;
 use POSIX;
 use ycp;
 
+#FIXME: I don't know whether localizable strings
+#from this agent are visible somewhere in UI, so possibly
+#gettext include could be removed
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
 

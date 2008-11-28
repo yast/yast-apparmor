@@ -42,6 +42,9 @@ use ycp;
 
 use Immunix::Reports;
 
+#FIXME:gettext is used in this agent but could be as well dropped
+#as the translatable messages go into y2log only, so it does
+#not hurt if they are not localized
 setlocale(LC_MESSAGES, "");
 textdomain("yast2-apparmor");
 
