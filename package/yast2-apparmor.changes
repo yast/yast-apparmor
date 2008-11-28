@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Nov 28 17:53:44 CET 2008 - kmachalkova@suse.cz
+
+- Removed source of UI syntax error - invalid items listing 
+  (bnc#441510) 
+- Integrated jjohansen's patch for bnc#258079 (e-mail address 
+  validation)
+- Make translatable strings from Perl agents really translated (and 
+  correctly encoded) (bnc#448390)
+- 2.17.4
+
+-------------------------------------------------------------------
 Sat Oct 18 10:04:31 CEST 2008 - aschnell@suse.de
 
 - Fixed help text (bnc #436491)
