@@ -93,6 +93,16 @@ define boolean validEmailAddress ( string emailAddr, boolean allowlocal ) {
     return isSafe;
 }
 
+define boolean checkEmailAddress( string emailAddr ) {
+
+    if ( ! validEmailAddress( emailAddr, false ) ) {
+                string err_email_format = _("Email address format invalid.\nEmail address must be less than 129 characters \n and of the format \"name@domain\". \n Please enter another address.");
+                Popup::Error( err_email_format );
+                return false;
+    }
+    return true;
+}
+
 
 /** UI_RepositorySignInDialog
   * Dialog to allow users to signin or register with an external AppArmor
@@ -255,9 +265,8 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
                 Popup::Error( _("Password is required for registration." ));
             } else if ( password != password_verify ) {
                 Popup::Error( _("Passwords do not match. Please re-enter." ));
-            } else if ( ! validEmailAddress( email, false ) ) {
-                string err_email_format = _("Email address format invalid.\nEmail address must be less than 129 characters \n and of the format \"name@domain\". \n Please enter another address.");
-                Popup::Error( err_email_format );
+            } else if ( ! checkEmailAddress( email ) ) {
+                any dummy = nil;
             } else {
                 y2milestone(
                   "APPARMOR : REPO - new registration: \n\tusername [" +

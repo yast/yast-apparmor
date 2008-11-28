@@ -66,9 +66,8 @@ sub safeFormat {
   my $safeFormat = 0;
 
   if ( $emailAddr && (length($emailAddr) < 129) ) {
-
     #if ( $emailAddr =~ /^\w+[\.\w]+\@[\w+\.]+\w+$/ ||
-	if ( $emailAddr =~ /^(\w+\.?)+\w+\@(\w+\.?)+\w+$/ ||
+    if ( $emailAddr =~ /^([\w\+-]+\.?)*[\w\+-]+\@(\w+\.?)*\w+$/ ||
 		      $emailAddr =~ /^\/var\/mail\/\w+$/ ) {
       $safeFormat = 1;
     } else {
