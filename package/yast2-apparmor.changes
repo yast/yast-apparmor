@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 19 15:06:24 CET 2009 - kmachalkova@suse.cz
+
+- Handle switching between two textdomains (yast2-apparmor & 
+  apparmor-utils) so that strings from both are correctly translated
+- 2.18.0  
+
+-------------------------------------------------------------------
 Fri Nov 28 17:53:44 CET 2008 - kmachalkova@suse.cz
 
 - Removed source of UI syntax error - invalid items listing 

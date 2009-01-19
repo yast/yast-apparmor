@@ -21,16 +21,27 @@ use Locale::gettext;
 use POSIX;
 
 use Immunix::SubDomain;
+setup_yast();
+
+#ugly, but we need UTF-8 characters in correct encoding
+#binmode STDOUT, ":raw";
+#binmode STDIN, ":raw";
 
 # !hack hack hack!
 # Can't use YaST _macro for marking strings
 # for translation, so we need to do it Perl-way
 setlocale(LC_MESSAGES, "");
-my $dom = Locale::gettext->domain("yast2-apparmor");
+my $dom = Locale::gettext->domain_raw("yast2-apparmor");
 $dom->dir("/usr/share/YaST2/locale");
-textdomain("yast2-apparmor");
+$dom->codeset("UTF-8");
 
-setup_yast();
+#bubli's own variation of gettext, because we need to
+#translate strings in two textdomains
+sub mygettext
+{
+    my $msgid = shift;
+    return $dom->get("$msgid");
+}
 
 $running_under_genprof = 1;
 
@@ -47,14 +58,14 @@ GetOptions(
 &usage && exit if $help;
 my $sd_mountpoint = check_for_subdomain();
 unless($sd_mountpoint) {
-  fatal_error( decode("utf8", gettext("SubDomain does not appear to be started.  Please enable SubDomain and try again.")));
+  fatal_error( mygettext("SubDomain does not appear to be started.  Please enable SubDomain and try again."));
 }
 
 # let's convert it to full path...
 $profiledir = get_full_path($profiledir);
   
 unless(-d $profiledir) {
-  fatal_error( decode("utf8", sprintf(gettext("Can't find subdomain profiles in %s."), $profiledir)));
+  fatal_error(sprintf(mygettext("Can't find subdomain profiles in %s."), $profiledir));
 }
 
 # what are we profiling?
@@ -66,18 +77,18 @@ do {
   my $f = {
     description  =>
 
-decode( "utf8", gettext("This wizard will help you create a new AppArmor security 
+mygettext("This wizard will help you create a new AppArmor security 
 profile for an application, or you can use it to enhance 
 an existing profile by allowing AppArmor to learn new 
 application behavior. 
 
 Please enter the application name for which you would like
 to create a profile, or select Browse to find the 
-application on your system.") ),
-    file_label   => decode("utf8", gettext("&Application to Profile")),
-    okay_label   => decode("utf8", gettext("&Create")),
-    cancel_label => decode ("utf8", gettext("&Abort")),
-    browse_desc  => decode("utf8", gettext("Select Program to Profile")),
+application on your system.") ,
+    file_label   => mygettext("&Application to Profile"),
+    okay_label   => mygettext("&Create"),
+    cancel_label => mygettext("&Abort"),
+    browse_desc  => mygettext("Select Program to Profile"),
   };
 
   my $profiling = UI_GetFile( $f );
@@ -96,18 +107,18 @@ application on your system.") ),
       chomp($fqdbin);
 
       unless(-x $fqdbin) {
-        UI_Important( decode("utf8", gettext("The specified file is not executable.
+        UI_Important( mygettext("The specified file is not executable.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.")));
+Abort to cancel this wizard."));
       }
     } elsif(-d $profiling) {
-      UI_Important( decode("utf8", gettext("The specified pathname is a directory.
+      UI_Important( mygettext("The specified pathname is a directory.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.")));
+Abort to cancel this wizard."));
     } else {
       if($profiling !~ /\//) {
         my $which = which($profiling);
@@ -117,22 +128,22 @@ Abort to cancel this wizard.")));
       }
 
       unless(-f $fqdbin) {
-        UI_Important( decode("utf8", gettext("The specified file does not exist.
+        UI_Important( mygettext("The specified file does not exist.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.")));
+Abort to cancel this wizard."));
       }
     }
 
   } else {
     # they hit okay without entering anything
-    UI_Important( decode("utf8", gettext("You have not entered or selected an
+    UI_Important( mygettext("You have not entered or selected an
 application to profile.
 
 Please enter an application name to
 continue generating a profile or press
-Abort to cancel this wizard.")));
+Abort to cancel this wizard."));
   }
 
 } until($fqdbin && -x $fqdbin);
@@ -174,8 +185,8 @@ while(not $done_profiling) {
   }
 
   my $q = { };
-  $q->{headers}   = [ decode("utf8", gettext("Profiling")), $fqdbin ];
-  $q->{explanation} = decode("utf8", gettext("Please start the application to be profiled in
+  $q->{headers}   = [ mygettext("Profiling"), $fqdbin ];
+  $q->{explanation} = mygettext("Please start the application to be profiled in
 another window and exercise its functionality now.
 
 Once completed, select the 'Scan' option below in
@@ -183,7 +194,7 @@ order to scan the system logs for AppArmor events.
 
 For each AppArmor event, you will be given the
 opportunity to choose whether the access should be
-allowed or denied."));
+allowed or denied.");
   $q->{functions} = [ "CMD_SCAN", "CMD_FINISHED" ];
   $q->{default}   = "CMD_SCAN";
 
@@ -199,7 +210,7 @@ allowed or denied."));
     } else {
 
       # make them confirm the exit command
-      my $ans = UI_YesNo( decode("utf8", gettext("Are you sure you want to exit?")), "n");
+      my $ans = UI_YesNo( mygettext("Are you sure you want to exit?"), "n");
       if($ans eq "y") {
         $done_profiling = 1;
       }
@@ -222,8 +233,8 @@ for my $p (sort keys %helpers) {
   }
 }
 
-UI_Info(decode("utf8", gettext("Reloaded SubDomain profiles in enforce mode.")));
-UI_Info(decode("utf8", sprintf(gettext('Finished generating profile for %s.'), $fqdbin)));
+UI_Info(mygettext("Reloaded SubDomain profiles in enforce mode."));
+UI_Info( sprintf(mygettext('Finished generating profile for %s.'), $fqdbin));
 
 shutdown_yast();
 
