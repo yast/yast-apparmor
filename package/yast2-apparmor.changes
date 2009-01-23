@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 23 10:37:54 CET 2009 - kmachalkova@suse.cz
+
+- Marking strings for translation in a standard way (using the same
+  trick as in trunk - '__' is an alias for 'mygettext') (bnc#446599)
+- 2.17.6
+
+-------------------------------------------------------------------
 Wed Dec 17 13:56:32 CET 2008 - kmachalkova@suse.cz
 
 - Handle switching between two textdomains (yast2-apparmor & 
