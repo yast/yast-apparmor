@@ -47,6 +47,43 @@ string humanStringToMode( string hs) {
    return ( hs == _("All")) ? "All" : hs ;
 }
 
+string typeToHumanString( string type ) {
+    string ret = ""; 
+
+    switch ( type )
+    {
+	case "Security.Incident.Report":
+	    ret = _("Security Incident Report");
+	    break;
+	case "Applications.Audit":
+	    ret = _("Applications Audit Report");
+	    break;
+	case "Executive.Security.Summary":
+	    ret = _("Executive Security Summary");
+	    break;
+	default:
+	    ret = type;
+	    break;
+    }
+
+    return ret;
+}
+
+string humanStringToType( string hs ) {
+    string ret = "";
+
+    if( hs == _("Security Incident Report"))
+        ret = "Security.Incident.Report";
+    else if ( hs == _("Applications Audit Report"))
+        ret = "Applications.Audit";
+    else if ( hs ==  _("Executive Security Summary"))
+        ret = "Executive.Security.Summary";
+    else
+        ret = hs;
+
+    return ret;
+}
+
 // Grey out inappropriate paging buttons
 define void setPageButtons(integer curPage, integer lastPage) {
 
@@ -1418,7 +1455,7 @@ define symbol displayArchForm() {
 define symbol displayRunForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
 	string type = "";
 
@@ -1895,7 +1932,7 @@ define void addSchedForm() {
 define void editSchedForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
     map<string,string> Settings = $[ ];
     string readSched = "1";
@@ -2024,7 +2061,7 @@ define void editSchedForm() {
 
 	}
 
-	string edLabel = _("Edit Report Schedule for ") + sname;
+	string edLabel = _("Edit Report Schedule for ") + typeToHumanString(sname);
 
     UI::OpenDialog(
 
@@ -2257,7 +2294,7 @@ define void editSchedForm() {
 define void delSchedForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
     map<string,string> Settings = $[ ];
     Settings["del"] = "1";
@@ -2316,7 +2353,7 @@ define void updateSched() {
     list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
 
     foreach ( map record, db, {
-        itemList = add( itemList, `item( `id(key), record["name"]:nil, record["mday"]:nil, record["wday"]:nil,
+        itemList = add( itemList, `item( `id(key), typeToHumanString( record["name"]:"" ), record["mday"]:nil, record["wday"]:nil,
                  record["hour"]:nil, record["mins"]:nil ));
         key = key + 1;
     });
@@ -2365,7 +2402,7 @@ define symbol displaySchedForm() {
     list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
 
     foreach ( map record, db, {
-        itemList = add( itemList, `item( `id(key), record["name"]:nil, record["mday"]:nil, record["wday"]:nil,
+        itemList = add( itemList, `item( `id(key), typeToHumanString( record["name"]:""), record["mday"]:nil, record["wday"]:nil,
                  record["hour"]:nil, record["mins"]:nil ));
         key = key + 1;
     });
@@ -2435,7 +2472,8 @@ define symbol displaySchedForm() {
 		} else if ( id == `delete ) {
 
 			integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-			string repName = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+			string repName =  humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
+			y2milestone("makak vepri %1", repName);
 
 			if ( repName == "Executive.Security.Summary" || repName == "Applications.Audit" || repName == "Security.Incident.Report" ) {
 				Popup::Error( _("Cannot delete a stock report.") );
