@@ -2473,7 +2473,6 @@ define symbol displaySchedForm() {
 
 			integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
 			string repName =  humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
-			y2milestone("makak vepri %1", repName);
 
 			if ( repName == "Executive.Security.Summary" || repName == "Applications.Audit" || repName == "Security.Incident.Report" ) {
 				Popup::Error( _("Cannot delete a stock report.") );
