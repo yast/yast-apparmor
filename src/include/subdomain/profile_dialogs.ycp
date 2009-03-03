@@ -609,7 +609,8 @@ define list<term> generateTableContents( map paths, map network, map caps, map i
       indx = indx+1;   });
 
     foreach( string name, map val, (map<string,map>) paths, {
-      newlist = add( newlist, `item( `id(indx), name, val["mode"]:0));
+      string mode = (string) SCR::Execute(.subdomain_profiles.mode_to_string, val["mode"]:0);
+      newlist = add( newlist, `item( `id(indx), name, mode));
       indx = indx+1;   });
 
     map rules = network["rule"]:$[];
