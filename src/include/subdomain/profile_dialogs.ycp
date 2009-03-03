@@ -66,7 +66,7 @@ define map capabilityEntryPopup( map capmap,
                );
 
                if ( linuxcapname != "" ) {
-                  UI::ChangeWidget( `id(`caps), `CurrentValue, linuxcapname );
+                  UI::ChangeWidget( `id(`caps), `CurrentItem, linuxcapname );
                }
 
                map event2 = $[];
@@ -86,13 +86,13 @@ define map capabilityEntryPopup( map capmap,
                  }
                }  until ( id2 == `save || id2 == `cancel );
 
-               map<string, integer>  newcapmap = $[];
+               map<string, map>  newcapmap = $[];
                if ( id2 == `save ) {
                  list<any> selectedcaps = (list<any>) UI::QueryWidget( `id(`caps), `SelectedItems ); 
                  string s = ""; 
                  foreach( any cpname, selectedcaps, {
                      s = linnametolp[tostring(cpname)]:""; 
-                     newcapmap = add( newcapmap, s, 1); 
+                     newcapmap = add( newcapmap, s, $["audit":0, "set":1]); 
                  });
                }
                UI::CloseDialog();
@@ -848,7 +848,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                 string oldrule = rule;
                 if ( findcap == 0 ) {
                     caps = capabilityEntryPopup( caps, rule, pathname );
-                    profile["capability"] = caps;
+                    profile["allow", "capability"] = caps;
                 } else if ( findinc == 0 ) {
                   Popup::Error(_("Include entries can not be edited. Please select add or delete to manage Include entries."));
                   continue;
@@ -865,15 +865,15 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                 } else {
                   string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
                   map results = fileEntryPopup( rule, perms, pathname );
-                  string newperms = "";
-                  newperms = results["PERM"]:"";
+                  integer newperms = 0;
+                  newperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, results["PERM"]:"");
                   rule = results["FILE"]:"";
                   if ( rule != "" ) {
                     if ( rule != oldrule ) {
                      paths = remove( paths, oldrule );
                     }
-                    paths = add(paths, rule, newperms );
-                    profile["path"] = paths;
+                    paths = add(paths, rule, $[ "audit": 0, "mode": newperms]);
+                    profile["allow","path"] = paths;
                   }
                }
               profile_map[pathname] = profile;
