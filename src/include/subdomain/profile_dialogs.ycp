@@ -11,6 +11,7 @@
 import "Wizard";
 import "Popup";
 import "Label";
+import "Map";
 include "subdomain/capabilities.ycp";
 textdomain  "yast2-apparmor";
 
@@ -590,24 +591,29 @@ define map editNetworkRule( map netRules, string old, string new ) {
 //
 
 define list<term> generateTableContents( map paths, map network, map caps, map includes, map hats ) {
-    list<term> newlist = [];
+   list<term> newlist = [];
+
     integer indx = 0;
 
     foreach( string hatname, any hat, (map<string,map>) hats, {
       newlist = add( newlist, `item( `id(indx), "[+] ^"+ hatname, ""));
       indx = indx+1;   });
+
     foreach( string incname, integer incval, (map<string,integer>) includes, {
       newlist = add( newlist, `item( `id(indx), "#include "  +incname, ""));
       indx = indx+1;   });
-    foreach( string capname, integer capval, (map<string,integer>) caps, {
+
+    foreach( string capname, map capval, (map<string,map>) caps, {
       map capdef = capdefs[capname]:nil;
       newlist = add( newlist, `item( `id(indx), capdef["name"]:"", ""));
       indx = indx+1;   });
-    foreach( string name, string val, (map<string,string>) paths, {
-      newlist = add( newlist, `item( `id(indx), name, val));
+
+    foreach( string name, map val, (map<string,map>) paths, {
+      newlist = add( newlist, `item( `id(indx), name, val["mode"]:0));
       indx = indx+1;   });
 
-    foreach( string family, any any_fam, (map<string,any>) network, {
+    map rules = network["rule"]:$[];
+    foreach( string family, any any_fam, (map<string,map>) rules, {
         if ( is( any_fam, map ) ) {
             foreach( string socktype, any any_type, (map<string,any>) any_fam,  {
                 newlist = add( newlist,
@@ -725,10 +731,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    if ( !hat ) {
      hats = collectHats( profile_map, pathname );
    }
-   map paths     = (map) profile["path"]:$[];
-   map caps      = (map) profile["capability"]:$[];
+   map paths     = (map) profile["allow","path"]:$[];
+   map caps      = (map) profile["allow","capability"]:$[];
    map includes  = (map) profile["include"]:$[];
-   map netdomain = (map) profile["netdomain"]:$[];
+   map netdomain = (map) profile["allow", "netdomain"]:$[];
    list<term> profilelist = generateTableContents( paths,
                                                    netdomain,
                                                    caps,
