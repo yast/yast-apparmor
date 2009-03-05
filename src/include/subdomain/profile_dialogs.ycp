@@ -911,20 +911,21 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
               if ( findcap == 0 ) {
                  string capNameToDelete = linnametolp[rule]:"";
                  caps = remove( caps, capNameToDelete );
-                 profile["capability"] = caps;
+                 profile["allow", "capability"] = caps;
               } else if ( findinc == 0 ) {
                  string includeToRemove = substring( rule, 9);
                  includes = remove( includes, includeToRemove );
                  profile["include"] = includes;
               } else if ( findhat == 0 ) {
                  string hatToRemove = substring( rule, 5);
+		 hats = remove( hats, hatToRemove);
                  profile_map = remove( profile_map, hatToRemove );
               } else if ( findnet == 0 ) {
                   netdomain = deleteNetworkRule( netdomain, rule );
-                  profile["netdomain"] = netdomain;
+                  profile["allow","netdomain"] = netdomain;
               } else {
                  paths = remove( paths, rule );
-                 profile["path"] = paths;
+                 profile["allow","path"] = paths;
               }
               profile_map[pathname] = profile;
               Settings["PROFILE_MAP"] = profile_map;
