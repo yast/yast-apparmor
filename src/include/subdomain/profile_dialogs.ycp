@@ -203,7 +203,7 @@ define string networkEntryPopup( string rule )   {
       event2 = UI::WaitForEvent( timeout_millisec );
       id2    = event2["ID"]:nil; // We'll need this often - cache it
       if ( id2 == `famItems ) {
-          if ( tostring(UI::QueryWidget( `famItems, `Value )) == "`allfam" ) {
+          if ( UI::QueryWidget( `famItems, `Value ) == `allfam ) {
               UI::ChangeWidget( `typeItems, `Value, `alltype );
               UI::ChangeWidget( `typeItems, `Enabled, false );
           } else {
@@ -213,12 +213,12 @@ define string networkEntryPopup( string rule )   {
     }  until ( id2 == `save || id2 == `cancel );
     if ( id2 == `save ) {
         rule = "network";
-        string famselection = tostring(UI::QueryWidget( `famItems, `Value ));
-        string typeselection = tostring(UI::QueryWidget( `typeItems, `Value ));
-        if ( famselection != "`allfam" ) {
-            rule = rule + " " + regexpsub(famselection, "^`(.+)$", "\\1");
-            if ( typeselection != "`alltype" ) {
-                rule = rule + " " + regexpsub(typeselection, "^`(.+)$", "\\1");
+        symbol famselection = (symbol) UI::QueryWidget( `famItems, `Value );
+        symbol typeselection = (symbol) UI::QueryWidget( `typeItems, `Value );
+        if ( famselection != `allfam ) {
+            rule = rule + " " + substring( tostring(famselection), 1);
+            if ( typeselection != `alltype ) {
+                rule = rule + " " + substring( tostring(typeselection), 1);
             }
         }
     } else {
@@ -520,53 +520,69 @@ define map dirEntryPopup( string filename, string perms, string profile )   {
 
 
 define map deleteNetworkRule( map netRules, string rule ) {
+    map audit = netRules["audit"]:$[];
+    map rules = netRules["rule"]:$[];
     list netlist = splitstring( rule, " " );
     integer netrulesize = size( netlist );
     string family = "";
     string sockettype = "";
 
     if ( netrulesize == 1 ) {
-        return ( $[] );
+      audit = $[];
+      rules = $[];
     } else if ( netrulesize == 2 ) {
       family = netlist[1]:"";
-      netRules = remove( netRules, family );
+      audit = remove( audit, family );
+      rules = remove( rules, family );
     } else if ( netrulesize == 3 ) {
         family = netlist[1]:"";
         sockettype = netlist[2]:"";
-        any fam =  netRules[family]:nil;
+	map a = audit[family]:$[];
+	map r = rules[family]:$[];
+	a = remove(a, sockettype);
+	r = remove(r, sockettype);
+	audit[family] = a;
+	rules[family] = r;
+        /*any fam =  netRules[family]:nil;
         if ( is( fam, map ) ) {
             fam = remove( ((map) fam), sockettype );
             netRules[family] = fam;
         } else {
             y2warning("deleteNetworkRule: deleting non-existing rule: " +
                        rule);
-        }
+        }*/
     }
-    return( netRules );
+    return $["audit" : audit, "rule" : rules];
 }
 
 define map addNetworkRule( map netRules, string rule ) {
+    map audit = netRules["audit"]:$[];
+    map rules = netRules["rule"]:$[];
     list netlist = splitstring( rule, " " );
     integer netrulesize = size( netlist );
     string family = "";
     string sockettype = "";
 
     if ( netrulesize == 1 ) {
-        return ( $["all":1] );
-    } else if ( netrulesize == 2 ) {
-        //string all_net = netRules["all"]:nil;
-        if ( netRules["all"]:nil != nil ) {
-            netRules = remove( netRules, "all" );
-        }
-        family = netlist[1]:"";
-        netRules[family] = "1";
-    } else if ( netrulesize == 3 ) {
-        if ( netRules["all"]:nil != nil ) {
-            netRules = remove( netRules, "all" );
-        }
-        family = netlist[1]:"";
-        sockettype = netlist[2]:"";
-        any any_fam = netRules[family]:nil;
+        return ( $["audit" : $["all":1], "rule" : $["all" :1] ] );
+    } 
+    else{
+	if (haskey(audit, "all") && haskey(rules, "all")) {
+	    audit = remove(audit, "all");
+	    rules = remove(rules, "all");
+	}
+
+	if ( netrulesize == 2 ) {
+            family = netlist[1]:"";
+            audit[family] = 0;
+            rules[family] = 1;
+        } else if ( netrulesize == 3 ) {
+            family = netlist[1]:"";
+            sockettype = netlist[2]:"";
+	    audit[family] = add(audit[family]:$[], sockettype,0);
+	    rules[family] = add(rules[family]:$[], sockettype,1);
+	}
+        /*any any_fam = netRules[family]:nil;
         map fam = nil;
         if ( is( any_fam, map ) )  {
            fam = (map) any_fam;
@@ -575,9 +591,9 @@ define map addNetworkRule( map netRules, string rule ) {
             fam = $[];
         }
         fam[sockettype] = "1";
-        netRules[family] = fam;
+        netRules[family] = fam;*/
     }
-    return netRules;
+    return $[ "audit": audit, "rule": rules];
 }
 
 define map editNetworkRule( map netRules, string old, string new ) {
@@ -614,7 +630,7 @@ define list<term> generateTableContents( map paths, map network, map caps, map i
       indx = indx+1;   });
 
     map rules = network["rule"]:$[];
-    foreach( string family, any any_fam, (map<string,map>) rules, {
+    foreach( string family, any any_fam, (map<string,any>) rules, {
         if ( is( any_fam, map ) ) {
             foreach( string socktype, any any_type, (map<string,any>) any_fam,  {
                 newlist = add( newlist,
@@ -861,7 +877,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                   if ( newrule != "" && newrule != rule ) {
                       netdomain = editNetworkRule( netdomain, rule, newrule );
                   }
-                  profile["netdomain"] = netdomain;
+                  profile["allow","netdomain"] = netdomain;
                 } else {
                   string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
                   map results = fileEntryPopup( rule, perms, pathname );
