@@ -980,16 +980,14 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              return `showhat;
            }
        } else if ( id == `include ) {
-           any ci = SCR::Read(.subdomain, "custom-includes");
-           list <any> customIncludes =  tolist(ci);
+	   list <string> customIncludes = (list <string>) SCR::Read(.subdomain, "custom-includes");
            string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File To Include"));
            if ( newInclude == nil || (string)newInclude == "" ) {
              continue;
            }
            list <string> validIncludes = [ "/etc/apparmor.d/abstractions", "/etc/apparmor.d/program-chunks", "/etc/apparmor.d/tunables" ];
-           foreach( any incPath, (list<any>) customIncludes, {
-             string incPathStr = tostring(incPath);
-             validIncludes = add( validIncludes, "/etc/apparmor.d/" + incPathStr);
+           foreach( string incPath,  customIncludes, {
+             validIncludes = add( validIncludes, "/etc/apparmor.d/" + incPath);
            });
 
            integer result  = 0;

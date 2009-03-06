@@ -80,7 +80,8 @@ while ( <STDIN> ) {
       $result = Immunix::Notify::getNotifyStatus();
     } elsif ( $command eq "Read" and $argument eq 'custom-includes') {
       my $cfg = Immunix::SubDomain::read_config("logprof.conf");
-      ycp::ycpReturn(\@$cfg->{settings}{custom_includes});
+      my @ret = split(' ', $cfg->{settings}{custom_includes});
+      ycp::ycpReturn(\@ret);
       $donereturn = 1;
     } elsif ( $command eq "Execute" and $argument eq 'profile-syntax-check') {
       $result = profileSyntaxCheck();
