@@ -11,6 +11,7 @@
 import "Wizard";
 import "Popup";
 import "Label";
+import "Map";
 include "subdomain/capabilities.ycp";
 textdomain  "yast2-apparmor";
 
@@ -65,7 +66,7 @@ define map capabilityEntryPopup( map capmap,
                );
 
                if ( linuxcapname != "" ) {
-                  UI::ChangeWidget( `id(`caps), `CurrentValue, linuxcapname );
+                  UI::ChangeWidget( `id(`caps), `CurrentItem, linuxcapname );
                }
 
                map event2 = $[];
@@ -85,13 +86,13 @@ define map capabilityEntryPopup( map capmap,
                  }
                }  until ( id2 == `save || id2 == `cancel );
 
-               map<string, integer>  newcapmap = $[];
+               map<string, map>  newcapmap = $[];
                if ( id2 == `save ) {
                  list<any> selectedcaps = (list<any>) UI::QueryWidget( `id(`caps), `SelectedItems ); 
                  string s = ""; 
                  foreach( any cpname, selectedcaps, {
                      s = linnametolp[tostring(cpname)]:""; 
-                     newcapmap = add( newcapmap, s, 1); 
+                     newcapmap = add( newcapmap, s, $["audit":0, "set":1]); 
                  });
                }
                UI::CloseDialog();
@@ -202,7 +203,7 @@ define string networkEntryPopup( string rule )   {
       event2 = UI::WaitForEvent( timeout_millisec );
       id2    = event2["ID"]:nil; // We'll need this often - cache it
       if ( id2 == `famItems ) {
-          if ( tostring(UI::QueryWidget( `famItems, `Value )) == "`allfam" ) {
+          if ( UI::QueryWidget( `famItems, `Value ) == `allfam ) {
               UI::ChangeWidget( `typeItems, `Value, `alltype );
               UI::ChangeWidget( `typeItems, `Enabled, false );
           } else {
@@ -212,12 +213,12 @@ define string networkEntryPopup( string rule )   {
     }  until ( id2 == `save || id2 == `cancel );
     if ( id2 == `save ) {
         rule = "network";
-        string famselection = tostring(UI::QueryWidget( `famItems, `Value ));
-        string typeselection = tostring(UI::QueryWidget( `typeItems, `Value ));
-        if ( famselection != "`allfam" ) {
-            rule = rule + " " + regexpsub(famselection, "^`(.+)$", "\\1");
-            if ( typeselection != "`alltype" ) {
-                rule = rule + " " + regexpsub(typeselection, "^`(.+)$", "\\1");
+        symbol famselection = (symbol) UI::QueryWidget( `famItems, `Value );
+        symbol typeselection = (symbol) UI::QueryWidget( `typeItems, `Value );
+        if ( famselection != `allfam ) {
+            rule = rule + " " + substring( tostring(famselection), 1);
+            if ( typeselection != `alltype ) {
+                rule = rule + " " + substring( tostring(typeselection), 1);
             }
         }
     } else {
@@ -519,53 +520,69 @@ define map dirEntryPopup( string filename, string perms, string profile )   {
 
 
 define map deleteNetworkRule( map netRules, string rule ) {
+    map audit = netRules["audit"]:$[];
+    map rules = netRules["rule"]:$[];
     list netlist = splitstring( rule, " " );
     integer netrulesize = size( netlist );
     string family = "";
     string sockettype = "";
 
     if ( netrulesize == 1 ) {
-        return ( $[] );
+      audit = $[];
+      rules = $[];
     } else if ( netrulesize == 2 ) {
       family = netlist[1]:"";
-      netRules = remove( netRules, family );
+      audit = remove( audit, family );
+      rules = remove( rules, family );
     } else if ( netrulesize == 3 ) {
         family = netlist[1]:"";
         sockettype = netlist[2]:"";
-        any fam =  netRules[family]:nil;
+	map a = audit[family]:$[];
+	map r = rules[family]:$[];
+	a = remove(a, sockettype);
+	r = remove(r, sockettype);
+	audit[family] = a;
+	rules[family] = r;
+        /*any fam =  netRules[family]:nil;
         if ( is( fam, map ) ) {
             fam = remove( ((map) fam), sockettype );
             netRules[family] = fam;
         } else {
             y2warning("deleteNetworkRule: deleting non-existing rule: " +
                        rule);
-        }
+        }*/
     }
-    return( netRules );
+    return $["audit" : audit, "rule" : rules];
 }
 
 define map addNetworkRule( map netRules, string rule ) {
+    map audit = netRules["audit"]:$[];
+    map rules = netRules["rule"]:$[];
     list netlist = splitstring( rule, " " );
     integer netrulesize = size( netlist );
     string family = "";
     string sockettype = "";
 
     if ( netrulesize == 1 ) {
-        return ( $["all":1] );
-    } else if ( netrulesize == 2 ) {
-        //string all_net = netRules["all"]:nil;
-        if ( netRules["all"]:nil != nil ) {
-            netRules = remove( netRules, "all" );
-        }
-        family = netlist[1]:"";
-        netRules[family] = "1";
-    } else if ( netrulesize == 3 ) {
-        if ( netRules["all"]:nil != nil ) {
-            netRules = remove( netRules, "all" );
-        }
-        family = netlist[1]:"";
-        sockettype = netlist[2]:"";
-        any any_fam = netRules[family]:nil;
+        return ( $["audit" : $["all":1], "rule" : $["all" :1] ] );
+    } 
+    else{
+	if (haskey(audit, "all") && haskey(rules, "all")) {
+	    audit = remove(audit, "all");
+	    rules = remove(rules, "all");
+	}
+
+	if ( netrulesize == 2 ) {
+            family = netlist[1]:"";
+            audit[family] = 0;
+            rules[family] = 1;
+        } else if ( netrulesize == 3 ) {
+            family = netlist[1]:"";
+            sockettype = netlist[2]:"";
+	    audit[family] = add(audit[family]:$[], sockettype,0);
+	    rules[family] = add(rules[family]:$[], sockettype,1);
+	}
+        /*any any_fam = netRules[family]:nil;
         map fam = nil;
         if ( is( any_fam, map ) )  {
            fam = (map) any_fam;
@@ -574,9 +591,9 @@ define map addNetworkRule( map netRules, string rule ) {
             fam = $[];
         }
         fam[sockettype] = "1";
-        netRules[family] = fam;
+        netRules[family] = fam;*/
     }
-    return netRules;
+    return $[ "audit": audit, "rule": rules];
 }
 
 define map editNetworkRule( map netRules, string old, string new ) {
@@ -590,24 +607,30 @@ define map editNetworkRule( map netRules, string old, string new ) {
 //
 
 define list<term> generateTableContents( map paths, map network, map caps, map includes, map hats ) {
-    list<term> newlist = [];
+   list<term> newlist = [];
+
     integer indx = 0;
 
     foreach( string hatname, any hat, (map<string,map>) hats, {
       newlist = add( newlist, `item( `id(indx), "[+] ^"+ hatname, ""));
       indx = indx+1;   });
+
     foreach( string incname, integer incval, (map<string,integer>) includes, {
       newlist = add( newlist, `item( `id(indx), "#include "  +incname, ""));
       indx = indx+1;   });
-    foreach( string capname, integer capval, (map<string,integer>) caps, {
+
+    foreach( string capname, map capval, (map<string,map>) caps, {
       map capdef = capdefs[capname]:nil;
       newlist = add( newlist, `item( `id(indx), capdef["name"]:"", ""));
       indx = indx+1;   });
-    foreach( string name, string val, (map<string,string>) paths, {
-      newlist = add( newlist, `item( `id(indx), name, val));
+
+    foreach( string name, map val, (map<string,map>) paths, {
+      string mode = (string) SCR::Execute(.subdomain_profiles.mode_to_string, val["mode"]:0);
+      newlist = add( newlist, `item( `id(indx), name, mode));
       indx = indx+1;   });
 
-    foreach( string family, any any_fam, (map<string,any>) network, {
+    map rules = network["rule"]:$[];
+    foreach( string family, any any_fam, (map<string,any>) rules, {
         if ( is( any_fam, map ) ) {
             foreach( string socktype, any any_type, (map<string,any>) any_fam,  {
                 newlist = add( newlist,
@@ -725,10 +748,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    if ( !hat ) {
      hats = collectHats( profile_map, pathname );
    }
-   map paths     = (map) profile["path"]:$[];
-   map caps      = (map) profile["capability"]:$[];
+   map paths     = (map) profile["allow","path"]:$[];
+   map caps      = (map) profile["allow","capability"]:$[];
    map includes  = (map) profile["include"]:$[];
-   map netdomain = (map) profile["netdomain"]:$[];
+   map netdomain = (map) profile["allow", "netdomain"]:$[];
    list<term> profilelist = generateTableContents( paths,
                                                    netdomain,
                                                    caps,
@@ -828,11 +851,11 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    {
         event = UI::WaitForEvent( timeout_millisec );
         id    = event["ID"]:nil; // We'll need this often - cache it
+        integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
         if ( (( id == `table ) && (event["EventReason"]:nil == "Activated" )) ||
              ( id == `edit) )
         {
                 // Widget activated in the table
-                integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
                 string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
                 integer findcap = find( rule, "CAP_");
                 integer findinc = find( rule, "#include");
@@ -841,7 +864,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                 string oldrule = rule;
                 if ( findcap == 0 ) {
                     caps = capabilityEntryPopup( caps, rule, pathname );
-                    profile["capability"] = caps;
+                    profile["allow", "capability"] = caps;
                 } else if ( findinc == 0 ) {
                   Popup::Error(_("Include entries can not be edited. Please select add or delete to manage Include entries."));
                   continue;
@@ -854,19 +877,19 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                   if ( newrule != "" && newrule != rule ) {
                       netdomain = editNetworkRule( netdomain, rule, newrule );
                   }
-                  profile["netdomain"] = netdomain;
+                  profile["allow","netdomain"] = netdomain;
                 } else {
                   string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
                   map results = fileEntryPopup( rule, perms, pathname );
-                  string newperms = "";
-                  newperms = results["PERM"]:"";
+                  integer newperms = 0;
+                  newperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, results["PERM"]:"");
                   rule = results["FILE"]:"";
                   if ( rule != "" ) {
                     if ( rule != oldrule ) {
                      paths = remove( paths, oldrule );
                     }
-                    paths = add(paths, rule, newperms );
-                    profile["path"] = paths;
+                    paths = add(paths, rule, $[ "audit": 0, "mode": newperms]);
+                    profile["allow","path"] = paths;
                   }
                }
               profile_map[pathname] = profile;
@@ -877,9 +900,9 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, itemselected );
        } else if ( id == `delete ) {
-              integer selectedid =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-              string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(selectedid)), 1, "");
+              string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
               integer findcap = find( rule, "CAP_");
               integer findinc = find( rule, "#include");
               integer findhat = find( rule, "[+] ^");
@@ -888,20 +911,21 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
               if ( findcap == 0 ) {
                  string capNameToDelete = linnametolp[rule]:"";
                  caps = remove( caps, capNameToDelete );
-                 profile["capability"] = caps;
+                 profile["allow", "capability"] = caps;
               } else if ( findinc == 0 ) {
                  string includeToRemove = substring( rule, 9);
                  includes = remove( includes, includeToRemove );
                  profile["include"] = includes;
               } else if ( findhat == 0 ) {
                  string hatToRemove = substring( rule, 5);
+		 hats = remove( hats, hatToRemove);
                  profile_map = remove( profile_map, hatToRemove );
               } else if ( findnet == 0 ) {
                   netdomain = deleteNetworkRule( netdomain, rule );
-                  profile["netdomain"] = netdomain;
+                  profile["allow","netdomain"] = netdomain;
               } else {
                  paths = remove( paths, rule );
-                 profile["path"] = paths;
+                 profile["allow","path"] = paths;
               }
               profile_map[pathname] = profile;
               Settings["PROFILE_MAP"] = profile_map;
@@ -911,9 +935,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, (itemselected == 0) ? 0 : itemselected -1 );
        } else if ( id == `file || id == `dir ) {
               string addfname = "";
-              string addperms = "";
+              integer addperms = 0;
               map newentry = nil;
               if ( id == `dir ) {
                  newentry = dirEntryPopup( "", "", pathname );
@@ -924,10 +949,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                 continue;
               }
               addfname = newentry["FILE"]:"";
-              addperms = newentry["PERM"]:"";
+              addperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, newentry["PERM"]:"");
               // Make sure that the entry doesn't already exist
-              paths = add( paths, addfname, addperms );
-              profile["path"] = paths;
+              paths = add( paths, addfname, $["audit":0, "mode": addperms] );
+              profile["allow","path"] = paths;
               profile_map[pathname] = profile;
               Settings["PROFILE_MAP"] = profile_map;
               list<term> profilelist = generateTableContents( paths,
@@ -936,9 +961,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, itemselected );
        } else if ( id == `cap ) {
            caps = capabilityEntryPopup( caps, "", pathname );
-           profile["capability"] = caps;
+           profile["allow","capability"] = caps;
            profile_map[pathname] = profile;
            Settings["PROFILE_MAP"] = profile_map;
            list<term> profilelist = generateTableContents( paths,
@@ -956,16 +982,14 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
              return `showhat;
            }
        } else if ( id == `include ) {
-           any ci = SCR::Read(.subdomain, "custom-includes");
-           list <any> customIncludes =  tolist(ci);
+	   list <string> customIncludes = (list <string>) SCR::Read(.subdomain, "custom-includes");
            string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File To Include"));
            if ( newInclude == nil || (string)newInclude == "" ) {
              continue;
            }
            list <string> validIncludes = [ "/etc/apparmor.d/abstractions", "/etc/apparmor.d/program-chunks", "/etc/apparmor.d/tunables" ];
-           foreach( any incPath, (list<any>) customIncludes, {
-             string incPathStr = tostring(incPath);
-             validIncludes = add( validIncludes, "/etc/apparmor.d/" + incPathStr);
+           foreach( string incPath,  customIncludes, {
+             validIncludes = add( validIncludes, "/etc/apparmor.d/" + incPath);
            });
 
            integer result  = 0;
@@ -1000,7 +1024,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            string newrule = networkEntryPopup( "" );
            if ( newrule != "" ) {
                netdomain = addNetworkRule( netdomain, newrule );
-               profile["netdomain"] = netdomain;
+               profile["allow","netdomain"] = netdomain;
                profile_map[pathname] = profile;
                Settings["PROFILE_MAP"] = profile_map;
                list<term> profilelist = generateTableContents( paths,
@@ -1026,8 +1050,8 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            }
          } else {
            if ( ! haskey(hats, Settings["CURRENT_HAT"]:"") ) {
-             profile["path"] = paths;
-             profile["capability"] = caps;
+             profile["allow","path"] = paths;
+             profile["allow","capability"] = caps;
              profile["include"] = includes;
              profile_map[pathname] = profile;
              Settings["PROFILE_MAP"] = profile_map;
