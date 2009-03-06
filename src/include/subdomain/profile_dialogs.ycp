@@ -937,7 +937,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
               UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `file || id == `dir ) {
               string addfname = "";
-              string addperms = "";
+              integer addperms = 0;
               map newentry = nil;
               if ( id == `dir ) {
                  newentry = dirEntryPopup( "", "", pathname );
@@ -948,10 +948,10 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                 continue;
               }
               addfname = newentry["FILE"]:"";
-              addperms = newentry["PERM"]:"";
+              addperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, newentry["PERM"]:"");
               // Make sure that the entry doesn't already exist
-              paths = add( paths, addfname, addperms );
-              profile["path"] = paths;
+              paths = add( paths, addfname, $["audit":0, "mode": addperms] );
+              profile["allow","path"] = paths;
               profile_map[pathname] = profile;
               Settings["PROFILE_MAP"] = profile_map;
               list<term> profilelist = generateTableContents( paths,
@@ -962,7 +962,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
               UI::ChangeWidget( `id(`table), `Items, profilelist );
        } else if ( id == `cap ) {
            caps = capabilityEntryPopup( caps, "", pathname );
-           profile["capability"] = caps;
+           profile["allow","capability"] = caps;
            profile_map[pathname] = profile;
            Settings["PROFILE_MAP"] = profile_map;
            list<term> profilelist = generateTableContents( paths,
@@ -1024,7 +1024,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            string newrule = networkEntryPopup( "" );
            if ( newrule != "" ) {
                netdomain = addNetworkRule( netdomain, newrule );
-               profile["netdomain"] = netdomain;
+               profile["allow","netdomain"] = netdomain;
                profile_map[pathname] = profile;
                Settings["PROFILE_MAP"] = profile_map;
                list<term> profilelist = generateTableContents( paths,
@@ -1050,8 +1050,8 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
            }
          } else {
            if ( ! haskey(hats, Settings["CURRENT_HAT"]:"") ) {
-             profile["path"] = paths;
-             profile["capability"] = caps;
+             profile["allow","path"] = paths;
+             profile["allow","capability"] = caps;
              profile["include"] = includes;
              profile_map[pathname] = profile;
              Settings["PROFILE_MAP"] = profile_map;
