@@ -851,11 +851,11 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    {
         event = UI::WaitForEvent( timeout_millisec );
         id    = event["ID"]:nil; // We'll need this often - cache it
+        integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
         if ( (( id == `table ) && (event["EventReason"]:nil == "Activated" )) ||
              ( id == `edit) )
         {
                 // Widget activated in the table
-                integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
                 string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
                 integer findcap = find( rule, "CAP_");
                 integer findinc = find( rule, "#include");
@@ -900,9 +900,9 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, itemselected );
        } else if ( id == `delete ) {
-              integer selectedid =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-              string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(selectedid)), 1, "");
+              string rule = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
               integer findcap = find( rule, "CAP_");
               integer findinc = find( rule, "#include");
               integer findhat = find( rule, "[+] ^");
@@ -935,6 +935,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, (itemselected == 0) ? 0 : itemselected -1 );
        } else if ( id == `file || id == `dir ) {
               string addfname = "";
               integer addperms = 0;
@@ -960,6 +961,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
                                                               includes,
                                                               hats );
               UI::ChangeWidget( `id(`table), `Items, profilelist );
+              UI::ChangeWidget( `id(`table), `CurrentItem, itemselected );
        } else if ( id == `cap ) {
            caps = capabilityEntryPopup( caps, "", pathname );
            profile["allow","capability"] = caps;
