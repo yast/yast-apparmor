@@ -68,7 +68,7 @@ while ( <STDIN> ) {
 
     my ($command, $path, $argument) = ycp::ParseCommand ($_);
     $argument = "NONE" if ( ! $argument ); 
-    ycp::y2milestone ("DOM command: $command, path: $path, argument: $argument");
+    ycp::y2debug ("DOM command: $command, path: $path, argument: $argument");
 
 	my $result = undef;
 	if ( $command && $path && $argument ) {
