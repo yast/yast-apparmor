@@ -36,8 +36,8 @@ define map capabilityEntryPopup( map capmap,
                        capbool = false;
                 });
                 string info =  (string) cdef["info"]:_("<b>Capability Selection</b>.
-                               <br>Select desired capabilities for this profile. 
-                               Select a Capability name to see information about the capability.");
+<br>Select desired capabilities for this profile. 
+Select a Capability name to see information about the capability.");
                 string frametitle = "  " + _("Capabilities enabled for the profile") + " " + profile + "   ";
                 UI::OpenDialog(
                 `VBox(
@@ -726,9 +726,10 @@ term intro = `VBox(
       // Check for no application entry in the dialog
       if ( hatname == "" ) {
 		Popup::Error(_("You have not given a name for the hat you want to add.\nPlease 
-			enter a hat name to create a new hat, or press Abort to cancel this wizard."));
+enter a hat name to create a new hat, or press Abort to cancel this wizard."));
       } else if ( haskey( currentHats, hatname ) ) {
-		Popup::Error(_("The profile already contains the provided hat name.  Please enter a different name to try again, or press Abort to cancel this wizard."));
+		Popup::Error(_("The profile already contains the provided hat name.  
+Please enter a different name to try again, or press Abort to cancel this wizard."));
       } else {
         Settings["CURRENT_HAT"] = hatname;
         UI::CloseDialog();
@@ -762,11 +763,15 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    // FIXME: format these texts better
 
    /* help text */
-   string help1 = _("<p>In this form you can view and modify the contents of an individual profile. For existing entries you can double click the permissions to access a modification dialog.</p>");
+   string help1 = _("<p>In this form you can view and modify the contents of an individual profile. 
+For existing entries you can double click the permissions to access a modification dialog.</p>");
 
    /* help text */
-   string help2 = _("<p><b>Permission Definitions:</b><br><code> r - read <br> w -
-   write<br>l - link<br>m - mmap PROT_EXEC<br>k - file locking<br>a - file append<br>x - execute<br> i - inherit<br> p - discrete profile<br> P - discrete profile <br>      (*clean exec)<br> u - unconstrained<br> U -unconstrained<br>      (*clean exec)</code></p>");
+   string help2 = _("<p><b>Permission Definitions:</b><br><code> r - read <br> 
+w -write<br>l - link<br>m - mmap PROT_EXEC<br>k - file locking<br>
+a - file append<br>x - execute<br> i - inherit<br> p - discrete profile<br>
+P - discrete profile <br> (*clean exec)<br> u - unconstrained<br> 
+U -unconstrained<br> (*clean exec)</code></p>");
 
    /* help text */
    string help3 = _("<p><b>Add Entry:</b><br>Select the type of resource to add from the drop down list.</p>");
@@ -778,11 +783,18 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    /* help text - part x3 */
    string help6 = _("<li><b>Capability</b><br>Add a capability entry to this profile</li>");
    /* help text - part x4 */
-   string help7 = _("<li><b>Include</b><br>Add an include entry to this profile. This option includes the profile entry contents of another file in this profile at load time.</li>");
+   string help7 = _("<li><b>Include</b><br>Add an include entry to this profile. This option 
+includes the profile entry contents of another file in this profile at load time.</li>");
    /* help text - part x5 */
-   string help_net = _("<li><b>Network Entry</b><br>Add a network rule entry to this profile. This option will allow you to specify network access privileges for the profile. You may specify a network address family and socket type.</li>");
+   string help_net = _("<li><b>Network Entry</b><br>Add a network rule entry to this profile. 
+This option will allow you to specify network access privileges for the profile. 
+You may specify a network address family and socket type.</li>");
    /* help text - part x6 */
-   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor Administration Guide.</li>");
+   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. 
+This option is analagous to manually creating a new profile, which can selected 
+during execution only in the context of being asked for by a <b>changehat aware</b> 
+application. For more information on changehat please see <b>man changehat</b> on your 
+system or the Novell AppArmor Administration Guide.</li>");
    /* help text - part x7 */
    string helpEdit = _("</ul></p><p><b>Edit Entry:</b><br>Edit the selected entry.</p>");
 
@@ -790,9 +802,11 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    string help8 = _("<p><b>Delete Entry:</b><br>Removes the selected entry from this profile.</p>");
 
    /* help text - part y1 */
-   string help9 = _("<p><b>*Clean Exec</b><br>The Clean Exec option for the discrete profile and unconstrained execute permissions provide added security by stripping the environment that is inherited by the child program of specific variables. These variables are:");
+   string help9 = _("<p><b>*Clean Exec</b><br>The Clean Exec option for the discrete profile 
+and unconstrained execute permissions provide added security by stripping the environment 
+that is inherited by the child program of specific variables. These variables are:");
    /* help text - part y2 */
-   string help10 = _("<ul> <li>GCONV_PATH</li><li>GETCONF_DIR</li><li>HOSTALIASES</li><li>LD_AUDIT</li><li>LD_DEBUG</li><li>LD_DEBUG_OUTPUT</li><li>LD_DYNAMIC_WEAK</li><li>LD_LIBRARY_PATH</li><li>LD_ORIGIN_PATH</li><li>LD_PRELOAD</li><li>LD_PROFILE</li><li>LD_SHOW_AUXV</li><li>LD_USE_LOAD_BIAS</li><li>LOCALDOMAIN</li><li>LOCPATH</li><li>MALLOC_TRACE</li><li>NLSPATH</li><li>RESOLV_HOST_CONF</li><li>RES_OPTION</li><li>TMPDIR</li><li>TZDIR</li></ul></p>");
+   string help10 = "<ul> <li>GCONV_PATH</li><li>GETCONF_DIR</li><li>HOSTALIASES</li><li>LD_AUDIT</li><li>LD_DEBUG</li><li>LD_DEBUG_OUTPUT</li><li>LD_DYNAMIC_WEAK</li><li>LD_LIBRARY_PATH</li><li>LD_ORIGIN_PATH</li><li>LD_PRELOAD</li><li>LD_PROFILE</li><li>LD_SHOW_AUXV</li><li>LD_USE_LOAD_BIAS</li><li>LOCALDOMAIN</li><li>LOCPATH</li><li>MALLOC_TRACE</li><li>NLSPATH</li><li>RESOLV_HOST_CONF</li><li>RES_OPTION</li><li>TMPDIR</li><li>TZDIR</li></ul></p>";
 
 
    integer listnum = 0;
