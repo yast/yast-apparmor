@@ -6,7 +6,7 @@ ynclude_DATA =                  \
 	apparmor_ycp_utils.ycp \
 	capabilities.ycp \
 	config_complain.ycp \
-	event_notification_helptext.ycp \
+	helps.ycp \
 	profile_dialogs.ycp \
 	report_helptext.ycp \
 	reporting_archived_dialogs.ycp \

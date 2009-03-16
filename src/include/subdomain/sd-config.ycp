@@ -9,7 +9,7 @@
   ------------------------------------------------------------------*/
 {
 include "subdomain/config_complain.ycp";
-include "subdomain/event_notification_helptext.ycp";
+include "subdomain/helps.ycp";
 include "subdomain/apparmor_ycp_utils.ycp";
 textdomain "yast2-apparmor";
 
@@ -162,7 +162,7 @@ define void displayNotifyForm() {
       );
 
       Wizard::CreateDialog();
-      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, EventNotifyHelpText, Label::BackButton(), Label::OKButton());
+      Wizard::SetContentsButtons(_("Security Event Notification"), event_config, helps["EventNotifyHelpText"]:"", Label::BackButton(), Label::OKButton());
       Wizard::DisableBackButton();
 
       any ntInput = nil;
@@ -317,7 +317,14 @@ define symbol displayAppArmorConfig () {
 
   /* Network dialog caption */
   string caption = _("AppArmor Configuration");
-  string help = _("<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement module is loaded and functioning.</p> <p><b>Security Event Notification</b><br>Configure this tool if you want to be notified by email when access violations have occurred.</p> <p><b>Profile Modes</b><br>Use this tool to change the way that AppArmor uses individual profiles.</p>");
+  string help = _("<p><b>AppArmor Status</b><br>This reports whether the AppArmor policy enforcement 
+module is loaded and functioning.</p>") + 
+
+_("<p><b>Security Event Notification</b><br>Configure this tool if you want 
+to be notified by email when access violations have occurred.</p>") + 
+
+_("<p><b>Profile Modes</b><br>Use this tool to change the way that AppArmor 
+uses individual profiles.</p>");
 
   term contents =
   `HVCenter(
