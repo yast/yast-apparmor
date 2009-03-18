@@ -54,7 +54,11 @@ pull-down list, you will be sent daily notifications of
 security events, if they occur.</li>") +
 
 	_("<li> Enter the email address of those who should receive 
-the Terse, Summary, or Verbose notifications. </li>") +
+the Terse, Summary, or Verbose notifications.If there is no local 
+SMTP server configured to distribute e-mails from this host to the 
+domain you entered, enter for example <i><user>@localhost</i> 
+and enable <i><user></i> to receive system mail, if it is not 
+a root user. </li>") +
 
 	_("<li>Select the lowest <b>severity level</b> for which a notification 
 should be sent. Security events will be logged and the notifications 
