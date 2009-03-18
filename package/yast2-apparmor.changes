@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 18 12:44:21 CET 2009 - kmachalkova@suse.cz
+
+- Reduced number of overly long strings (bnc#384170)
+- Extended some helptexts (bnc#482563, bnc#443287)
+- 2.18.3
+
+-------------------------------------------------------------------
 Fri Mar  6 17:50:03 CET 2009 - kmachalkova@suse.cz
 
 - AA profiles editor adjusted to the new format of parsed profile
