@@ -2,7 +2,7 @@
 
 @HEADER@
 
-Summary: Yast2 plugins for AppArmor management
+Summary: YaST2 - Plugins for AppArmor Profile Management
 Requires: yast2 perl-TimeDate
 BuildArch: noarch
 Obsoletes: yast2-subdomain
