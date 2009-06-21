@@ -13,8 +13,11 @@ BuildRequires: yast2 yast2-devtools
 
 
 %description
-Yast2 forms and components for the management of Novell AppArmor profiles.
-This package is part of a suite of tools that used to be named SubDomain.
+Yast2 forms and components for the management of Novell AppArmor
+profiles.
+
+This package is part of a suite of tools that used to be named
+SubDomain.
 
 @PREP@
 
