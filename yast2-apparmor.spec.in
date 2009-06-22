@@ -1,6 +1,7 @@
 @HEADER-COMMENT@
 
 @HEADER@
+Group:	Productivity/Security
 License: GPL v2 or later
 
 Summary: YaST2 - Plugins for AppArmor Profile Management
