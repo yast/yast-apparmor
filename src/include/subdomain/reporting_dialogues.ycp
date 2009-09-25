@@ -39,6 +39,51 @@ map<any,any> md_map= $[
                 `md_28: "28", `md_29: "29", `md_30: "30",
                 `md_31: "31" ];
 
+string modeToHumanString( string mode) {
+   return ( mode == "All") ? _("All") : mode;
+}
+
+string humanStringToMode( string hs) {
+   return ( hs == _("All")) ? "All" : hs ;
+}
+
+string typeToHumanString( string type ) {
+    string ret = ""; 
+
+    switch ( type )
+    {
+	case "Security.Incident.Report":
+	    ret = _("Security Incident Report");
+	    break;
+	case "Applications.Audit":
+	    ret = _("Applications Audit Report");
+	    break;
+	case "Executive.Security.Summary":
+	    ret = _("Executive Security Summary");
+	    break;
+	default:
+	    ret = type;
+	    break;
+    }
+
+    return ret;
+}
+
+string humanStringToType( string hs ) {
+    string ret = "";
+
+    if( hs == _("Security Incident Report"))
+        ret = "Security.Incident.Report";
+    else if ( hs == _("Applications Audit Report"))
+        ret = "Applications.Audit";
+    else if ( hs ==  _("Executive Security Summary"))
+        ret = "Executive.Security.Summary";
+    else
+        ret = hs;
+
+    return ret;
+}
+
 // Grey out inappropriate paging buttons
 define void setPageButtons(integer curPage, integer lastPage) {
 
@@ -205,12 +250,12 @@ define term editFilterForm (map Settings) {
 				`VBox(
 				`Label( _("Access Type: ") ),
 	                `Bottom( `HWeight( 4,
-	                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode ))))
+	                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode )))))
 				),
 				`VBox(
 					`Label( _("Mode: ") ),
 	                `Bottom( `HWeight( 4,
-	                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), mode  ))))
+	                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), modeToHumanString( mode )))))
 				),
             `HSpacing( `opt(`hstretch), 1)
         ),
@@ -252,7 +297,7 @@ term schedFilterForm =
 			),
 			`VBox(
 	            `Label( _("Mode: ") ),
-                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), "All" ))
+                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
 			),
 
             //`HWeight( 4, `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: R") ))),
@@ -312,7 +357,7 @@ term filterForm =
             ),
             `VBox(
                 `Label( _("Mode: ") ),
-                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), "All" ))
+                `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
             ),
 
 
@@ -402,11 +447,11 @@ define term filterForm2(string name, map<any,any> preFilters) {
             `TextEntry(`id(`res), _("Detail"), res),
 			`VBox(
 				`Label( _("Access Type: ")  ),
-	            `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode ))
+	            `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode )))
 			),
 			`VBox(
 				`Label( _("Mode: ")  ),
-	            `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), mode ))
+	            `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), modeToHumanString( mode )))
 			)
         ),
         `VSpacing( 0.5 ),
@@ -892,7 +937,7 @@ define map<any,any> filterConfigForm(string name) {
 
 			if ( sdmode != "" ) {
 	            Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode) );
+	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ) );
 			}
 
         } else if ( id == `mode ) {
@@ -901,7 +946,7 @@ define map<any,any> filterConfigForm(string name) {
 
 			if ( mode != "" ) {
 	            Settings["mode"] = mode;
-	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), mode) );
+	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), modeToHumanString( mode )));
 			}
 
         } else if ( id == `browse ) {
@@ -946,8 +991,6 @@ define map<any,any> filterConfigForm(string name) {
 			// de-i18n
 			if ( sev == _("All") ) { sev = "All"; }
 			if ( sev == _("U") ) { sev = "U"; }
-			if ( sdmode == _("All") ) { sdmode = "All"; }
-			if ( mode == _("All") ) { mode = "All"; }
 
 			if (exppath != "" ) { Settings["exportPath"] = expPath; }
 	        if ( program_name != "" ) { Settings["prog"] = program_name; }
@@ -955,8 +998,8 @@ define map<any,any> filterConfigForm(string name) {
 	        if ( pid != "" ) { Settings["pid"] = pid; }
 	        if ( sev != "" && sev != "All" ) { Settings["severity"] = sev; }
 	        if ( res != "" ) { Settings["resource"] = res; }
-	        if ( sdmode != "" ) { Settings["sdmode"] = sdmode; }
-	        if ( mode != "" ) { Settings["mode"] = mode; }
+	        if ( sdmode != "" ) { Settings["sdmode"] = humanStringToMode( sdmode); }
+	        if ( mode != "" ) { Settings["mode"] = humanStringToMode( mode ); }
 
 	        if ( bydate == true ) {
 
@@ -1412,7 +1455,7 @@ define symbol displayArchForm() {
 define symbol displayRunForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
 	string type = "";
 
@@ -1793,7 +1836,7 @@ define void addSchedForm() {
 
 			if (sdmode != "") {
 	            Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode) );
+	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ));
 			}
 
         } else if ( addInput == `mode ) {
@@ -1802,7 +1845,7 @@ define void addSchedForm() {
 
 			if (mode != "") {
 	            Settings["mode"] = mode;
-	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), mode) );
+	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), modeToHumanString( mode )) );
 			}
 
         } else if (addInput == `save ) {
@@ -1833,8 +1876,8 @@ define void addSchedForm() {
             Settings["pid"] = pid;
             Settings["sev"] = sev;
             Settings["res"] = res;
-            Settings["sdmode"] = sdmode;
-            Settings["mode"] = mode;
+            Settings["sdmode"] = humanStringToMode( sdmode );
+            Settings["mode"] = humanStringToMode( mode );
 
             any error = (any) SCR::Write(.reports_sched, Settings);
 
@@ -1889,7 +1932,7 @@ define void addSchedForm() {
 define void editSchedForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
     map<string,string> Settings = $[ ];
     string readSched = "1";
@@ -2018,7 +2061,7 @@ define void editSchedForm() {
 
 	}
 
-	string edLabel = _("Edit Report Schedule for ") + sname;
+	string edLabel = _("Edit Report Schedule for ") + typeToHumanString(sname);
 
     UI::OpenDialog(
 
@@ -2139,7 +2182,7 @@ define void editSchedForm() {
 
 			if ( sdmode != "" ) {
 				Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), sdmode) );
+	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ));
 			}
 
 		} else if ( editInput == `mode ) {
@@ -2147,7 +2190,7 @@ define void editSchedForm() {
 			mode = popUpMode();
 			if ( mode != "" ) {
 				Settings["mode"] = mode;
-	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), mode) );
+	            UI::ReplaceWidget(`id(`replace_mode), `PushButton(`id(`mode), modeToHumanString( mode )));
 			}
 
         } else if ( editInput == `browse ) {
@@ -2203,8 +2246,8 @@ define void editSchedForm() {
 	            Settings["pid"] = pid;
 	            Settings["sev"] = sev;
 	            Settings["res"] = res;
-	            Settings["sdmode"] = sdmode;
-	            Settings["mode"] = mode;
+	            Settings["sdmode"] = humanStringToMode( sdmode );
+	            Settings["mode"] = humanStringToMode( mode );
 
 			} else {
 
@@ -2251,7 +2294,7 @@ define void editSchedForm() {
 define void delSchedForm() {
 
     integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-    string name  = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+    string name  = humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
     map<string,string> Settings = $[ ];
     Settings["del"] = "1";
@@ -2310,7 +2353,7 @@ define void updateSched() {
     list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
 
     foreach ( map record, db, {
-        itemList = add( itemList, `item( `id(key), record["name"]:nil, record["mday"]:nil, record["wday"]:nil,
+        itemList = add( itemList, `item( `id(key), typeToHumanString( record["name"]:"" ), record["mday"]:nil, record["wday"]:nil,
                  record["hour"]:nil, record["mins"]:nil ));
         key = key + 1;
     });
@@ -2359,7 +2402,7 @@ define symbol displaySchedForm() {
     list <map> db = (list <map>) SCR::Read (.reports_sched, Settings);
 
     foreach ( map record, db, {
-        itemList = add( itemList, `item( `id(key), record["name"]:nil, record["mday"]:nil, record["wday"]:nil,
+        itemList = add( itemList, `item( `id(key), typeToHumanString( record["name"]:""), record["mday"]:nil, record["wday"]:nil,
                  record["hour"]:nil, record["mins"]:nil ));
         key = key + 1;
     });
@@ -2429,7 +2472,7 @@ define symbol displaySchedForm() {
 		} else if ( id == `delete ) {
 
 			integer itemselected =  ((integer) UI::QueryWidget(`id(`table), `CurrentItem) );
-			string repName = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, "");
+			string repName =  humanStringToType( (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 1, ""));
 
 			if ( repName == "Executive.Security.Summary" || repName == "Applications.Audit" || repName == "Security.Incident.Report" ) {
 				Popup::Error( _("Cannot delete a stock report.") );
