@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 18 15:20:01 CET 2009 - kmachalkova@suse.cz
+
+- Convert report names and modes to/from human readable strings
+  (bnc#369119, bnc#371072)
+ 
+-------------------------------------------------------------------
 Fri Mar  6 17:34:06 CET 2009 - kmachalkova@suse.cz
 
 - AA profiles editor adjusted to the new format of parsed profile 
