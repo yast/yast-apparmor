@@ -20,5 +20,5 @@ Icon=apparmor_view_profile
 Exec=/sbin/yast2 SD_Report
 
 Name=AppArmor Reports
-GenericName=AppArmor Configuration 
+GenericName=AppArmor Configuration
 StartupNotify=true

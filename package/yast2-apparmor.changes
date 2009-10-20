@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 20 19:11:03 CEST 2009 - kmachalkova@suse.cz
+
+- Have GenericNames from .desktop files correctly translated (removed
+  trailing whitespace - bnc#538245)
+- 2.18.4
+
+-------------------------------------------------------------------
 Wed Mar 18 12:44:21 CET 2009 - kmachalkova@suse.cz
 
 - Reduced number of overly long strings (bnc#384170)
