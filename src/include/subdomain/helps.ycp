@@ -85,7 +85,7 @@ You can generate highly optimized and robust security profiles
 by using the suggestions made by AppArmor.") +
 
 	_("AppArmor suggests that you allow or deny access to specific resources 
-or define execute permission for entries. These questions 
+or define execute permission for entries. Questions 
 that display were logged during the normal application 
 execution test previously performed. <br>") +
 
