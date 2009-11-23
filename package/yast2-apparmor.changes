@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 23 16:09:14 CET 2009 - kmachalkova@suse.cz
+
+- Improved help text (bnc#539352)
+- Better error message on unexpected backend termination (bnc#535107)
+- Correct saving of event notification levels (bnc#531512)
+- 2.19.0
+
+-------------------------------------------------------------------
 Tue Oct 20 19:11:03 CEST 2009 - kmachalkova@suse.cz
 
 - Have GenericNames from .desktop files correctly translated (removed
