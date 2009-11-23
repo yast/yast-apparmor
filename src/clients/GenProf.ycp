@@ -345,7 +345,7 @@
       boolean written = SCR::Write(.genprof, answers);
 
     } else {
-      string errortext = sformat(_("AppArmor backend terminated unexpectedly: %1", type)) +
+      string errortext = sformat(_("AppArmor backend terminated unexpectedly: %1"), type) +
 			 _("This is worth reporting bug in Novell Bugzilla:\nhttps://bugzilla.novell.com");
 
       Popup::Error(errortext);
