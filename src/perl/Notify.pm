@@ -167,8 +167,8 @@ sub delBadEntries {
               next;
             }
           } elsif ( $val eq $level ) {
-            if ( ! ($config->{$type}->{$val} =~ /\d\d/ &&
-						$config->{$type}->{$val} < 11) ) {
+            if (  ($config->{$type}->{$val} =~ /\d\d/ &&
+						$config->{$type}->{$val} > 10) ) {
               $config->{$type}->{$val} = 0;
             }
           } elsif ( $val eq $unk ) {
