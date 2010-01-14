@@ -17,7 +17,7 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
 Icon=apparmor_view_profile
-Exec=/sbin/yast2 SD_Report
+Exec=xdg-su -c "/sbin/yast2 SD_Report"
 
 Name=AppArmor Reports
 GenericName=AppArmor Configuration
