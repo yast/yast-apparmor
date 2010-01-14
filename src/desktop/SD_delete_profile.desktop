@@ -17,7 +17,7 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
 Icon=apparmor_delete_profile
-Exec=/sbin/yast2 SD_DeleteProfile
+Exec=xdg-su -c "/sbin/yast2 SD_DeleteProfile"
 
 Name=Delete Profile
 GenericName=AppArmor Configuration

@@ -17,7 +17,7 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
 Icon=apparmor_edit_profile
-Exec=/sbin/yast2 SD_EditProfile
+Exec=xdg-su -c "/sbin/yast2 SD_EditProfile"
 
 Name=Edit Profile
 GenericName=AppArmor Configuration
