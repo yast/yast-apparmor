@@ -20,5 +20,5 @@ Icon=apparmor_add_profile
 Exec=/sbin/yast2 SD_AddProfile
 
 Name=Manually Add Profile
-GenericName=AppArmor Configuration 
+GenericName=AppArmor Configuration
 StartupNotify=true
