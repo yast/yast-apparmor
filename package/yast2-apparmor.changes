@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Tue Apr  6 11:04:52 CEST 2010 - juhliarik@suse.cz
+
+- updated "names" in .desktop files for searching AppArmor related
+  modules in YaST (bnc#590929)
+
 ------------------------------------------------------------------
 Wed Jan 13 18:56:03 CET 2010 - kmachalkova@suse.cz
 

@@ -20,5 +20,5 @@ Icon=apparmor_update_wizard
 Exec=xdg-su -c "/sbin/yast2 LogProf"
 
 Name=Update Profile Wizard
-GenericName=Update Profiles
+GenericName=AppArmor Configuration
 StartupNotify=true
