@@ -20,5 +20,5 @@ Icon=apparmor_creation_wizard
 Exec=xdg-su -c "/sbin/yast2 GenProf"
 
 Name=Add Profile Wizard
-GenericName=Profile Wizard
+GenericName=AppArmor Configuration
 StartupNotify=true
