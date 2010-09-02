@@ -40,7 +40,8 @@ SubDomain.
 /usr/share/YaST2/modules
 /usr/share/applications/YaST2
 /usr/lib/YaST2/servers_non_y2
-/usr/lib/perl5/vendor_perl/*
+%dir %{perl_vendorlib}/Immunix
+%{perl_vendorlib}/Immunix/Notify.pm
 # license is questionable, PDB says GPL v2 or later
 #%doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
