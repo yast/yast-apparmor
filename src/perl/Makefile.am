@@ -1,7 +1,7 @@
 perl_DATA = \
 	Notify.pm
 
-perldir = /usr/lib/perl5/vendor_perl/Immunix
+perldir = $(PERL_VENDORLIB)/Immunix
 
 EXTRA_DIST = $(perl_DATA)
 
