@@ -13,6 +13,8 @@ BuildRequires: update-desktop-files
 
 BuildRequires: yast2 yast2-devtools
 
+BuildRequires:  perl-macros
+%{perl_requires}
 
 %description
 Yast2 forms and components for the management of Novell AppArmor

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 11 23:29:22 UTC 2011 - opensuse@cboltz.de
+
+- add BuildRequires: perl-macros and %{perl_requires} to ensure 
+  Notify.pm is in @INC (bnc#670650#c1)
+
+-------------------------------------------------------------------
 Thu Sep  2 15:04:21 CEST 2010 - kmachalkova@suse.cz
 
 - Install Notify.pm into @INC so that Perl can see it (bnc#635830)
