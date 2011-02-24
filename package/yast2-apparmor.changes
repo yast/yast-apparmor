@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 24 14:31:56 UTC 2011 - lslezak@suse.cz
+
+- use perl-macros only in opensSUSE 11.4 (or newer)
+- 2.20.1
+
+-------------------------------------------------------------------
 Fri Feb 11 23:29:22 UTC 2011 - opensuse@cboltz.de
 
 - add BuildRequires: perl-macros and %{perl_requires} to ensure 
