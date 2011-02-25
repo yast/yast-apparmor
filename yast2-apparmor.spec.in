@@ -13,7 +13,7 @@ BuildRequires: update-desktop-files
 
 BuildRequires: yast2 yast2-devtools
 
-%if 0%{?suse_version} == 0 || 0%{?suse_version} >= 1140
+%if 0%{?suse_version} >= 1140
 # openSUSE-11.4 or newer
 BuildRequires:  perl-macros
 %{perl_requires}
