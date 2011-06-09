@@ -1,4 +1,5 @@
 client_DATA = \
+	apparmor.ycp \
 	GenProf.ycp \
 	LogProf.ycp \
 	SD_AddProfile.ycp \

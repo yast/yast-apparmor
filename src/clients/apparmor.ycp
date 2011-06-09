@@ -1,0 +1,102 @@
+{
+textdomain "yast2-apparmor";
+import "Wizard";
+import "Label";
+import "Popup";
+import "Sequencer";
+include "subdomain/apparmor_packages.ycp";
+include "subdomain/apparmor_profile_check.ycp";
+include "subdomain/profile_dialogs.ycp";
+
+any startDialog(){
+ /* AppArmor dialog caption */
+ string caption = _("App Armor Configuration");
+
+ /* AppArmor dialog help */
+ string help = _("<p>Choose one of the available apparmor modules to configure
+ the corresponding action and press <b>Launch</b>.</p>");
+
+ /* AppArmor dialog contents */
+ term contents = `HBox(
+    `HSpacing(8),
+    /* Frame label */
+    //`Frame(_("Available apparmor modules:"), `HBox(`HSpacing(2),
+    `VBox(
+	`VSpacing(3),
+	/* Selection box label */
+	`SelectionBox(`id(`modules), `opt(`notify), _("&Available AppArmor Modules:"), [
+	    /* Selection box items */
+	    `item(`id("subdomain"), _("Settings"), true),
+	    `item(`id("GenProf"), _("Generate Profile")),
+	    `item(`id("LogProf"), _("Update Profile")),
+	    `item(`id("SD_Report"), _("Repors")),
+	    `item(`id("SD_EditProfile"), _("Edit Profile")),
+	    `item(`id("SD_AddProfile"), _("Add Manually Profile")),
+	    `item(`id("SD_DeleteProfile"), _("Delete Profile"))
+	]),
+	`VSpacing(3)
+	),
+	//`HSpacing(2))),
+    `HSpacing(8)
+ );
+
+ Wizard::CreateDialog();
+ Wizard::SetDesktopIcon("apparmor");
+ Wizard::SetContentsButtons(caption, contents, help,
+	Label::BackButton(), /* Label::FinishButton() */ _("&Launch"));
+
+ UI::SetFocus(`id(`modules));
+
+ any ret = nil;
+ while(true) {
+
+    ret = UI::UserInput();
+
+    /* abort? */
+    if(ret == `abort || ret == `cancel) {
+	/* if(ReallyAbort()) break;
+	else continue; */
+	break;
+    }
+    /* next */
+    else if(ret == `next || ret == `modules) {
+	/* check_* */
+	ret = `next;
+	break;
+    }
+    /* back */
+    else if(ret == `back) {
+	break;
+    }
+    else {
+	y2error("unexpected retcode: %1", ret);
+	continue;
+    }
+ }
+
+ string launch = "lan";
+ if(ret == `next) {
+    launch = (string) UI::QueryWidget(`id(`modules), `CurrentItem);
+    y2debug("launch=%1", launch);
+ }
+
+ UI::CloseDialog();
+
+ if(ret == `next)
+     return WFM::CallFunction(launch, WFM::Args());
+ else
+     return `back;
+}
+
+any ret = nil;
+// no command line support #269891
+if (size(WFM::Args()) > 0 )
+{
+    import "CommandLine";
+    CommandLine::Init($[], WFM::Args());
+    return ret;
+}
+
+ret = startDialog();
+return ret;
+}
