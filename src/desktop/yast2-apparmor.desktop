@@ -8,7 +8,7 @@ X-KDE-HasReadOnlyMode=true
 X-KDE-Library=yast2
 X-SuSE-YaST-Call=apparmor
 
-X-SuSE-YaST-Group=System
+X-SuSE-YaST-Group=Security
 X-SuSE-YaST-Argument=
 X-SuSE-YaST-RootOnly=true
 X-SuSE-YaST-AutoInst=none
