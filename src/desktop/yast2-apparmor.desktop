@@ -6,7 +6,7 @@ X-KDE-ModuleType=Library
 X-KDE-RootOnly=true
 X-KDE-HasReadOnlyMode=true
 X-KDE-Library=yast2
-X-SuSE-YaST-Call=subdomain
+X-SuSE-YaST-Call=apparmor
 
 X-SuSE-YaST-Group=AppArmor
 X-SuSE-YaST-Argument=
@@ -16,9 +16,9 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
-Icon=apparmor_control_panel
-Exec=/sbin/yast2 subdomain 
+Icon=apparmor_view_profile
+Exec=/sbin/yast2 apparmor
 
-Name=AppArmor Control Panel
-GenericName=AppArmor Control Panel
+Name=AppArmor Configuration
+GenericName=AppArmor Configuration
 StartupNotify=true
