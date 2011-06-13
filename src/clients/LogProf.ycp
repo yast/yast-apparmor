@@ -177,7 +177,7 @@
         <br>
         The Clean Exec option for the discrete profile and unconstrained 
         execute permissions provide added security by stripping the 
-        enviroment that is inherited by the child program of specific 
+        environment that is inherited by the child program of specific 
         variables. You will be prompted to choose whether you want to sanitize the
         environment if you choose 'p' or 'u' during the profiling process.
         The variables are:
