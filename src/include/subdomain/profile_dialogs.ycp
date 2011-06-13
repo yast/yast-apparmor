@@ -782,7 +782,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    /* help text - part x5 */
    string help_net = _("<li><b>Network Entry</b><br>Add a network rule entry to this profile. This option will allow you to specify network access privileges for the profile. You may specify a network address family and socket type.</li>");
    /* help text - part x6 */
-   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analagous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor Administration Guide.</li>");
+   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. This option is analogous to manually creating a new profile, which can selected during execution only in the context of being asked for by a <b>changehat aware</b> application. For more information on changehat please see <b>man changehat</b> on your system or the Novell AppArmor Administration Guide.</li>");
    /* help text - part x7 */
    string helpEdit = _("</ul></p><p><b>Edit Entry:</b><br>Edit the selected entry.</p>");
 
