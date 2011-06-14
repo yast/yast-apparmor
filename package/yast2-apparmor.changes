@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 14 13:29:32 UTC 2011 - jreidinger@novell.com
+
+- merge apparmor to one desktop entry (FATE#305278)
+- fix typos in translatable strings
+- 2.21.0 
+
+-------------------------------------------------------------------
 Thu Feb 24 14:31:56 UTC 2011 - lslezak@suse.cz
 
 - use perl-macros only in opensSUSE 11.4 (or newer)

@@ -6,9 +6,9 @@ X-KDE-ModuleType=Library
 X-KDE-RootOnly=true
 X-KDE-HasReadOnlyMode=true
 X-KDE-Library=yast2
-X-SuSE-YaST-Call=SD_Report
+X-SuSE-YaST-Call=apparmor
 
-X-SuSE-YaST-Group=AppArmor
+X-SuSE-YaST-Group=Security
 X-SuSE-YaST-Argument=
 X-SuSE-YaST-RootOnly=true
 X-SuSE-YaST-AutoInst=none
@@ -17,8 +17,8 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
 Icon=apparmor_view_profile
-Exec=xdg-su -c "/sbin/yast2 SD_Report"
+Exec=/sbin/yast2 apparmor
 
-Name=AppArmor Reports
+Name=AppArmor Configuration
 GenericName=AppArmor Configuration
 StartupNotify=true
