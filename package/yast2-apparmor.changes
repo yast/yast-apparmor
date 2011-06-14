@@ -1,6 +1,13 @@
 -------------------------------------------------------------------
 Thu Mar 11 15:47:28 CET 2010 - kmachalkova@suse.cz
 
+- Merge apparmor module into one desktop entry (FATE#305278)
+- fix typos in translatable strings (BNC#693326 
+- 2.17.9
+
+-------------------------------------------------------------------
+Thu Mar 11 15:47:28 CET 2010 - kmachalkova@suse.cz
+
 - Backport of bnc#538245 bugfix. This solves untranslated tooltips
   of AA modules (now bnc#583643)
 - 2.17.8
