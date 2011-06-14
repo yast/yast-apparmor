@@ -189,7 +189,7 @@ bash(1), zsh(1).") +
 execute permissions provide added security by stripping the 
 environment that is inherited by the child program of specific 
 variables. You will be prompted to choose whether you want to sanitize the
-enviroment if you choose 'p' or 'u' during the profiling process.
+environment if you choose 'p' or 'u' during the profiling process.
 The variables are:") +
 
         "<ul>" +

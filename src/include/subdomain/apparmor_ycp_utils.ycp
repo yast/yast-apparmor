@@ -25,7 +25,7 @@ textdomain "yast2-apparmor";
   map CMDS = $[ ];
   CMDS["CMD_ALLOW"]          = _("&Allow");
   CMDS["CMD_DENY"]           = _("&Deny");
-  CMDS["CMD_ABORT"]          = _("Abo(r)t");
+  CMDS["CMD_ABORT"]          = _("Abo&rt");
   CMDS["CMD_FINISHED"]       = Label::FinishButton();
   CMDS["CMD_AUDIT_NEW"]      = _("Audi&t");
   CMDS["CMD_AUDIT_OFF"]      = _("Audi&t off");
@@ -196,7 +196,7 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
               `HSpacing(1)
           ),
           `VSpacing(1),
-          `PushButton(`id(`signin),  _("&Signin as existing user..."))
+          `PushButton(`id(`signin),  _("&Sign in as existing user..."))
       );
 
     UI::OpenDialog(`opt(`decorated), dialog);

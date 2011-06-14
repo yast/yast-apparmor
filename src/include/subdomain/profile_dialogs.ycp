@@ -791,7 +791,7 @@ This option will allow you to specify network access privileges for the profile.
 You may specify a network address family and socket type.</li>");
    /* help text - part x6 */
    string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. 
-This option is analagous to manually creating a new profile, which can selected 
+This option is analogous to manually creating a new profile, which can selected 
 during execution only in the context of being asked for by a <b>changehat aware</b> 
 application. For more information on changehat please see <b>man changehat</b> on your 
 system or the Novell AppArmor Administration Guide.</li>");
