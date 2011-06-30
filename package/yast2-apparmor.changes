@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 30 13:04:14 UTC 2011 - jreidinger@novell.com
+
+- fix typos (bnc#702639) 
+- 2.17.10
+
+-------------------------------------------------------------------
 Thu Mar 11 15:47:28 CET 2010 - kmachalkova@suse.cz
 
 - Merge apparmor module into one desktop entry (FATE#305278)
