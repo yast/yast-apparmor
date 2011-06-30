@@ -10,7 +10,7 @@ include "subdomain/profile_dialogs.ycp";
 
 any startDialog(){
  /* AppArmor dialog caption */
- string caption = _("App Armor Configuration");
+ string caption = _("AppArmor Configuration");
 
  /* AppArmor dialog help */
  string help = _("<p>Choose one of the available apparmor modules to configure
@@ -29,7 +29,7 @@ any startDialog(){
 	    `item(`id("subdomain"), _("Settings"), true),
 	    `item(`id("GenProf"), _("Generate Profile")),
 	    `item(`id("LogProf"), _("Update Profile")),
-	    `item(`id("SD_Report"), _("Repors")),
+	    `item(`id("SD_Report"), _("Reports")),
 	    `item(`id("SD_EditProfile"), _("Edit Profile")),
 	    `item(`id("SD_AddProfile"), _("Add Manually Profile")),
 	    `item(`id("SD_DeleteProfile"), _("Delete Profile"))
