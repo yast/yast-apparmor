@@ -17,7 +17,7 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
 
 Icon=apparmor_view_profile
-Exec=/sbin/yast2 apparmor
+Exec=/usr/bin/xdg-su -c '/sbin/yast2 apparmor'
 
 Name=AppArmor Configuration
 GenericName=AppArmor Configuration
