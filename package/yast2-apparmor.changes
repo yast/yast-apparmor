@@ -2,6 +2,7 @@
 Fri Jul 22 16:39:45 CEST 2011 - locilka@suse.cz
 
 - Exec entry in desktop file called using xdg-su (bnc#540627)
+- 2.21.2
 
 -------------------------------------------------------------------
 Thu Jun 30 12:48:43 UTC 2011 - jreidinger@novell.com
