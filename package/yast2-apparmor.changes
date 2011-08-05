@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug  5 12:21:26 CEST 2011 - tgoettlicher@suse.de
+
+- fixed .desktop file (bnc #681249)
+
+-------------------------------------------------------------------
 Fri Jul 22 16:39:45 CEST 2011 - locilka@suse.cz
 
 - Exec entry in desktop file called using xdg-su (bnc#540627)
