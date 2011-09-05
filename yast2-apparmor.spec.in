@@ -38,7 +38,7 @@ SubDomain.
 %defattr(-,root,root)
 /usr/bin/*
 /usr/share/YaST2/clients
-/usr/share/YaST2/include/subdomain
+/usr/share/YaST2/include/apparmor
 # empty directory, commenting out
 # /usr/share/YaST2/include/apparmor-reports
 /usr/share/YaST2/scrconf
