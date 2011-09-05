@@ -4,6 +4,15 @@ Fri Aug  5 12:21:26 CEST 2011 - tgoettlicher@suse.de
 - fixed .desktop file (bnc #681249)
 
 -------------------------------------------------------------------
+Tue Aug  2 23:26:27 CEST 2011 - jeffm@suse.de
+
+- Rename files to use proper AppArmor names and abbreviations
+- Change code to reflect new names
+  - Basic version needed to use newer perl-apparmor. This version
+    gets rid of the old SubDomain names entirely.
+- Move yast2-apparmor.desktop to apparmor.desktop
+
+------------------------------------------------------------------
 Fri Jul 22 16:39:45 CEST 2011 - locilka@suse.cz
 
 - Exec entry in desktop file called using xdg-su (bnc#540627)
