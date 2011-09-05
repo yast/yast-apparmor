@@ -13,8 +13,8 @@
 import "Wizard";
 import "Popup";
 import "Label";
-include "subdomain/report_helptext.ycp";
-include "subdomain/reporting_utils.ycp";
+include "apparmor/report_helptext.ycp";
+include "apparmor/reporting_utils.ycp";
 textdomain  "yast2-apparmor";
 
 // Global
@@ -106,7 +106,7 @@ define term filterArchForm() {
         ),
         `HBox(
             `HWeight( 3, `TextEntry(`id(`res), _("Detail") )),
-            `HWeight( 3, `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: R") ))),
+            `HWeight( 3, `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), _("Access Type: R") ))),
             `HWeight( 3, `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("Mode: All")  ))),
             `HSpacing( `opt(`hstretch), 5)
         ),
@@ -137,7 +137,7 @@ define map<any,any> setArchFilter() {
 	UI::ChangeWidget(`id(`bydate_frame), `Enabled, false);
 
 	string mode = "All";
-	string sdmode = "R";
+	string aamode = "R";
 
 	map event = $[];
 	any id    = nil;
@@ -235,11 +235,11 @@ define map<any,any> setArchFilter() {
             string pid = (string) UI::QueryWidget(`id(`pid), `Value);
             string sev = (string) UI::QueryWidget(`id(`sev), `Value);
             string res = (string) UI::QueryWidget(`id(`res), `Value);
-            string sdmode = (string) UI::QueryWidget(`id(`sdmode), `Label);
+            string aamode = (string) UI::QueryWidget(`id(`aamode), `Label);
             string mode = (string) UI::QueryWidget(`id(`mode), `Label);
             string exppath = (string) UI::QueryWidget(`id(`expPath), `Value);
 
-			if (sdmode == "-") { sdmode = "All"; }
+			if (aamode == "-") { aamode = "All"; }
 			if (mode == "-") { mode = "All"; }
 
             if ( program_name != "" ) { Settings["prog"] = program_name; }
@@ -247,17 +247,17 @@ define map<any,any> setArchFilter() {
             if ( pid != "" ) { Settings["pid"] = pid; }
             if ( sev != "" && sev != "All" ) { Settings["severity"] = sev; }
             if ( res != "" ) { Settings["resource"] = res; }
-            if ( sdmode != "" ) { Settings["sdmode"] = sdmode; }
+            if ( aamode != "" ) { Settings["aamode"] = aamode; }
             if ( mode != "" ) { Settings["mode"] = mode; }
             if ( exppath != "" ) { Settings["exportPath"] = exppath; }
 
 			id = nil;
 			break;
 
-        } else if ( id == `sdmode ) {
-            sdmode = popUpSdMode();
-            Settings["sdmode"] = sdmode;
-            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: ") + sdmode) );
+        } else if ( id == `aamode ) {
+            aamode = popUpSdMode();
+            Settings["aamode"] = aamode;
+            UI::ReplaceWidget(`id(`replace_aamode), `PushButton(`id(`aamode), _("Access Type: ") + aamode) );
 
         } else if ( id == `mode ) {
             mode = popUpMode();

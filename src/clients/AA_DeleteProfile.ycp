@@ -12,9 +12,9 @@ import "Wizard";
 import "Label";
 import "Popup";
 import "Sequencer";
-include "subdomain/apparmor_packages.ycp";
-include "subdomain/apparmor_profile_check.ycp";
-include "subdomain/profile_dialogs.ycp";
+include "apparmor/apparmor_packages.ycp";
+include "apparmor/apparmor_profile_check.ycp";
+include "apparmor/profile_dialogs.ycp";
 textdomain  "yast2-apparmor";
 
 // Globalz
@@ -25,8 +25,8 @@ define any DeleteProfileConfirmation() {
 		_("Are you sure you want to delete the profile ") + profilename + 
 		_(" ?\nAfter this operation the AppArmor module will reload the profile set.") ) )  {
     y2milestone("Deleted " + profilename );
-    boolean result = SCR::Write(.subdomain_profiles.delete, profilename);
-    any result2 = SCR::Write(.subdomain_profiles.reload, "-");
+    boolean result = SCR::Write(.apparmor_profiles.delete, profilename);
+    any result2 = SCR::Write(.apparmor_profiles.reload, "-");
   }
   return `finish;
 }
@@ -35,12 +35,12 @@ define any MainSequence() ``{
 
 //
 // Read the profiles from the SCR agent
-   map profiles = (map) SCR::Read (.subdomain_profiles, "all");
+   map profiles = (map) SCR::Read (.apparmor_profiles, "all");
 
    map aliases = $[
         "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a 
 		selection from the listed profiles and press Next to delete the profile."),
-		_("Delete Profile - Choose profile to delete"), "subdomain/delete_profile")),
+		_("Delete Profile - Choose profile to delete"), "apparmor/delete_profile")),
         "deleteprofile"   : ``(DeleteProfileConfirmation()),
    ];
 

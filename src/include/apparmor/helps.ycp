@@ -29,7 +29,7 @@ had 10 security events since Tue Oct 12 11:10:00 2004</tt></p>") +
 	_("<p><b>Summary Notification:</b> The Summary notification displays 
 the logged AppArmor security events, and lists the number of 
 individual occurrences, including the date of the last occurrence.  
-<br>For example:<br> <tt>SubDomain: PERMITTING access to capability 
+<br>For example:<br> <tt>AppArmor: PERMITTING access to capability
 'setgid' (httpd2-prefork(6347) profile /usr/sbin/httpd2-prefork 
 active /usr/sbin/httpd2-prefork) 2 times, the latest at Sat Oct 9 16:05:54 2004.</tt>
 </p>") +
@@ -43,7 +43,7 @@ and the type of file permission access that is permitted or rejected.</p>") +
 
 	_("<p>Verbose Notification also reports several messages that 
 the logprof tool uses to interpret profiles. <br>For example:<br>
-<tt> Oct  9 15:40:31 SubDomain: PERMITTING r access to 
+<tt> Oct  9 15:40:31 AppArmor: PERMITTING r access to
 /etc/apache2/httpd.conf (httpd2-prefork(6068) profile 
 /usr/sbin/httpd2-prefork active /usr/sbin/httpd2-prefork)</tt></p>") +
 
@@ -146,7 +146,7 @@ in another executable and granting unconfined
 execution rights, it is possible to bypass the mandatory 
 constraints imposed on all confined processes.
 For more information on what is constrained, see the
-subdomain(7) man page.") +
+apparmor(7) man page.") +
 	"<br><br>" +
 
 	_("<b>Discrete Profile execute mode</b><br>") +

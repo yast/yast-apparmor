@@ -13,11 +13,11 @@
 ################################################################################
 # ag_reports_ess
 #
-#  - Generates Report of SubDomain Executive Security Summary 
+#  - Generates Report of AppArmor Executive Security Summary
 #
 #  Requires:
-#       - /usr/lib/immunix/SubDomain/perl/Immunix/Events.pm
-#       - /usr/lib/immunix/SubDomain/perl/Immunix/Reports.pm
+#       - /usr/lib/immunix/AppArmor/perl/Immunix/Events.pm
+#       - /usr/lib/immunix/AppArmor/perl/Immunix/Reports.pm
 #
 #  Input (Optional):
 #

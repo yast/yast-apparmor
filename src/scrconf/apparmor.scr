@@ -1,8 +1,8 @@
 /**
  * File:
- *   subdomain.scr
+ *   apparmor.scr
  * Summary:
- *   SCR Agent for configuring subdomain
+ *   SCR Agent for configuring apparmor
  * Access:
  *   read/write
  * Authors:
@@ -12,9 +12,9 @@
  * Example:
  *   Read(.cron,$[..])
  *
- * $Id: subdomain.scr 3715 2005-01-19 09:06:05Z sarnold $
+ * $Id: apparmor.scr 3715 2005-01-19 09:06:05Z sarnold $
  *
  */
-.subdomain
+.apparmor
 
-`ag_subdomain ()
+`ag_apparmor ()

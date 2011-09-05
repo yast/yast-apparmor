@@ -4,9 +4,9 @@ import "Wizard";
 import "Label";
 import "Popup";
 import "Sequencer";
-include "subdomain/apparmor_packages.ycp";
-include "subdomain/apparmor_profile_check.ycp";
-include "subdomain/profile_dialogs.ycp";
+include "apparmor/apparmor_packages.ycp";
+include "apparmor/apparmor_profile_check.ycp";
+include "apparmor/profile_dialogs.ycp";
 
 any startDialog(){
  /* AppArmor dialog caption */
@@ -26,13 +26,13 @@ any startDialog(){
 	/* Selection box label */
 	`SelectionBox(`id(`modules), `opt(`notify), _("&Available AppArmor Modules:"), [
 	    /* Selection box items */
-	    `item(`id("subdomain"), _("Settings"), true),
+	    `item(`id("apparmor-settings"), _("Settings"), true),
 	    `item(`id("GenProf"), _("Generate Profile")),
 	    `item(`id("LogProf"), _("Update Profile")),
-	    `item(`id("SD_Report"), _("Reports")),
-	    `item(`id("SD_EditProfile"), _("Edit Profile")),
-	    `item(`id("SD_AddProfile"), _("Add Manually Profile")),
-	    `item(`id("SD_DeleteProfile"), _("Delete Profile"))
+	    `item(`id("AA_Report"), _("Reports")),
+	    `item(`id("AA_EditProfile"), _("Edit Profile")),
+	    `item(`id("AA_AddProfile"), _("Add Manually Profile")),
+	    `item(`id("AA_DeleteProfile"), _("Delete Profile"))
 	]),
 	`VSpacing(3)
 	),
@@ -74,7 +74,7 @@ any startDialog(){
     }
  }
 
- string launch = "subdomain";
+ string launch = "apparmor";
  if(ret == `next) {
     launch = (string) UI::QueryWidget(`id(`modules), `CurrentItem);
     y2debug("launch=%1", launch);

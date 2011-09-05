@@ -11,7 +11,7 @@
 # ------------------------------------------------------------------
 
 ################################################################################
-# ag_sd_config
+# ag_aa_config
 ################################################################################
 
 use strict;
@@ -23,7 +23,7 @@ use Immunix::Reports;
 
 # Subroutines
 ################################################################################
-sub setSubdomain {
+sub setAppArmor {
 
   my $action = shift;
         my $errmsg = ""; 
@@ -32,7 +32,7 @@ sub setSubdomain {
      if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor start 2>&1 |");
      } else {
-             open(RUN, "/sbin/rcsubdomain start 2>&1 |");
+             open(RUN, "/sbin/rcapparmor start 2>&1 |");
      }
            while (<RUN>) {  
              if (/FATAL:(.*)/) {    
@@ -43,7 +43,7 @@ sub setSubdomain {
      if (-f "/etc/init.d/boot.apparmor") {
              system("/sbin/insserv boot.apparmor");
      } else {
-             system("/sbin/insserv boot.subdomain");
+             system("/sbin/insserv boot.apparmor");
      }
      if (-f "/etc/init.d/aaeventd") {
              system("/sbin/rcaaeventd start");
@@ -53,7 +53,7 @@ sub setSubdomain {
      if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor stop 2>&1 |");
      } else {
-             open(RUN, "/sbin/rcsubdomain stop 2>&1 |");
+             open(RUN, "/sbin/rcapparmor stop 2>&1 |");
      }
            while (<RUN>) {  
              if (/FATAL:(.*)/) {    
@@ -64,7 +64,7 @@ sub setSubdomain {
      if (-f "/etc/init.d/boot.apparmor") {
              system("/sbin/insserv -r boot.apparmor");
      } else {
-             system("/sbin/insserv -r boot.subdomain");
+             system("/sbin/insserv -r boot.apparmor");
      }
      if (-f "/etc/init.d/aaeventd") {
              system("/sbin/rcaaeventd stop");
@@ -85,7 +85,7 @@ sub setLearningMode {
 
   my $action = shift;
   my $rcscript = -f "/sbin/rcapparmor" ? "/sbin/rcapparmor"
-                 : "/sbin/rcsubdomain";
+                 : "/sbin/rcapparmor";
 
   if ($action eq "enable") {
     system("$rcscript", "stop");
@@ -126,11 +126,11 @@ while ( <STDIN> ) {
 
     ($action) = (split(/:/, $argument))[1];
 
-    if ( $argument =~ /subdomain/ ) {
-      $result = setSubdomain($action);
+    if ( $argument =~ /apparmor/ ) {
+      $result = setAppArmor($action);
     } elsif ( $argument =~ /learning/ ) {
       setLearningMode($action);
-    } elsif ( $argument eq 'sd-notify') {
+    } elsif ( $argument eq 'aa-notify') {
       setNotify($action);
     } 
 

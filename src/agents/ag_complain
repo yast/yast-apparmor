@@ -16,7 +16,7 @@
 #  - Toggles profiles between complain/enforce modes
 #
 #  Requires:
-#        - /usr/lib/perl5/vendor_perl/Immunix/SubDomain.pm
+#        - /usr/lib/perl5/vendor_perl/Immunix/AppArmor.pm
 #
 #  Input (Optional):
 #		- param 'showall' == 1 to change modes for profiles without associated 
@@ -33,7 +33,7 @@
 use strict;
 use ycp;
 
-use Immunix::SubDomain;
+use Immunix::AppArmor;
 
 our $UI_Mode = "yast-agent";
 
@@ -261,9 +261,9 @@ sub setProfMode {
 		} else {
 
 	        if ($profMode eq 'complain') {
-	            Immunix::SubDomain::complain("$profName");
+	            Immunix::AppArmor::complain("$profName");
 	        } else {
-	            Immunix::SubDomain::enforce("$profName");
+	            Immunix::AppArmor::enforce("$profName");
 	        }
 		}
 
@@ -285,9 +285,9 @@ sub setProfMode {
             if ( badFileName($prof->{'path'}), $args->{'showall'} ) {
                 ycp::y2milestone("Bad profile: $prof->{'path'}. Skipping.");
             } elsif ($profMode eq 'complain') {
-                Immunix::SubDomain::complain("$prof->{'path'}");
+                Immunix::AppArmor::complain("$prof->{'path'}");
             } else {
-                Immunix::SubDomain::enforce("$prof->{'path'}");
+                Immunix::AppArmor::enforce("$prof->{'path'}");
             }
         }
 

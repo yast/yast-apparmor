@@ -7,9 +7,9 @@ agent_SCRIPTS = \
 	ag_reports_ess \
 	ag_reports_parse \
 	ag_reports_sched \
-	ag_sd_config \
-	ag_subdomain \
-	ag_subdomain_profiles
+	ag_aa_config \
+	ag_apparmor \
+	ag_apparmor_profiles
 
 EXTRA_DIST = $(agent_SCRIPTS)
 

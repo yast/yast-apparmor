@@ -95,7 +95,7 @@ sub getFileList {
 	my @dirList = ();
 	my $error = undef;
 
-    # Create list of subdomain activation prospects from Old logfiles
+    # Create list of apparmor activation prospects from Old logfiles
 	if ( opendir(LDIR, $logDir) ) { 
 
 		if ( $args->{'type'} eq "sirRep" || $args->{'type'} eq "archRep" ) {

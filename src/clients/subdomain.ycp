@@ -14,14 +14,14 @@ textdomain "yast2-apparmor";
 
 /* The main () */
 y2milestone("----------------------------------------");
-y2milestone("Subdomain module started");
+y2milestone("AppArmor module started");
 
 import "Label";
 import "Popup";
 import "Wizard";
 
-include "subdomain/apparmor_packages.ycp";
-include "subdomain/sd-config.ycp";
+include "apparmor/apparmor_packages.ycp";
+include "apparmor/aa-config.ycp";
 
 // no command line support #269891
 if (size(WFM::Args()) > 0 )
@@ -37,7 +37,7 @@ if (!installAppArmorPackages()) {
 
 list<map> config_steps =
 [
-	$[ "id": "subdomain",  "label": _("Enable AppArmor Functions")     ],
+	$[ "id": "apparmor",  "label": _("Enable AppArmor Functions")     ],
 ];
 
 list<map> steps = flatten( [ config_steps ] );
@@ -49,8 +49,8 @@ define symbol displayPage( integer no ) ``{
 
     UI::WizardCommand(`SetCurrentStep( current_id ) );
 
-    if ( current_id == "subdomain") {
-		//button = displaySubdomainConfig();
+    if ( current_id == "apparmor") {
+		//button = displayAppArmorConfig();
 		button = displayAppArmorConfig();
 	}
 

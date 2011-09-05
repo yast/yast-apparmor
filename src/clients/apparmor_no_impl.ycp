@@ -11,7 +11,7 @@
 import "Popup";
 import "Wizard";
 
-//include "subdomain/prof-config.ycp";
+//include "apparmor/prof-config.ycp";
 
 /*  BEGIN - This is just temporary filler */
         Popup::Message("This function is not implemented at this time");

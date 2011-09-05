@@ -2,12 +2,12 @@ client_DATA = \
 	apparmor.ycp \
 	GenProf.ycp \
 	LogProf.ycp \
-	SD_AddProfile.ycp \
-	SD_DeleteProfile.ycp \
-	SD_EditProfile.ycp \
-	SD_Report.ycp \
-	subdomain_no_impl.ycp \
-	subdomain.ycp
+	AA_AddProfile.ycp \
+	AA_DeleteProfile.ycp \
+	AA_EditProfile.ycp \
+	AA_Report.ycp \
+	apparmor_no_impl.ycp \
+	apparmor-settings.ycp
 
 EXTRA_DIST =                    \
         $(client_DATA)

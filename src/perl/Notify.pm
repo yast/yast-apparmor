@@ -14,7 +14,7 @@ package Immunix::Notify;
 # /usr/lib/perl5/vendor_perl/Immunix/Notify.pm
 #
 #   - Parses /etc/apparmor/notify.cfg for AppArmor notification
-#   - Used with sd-config.ycp for yast configuration
+#   - Used with aa-config.ycp for yast configuration
 #
 ################################################################################
 

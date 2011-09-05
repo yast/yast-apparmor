@@ -26,7 +26,7 @@ textdomain("yast2-apparmor");
 # and strings from y2-apparmor are translated differently anyway
 textdomain("apparmor-utils");
 
-use Immunix::SubDomain;
+use Immunix::AppArmor;
 setup_yast();
 
 # !hack hack hack!
@@ -63,16 +63,16 @@ GetOptions(
   
 # tell 'em how to use it...
 &usage && exit if $help;
-my $sd_mountpoint = check_for_subdomain();
-unless($sd_mountpoint) {
-  fatal_error( __("SubDomain does not appear to be started.  Please enable SubDomain and try again."));
+my $aa_mountpoint = check_for_apparmor();
+unless($aa_mountpoint) {
+  fatal_error( __("AppArmor does not appear to be started.  Please enable AppArmor and try again."));
 }
 
 # let's convert it to full path...
 $profiledir = get_full_path($profiledir);
   
 unless(-d $profiledir) {
-  fatal_error(sprintf(__("Can't find subdomain profiles in %s."), $profiledir));
+  fatal_error(sprintf(__("Can't find apparmor profiles in %s."), $profiledir));
 }
 
 # what are we profiling?
@@ -240,7 +240,7 @@ for my $p (sort keys %helpers) {
   }
 }
 
-UI_Info(__("Reloaded SubDomain profiles in enforce mode."));
+UI_Info(__("Reloaded AppArmor profiles in enforce mode."));
 UI_Info( sprintf(__('Finished generating profile for %s.'), $fqdbin));
 
 shutdown_yast();

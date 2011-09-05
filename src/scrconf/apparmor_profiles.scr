@@ -34,7 +34,7 @@
  *   Read(.target.string, "/tmp/target.1")
  *   ("Some Test\n")
  *
- * $Id: subdomain_profiles.scr 3715 2005-01-19 09:06:05Z sarnold $
+ * $Id: apparmor_profiles.scr 3715 2005-01-19 09:06:05Z sarnold $
  *
  * <p>The target-agent is used for various actions on the target system.</p>
  *
@@ -48,6 +48,6 @@
  *
  * <p>For more information see the agent's own documentation.</p>
  */
-.subdomain_profiles
+.apparmor_profiles
 
-`ag_subdomain_profiles ()
+`ag_apparmor_profiles ()
