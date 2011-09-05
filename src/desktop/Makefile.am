@@ -1,5 +1,5 @@
 desktop_DATA = \
-	yast2-apparmor.desktop
+	apparmor.desktop
 
 rncdir =  $(schemadir)/autoyast/rnc
 rnc_DATA =
