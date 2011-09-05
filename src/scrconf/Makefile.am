@@ -7,9 +7,9 @@ scrconf_DATA = \
 	reports_ess.scr \
 	reports_parse.scr \
 	reports_sched.scr \
-	sdconf.scr \
-	subdomain_profiles.scr \
-	subdomain.scr
+	aaconf.scr \
+	apparmor_profiles.scr \
+	apparmor.scr
 
 EXTRA_DIST = $(scrconf_DATA)
 

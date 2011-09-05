@@ -12,7 +12,7 @@ import "Wizard";
 import "Popup";
 import "Label";
 import "Map";
-include "subdomain/capabilities.ycp";
+include "apparmor/capabilities.ycp";
 textdomain  "yast2-apparmor";
 
 // Globalz
@@ -625,7 +625,7 @@ define list<term> generateTableContents( map paths, map network, map caps, map i
       indx = indx+1;   });
 
     foreach( string name, map val, (map<string,map>) paths, {
-      string mode = (string) SCR::Execute(.subdomain_profiles.mode_to_string, val["mode"]:0);
+      string mode = (string) SCR::Execute(.apparmor_profiles.mode_to_string, val["mode"]:0);
       newlist = add( newlist, `item( `id(indx), name, mode));
       indx = indx+1;   });
 
@@ -896,7 +896,7 @@ that is inherited by the child program of specific variables. These variables ar
                   string perms = (string) select((term) UI::QueryWidget(`id(`table), `Item(itemselected)), 2, "");
                   map results = fileEntryPopup( rule, perms, pathname );
                   integer newperms = 0;
-                  newperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, results["PERM"]:"");
+                  newperms = (integer) SCR::Execute(.apparmor_profiles.string_to_mode, results["PERM"]:"");
                   rule = results["FILE"]:"";
                   if ( rule != "" ) {
                     if ( rule != oldrule ) {
@@ -963,7 +963,7 @@ that is inherited by the child program of specific variables. These variables ar
                 continue;
               }
               addfname = newentry["FILE"]:"";
-              addperms = (integer) SCR::Execute(.subdomain_profiles.string_to_mode, newentry["PERM"]:"");
+              addperms = (integer) SCR::Execute(.apparmor_profiles.string_to_mode, newentry["PERM"]:"");
               // Make sure that the entry doesn't already exist
               paths = add( paths, addfname, $["audit":0, "mode": addperms] );
               profile["allow","path"] = paths;
@@ -996,7 +996,7 @@ that is inherited by the child program of specific variables. These variables ar
              return `showhat;
            }
        } else if ( id == `include ) {
-	   list <string> customIncludes = (list <string>) SCR::Read(.subdomain, "custom-includes");
+	   list <string> customIncludes = (list <string>) SCR::Read(.apparmor, "custom-includes");
            string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File To Include"));
            if ( newInclude == nil || (string)newInclude == "" ) {
              continue;
@@ -1059,8 +1059,8 @@ that is inherited by the child program of specific variables. These variables ar
              map argmap = $[ "PROFILE_HASH" : Settings["PROFILE_MAP"]:$[],
                              "PROFILE_NAME" : pathname
                            ];
-             any result = SCR::Write(.subdomain_profiles, argmap);
-             any result2 = SCR::Write(.subdomain_profiles.reload, "-");
+             any result = SCR::Write(.apparmor_profiles, argmap);
+             any result2 = SCR::Write(.apparmor_profiles.reload, "-");
            }
          } else {
            if ( ! haskey(hats, Settings["CURRENT_HAT"]:"") ) {

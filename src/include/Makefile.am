@@ -1,1 +1,1 @@
-SUBDIRS = subdomain
+SUBDIRS = apparmor

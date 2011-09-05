@@ -13,10 +13,10 @@ import "Wizard";
 import "Popup";
 import "Label";
 import "Sequencer";
-include "subdomain/apparmor_packages.ycp";
-include "subdomain/apparmor_profile_check.ycp";
-include "subdomain/reporting_dialogues.ycp";
-include "subdomain/report_helptext.ycp";
+include "apparmor/apparmor_packages.ycp";
+include "apparmor/apparmor_profile_check.ycp";
+include "apparmor/reporting_dialogues.ycp";
+include "apparmor/report_helptext.ycp";
 textdomain  "yast2-apparmor";
 
 // Globalz

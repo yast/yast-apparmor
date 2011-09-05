@@ -1,4 +1,4 @@
-yncludedir = @yncludedir@/subdomain
+yncludedir = @yncludedir@/apparmor
 
 ynclude_DATA =                  \
 	apparmor_packages.ycp \
@@ -12,7 +12,7 @@ ynclude_DATA =                  \
 	reporting_archived_dialogs.ycp \
 	reporting_dialogues.ycp \
 	reporting_utils.ycp \
-	sd-config.ycp
+	aa-config.ycp
 
 EXTRA_DIST =                    \
         $(ynclude_DATA)

@@ -26,7 +26,7 @@
 #       -PID				'pid'
 #		-Severity			'sevLevel'
 #       -Denied Resources	'resource'
-#       -SD Mode			'sdmode'
+#       -AA Mode			'aamode'
 #       -Mode				'mode'
 #
 ################################################################################
@@ -522,13 +522,13 @@ sub runSir {
 			for (@$db) {
 		        print SIR "$_->{'host'},$_->{'time'},$_->{'prog'},$_->{'profile'},";
 		        print SIR "$_->{'pid'},$_->{'severity'},$_->{'mode_deny'},$_->{'mode_req'},";
-		        print SIR "$_->{'resource'},$_->{'sdmode'},$_->{'op'},$_->{'attr'},";
+		        print SIR "$_->{'resource'},$_->{'aamode'},$_->{'op'},$_->{'attr'},";
 		        print SIR "$_->{'name_alt'},$_->{'parent'},$_->{'active_hat'},";
 		        print SIR "$_->{'net_family'},$_->{'net_proto'},$_->{'net_socktype'}\n";
 
 				# old aa-eventd
 				#print SIR "$_->{'host'},$_->{'date'},$_->{'prog'},$_->{'profile'},$_->{'pid'},";
-				#print SIR "$_->{'severity'},$_->{'mode'},$_->{'resource'},$_->{'sdmode'}\n"; 
+				#print SIR "$_->{'severity'},$_->{'mode'},$_->{'resource'},$_->{'aamode'}\n";
 			}
 
 			close SIR;

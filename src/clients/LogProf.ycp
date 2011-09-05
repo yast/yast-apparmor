@@ -12,10 +12,10 @@
   import "Wizard";
   import "Popup";
   import "Sequencer";
-  include "subdomain/apparmor_packages.ycp";
-  include "subdomain/apparmor_profile_check.ycp";
-  include "subdomain/apparmor_ycp_utils.ycp";
-  include "subdomain/helps.ycp";
+  include "apparmor/apparmor_packages.ycp";
+  include "apparmor/apparmor_profile_check.ycp";
+  include "apparmor/apparmor_ycp_utils.ycp";
+  include "apparmor/helps.ycp";
   textdomain  "yast2-apparmor";
 
   boolean done  = false;

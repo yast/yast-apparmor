@@ -13,11 +13,11 @@
 ################################################################################
 # ag_logparse 
 #
-#  - Generates report of SubDomain events 
+#  - Generates report of AppArmor events
 #
 #  Requires:
-#		- /usr/lib/immunix/SubDomain/perl/Immunix::Reports.pm
-#		- /usr/lib/immunix/SubDomain/perl/Events.pm 
+#		- /usr/lib/immunix/AppArmor/perl/Immunix::Reports.pm
+#		- /usr/lib/immunix/AppArmor/perl/Events.pm
 #
 #  Input (Optional):
 #		-Start Date|End Date (Month, Day, Year, Time)
@@ -27,7 +27,7 @@
 #		-Severity Level
 #		-Denied Resources
 #		-Mode
-#		-SDMode
+#		-AAMode
 #
 ################################################################################
 my $Version='1.03';
@@ -279,15 +279,15 @@ while ( <STDIN> ) {
 			}
 		}
 
-        # Parse sdmode & mode labels
-        if ( $args->{'sdmode'} ) {
-			if ($args->{'sdmode'} eq "All") { 
-				$args->{'sdmode'} = "-"; 		# Translate from GUI 
+        # Parse aamode & mode labels
+        if ( $args->{'aamode'} ) {
+			if ($args->{'aamode'} eq "All") {
+				$args->{'aamode'} = "-"; 		# Translate from GUI
 			} else {
-	            $args->{'sdmode'} =~ s/\&//g;
-	            $args->{'sdmode'} =~ s/\://g;
-	            $args->{'sdmode'} =~ s/\s//g;
-	            $args->{'sdmode'} =~ s/AccessType//g;
+	            $args->{'aamode'} =~ s/\&//g;
+	            $args->{'aamode'} =~ s/\://g;
+	            $args->{'aamode'} =~ s/\s//g;
+	            $args->{'aamode'} =~ s/AccessType//g;
 			}
         }
 

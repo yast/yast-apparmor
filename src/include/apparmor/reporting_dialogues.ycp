@@ -12,9 +12,9 @@
 import "Wizard";
 import "Popup";
 import "Label";
-include "subdomain/reporting_utils.ycp";
-include "subdomain/report_helptext.ycp";
-include "subdomain/reporting_archived_dialogs.ycp";
+include "apparmor/reporting_utils.ycp";
+include "apparmor/report_helptext.ycp";
+include "apparmor/reporting_archived_dialogs.ycp";
 textdomain  "yast2-apparmor";
 
 // Globalz
@@ -223,7 +223,7 @@ define term editFilterForm (map Settings) {
 	string prof = Settings["prof"]:"";
 	string pid = Settings["pid"]:"";
 	string res = Settings["res"]:"";
-	string sdmode = Settings["sdmode"]:"R";
+	string aamode = Settings["aamode"]:"R";
 	string mode = Settings["mode"]:"All";
 	string sev = Settings["sev"]:"All";
 
@@ -250,7 +250,7 @@ define term editFilterForm (map Settings) {
 				`VBox(
 				`Label( _("Access Type: ") ),
 	                `Bottom( `HWeight( 4,
-	                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode )))))
+	                `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), modeToHumanString( aamode )))))
 				),
 				`VBox(
 					`Label( _("Mode: ") ),
@@ -293,14 +293,14 @@ term schedFilterForm =
 
 			`VBox(
 	            `Label( _("Access Type: ") ),
-                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), "R" ))
+                `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), "R" ))
 			),
 			`VBox(
 	            `Label( _("Mode: ") ),
                 `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("All") ))
 			),
 
-            //`HWeight( 4, `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: R") ))),
+            //`HWeight( 4, `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), _("Access Type: R") ))),
             //`HWeight( 4, `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("Mode: All")  ))),
             `HSpacing( `opt(`hstretch), 1)
         ),
@@ -353,7 +353,7 @@ term filterForm =
 
             `VBox(
                 `Label( _("Access Type: ") ),
-                `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), "R" ))
+                `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), "R" ))
             ),
             `VBox(
                 `Label( _("Mode: ") ),
@@ -361,7 +361,7 @@ term filterForm =
             ),
 
 
-            //`HWeight( 3, `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), _("Access Type: R") ))),
+            //`HWeight( 3, `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), _("Access Type: R") ))),
             //`HWeight( 3, `ReplacePoint(`id(`replace_mode), `PushButton(`id(`mode), _("Mode: All")  ))),
             `HSpacing( `opt(`hstretch), 5)
         ),
@@ -387,22 +387,22 @@ define term filterForm2(string name, map<any,any> preFilters) {
 	any apid = preFilters["pid"]:nil;
 	any ares = preFilters["resource"]:nil;
 	any amode = preFilters["mode"]:"All";
-	any asdmode = preFilters["sdmode"]:"All";
+	any aaamode = preFilters["aamode"]:"All";
 
 	string prog = "";
 	string prof = "";
 	string pid = "";
 	string res = "";
 	string mode = "";
-	string sdmode = "";
+	string aamode = "";
 
 	if ( aprog != nil ) { prog = tostring(aprog); }
 	if ( aprof != nil ) { prof = tostring(aprof); }
 	if ( apid != nil )  { pid  = tostring(apid); }
 	if ( ares != nil )  { res  = tostring(ares); }
 	if ( amode != nil )  { mode = tostring(amode); }
-	if ( asdmode != nil )  { sdmode = tostring(asdmode); }
-	if (sdmode == "-") { sdmode = "All"; }
+	if ( aaamode != nil )  { aamode = tostring(aaamode); }
+	if (aamode == "-") { aamode = "All"; }
 	if (mode == "-") { mode = "All"; }
 
 	term ff2 =
@@ -447,7 +447,7 @@ define term filterForm2(string name, map<any,any> preFilters) {
             `TextEntry(`id(`res), _("Detail"), res),
 			`VBox(
 				`Label( _("Access Type: ")  ),
-	            `ReplacePoint(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode )))
+	            `ReplacePoint(`id(`replace_aamode), `PushButton(`id(`aamode), modeToHumanString( aamode )))
 			),
 			`VBox(
 				`Label( _("Mode: ")  ),
@@ -492,7 +492,7 @@ define term turnReportPage (string name, integer curPage, string slastPage, map 
         reportList = add( reportList, `item( `id(key), record["host"]:nil,
 		record["date"]:nil, record["prog"]:nil, record["profile"]:nil,
 		record["pid"]:nil, record["severity"]:nil, record["mode"]:nil,
-		record["resource"]:nil, record["sdmode"]:nil ));
+		record["resource"]:nil, record["aamode"]:nil ));
         key = key + 1;
     });
 	*/
@@ -902,7 +902,7 @@ define map<any,any> filterConfigForm(string name) {
 	}
 
 	string mode = "All";
-	string sdmode = "R";
+	string aamode = "R";
 
 	Settings = $[ ];
 	map event = $[];
@@ -931,13 +931,13 @@ define map<any,any> filterConfigForm(string name) {
 			Settings["break"] = "back";
 			break;
 
-        } else if ( id == `sdmode ) {
+        } else if ( id == `aamode ) {
 
-            sdmode = popUpSdMode();
+            aamode = popUpSdMode();
 
-			if ( sdmode != "" ) {
-	            Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ) );
+			if ( aamode != "" ) {
+	            Settings["aamode"] = aamode;
+	            UI::ReplaceWidget(`id(`replace_aamode), `PushButton(`id(`aamode), modeToHumanString( aamode) ) );
 			}
 
         } else if ( id == `mode ) {
@@ -984,7 +984,7 @@ define map<any,any> filterConfigForm(string name) {
 	        string pid = (string) UI::QueryWidget(`id(`pid), `Value);
 	        string sev = (string) UI::QueryWidget(`id(`sev), `Value);
 	        string res = (string) UI::QueryWidget(`id(`res), `Value);
-			string sdmode = (string) UI::QueryWidget(`id(`sdmode), `Label);
+			string aamode = (string) UI::QueryWidget(`id(`aamode), `Label);
 			string mode = (string) UI::QueryWidget(`id(`mode), `Label);
 			string exppath = (string) UI::QueryWidget(`id(`expPath), `Value);
 
@@ -998,7 +998,7 @@ define map<any,any> filterConfigForm(string name) {
 	        if ( pid != "" ) { Settings["pid"] = pid; }
 	        if ( sev != "" && sev != "All" ) { Settings["severity"] = sev; }
 	        if ( res != "" ) { Settings["resource"] = res; }
-	        if ( sdmode != "" ) { Settings["sdmode"] = humanStringToMode( sdmode); }
+	        if ( aamode != "" ) { Settings["aamode"] = humanStringToMode( aamode); }
 	        if ( mode != "" ) { Settings["mode"] = humanStringToMode( mode ); }
 
 	        if ( bydate == true ) {
@@ -1729,7 +1729,7 @@ define void addSchedForm() {
     )));
 
 	string mode = "All";
-	string sdmode = "R";
+	string aamode = "R";
     integer timeout_millisec = 20 * 1000;
     map event = $[];
     any addInput    = nil;
@@ -1830,13 +1830,13 @@ define void addSchedForm() {
 				}
 			}}
 
-        } else if ( addInput == `sdmode ) {
+        } else if ( addInput == `aamode ) {
 
-            sdmode = popUpSdMode();
+            aamode = popUpSdMode();
 
-			if (sdmode != "") {
-	            Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ));
+			if (aamode != "") {
+	            Settings["aamode"] = aamode;
+	            UI::ReplaceWidget(`id(`replace_aamode), `PushButton(`id(`aamode), modeToHumanString( aamode) ));
 			}
 
         } else if ( addInput == `mode ) {
@@ -1854,7 +1854,7 @@ define void addSchedForm() {
             string prof = (string) UI::QueryWidget(`id(`prof), `Value);
             string pid = (string) UI::QueryWidget(`id(`pid), `Value);
             string res = (string) UI::QueryWidget(`id(`res), `Value);
-			string sdmode = (string) UI::QueryWidget(`id(`sdmode), `Label);
+			string aamode = (string) UI::QueryWidget(`id(`aamode), `Label);
 			string mode = (string) UI::QueryWidget(`id(`mode), `Label);
             string sev = (string) UI::QueryWidget(`id(`sev), `Value);
             string expType = (string) UI::QueryWidget(`id(`expType), `Value);
@@ -1876,7 +1876,7 @@ define void addSchedForm() {
             Settings["pid"] = pid;
             Settings["sev"] = sev;
             Settings["res"] = res;
-            Settings["sdmode"] = humanStringToMode( sdmode );
+            Settings["aamode"] = humanStringToMode( aamode );
             Settings["mode"] = humanStringToMode( mode );
 
             any error = (any) SCR::Write(.reports_sched, Settings);
@@ -2000,7 +2000,7 @@ define void editSchedForm() {
 	any apid = db2["pid"]:nil;
 	any ares = db2["res"]:nil;
 	any asev = db2["severity"]:nil;
-	any asdmode = db2["sdmode"]:nil;
+	any aaamode = db2["aamode"]:nil;
 	any amode = db2["mode"]:nil;
 	any acsv = db2["csv"]:nil;
 	any ahtml = db2["html"]:nil;
@@ -2011,9 +2011,9 @@ define void editSchedForm() {
 	if ( apid != nil ) { Settings["pid"] = tostring(apid); }
 	if ( ares != nil ) { Settings["res"] = tostring(ares); }
 	if ( asev != nil ) { Settings["sev"] = tostring(asev); }
-	if ( asdmode != nil ) { Settings["sdmode"] = tostring(asdmode); }
-	if ( asdmode == nil || asdmode == "-" ) {
-		Settings["sdmode"] = "All";
+	if ( aaamode != nil ) { Settings["aamode"] = tostring(aaamode); }
+	if ( aaamode == nil || aaamode == "-" ) {
+		Settings["aamode"] = "All";
 	}
 	if ( amode != nil ) { Settings["mode"] = tostring(amode); }
 
@@ -2115,7 +2115,7 @@ define void editSchedForm() {
 
 	/**************************************************/
 	string mode   = _("All");
-	string sdmode = _("R");
+	string aamode = _("R");
 
     integer timeout_millisec = 20 * 1000;
     map event = $[];
@@ -2176,13 +2176,13 @@ define void editSchedForm() {
 	            UI::ChangeWidget(`id(`expPath), `Value, oldExpPath);
 			}
 
-        } else if ( editInput == `sdmode ) {
+        } else if ( editInput == `aamode ) {
 
-			sdmode = popUpSdMode();
+			aamode = popUpSdMode();
 
-			if ( sdmode != "" ) {
-				Settings["sdmode"] = sdmode;
-	            UI::ReplaceWidget(`id(`replace_sdmode), `PushButton(`id(`sdmode), modeToHumanString( sdmode) ));
+			if ( aamode != "" ) {
+				Settings["aamode"] = aamode;
+	            UI::ReplaceWidget(`id(`replace_aamode), `PushButton(`id(`aamode), modeToHumanString( aamode) ));
 			}
 
 		} else if ( editInput == `mode ) {
@@ -2237,7 +2237,7 @@ define void editSchedForm() {
 	            string prof = (string) UI::QueryWidget(`id(`prof), `Value);
 	            string pid = (string) UI::QueryWidget(`id(`pid), `Value);
 	            string res = (string) UI::QueryWidget(`id(`res), `Value);
-				string sdmode = (string) UI::QueryWidget(`id(`sdmode), `Label);
+				string aamode = (string) UI::QueryWidget(`id(`aamode), `Label);
 				string mode = (string) UI::QueryWidget(`id(`mode), `Label);
 	            string sev = (string) UI::QueryWidget(`id(`sev), `Value);
 
@@ -2246,7 +2246,7 @@ define void editSchedForm() {
 	            Settings["pid"] = pid;
 	            Settings["sev"] = sev;
 	            Settings["res"] = res;
-	            Settings["sdmode"] = humanStringToMode( sdmode );
+	            Settings["aamode"] = humanStringToMode( aamode );
 	            Settings["mode"] = humanStringToMode( mode );
 
 			} else {

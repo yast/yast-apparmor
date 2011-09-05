@@ -210,7 +210,7 @@ _("<li> Allows setting read ahead and flushing buffers on block devices</li>
 _("<li> Allows tuning the ide driver</li> 
 <li> Allows access to the nvram device</li> 
 <li> Allows administration of apm_bios, serial and bttv (TV) device</li> 
-<li> Allows manufacturer commands in isdn CAPI support driver</li>") +
+<li> Allows manufacturer commands in iaan CAPI support driver</li>") +
 
 _("<li> Allows reading non-standardized portions of pci configuration space</li> 
 <li> Allows DDI debug ioctl on sbpcd driver</li> 

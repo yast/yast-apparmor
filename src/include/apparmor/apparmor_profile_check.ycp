@@ -25,7 +25,7 @@ define boolean checkProfileSyntax () {
    boolean syntax_ok = true;
 
    args["profile-syntax-check"] = "1";
-   list <string> errors = (list <string>) SCR::Execute (.subdomain, "profile-syntax-check" );
+   list <string> errors = (list <string>) SCR::Execute (.apparmor, "profile-syntax-check" );
    foreach ( string error, errors,  ``{
      syntax_ok = false;
      errmsg = errmsg + "<li>" + error + "</li>";

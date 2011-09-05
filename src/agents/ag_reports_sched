@@ -13,11 +13,11 @@
 ################################################################################
 # ag_reports_sched
 #
-#  - Adds/Deletes/Edits Scheduled Subdomain Event Reports (cron)
+#  - Adds/Deletes/Edits Scheduled AppArmor Event Reports (cron)
 #
 #  Requires:
-#       - /usr/lib/immunix/SubDomain/perl/Immunix/Events.pm
-#       - /usr/lib/immunix/SubDomain/perl/Immunix/Reports.pm
+#       - /usr/lib/immunix/AppArmor/perl/Immunix/Events.pm
+#       - /usr/lib/immunix/AppArmor/perl/Immunix/Reports.pm
 #
 #	Uses:
 #		-/etc/apparmor/reports.crontab
@@ -31,7 +31,7 @@
 #       -PID
 #       -Severity Level
 #       -Denied Resources
-#       -SD Mode
+#       -AA Mode
 #       -Mode
 #
 ################################################################################
@@ -87,7 +87,7 @@ sub getFilters {
 
     my $filts = undef;
     my $schedConf = '/etc/apparmor/reports.conf';
-    my $regExp = '(prog|profile|pid|resource|severity|sdmode|mode)';
+    my $regExp = '(prog|profile|pid|resource|severity|aamode|mode)';
 
     my $allConf = Immunix::Reports::getXmlReport($repName);
 
@@ -193,7 +193,7 @@ sub addConf {
 
             # pre-process filters for GUI - UGLY
 	        for ($args->{'prog'},$args->{'prof'},$args->{'pid'},$args->{'sev'},
-					$args->{'res'},$args->{'sdmode'},$args->{'mode'}) {
+					$args->{'res'},$args->{'aamode'},$args->{'mode'}) {
 
 	            $_ =~ s/\s+//g;
 
@@ -229,7 +229,7 @@ sub addConf {
             print NCF "\t\t<pid>$args->{'pid'}</pid>\n";
             print NCF "\t\t<severity>$args->{'sev'}</severity>\n";
             print NCF "\t\t<resource>$args->{'res'}</resource>\n";
-            print NCF "\t\t<sdmode>$args->{'sdmode'}</sdmode>\n";
+            print NCF "\t\t<aamode>$args->{'aamode'}</aamode>\n";
             print NCF "\t\t<mode>$args->{'mode'}</mode>\n";
             print NCF "\t\t$expPath\n";
             print NCF "\t\t$expType\n";
@@ -648,12 +648,12 @@ while ( <STDIN> ) {
 			}
 		}
 
-		# Parse sdmode & mode labels
-		if ( $args->{'sdmode'} ) {
-			$args->{'sdmode'} =~ s/\&//g;
-			$args->{'sdmode'} =~ s/\://g;
-			$args->{'sdmode'} =~ s/\s//g;
-			$args->{'sdmode'} =~ s/AccessType//g;
+		# Parse aamode & mode labels
+		if ( $args->{'aamode'} ) {
+			$args->{'aamode'} =~ s/\&//g;
+			$args->{'aamode'} =~ s/\://g;
+			$args->{'aamode'} =~ s/\s//g;
+			$args->{'aamode'} =~ s/AccessType//g;
 		}
 		if ( $args->{'mode'} ) {
 			$args->{'mode'} =~ s/\&//g;

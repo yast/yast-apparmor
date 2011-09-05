@@ -161,7 +161,7 @@ define symbol profileModeConfigForm() {
 	} else if ( id == `next ) {
 		integer ret = -1;
 	        if ( modified )
-		    ret = (integer) SCR::Execute (.target.bash, "/sbin/rcsubdomain reload > /dev/null 2>&1");
+		    ret = (integer) SCR::Execute (.target.bash, "/sbin/rcapparmor reload > /dev/null 2>&1");
 		else {
 		    y2milestone("No change to Apparmor profile modes - nothing to do.");
 		    break;

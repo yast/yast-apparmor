@@ -8,9 +8,9 @@
 *
   ------------------------------------------------------------------*/
 {
-include "subdomain/config_complain.ycp";
-include "subdomain/helps.ycp";
-include "subdomain/apparmor_ycp_utils.ycp";
+include "apparmor/config_complain.ycp";
+include "apparmor/helps.ycp";
+include "apparmor/apparmor_ycp_utils.ycp";
 textdomain "yast2-apparmor";
 
 import "Label";
@@ -18,15 +18,15 @@ import "Label";
 define boolean changeAppArmorState(boolean aaEnabled) {
 
 	any error = nil;
-	string sdAction = "";
+	string aaAction = "";
 
 	if (aaEnabled == true) {
-		sdAction = "subdomain:enable";
+		aaAction = "apparmor:enable";
 	} else {
-		sdAction = "subdomain:disable";
+		aaAction = "apparmor:disable";
 	}
 
-	error = SCR::Execute(.sdconf, sdAction);
+	error = SCR::Execute(.aaconf, aaAction);
 
 	if ( error != nil && is(error, string) ) {
 
@@ -42,7 +42,7 @@ define boolean changeAppArmorState(boolean aaEnabled) {
 
 define void displayNotifyForm() {
 
-      map settings = (map) SCR::Execute(.subdomain, "sd-notify-settings");
+      map settings = (map) SCR::Execute(.apparmor, "aa-notify-settings");
 
       map<string,any> terse   = settings["terse"]:$[];
       map<string,any> summary = settings["summary"]:$[];
@@ -183,7 +183,7 @@ define void displayNotifyForm() {
         s_freq = UI::QueryWidget(`id(`summary_freq), `Value);
         v_freq = UI::QueryWidget(`id(`verbose_freq), `Value);
 
-        set_notify["sd-set-notify"] = "yes";
+        set_notify["aa-set-notify"] = "yes";
         terse["terse_freq"]   = tostring(t_freq);
         summary["summary_freq"] = tostring(s_freq);
         verbose["verbose_freq"] = tostring(v_freq);
@@ -270,7 +270,7 @@ define void displayNotifyForm() {
         answers["summary"] = summary;
         answers["verbose"] = verbose;
 
-        string result = (string) SCR::Execute(.sdconf, answers);
+        string result = (string) SCR::Execute(.aaconf, answers);
 
         if (result != "success") {
           Popup::Error( _("Configuration failed for the following operations: ") + result);
@@ -297,16 +297,16 @@ define symbol displayAppArmorConfig () {
   // AppArmor Status
   boolean aaEnabled = false;
   boolean ntIsEnabled = false;
-  string subdomain = (string) SCR::Execute(.subdomain, "sd-status");
-  string sdEnStr = _("AppArmor is disabled");
+  string apparmor = (string) SCR::Execute(.apparmor, "aa-status");
+  string aaEnStr = _("AppArmor is disabled");
 
-  if (subdomain == "enabled") {
+  if (apparmor == "enabled") {
     aaEnabled = true;
-	sdEnStr = _("AppArmor is enabled");
+	aaEnStr = _("AppArmor is enabled");
   }
 
   // Notification Status
-  string evnotify = (string) SCR::Execute(.subdomain, "sd-notify");
+  string evnotify = (string) SCR::Execute(.apparmor, "aa-notify");
   string evEnStr = _("Notification is disabled");
   if (evnotify == "enabled") {
     ntIsEnabled = true;

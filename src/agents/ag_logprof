@@ -16,7 +16,7 @@ use strict;
 use Data::Dumper;
 use Getopt::Long;
 
-use Immunix::SubDomain;
+use Immunix::AppArmor;
 
 sub usage {
   UI_Info("usage: $0 [ -d /path/to/profiles ] [ -f /path/to/logfile ] [ -m \"mark in log to start processing after\"");
@@ -43,7 +43,7 @@ GetOptions(
 $profiledir = get_full_path($profiledir);
   
 unless(-d $profiledir) {
-  fatal_error "Can't find subdomain profiles in $profiledir.";
+  fatal_error "Can't find apparmor profiles in $profiledir.";
 }
 
 # load all the include files
