@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 22 12:22:13 UTC 2011 - jreidinger@suse.com
+
+- fix category of apparmor module (bnc#719386)
+- 2.17.11
+
+-------------------------------------------------------------------
 Thu Jun 30 13:04:14 UTC 2011 - jreidinger@novell.com
 
 - fix typos (bnc#702639) 
