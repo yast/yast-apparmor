@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com
+
+- fix category of apparmor module (bnc#719386)
+- 2.21.4
+
+-------------------------------------------------------------------
 Fri Aug  5 12:21:26 CEST 2011 - tgoettlicher@suse.de
 
 - fixed .desktop file (bnc #681249)
