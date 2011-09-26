@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 26 13:25:04 UTC 2011 - jsrain@site
+
+- fixed enabling/disabling apparmor
+
+-------------------------------------------------------------------
 Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com
 
 - fix category of apparmor module (bnc#719386)
