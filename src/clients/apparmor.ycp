@@ -41,7 +41,7 @@ any startDialog(){
  );
 
  Wizard::CreateDialog();
- Wizard::SetDesktopIcon("apparmor");
+ Wizard::SetDesktopTitleAndIcon("apparmor");
  Wizard::SetContentsButtons(caption, contents, help,
 	Label::BackButton(), /* Label::FinishButton() */ _("&Launch"));
 
