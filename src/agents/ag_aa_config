@@ -19,7 +19,6 @@ use ycp;
 use Data::Dumper;
 
 use Immunix::Notify;
-use Immunix::Reports;
 
 # Subroutines
 ################################################################################
@@ -50,6 +49,10 @@ sub setAppArmor {
              system("/sbin/insserv aaeventd");
      }
   } else {
+     if (-f "/etc/init.d/aaeventd") {
+             system("/sbin/rcaaeventd stop");
+             system("/sbin/insserv -r aaeventd");
+     }
      if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor stop 2>&1 |");
      } else {
@@ -65,10 +68,6 @@ sub setAppArmor {
              system("/sbin/insserv -r boot.apparmor");
      } else {
              system("/sbin/insserv -r boot.apparmor");
-     }
-     if (-f "/etc/init.d/aaeventd") {
-             system("/sbin/rcaaeventd stop");
-             system("/sbin/insserv -r aaeventd");
      }
   }
   return $errmsg;
