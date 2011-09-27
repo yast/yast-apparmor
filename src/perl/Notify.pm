@@ -215,7 +215,7 @@ sub setNotifySettings {
   my $result = "success";
   my $ntConf = NTCONF; 
 
-  Immunix::Reports::enableEventD();
+  # not enabling aaeventd here as it gets enabled as part of global apparmor switch
   if ( open(CFG, "> $ntConf") ) {
     if($config->{terse}->{enable_terse} eq "yes") {
       # if we didn't get passed a valid frequency, default to off

@@ -1,7 +1,9 @@
 -------------------------------------------------------------------
-Mon Sep 26 13:25:04 UTC 2011 - jsrain@site
+Tue Sep 27 08:12:50 UTC 2011 - jsrain@site
 
 - fixed enabling/disabling apparmor
+- fixed setting notifications (and enabling aaeventsd as part of
+  global switch only)
 
 -------------------------------------------------------------------
 Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com
