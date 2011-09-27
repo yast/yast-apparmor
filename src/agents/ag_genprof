@@ -19,6 +19,7 @@ use Encode;
 use Getopt::Long;
 use Locale::gettext;
 use POSIX;
+use Immunix::AppArmor;
 
 # define textdomain so that y2makepot does not complain ..
 textdomain("yast2-apparmor");
@@ -63,7 +64,7 @@ GetOptions(
   
 # tell 'em how to use it...
 &usage && exit if $help;
-my $aa_mountpoint = check_for_apparmor();
+my $aa_mountpoint = Immunix::AppArmor::check_for_apparmor();
 unless($aa_mountpoint) {
   fatal_error( __("AppArmor does not appear to be started.  Please enable AppArmor and try again."));
 }
