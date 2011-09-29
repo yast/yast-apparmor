@@ -80,12 +80,13 @@ any startDialog(){
     y2debug("launch=%1", launch);
  }
 
- UI::CloseDialog();
-
  if(ret == `next)
-     return WFM::CallFunction(launch, WFM::Args());
+     ret = WFM::CallFunction(launch, WFM::Args());
  else
-     return `back;
+     ret = `back;
+
+ UI::CloseDialog();
+ return ret;
 }
 
 any ret = nil;
