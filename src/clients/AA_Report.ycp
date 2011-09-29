@@ -59,7 +59,7 @@ define any mainSequence() ``{
 		"runReport": $[
 			`back    : `back,
             `abort   : `abort,
-            `next    : `finish,
+            `next    : "schedReport",
             `finish  : `ws_finish
 		],
         "configreport" : $[
