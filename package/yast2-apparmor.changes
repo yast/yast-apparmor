@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Thu Sep 29 09:17:21 UTC 2011 - jsrain@site
+Thu Sep 29 12:42:55 UTC 2011 - jsrain@site
 
 - fixed enabling/disabling apparmor
 - fixed setting notifications (and enabling aaeventsd as part of
@@ -7,6 +7,8 @@ Thu Sep 29 09:17:21 UTC 2011 - jsrain@site
 - prevent profile generator from failing immediately
 - prevent window from disappearing when starting a module
 - don't close the module after running a report (bnc#531512)
+- run the dialog to select application for profiling without
+  pop-up (bnc#531512)
 
 -------------------------------------------------------------------
 Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com

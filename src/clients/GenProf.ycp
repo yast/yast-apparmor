@@ -287,37 +287,32 @@
                           `VSpacing(`opt(`vstretch), 0.25)
                         )
                       ),
-                      `HBox( `HCenter(`PushButton(`id(`browse), _("&Browse")))),
-                      `HBox(
-                        `HSpacing(`opt(`hstretch), 0.1),
-                        `HCenter(`PushButton(`id(`okay), `opt(`default), okay_label)),
-                        `HCenter(`PushButton(`id(`cancel), cancel_label)),
-                        `HSpacing(`opt(`hstretch), 0.1),
-                        `VSpacing(1)
-                      )
+                      `HBox( `HCenter(`PushButton(`id(`browse), _("&Browse"))))
                     );
 
 
-      UI::OpenDialog(dialog);
+      string helptext = _("<p><h1>Application to Profile</h1>
+Select the application which you want to profile. Afterwards, when you run the application, AppArmor will collect
+information about system resources it accesses.</p>");;
+      Wizard::SetContentsButtons(_("Application to Profile"), dialog, helptext, Label::BackButton(), Label::NextButton());
 
       map<string,string> answers = $[ ];
-      any poo = false;
+      any ret = false;
       repeat {
         UI::SetFocus(`id(`filename));
 
-        poo = UI::UserInput();
-        if(poo == `okay) {
+        ret = UI::UserInput();
+	y2internal ("Poo: %1", ret);
+        if(ret == `next) {
           answers["answer"]   = "okay";
           answers["filename"] = (string) UI::QueryWidget(`id(`filename), `Value);
-        } else if(poo == `cancel) {
+        } else if(ret == `cancel || ret == `abort || ret == `back) {
           answers["answer"]   = "cancel";
-        } else if ( poo == `browse ) {
+        } else if ( ret == `browse ) {
           string selectfilename = UI::AskForExistingFile( "/", "", browse_desc);
           UI::ChangeWidget(`id(`filename), `Value, selectfilename);
         }
-      } until ((poo == `okay) || (poo == `cancel));
-
-      UI::CloseDialog();
+      } until ((ret == `next) || (ret == `cancel)|| ret == `abort || ret == `back);
 
       // tell the backend what they picked
       boolean written = SCR::Write(.genprof, answers);
