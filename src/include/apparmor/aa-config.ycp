@@ -341,7 +341,8 @@ uses individual profiles.</p>");
 				        `HSpacing( `opt(`hstretch), 4 ),
 						`VBox(
 					        `VSpacing(1),
-					        `Frame ( _("Security Event Notification"),
+// event notification disabled due to changes in AppArmor
+/*					        `Frame ( _("Security Event Notification"),
 					            `HBox(
 						            `VSpacing(1), `HSpacing(1),
 						            `HVCenter( `Label( `id(`notifyLabel),  evEnStr )),
@@ -350,7 +351,7 @@ uses individual profiles.</p>");
 					            )
 					        ),
 					        `VSpacing(1), `HSpacing(20),
-
+*/
 					        `Frame ( _("Configure Profile Modes"),
 					          `HBox(
 					            `VSpacing(1), `HSpacing(1),

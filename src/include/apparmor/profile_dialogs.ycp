@@ -1088,6 +1088,10 @@ that is inherited by the child program of specific variables. These variables ar
   // Settings["PROFILE_MAP"]: map containing the profile
   //
 define symbol  SelectProfileForm( map profiles, string formhelp, string formtitle, string iconname ) {
+   // TODO switch to variable in a module
+   // TODO plain reread does not work here
+   SCR::UnmountAgent (.apparmor_profiles);
+   profiles = (map) SCR::Read (.apparmor_profiles, "all");
    list<term> profilelisting = [];
    integer indx = 0;
    foreach( string p, any ignore, (map<string,any>) profiles, {
@@ -1099,8 +1103,14 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
      `VBox(
           `VSpacing(2),
           `SelectionBox( `id(`profilelist), `opt(`notify), _("Profile Name"), profilelisting ),
-          `VSpacing(3)
-          );
+          `VSpacing(3),
+	  `HBox (
+	    `PushButton (`id (`edit), Label::EditButton()),
+	    `PushButton (`id (`delete), Label::DeleteButton()),
+	    `HStretch()
+	  )
+
+      );
 
    //
    // Create the Dialog Window and parse user input
@@ -1116,8 +1126,8 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
    {
         event = UI::WaitForEvent( timeout_millisec );
         id    = event["ID"]:nil; // We'll need this often - cache it
-        if ( id == `next  || id == `profilelist ) {
-           profilename = tostring( UI::QueryWidget(`id(`profilelist), `CurrentItem) );
+	profilename = tostring( UI::QueryWidget(`id(`profilelist), `CurrentItem) );
+	if ( id == `edit ) {
            if ( profilename != nil && profilename != "" ) {
              break;
            } else {
@@ -1125,6 +1135,18 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
              continue;
            }
         } // TODO ELSE POPUP NO ENTRY SELECTED ERROR
+	else if ( id == `delete ) {
+	    if (Popup::YesNoHeadline( _("Delete profile confirmation"), 
+                _("Are you sure you want to delete the profile ") + profilename + 
+                _(" ?\nAfter this operation the AppArmor module will reload the profile set.") ) )
+	    {
+		y2milestone("Deleted " + profilename );
+		boolean result = SCR::Write(.apparmor_profiles.delete, profilename);
+		any result2 = SCR::Write(.apparmor_profiles.reload, "-");
+	    }
+	    id = `reread;
+	    break;
+	}
         if(id == `abort || id == `cancel) {
             break;
         } else if(id == `back) {
@@ -1134,10 +1156,9 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
             continue;
         }
     }
-    if ( id == `next || id == `profilelist) {
+    if ( id == `edit ) {
        Settings["CURRENT_PROFILE"] =  profilename;
        Settings["PROFILE_MAP"] =  profiles[profilename]:nil;
-       id = `next;
     }
     UI::CloseDialog();
     return (symbol) id;
