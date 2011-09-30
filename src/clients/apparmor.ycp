@@ -29,10 +29,12 @@ any startDialog(){
 	    `item(`id("apparmor-settings"), _("Settings"), true),
 	    `item(`id("GenProf"), _("Generate Profile")),
 	    `item(`id("LogProf"), _("Update Profile")),
-	    `item(`id("AA_Report"), _("Reports")),
-	    `item(`id("AA_EditProfile"), _("Edit Profile")),
-	    `item(`id("AA_AddProfile"), _("Add Manually Profile")),
-	    `item(`id("AA_DeleteProfile"), _("Delete Profile"))
+// disabled, since aa-eventd was removed from main AA package
+// and so was Reports.pm
+//	    `item(`id("AA_Report"), _("Reports")),
+	    `item(`id("AA_EditProfile"), _("Manage Existing Profiles")),
+	    `item(`id("AA_AddProfile"), _("Add Manually Profile"))//,
+// merged with EditProfile	    `item(`id("AA_DeleteProfile"), _("Delete Profile"))
 	]),
 	`VSpacing(3)
 	),

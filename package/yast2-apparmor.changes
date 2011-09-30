@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Thu Sep 29 12:42:55 UTC 2011 - jsrain@site
+Fri Sep 30 11:57:42 UTC 2011 - jsrain@site
 
 - fixed enabling/disabling apparmor
 - fixed setting notifications (and enabling aaeventsd as part of
@@ -9,6 +9,8 @@ Thu Sep 29 12:42:55 UTC 2011 - jsrain@site
 - don't close the module after running a report (bnc#531512)
 - run the dialog to select application for profiling without
   pop-up (bnc#531512)
+- disabled Reports part due to changes in AppArmor
+- merged editation and deleting of a profile
 
 -------------------------------------------------------------------
 Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com

@@ -19,34 +19,44 @@ textdomain  "yast2-apparmor";
 
 // Globalz
 
+map profiles = nil;
+
+define any Reread() {
+    profiles = (map) SCR::Read (.apparmor_profiles, "all");
+    return `next;
+}
 
 
 define any MainSequence() ``{
 
 //
 // Read the profiles from the SCR agent
-   map profiles = (map) SCR::Read (.apparmor_profiles, "all");
+   Reread();
 
    map aliases = $[
         "showProfile"        : ``(DisplayProfileForm(Settings["CURRENT_PROFILE"]:"", false)),
         "showHat"            : ``(DisplayProfileForm(Settings["CURRENT_HAT"]:"", true)),
         "chooseProfile"      : ``(SelectProfileForm(profiles, _("Please make a selection from the listed profiles and press Next to edit the profile."), _("Edit Profile - Choose profile to edit"), "apparmor_edit_profile" )),
-
+	"reread"	     : ``(Reread()),
    ];
 
    map sequence = $[
         "ws_start" : "chooseProfile",
         "chooseProfile" : $[
             `abort : `abort,
-            `next : "showProfile",
-            `finish : `next,
+            `edit : "showProfile",
+	    `reread : "reread",
+            `next : `next,
         ],
         "showProfile" : $[
             `abort : `abort,
-            `next : `ws_finish,
+            `next : "reread",
             `showhat : "showHat",
             `finish : `next,
         ],
+	"reread" : $[
+            `next : "chooseProfile",
+	],
         "showHat" : $[
             `abort : `abort,
             `next : "showProfile",
