@@ -2,7 +2,7 @@
 
 @HEADER@
 Group:	Productivity/Security
-License: GPL v2 or later
+License: GPL-2.0+
 
 Summary: YaST2 - Plugins for AppArmor Profile Management
 Requires: yast2 perl-TimeDate
@@ -47,7 +47,7 @@ SubDomain.
 /usr/lib/YaST2/servers_non_y2
 %dir %{perl_vendorlib}/Immunix
 %{perl_vendorlib}/Immunix/Notify.pm
-# license is questionable, PDB says GPL v2 or later
+# license is questionable, PDB says GPL-2.0+
 #%doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
 %config(noreplace) /etc/apparmor/reports.crontab
