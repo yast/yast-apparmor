@@ -11,6 +11,7 @@ Fri Sep 30 11:57:42 UTC 2011 - jsrain@site
   pop-up (bnc#531512)
 - disabled Reports part due to changes in AppArmor
 - merged editation and deleting of a profile
+- 2.21.5
 
 -------------------------------------------------------------------
 Thu Sep 22 12:42:09 UTC 2011 - jreidinger@suse.com
