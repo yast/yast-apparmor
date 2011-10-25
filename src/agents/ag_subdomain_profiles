@@ -32,7 +32,9 @@ use Immunix::SubDomain;
 
 sub newprofile {
   my $filename = shift;
-  system("/usr/sbin/autodep $filename > /dev/null 2>&1");
+  # L will postpone the decision whether to enable the on-line repository
+  # which may be asked interactively
+  system("echo \"L\" | /usr/sbin/autodep $filename > /dev/null 2>&1");
   system("/usr/sbin/enforce $filename > /dev/null 2>&1");
   return; 
 }
