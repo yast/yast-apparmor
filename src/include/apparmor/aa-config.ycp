@@ -31,7 +31,7 @@ define boolean changeAppArmorState(boolean aaEnabled) {
 	if ( error != nil && is(error, string) ) {
 
 		string errorMsg = (string) error;
-		string popError = _("This operation generated the following error. Please check your installation and AppArmor profile settings.");
+		string popError = _("This operation generated the following error. Check your installation and AppArmor profile settings.");
 		Popup::Message( popError+ "\n[" + errorMsg + "]");
 		aaEnabled = ! aaEnabled;
 

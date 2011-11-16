@@ -132,7 +132,7 @@ define map<string,string> getSchedSettings( map<string,string> Settings ) {
 	// de-i18n
     if ( weekday == _("Mon") ) { weekday = "Mon"; }
     if ( weekday == _("Tue") ) { weekday = "Tue"; }
-    if ( weekday == _("Weds") ) { weekday = "Weds"; }
+    if ( weekday == _("Wed") ) { weekday = "Weds"; }
     if ( weekday == _("Thu") ) { weekday = "Thu"; }
     if ( weekday == _("Fri") ) { weekday = "Fri"; }
     if ( weekday == _("Sat") ) { weekday = "Sat"; }
@@ -669,12 +669,12 @@ define symbol reportConfigForm() {
            string end_time   = tostring(end_hour)   + ":" + tostring(end_min);
 
 			if ( CheckDate(startDay,startMonth,startYear) == false ) {
-	            Popup::Error( _("Illegal start date entered.  Please retry.") );
+	            Popup::Error( _("Illegal start date entered. Retry.") );
 				continue;
 			}
 
 			if ( CheckDate(endDay,endMonth,endYear) == false ) {
-	            Popup::Error( _("Illegal end date entered.  Please retry.") );
+	            Popup::Error( _("Illegal end date entered. Retry.") );
 				continue;
 			}
 
@@ -710,7 +710,8 @@ define symbol mainArchivedReportForm() {
    });
 
     string help1 = _("<b>AppArmor Security Events</b><p>
-                    This table displays the events found that match your search criteria.");
+This table displays the events that match your search criteria.
+");
 
 
     // DBG y2milestone("in MainReportForm");
@@ -1018,12 +1019,12 @@ define map<any,any> filterConfigForm(string name) {
 	           string end_time   = tostring(end_hour)   + ":" + tostring(end_min);
 
 	            if ( CheckDate(startDay,startMonth,startYear) == false ) {
-	                Popup::Error( _("Illegal start date entered.  Please retry.") );
+	                Popup::Error( _("Illegal start date entered. Retry.") );
 	                continue;
 	            }
 
 	            if ( CheckDate(endDay,endMonth,endYear) == false ) {
-	                Popup::Error( _("Illegal end date entered.  Please retry.") );
+	                Popup::Error( _("Illegal end date entered. Retry.") );
 	                continue;
 	            }
 
@@ -1794,7 +1795,7 @@ define void addSchedForm() {
 			// de-i18n
 			if ( weekday == _("Mon") ) { weekday = "Mon"; }
 			if ( weekday == _("Tue") ) { weekday = "Tue"; }
-			if ( weekday == _("Weds") ) { weekday = "Weds"; }
+			if ( weekday == _("Wed") ) { weekday = "Weds"; }
 			if ( weekday == _("Thu") ) { weekday = "Thu"; }
 			if ( weekday == _("Fri") ) { weekday = "Fri"; }
 			if ( weekday == _("Sat") ) { weekday = "Sat"; }

@@ -245,11 +245,11 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                   `HBox(
                   `VSpacing( 10 ),
                   `HSpacing( 0.75 ),
-                  `Frame( _("Profile Entry For ") + profile,
+                  `Frame( _("Profile Entry for ") + profile,
                   `HBox(
                     `HWeight( 60,
                        `VBox(
-                        `TextEntry(`id(`filename), _("Enter or modify Filename")),
+                        `TextEntry(`id(`filename), _("Enter or Modify Filename")),
 			            `HCenter(`PushButton(`id(`browse), _("&Browse") ))
                        )
                      ),
@@ -501,7 +501,7 @@ define map pathEntryPopup( string filename, string perms, string profile, string
                  filename = tostring( UI::QueryWidget(`id(`filename), `Value) );
                  UI::CloseDialog();
                  if ( filename == "" || newperms == "" ) {
-                   Popup::Error(_("Entry will not added. Entry name or permissions not defined."));
+                   Popup::Error(_("Entry will not be added. Entry name or permissions not defined."));
                    results = nil;
                  } else {
                    results = $[ "PERM": newperms, "FILE": filename ];
@@ -696,7 +696,9 @@ term intro = `VBox(
           `Top(
             `VBox(
               `VSpacing(1),
-              `Left(`Label( _("Please enter the name of the Hat that you would like \nto add to the profile") + "  " + parentProfile + ".")),
+              `Left(`Label( _("Enter the name of the Hat that you would like 
+to add to the profile
+") + "  " + parentProfile + ".")),
               `VSpacing(0.5),
               `Left(
                 `TextEntry(
@@ -728,8 +730,7 @@ term intro = `VBox(
 		Popup::Error(_("You have not given a name for the hat you want to add.\nPlease 
 enter a hat name to create a new hat, or press Abort to cancel this wizard."));
       } else if ( haskey( currentHats, hatname ) ) {
-		Popup::Error(_("The profile already contains the provided hat name.  
-Please enter a different name to try again, or press Abort to cancel this wizard."));
+		Popup::Error(_("The profile already contains the provided hat name. Enter a different name or press Abort to cancel this wizard."));
       } else {
         Settings["CURRENT_HAT"] = hatname;
         UI::CloseDialog();
@@ -763,8 +764,7 @@ define symbol DisplayProfileForm(string pathname, boolean hat) {
    // FIXME: format these texts better
 
    /* help text */
-   string help1 = _("<p>In this form you can view and modify the contents of an individual profile. 
-For existing entries you can double click the permissions to access a modification dialog.</p>");
+   string help1 = _("<p>View and modify the contents of an individual profile. For existing entries double click the permissions to access a modification dialog.</p>");
 
    /* help text */
    string help2 = _("<p><b>Permission Definitions:</b><br><code> r - read <br> 
@@ -777,11 +777,11 @@ U -unconstrained<br> (*clean exec)</code></p>");
    string help3 = _("<p><b>Add Entry:</b><br>Select the type of resource to add from the drop down list.</p>");
 
    /* help text - part x1 */
-   string help4 = _("<p><ul><li><b>File</b><br>Add a file entry to this profile</li>");
+   string help4 = _("<p><ul><li><b>File</b><br>Add a file entry to this profile.</li>");
    /* help text - part x2 */
-   string help5 = _("<li><b>Directory</b><br>Add a directory entry to this profile</li>");
+   string help5 = _("<li><b>Directory</b><br>Add a directory entry to this profile.</li>");
    /* help text - part x3 */
-   string help6 = _("<li><b>Capability</b><br>Add a capability entry to this profile</li>");
+   string help6 = _("<li><b>Capability</b><br>Add a capability entry to this profile.</li>");
    /* help text - part x4 */
    string help7 = _("<li><b>Include</b><br>Add an include entry to this profile. This option 
 includes the profile entry contents of another file in this profile at load time.</li>");
@@ -790,11 +790,11 @@ includes the profile entry contents of another file in this profile at load time
 This option will allow you to specify network access privileges for the profile. 
 You may specify a network address family and socket type.</li>");
    /* help text - part x6 */
-   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile - called a Hat. 
-This option is analogous to manually creating a new profile, which can selected 
-during execution only in the context of being asked for by a <b>changehat aware</b> 
-application. For more information on changehat please see <b>man changehat</b> on your 
-system or the Novell AppArmor Administration Guide.</li>");
+   string helpHat = _("<li><b>Hat</b><br>Add a sub-profile for this profile, called a Hat. This
+option is analogous to manually creating a new profile, which can be selected
+during execution only in the context of being asked for by a <b>changehat
+aware</b> application. 
+For more information on changehat, see <b>man changehat</b> on your system or the Novell AppArmor Administration Guide.</li>");
    /* help text - part x7 */
    string helpEdit = _("</ul></p><p><b>Edit Entry:</b><br>Edit the selected entry.</p>");
 
@@ -880,7 +880,7 @@ that is inherited by the child program of specific variables. These variables ar
                     caps = capabilityEntryPopup( caps, rule, pathname );
                     profile["allow", "capability"] = caps;
                 } else if ( findinc == 0 ) {
-                  Popup::Error(_("Include entries can not be edited. Please select add or delete to manage Include entries."));
+                  Popup::Error(_("Include entries can not be edited. Select add or delete to manage Include entries."));
                   continue;
                 } else if ( findhat == 0 ) {
                   string hatToEdit = substring( rule, 5);
@@ -997,7 +997,7 @@ that is inherited by the child program of specific variables. These variables ar
            }
        } else if ( id == `include ) {
 	   list <string> customIncludes = (list <string>) SCR::Read(.apparmor, "custom-includes");
-           string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File To Include"));
+           string newInclude = UI::AskForExistingFile( "/etc/apparmor.d/abstractions", "",  _("Select File to Include"));
            if ( newInclude == nil || (string)newInclude == "" ) {
              continue;
            }
@@ -1054,8 +1054,10 @@ that is inherited by the child program of specific variables. These variables ar
          break;
        } else if ( id == `next ) {
          if ( ! hat ) {
-           if (Popup::YesNoHeadline(_("Save changes to the Profile"),
-           _("Would you like to save the changes to this profile? \n(Note: after saving the changes the AppArmor profiles will be reloaded.)")))  {
+           if (Popup::YesNoHeadline(_("Save changes to the profile"),
+           _("Save the changes to this profile? 
+(Note: after saving, AppArmor profiles will be reloaded.)
+")))  {
              map argmap = $[ "PROFILE_HASH" : Settings["PROFILE_MAP"]:$[],
                              "PROFILE_NAME" : pathname
                            ];
@@ -1131,7 +1133,7 @@ define symbol  SelectProfileForm( map profiles, string formhelp, string formtitl
            if ( profilename != nil && profilename != "" ) {
              break;
            } else {
-             Popup::Error(_("You must select a profile to edit"));
+             Popup::Error(_("You must select a profile to edit."));
              continue;
            }
         } // TODO ELSE POPUP NO ENTRY SELECTED ERROR

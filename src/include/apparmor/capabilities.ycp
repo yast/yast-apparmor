@@ -41,19 +41,15 @@ Excluding DAC access covered by CAP_LINUX_IMMUTABLE. </li></ul>"),
 "fowner" :
 	$[ 
 	  "name" : "CAP_FOWNER",
-	  "info" : _("<ul><li>Overrides all restrictions about allowed operations on files,
-where file owner ID must be equal to the user ID, except where CAP_FSETID is 
-applicable. It doesn't override MAC and DAC restrictions. </li></ul>"),
+	  "info" : _("<ul><li>Overrides all restrictions on allowed operations on files, where file
+owner ID must be equal to the user ID, except where CAP_FSETID is
+applicable. It does not override MAC and DAC restrictions. </li></ul>"),
 
 	 ],
 "fsetid" :
 	$[ 
 	  "name" : "CAP_FSETID",
-	  "info" : _("<ul><li>Overrides the following restrictions that the effective user 
-ID shall match the file owner ID when setting the S_ISUID and S_ISGID bits on that 
-file; that the effective group ID (or one of the supplementary group IDs) shall match 
-the file owner ID when setting the S_ISGID bit on that file; that the S_ISUID and 
-S_ISGID bits are cleared on successful return from chown(2) (not implemented). </li></ul>"),
+	  "info" : _("<ul><li>Overrides the following restrictions: user ID must match the file owner ID when setting the S_ISUID and S_ISGID bits on that file; the effective group ID (or one of the supplementary group IDs) must match the file owner ID when setting the S_ISGID bit on that file; the S_ISUID and S_ISGID bits are cleared on successful return from chown(2) (not implemented). </li></ul>"),
 
 	 ],
 "kill" :
@@ -134,8 +130,8 @@ _("<li> Allows multicasting</li>
 "ipc_lock" :
 	$[ 
 	  "name" : "CAP_IPC_LOCK",
-	  "info" : _("<ul><li> Allows locking of shared memory segments</li> 
-<li> Allows mlock and mlockall (which doesn't really have anything to do with IPC) </li></ul>"),
+	  "info" : _("<ul><li> Allows locking of shared memory segments</li> <li> Allows mlock and
+mlockall (which does not really have anything to do with IPC) </li></ul>"),
 
 	 ],
 "ipc_owner" :

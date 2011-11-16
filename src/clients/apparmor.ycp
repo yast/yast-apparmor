@@ -13,8 +13,9 @@ any startDialog(){
  string caption = _("AppArmor Configuration");
 
  /* AppArmor dialog help */
- string help = _("<p>Choose one of the available apparmor modules to configure
- the corresponding action and press <b>Launch</b>.</p>");
+ string help = _("<p>Choose one of the available AppArmor modules to configure
+ the corresponding action and press <b>Launch</b>.</p>
+");
 
  /* AppArmor dialog contents */
  term contents = `HBox(
@@ -33,7 +34,7 @@ any startDialog(){
 // and so was Reports.pm
 //	    `item(`id("AA_Report"), _("Reports")),
 	    `item(`id("AA_EditProfile"), _("Manage Existing Profiles")),
-	    `item(`id("AA_AddProfile"), _("Add Manually Profile"))//,
+	    `item(`id("AA_AddProfile"), _("Manually Add Profile"))//,
 // merged with EditProfile	    `item(`id("AA_DeleteProfile"), _("Delete Profile"))
 	]),
 	`VSpacing(3)

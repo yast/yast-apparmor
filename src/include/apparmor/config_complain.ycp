@@ -38,7 +38,7 @@ define void updateComplain(any id, string profile, string mode, boolean showAll)
 	} else if ( profile != "" ) {
 		profCmd["profile"] = profile;
 	} else {
-		Popup::Error( _("Couldn't recognize profile name: ") + profile );
+		Popup::Error( _("Could not recognize profile name: ") + profile );
 		return;
 	}
 
@@ -50,7 +50,7 @@ define void updateComplain(any id, string profile, string mode, boolean showAll)
 			profCmd["mode"] = "enforce";
 		} else {
 			error = true;
-			Popup::Error( _("Couldn't recognize mode: ") + mode );
+			Popup::Error( _("Could not recognize mode: ") + mode );
 		}
 	} else if ( id != `toggle ) {
 		profCmd["mode"] = mode;
@@ -211,7 +211,7 @@ define symbol profileModeConfigForm() {
 
 		} else if ( id == `table ) {
 
-			Popup::Message( _("Please select an action to perform from the buttons below.") );
+			Popup::Message( _("Select an action to perform.") );
 
         } else {
             y2error("Unexpected return code: %1", id);
