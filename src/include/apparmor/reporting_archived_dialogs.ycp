@@ -183,12 +183,12 @@ define map<any,any> setArchFilter() {
 		        }
 
 		        if ( CheckDate(startDay,startMonth,startYear) == false ) {
-		            Popup::Error( _("Illegal start date entered.  Please retry.") );
+		            Popup::Error( _("Illegal start date entered. Retry.") );
 		            continue;
 		        }
 
 		        if ( CheckDate(endDay,endMonth,endYear) == false ) {
-		            Popup::Error( _("Illegal end date entered.  Please retry.") );
+		            Popup::Error( _("Illegal end date entered. Retry.") );
 		            continue;
 		        }
 				////////////////////////////////////////////////////////////

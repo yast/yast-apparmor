@@ -22,7 +22,7 @@ textdomain  "yast2-apparmor";
 define boolean CreateNewProfile() {
  string selectfilename = "";
  while ( true ) {
-   selectfilename = UI::AskForExistingFile( "/", "",  _("Select File To Generate A Profile for") );
+   selectfilename = UI::AskForExistingFile( "/", "",  _("Select File to Generate a Profile for") );
    // Check for cancel in the file choose dialog
    if ( selectfilename == nil ) {
     return false;

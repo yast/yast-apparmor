@@ -31,8 +31,8 @@ textdomain "yast2-apparmor";
   CMDS["CMD_AUDIT_OFF"]      = _("Audi&t off");
   CMDS["CMD_AUDIT_FULL"]     = _("Audit &All");
   CMDS["CMD_OTHER"]          = _("&Opts");
-  CMDS["CMD_USER_ON"]        = _("&Owner permissions on");
-  CMDS["CMD_USER_OFF"]       = _("&Owner permissions off");
+  CMDS["CMD_USER_ON"]        = _("&Owner Permissions on");
+  CMDS["CMD_USER_OFF"]       = _("&Owner Permissions off");
   CMDS["CMD_ix"]             = _("&Inherit");
   CMDS["CMD_px"]             = _("&Profile");
   CMDS["CMD_px_safe"]       = _("&Profile Clean Exec");
@@ -96,7 +96,11 @@ define boolean validEmailAddress ( string emailAddr, boolean allowlocal ) {
 define boolean checkEmailAddress( string emailAddr ) {
 
     if ( ! validEmailAddress( emailAddr, false ) ) {
-                string err_email_format = _("Email address format invalid.\nEmail address must be less than 129 characters \n and of the format \"name@domain\". \n Please enter another address.");
+                string err_email_format = _("Email address format invalid.
+Email address must be less than 129 characters 
+ and of the format \"name@domain\". 
+Enter a valid address.
+");
                 Popup::Error( err_email_format );
                 return false;
     }
@@ -258,13 +262,13 @@ define map<string,string> UI_RepositorySignInDialog( map<any,any> agent_data ) {
               ?  "y": "n";
 
             if ( username == "" ) {
-                Popup::Error( _("Username required for registration." ));
+                Popup::Error( _("Username required for registration."));
             } else if ( email == "" ) {
-                Popup::Error( _("Email address required for registration." ));
+                Popup::Error( _("Email address required for registration."));
             } else if ( password == "" && password_verify == "" ) {
-                Popup::Error( _("Password is required for registration." ));
+                Popup::Error( _("Password is required for registration."));
             } else if ( password != password_verify ) {
-                Popup::Error( _("Passwords do not match. Please re-enter." ));
+                Popup::Error( _("Passwords do not match. Please re-enter."));
             } else if ( ! checkEmailAddress( email ) ) {
                 any dummy = nil;
             } else {
@@ -508,7 +512,7 @@ define map<any,any> UI_MultiProfileSelectionDialog( map<any,any> agent_data ) {
     string profile_rules =
       (string) profiles[first_profile_name]:"MISSING CONTENTS";
     string disable_ask_upload_str =
-      _("&Don't ask again for unselected profiles");
+      _("&Do not ask again for unselected profiles");
     map ui_capabilities = UI::GetDisplayInfo();
     boolean in_ncurses = ui_capabilities["TextMode"]:true;;
     term profile_contents_text = nil;

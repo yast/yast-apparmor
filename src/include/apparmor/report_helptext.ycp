@@ -84,12 +84,6 @@ string filterCfHelp1 = setArchHelp;
 /* START Help Section
 ************************************************************/
 
-string repGenHelpText = _("<p><b>Generate Reports Help</b> <p>If there were, in fact, 
-going to be any help for you (which, incidentally, there isn't going to be), 
-then you would indeed find said help, here.</p><p>Thank you for your time, 
-and have a nice day.</p>");
-
-
 
 string schedHelpText =
 _("<p>The summary of scheduled reports page shows us when reports are scheduled to run. 
@@ -99,13 +93,8 @@ email recipients.<br>") +
 
 _("In the Set Schedule section, you can schedule the following three types of security reports:<br>") + types;
 
-string archHelpText = _("<p>The View Archive Reports form enables you to view 
-previously generated reports, located in the /var/log/apparmor/reports-archived 
-directory. The checkboxes at the top of the form enable you to narrow-down 
-the category of reports shown in the list to the following: SIR Reports, AUD 
-Reports, or ESS Reports. To see report details, select a report and click the 
-<b>View</b> button.<br><br> You can view reports from one or more systems if 
-you move the reports to the /var/log/apparmor/reports-archived directory.</p>");
+string archHelpText = _("<p>The View Archive Reports form enables you to view previously generated
+reports located in the /var/log/apparmor/reports-archived directory. Use the checkboxes at the top to narrow-down the category of reports shown in the list to: SIR Reports, AUD Reports or ESS Reports. To see report details, select a report and click the <b>View</b> button.<br><br> You can view reports from one or more systems if you move the reports to the /var/log/apparmor/reports-archived directory.</p>");
 
 string mainHelp = schedHelpText;
 
@@ -114,7 +103,6 @@ list helpList = [ schedHelpText ];
 
 term defaultHelp = `RichText ( schedHelpText );
 term schedHelp = `RichText ( schedHelpText );
-term repGenHelp = `RichText ( repGenHelpText );
 term archHelp = `RichText ( archHelpText );
 term otherHelp = `RichText ( archHelpText );
 
@@ -134,15 +122,7 @@ is reloaded, and when global security feature are enabled or disabled.</li></ul>
 Select the report from the archive, then <b>View</b> to see the report details.</p>");
 
 
-string audHelp = _("<p><b>Applications Audit Report (AUD):</b> An auditing tool 
-that reports which application servers are running and whether they are confined 
-by AppArmor. Application servers are applications that accept incoming network 
-connections. This report provides the host machine's IP Address, the date the 
-Applications Audit Report ran, the name and path of the unconfined program or 
-application server, the suggested profile or a placeholder for a profile for an 
-unconfined program, the process ID number, The state of the program (confined or 
-unconfined), and the type of confinement that the profile is performing 
-(enforce/complain).</p>");
+string audHelp = _("<p><b>Applications Audit Report (AUD):</b> An auditing tool that reports which application servers are running and whether they are confined by AppArmor. Application servers are applications that accept incoming network connections. This report provides the host machine's IP Address, the date the Applications Audit Report ran, the name and path of the unconfined program or application server, the suggested profile or a placeholder for a profile for an unconfined program, the process ID number, the state of the program (confined or unconfined) and the type of confinement that the profile is performing (enforce/complain).</p>");
 
 string essHelp = _("<p><b>Executive Security Summary (ESS):</b> A combined report, 
 consisting of one or more high-level reports from one or more machines. This 
