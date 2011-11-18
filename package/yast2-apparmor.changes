@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 18 00:17:24 UTC 2011 - opensuse@cboltz.de
+
+- add Requires: for several perl modules
+
+-------------------------------------------------------------------
 Wed Nov 16 12:36:51 CET 2011 - jsuchome@suse.cz
 
 - merged texts from proofreading 
