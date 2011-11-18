@@ -5,7 +5,19 @@ Group:	Productivity/Security
 License: GPL-2.0+
 
 Summary: YaST2 - Plugins for AppArmor Profile Management
-Requires: yast2 perl-TimeDate
+
+Requires: yast2 
+Requires: perl-TimeDate
+Requires: perl(Data::Dumper)
+Requires: perl(Encode)
+Requires: perl(Getopt::Long)
+Requires: perl(Immunix::AppArmor)
+Requires: perl(Immunix::Notify)
+Requires: perl(Immunix::Reports)
+Requires: perl(Locale::gettext)
+Requires: perl(POSIX)
+Requires: perl(ycp)
+
 BuildArch: noarch
 Obsoletes: yast2-subdomain
 Provides: yast2-subdomain
