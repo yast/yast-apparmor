@@ -38,8 +38,7 @@ define any MainSequence() ``{
    map profiles = (map) SCR::Read (.apparmor_profiles, "all");
 
    map aliases = $[
-        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a 
-		selection from the listed profiles and press Next to delete the profile."),
+        "chooseprofile" : ``(SelectProfileForm(profiles, _("Make a selection from the listed profiles and press Next to delete the profile."),
 		_("Delete Profile - Choose profile to delete"), "apparmor/delete_profile")),
         "deleteprofile"   : ``(DeleteProfileConfirmation()),
    ];
