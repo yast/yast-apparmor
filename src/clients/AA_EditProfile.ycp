@@ -36,7 +36,7 @@ define any MainSequence() ``{
    map aliases = $[
         "showProfile"        : ``(DisplayProfileForm(Settings["CURRENT_PROFILE"]:"", false)),
         "showHat"            : ``(DisplayProfileForm(Settings["CURRENT_HAT"]:"", true)),
-        "chooseProfile"      : ``(SelectProfileForm(profiles, _("Selection a listed profile and press Next to edit the profile."), _("Edit Profile - Choose profile to edit"), "apparmor_edit_profile" )),
+        "chooseProfile"      : ``(SelectProfileForm(profiles, _("Select a listed profile and press Next to edit it."), _("Edit Profile - Choose profile to edit"), "apparmor_edit_profile" )),
 	"reread"	     : ``(Reread()),
    ];
 

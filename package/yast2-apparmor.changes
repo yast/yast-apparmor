@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr  4 08:37:05 CEST 2012 - jsuchome@suse.cz
+
+- fixed text labels (bnc#755539)
+- 2.22.2
+
+-------------------------------------------------------------------
 Fri Nov 18 00:17:24 UTC 2011 - opensuse@cboltz.de
 
 - add Requires: for several perl modules
