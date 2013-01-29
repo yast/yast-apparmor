@@ -38,7 +38,7 @@ define any MainSequence() ``{
    map profiles = (map) SCR::Read (.subdomain_profiles, "all");
 
    map aliases = $[
-        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a	selection from the listed profiles and press Next to delete the profile."),
+        "chooseprofile" : ``(SelectProfileForm(profiles, _("Please make a selection from the listed profiles and press Next to delete the profile."),
 		_("Delete Profile - Choose profile to delete"), "subdomain/delete_profile")),
         "deleteprofile"   : ``(DeleteProfileConfirmation()),
    ];
