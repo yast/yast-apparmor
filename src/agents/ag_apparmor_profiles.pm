@@ -1,1 +1,1 @@
-ag_subdomain_profiles
+ag_apparmor_profiles
