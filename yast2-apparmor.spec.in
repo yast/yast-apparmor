@@ -65,10 +65,3 @@ SubDomain.
 %config(noreplace) /etc/apparmor/reports.conf
 %doc @docdir@
 
-%post
-REPDIR='/var/log/apparmor/reports'
-REPDIR2='/var/log/apparmor/reports-archived'
-REPDIR3='/var/log/apparmor/reports-exported'
-[ -e $REPDIR ] || mkdir -p $REPDIR
-[ -e $REPDIR2 ] || mkdir -p $REPDIR2
-[ -e $REPDIR3 ] || mkdir -p $REPDIR3
