@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 10 00:20:15 UTC 2013 - opensuse@cboltz.de
+
+- don't create /var/log/apparmor/*/ in %post (no longer needed)
+
+-------------------------------------------------------------------
 Tue Nov 13 14:35:03 CET 2012 - tgoettlicher@suse.de
 
 - confirmed license GPL v2
