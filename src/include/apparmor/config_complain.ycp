@@ -23,6 +23,8 @@ you may find current contact information at www.novell.com
 textdomain "yast2-apparmor";
 
 import "Label";
+import "Popup";
+import "Wizard";
 
 string modeHelp = _("<p><b>Profile Mode Configuration</b><br>This tool allows 
 you to set AppArmor profiles to either complain or enforce mode.</p>") +

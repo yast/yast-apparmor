@@ -26,6 +26,8 @@ include "apparmor/apparmor_ycp_utils.ycp";
 textdomain "yast2-apparmor";
 
 import "Label";
+import "Popup";
+import "Wizard";
 
 define boolean changeAppArmorState(boolean aaEnabled) {
 
