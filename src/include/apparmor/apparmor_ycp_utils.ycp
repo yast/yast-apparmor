@@ -20,6 +20,7 @@ you may find current contact information at www.novell.com
 
 ****************************************************************************/
 
+{
 
 import "Label";
 import "Popup";
@@ -684,4 +685,6 @@ define void UI_BusyFeedbackStop( ) {
       UI::CloseDialog();
       AppArmorDialogs::busy_dialog = nil;
     }
+}
+
 }

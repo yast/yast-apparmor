@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul  1 13:35:46 UTC 2013 - lslezak@suse.cz
+
+- clean up include files - added missing imports, added missing
+  top level {} blocks (Y2R compatibility)
+- 2.24.0
+
+-------------------------------------------------------------------
 Thu Jan 10 00:20:15 UTC 2013 - opensuse@cboltz.de
 
 - don't create /var/log/apparmor/*/ in %post (no longer needed)
