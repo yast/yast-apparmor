@@ -20,6 +20,7 @@ you may find current contact information at www.novell.com
 
 ****************************************************************************/
 
+{
 
 import "Popup";
 textdomain "yast2-apparmor";
@@ -49,4 +50,6 @@ started or the profile management tools can be used.</p> ")
      Popup::LongText( headline, `RichText(errmsg), 55, 15);
   }
   return( syntax_ok );
+}
+
 }
