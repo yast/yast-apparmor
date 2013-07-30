@@ -4,6 +4,8 @@
 Group:	Productivity/Security
 License: GPL-2.0
 
+Requires:       yast2-ruby-bindings >= 1.0.0
+
 Summary: YaST2 - Plugins for AppArmor Profile Management
 
 Requires: yast2 
