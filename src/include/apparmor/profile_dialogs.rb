@@ -1498,7 +1498,8 @@ module Yast
         end
         if id == :abort || id == :cancel
           break
-        elsif id == :back
+        # This module break common work-flow that changes are commited at the end, so react same for break and also for next
+        elsif id == :back || id == :next
           break
         else
           Builtins.y2error("Unexpected return code: %1", id)

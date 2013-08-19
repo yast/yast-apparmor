@@ -67,15 +67,9 @@ module Yast
             Id(:modules),
             Opt(:notify),
             _("&Available AppArmor Modules:"), #,
-            # merged with EditProfile	    `item(`id("AA_DeleteProfile"), _("Delete Profile"))
             [
               # Selection box items
               Item(Id("apparmor-settings"), _("Settings"), true),
-              Item(Id("GenProf"), _("Generate Profile")),
-              Item(Id("LogProf"), _("Update Profile")),
-              # disabled, since aa-eventd was removed from main AA package
-              # and so was Reports.pm
-              #	    `item(`id("AA_Report"), _("Reports")),
               Item(Id("AA_EditProfile"), _("Manage Existing Profiles")),
               Item(Id("AA_AddProfile"), _("Manually Add Profile"))
             ]
@@ -104,8 +98,6 @@ module Yast
 
         # abort?
         if ret == :abort || ret == :cancel
-          # if(ReallyAbort()) break;
-          # else continue;
           break
         # next
         elsif ret == :next || ret == :modules
