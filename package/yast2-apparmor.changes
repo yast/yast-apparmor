@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Aug 19 12:48:48 UTC 2013 - jreidinger@suse.com
+
+- fix broken dialog in edit profiles
+- drop reporting and profile generation tools (FATE#308684,308683)
+- 3.0.1
+
+-------------------------------------------------------------------
 Wed Jul 31 08:25:35 UTC 2013 - yast-devel@opensuse.org
 
 - converted from YCP to Ruby by YCP Killer
