@@ -83,8 +83,6 @@ SubDomain.
 %{yast_agentdir}
 %dir %{perl_vendorlib}/Immunix
 %{perl_vendorlib}/Immunix/Notify.pm
-# license is questionable, PDB says GPL-2.0+
-#%doc COPYING.LGPL
 %dir %attr(-,root,root) /etc/apparmor
 %config(noreplace) /etc/apparmor/reports.crontab
 %config(noreplace) /etc/apparmor/reports.conf
