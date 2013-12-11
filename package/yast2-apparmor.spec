@@ -47,7 +47,7 @@ Provides: yast2-subdomain
 BuildRequires: update-desktop-files
 
 BuildRequires: yast2
-BuildRequires: yast2-devtools >= 3.0.6
+BuildRequires: yast2-devtools >= 3.1.10
 
 %if 0%{?suse_version} >= 1140
 # openSUSE-11.4 or newer
