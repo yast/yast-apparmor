@@ -85,7 +85,7 @@ module Yast
         "chooseProfile" => lambda do
           SelectProfileForm(
             @profiles,
-            _("Select a listed profile and press Next to edit it."),
+            _("Select a listed profile and press Edit to edit it."),
             _("Edit Profile - Choose profile to edit"),
             "apparmor_edit_profile"
           )
