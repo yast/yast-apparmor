@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May  9 13:47:26 UTC 2014 - jreidinger@suse.com
+
+- fix help text to match reality (bnc#876904)
+- 3.1.1
+
+-------------------------------------------------------------------
 Wed Sep 18 10:45:06 UTC 2013 - lslezak@suse.cz
 
 - do not use *.spec.in template, use *.spec file with RPM macros
