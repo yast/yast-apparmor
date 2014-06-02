@@ -112,10 +112,16 @@ module Yast
         )
       end
 
+      translation_mapping = {
+        # translators: string is value in table for mode of apparmor
+        "enforce"  => _("enforce"),
+        "complain" => _("complain"),
+      }
+
       Builtins.foreach(db) do |record|
         recList = Builtins.add(
           recList,
-          Item(Id(key), Ops.get(record, "name"), Ops.get(record, "mode"))
+          Item(Id(key), Ops.get(record, "name"), translation_mapping[record["mode"]])
         )
         key = Ops.add(key, 1)
       end
