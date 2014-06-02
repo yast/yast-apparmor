@@ -1,7 +1,7 @@
 #
 # spec file for package yast2-apparmor
 #
-# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,36 +19,28 @@
 Name:           yast2-apparmor
 Version:        3.1.1
 Release:        0
-
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source0:        %{name}-%{version}.tar.bz2
-
-Group:          Productivity/Security
+Summary:        YaST2 - Plugins for AppArmor Profile Management
 License:        GPL-2.0
-
+Group:          Productivity/Security
+Source0:        %{name}-%{version}.tar.bz2
+BuildRequires:  update-desktop-files
+BuildRequires:  yast2
+BuildRequires:  yast2-devtools >= 3.1.10
+Requires:       perl(Data::Dumper)
+Requires:       perl(Encode)
+Requires:       perl(Getopt::Long)
+Requires:       perl(Immunix::AppArmor)
+Requires:       perl(Immunix::Notify)
+Requires:       perl(Locale::gettext)
+Requires:       perl(POSIX)
+Requires:       perl(ycp)
+Requires:       perl-TimeDate
+Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
-
-Summary: YaST2 - Plugins for AppArmor Profile Management
-
-Requires: yast2 
-Requires: perl-TimeDate
-Requires: perl(Data::Dumper)
-Requires: perl(Encode)
-Requires: perl(Getopt::Long)
-Requires: perl(Immunix::AppArmor)
-Requires: perl(Immunix::Notify)
-Requires: perl(Locale::gettext)
-Requires: perl(POSIX)
-Requires: perl(ycp)
-
-BuildArch: noarch
-Obsoletes: yast2-subdomain
-Provides: yast2-subdomain
-BuildRequires: update-desktop-files
-
-BuildRequires: yast2
-BuildRequires: yast2-devtools >= 3.1.10
-
+Obsoletes:      yast2-subdomain
+Provides:       yast2-subdomain
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
 %if 0%{?suse_version} >= 1140
 # openSUSE-11.4 or newer
 BuildRequires:  perl-macros
@@ -63,7 +55,7 @@ This package is part of a suite of tools that used to be named
 SubDomain.
 
 %prep
-%setup -n %{name}-%{version}
+%setup -q
 
 %build
 %yast_build
@@ -72,9 +64,9 @@ SubDomain.
 %yast_install
 
 
-%files 
+%files
 %defattr(-,root,root)
-/usr/bin/*
+%{_bindir}/*
 %{yast_clientdir}
 %{yast_yncludedir}/apparmor
 %{yast_scrconfdir}
@@ -83,8 +75,8 @@ SubDomain.
 %{yast_agentdir}
 %dir %{perl_vendorlib}/Immunix
 %{perl_vendorlib}/Immunix/Notify.pm
-%dir %attr(-,root,root) /etc/apparmor
-%config(noreplace) /etc/apparmor/reports.crontab
-%config(noreplace) /etc/apparmor/reports.conf
+%dir %attr(-,root,root) %{_sysconfdir}/apparmor
+%config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
+%config(noreplace) %{_sysconfdir}/apparmor/reports.conf
 %doc %{yast_docdir}
 
