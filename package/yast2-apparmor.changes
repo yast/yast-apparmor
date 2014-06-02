@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun  2 12:33:58 UTC 2014 - jreidinger@suse.com
+
+- add translation for apparmor modes (bnc#878587)
+- improvements of rpm spec file
+- 3.1.2
+
+-------------------------------------------------------------------
 Fri May  9 13:47:26 UTC 2014 - jreidinger@suse.com
 
 - fix help text to match reality (bnc#876904)
