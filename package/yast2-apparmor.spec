@@ -20,6 +20,7 @@ Name:           yast2-apparmor
 Version:        3.1.1
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
+Url:            https://github.com/yast/yast-apparmor
 License:        GPL-2.0
 Group:          Productivity/Security
 Source0:        %{name}-%{version}.tar.bz2
@@ -75,7 +76,7 @@ SubDomain.
 %{yast_agentdir}
 %dir %{perl_vendorlib}/Immunix
 %{perl_vendorlib}/Immunix/Notify.pm
-%dir %attr(-,root,root) %{_sysconfdir}/apparmor
+%dir %{_sysconfdir}/apparmor
 %config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
 %config(noreplace) %{_sysconfdir}/apparmor/reports.conf
 %doc %{yast_docdir}
