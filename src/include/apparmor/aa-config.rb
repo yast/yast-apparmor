@@ -33,26 +33,19 @@ module Yast
       Yast.import "Label"
       Yast.import "Popup"
       Yast.import "Wizard"
+      Yast.import "Service"
     end
 
     def changeAppArmorState(aaEnabled)
-      error = nil
-      aaAction = ""
-
+      success = true
       if aaEnabled == true
-        aaAction = "apparmor:enable"
+        success = Yast::Service.start("apparmor") && Yast::Service.enable("apparmor")
       else
-        aaAction = "apparmor:disable"
+        success = Yast::Service.stop("apparmor") && Yast::Service.disable("apparmor")
       end
 
-      error = SCR.Execute(path(".aaconf"), aaAction)
-
-      if error != nil && Ops.is_string?(error)
-        errorMsg = Convert.to_string(error)
-        popError = _(
-          "This operation generated the following error. Check your installation and AppArmor profile settings."
-        )
-        Popup.Message(Ops.add(Ops.add(Ops.add(popError, "\n["), errorMsg), "]"))
+      if !success
+        Yast::Report.Error(_('Failed to change apparmor service. Please use journal (journalctl -n -u apparmor) to diagnose'))
         aaEnabled = !aaEnabled
       end
 
@@ -416,15 +409,8 @@ module Yast
 
     def displayAppArmorConfig
       # AppArmor Status
-      aaEnabled = false
       ntIsEnabled = false
-      apparmor = Convert.to_string(SCR.Execute(path(".apparmor"), "aa-status"))
-      aaEnStr = _("AppArmor is disabled")
-
-      if apparmor == "enabled"
-        aaEnabled = true
-        aaEnStr = _("AppArmor is enabled")
-      end
+      aaEnabled = Yast::Service.Enabled("apparmor")
 
       # Notification Status
       evnotify = Convert.to_string(SCR.Execute(path(".apparmor"), "aa-notify"))
