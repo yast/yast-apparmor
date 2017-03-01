@@ -70,7 +70,6 @@ module Yast
             [
               # Selection box items
               Item(Id("aa-settings"), _("Settings"), true),
-              Item(Id("AA_EditProfile"), _("Manage Existing Profiles")),
               Item(Id("AA_AddProfile"), _("Manually Add Profile"))
             ]
           ),

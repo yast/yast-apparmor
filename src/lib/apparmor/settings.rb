@@ -22,6 +22,7 @@
 
 require 'yast'
 require 'ui/dialog'
+require 'apparmor/profiles'
 
 Yast.import 'UI'
 Yast.import 'Label'
@@ -72,6 +73,7 @@ module AppArmor
 
     def modeconf_handler
       finish_dialog
+      ProfilesDialog.new.run
     end
 
     def aaState_handler
