@@ -24,6 +24,7 @@ ynclude_DATA = \
 
 ylibdir = @yast2dir@/lib/apparmor
 ylib_DATA = \
+  src/lib/apparmor/profiles.rb \
   lib/apparmor/settings.rb
 
 scrconf_DATA = \
