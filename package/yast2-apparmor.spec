@@ -40,6 +40,9 @@ Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 Obsoletes:      yast2-subdomain
 Provides:       yast2-subdomain
+
+PreReq:         %insserv_prereq %fillup_prereq
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version} >= 1140
