@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        3.1.3
+Version:        3.1.4
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
@@ -31,7 +31,6 @@ Requires:       perl(Data::Dumper)
 Requires:       perl(Encode)
 Requires:       perl(Getopt::Long)
 Requires:       perl(Immunix::AppArmor)
-Requires:       perl(Immunix::Notify)
 Requires:       perl(Locale::gettext)
 Requires:       perl(POSIX)
 Requires:       perl(ycp)
@@ -74,8 +73,6 @@ SubDomain.
 %{yast_moduledir}
 %{yast_desktopdir}
 %{yast_agentdir}
-%dir %{perl_vendorlib}/Immunix
-%{perl_vendorlib}/Immunix/Notify.pm
 %dir %{_sysconfdir}/apparmor
 %config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
 %config(noreplace) %{_sysconfdir}/apparmor/reports.conf

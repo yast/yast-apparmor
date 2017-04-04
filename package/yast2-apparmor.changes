@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr  3 14:06:20 UTC 2017 - rgoldwyn@suse.com
+
+- Use Yast::Service to enable/disable service
+- Remove (unused) notify settings
+- Reload profiles by calling apparmor_parser directly.
+
+-------------------------------------------------------------------
 Thu Dec  4 09:49:13 UTC 2014 - jreidinger@suse.com
 
 - remove X-KDE-Library from desktop file (bnc#899104)

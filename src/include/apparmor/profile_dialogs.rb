@@ -1386,7 +1386,7 @@ module Yast
                 "PROFILE_NAME" => pathname
               }
               result = SCR.Write(path(".apparmor_profiles"), argmap)
-              result2 = SCR.Write(path(".apparmor_profiles.reload"), "-")
+              result2 = SCR.Execute(path(".target.bash"), "/sbin/apparmor_parser -r /etc/apparmor.d")
             end
           else
             if !Builtins.haskey(
@@ -1491,7 +1491,7 @@ module Yast
             )
             Builtins.y2milestone(Ops.add("Deleted ", profilename))
             result = SCR.Write(path(".apparmor_profiles.delete"), profilename)
-            result2 = SCR.Write(path(".apparmor_profiles.reload"), "-")
+            result2 = SCR.Execute(path(".target.bash"), "/sbin/apparmor_parser -r /etc/apparmor.d")
           end
           id = :reread
           break
