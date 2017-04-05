@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        3.1.4
+Version:        3.2.0
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
@@ -39,6 +39,9 @@ Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 Obsoletes:      yast2-subdomain
 Provides:       yast2-subdomain
+
+PreReq:         %insserv_prereq %fillup_prereq
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version} >= 1140
