@@ -70,6 +70,7 @@ SubDomain.
 %{_bindir}/*
 %{yast_clientdir}
 %{yast_yncludedir}/apparmor
+%{yast_libdir}/apparmor
 %{yast_scrconfdir}
 %{yast_moduledir}
 %{yast_desktopdir}

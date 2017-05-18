@@ -69,7 +69,7 @@ module Yast
             _("&Available AppArmor Modules:"), #,
             [
               # Selection box items
-              Item(Id("apparmor-settings"), _("Settings"), true),
+              Item(Id("aa-settings"), _("Settings"), true),
               Item(Id("AA_EditProfile"), _("Manage Existing Profiles")),
               Item(Id("AA_AddProfile"), _("Manually Add Profile"))
             ]

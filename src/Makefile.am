@@ -9,7 +9,7 @@ client_DATA = \
   clients/apparmor_no_impl.rb \
   clients/apparmor.rb \
   clients/AA_AddProfile.rb \
-  clients/apparmor-settings.rb
+  clients/aa-settings.rb
 
 yncludedir = @yncludedir@/apparmor
 ynclude_DATA = \
@@ -21,6 +21,10 @@ ynclude_DATA = \
   include/apparmor/apparmor_ycp_utils.rb \
   include/apparmor/helps.rb \
   include/apparmor/profile_dialogs.rb
+
+ylibdir = @yast2dir@/lib/apparmor
+ylib_DATA = \
+  lib/apparmor/settings.rb
 
 scrconf_DATA = \
   scrconf/aaconf.scr \
