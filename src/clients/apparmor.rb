@@ -70,6 +70,7 @@ module Yast
             [
               # Selection box items
               Item(Id("aa-settings"), _("Settings"), true),
+	      Item(Id("aa-logprof"), _("Scan Audit logs")),
               Item(Id("AA_AddProfile"), _("Manually Add Profile"))
             ]
           ),
