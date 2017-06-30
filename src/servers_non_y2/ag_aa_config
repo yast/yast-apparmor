@@ -39,7 +39,7 @@ sub setAppArmor {
              }  
      }
            close(RUN);
-     system("systemctl enable boot.apparmor");
+     system("systemctl enable apparmor");
   } else {
      if (-e "/sbin/rcapparmor") {
              open(RUN, "/sbin/rcapparmor stop 2>&1 |");
@@ -52,7 +52,7 @@ sub setAppArmor {
              }  
            }
            close(RUN);
-     system("systemctl disable boot.apparmor");
+     system("systemctl disable apparmor");
   }
   return $errmsg;
 }
