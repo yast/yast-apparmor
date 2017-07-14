@@ -4,12 +4,20 @@ module_DATA = \
   modules/AppArmorDialogs.rb
 
 client_DATA = \
-  clients/AA_DeleteProfile.rb \
-  clients/AA_EditProfile.rb \
   clients/apparmor_no_impl.rb \
   clients/apparmor.rb \
-  clients/AA_AddProfile.rb \
-  clients/apparmor-settings.rb
+  clients/aa-settings.rb \
+  clients/aa-genprof.rb \
+  clients/aa-profiles.rb \
+  clients/aa-logprof.rb
+
+lib_DATA = \
+  lib/apparmor/apparmor-configuration.rb \
+  lib/apparmor/apparmor_ui_dialog.rb \
+  lib/apparmor/genprof.rb \
+  lib/apparmor/logprof.rb \
+  lib/apparmor/profiles.rb \
+  lib/apparmor/settings.rb
 
 yncludedir = @yncludedir@/apparmor
 ynclude_DATA = \
@@ -17,30 +25,11 @@ ynclude_DATA = \
   include/apparmor/apparmor_profile_check.rb \
   include/apparmor/apparmor_packages.rb \
   include/apparmor/aa-config.rb \
-  include/apparmor/config_complain.rb \
-  include/apparmor/apparmor_ycp_utils.rb \
-  include/apparmor/helps.rb \
-  include/apparmor/profile_dialogs.rb
-
-scrconf_DATA = \
-  scrconf/aaconf.scr \
-  scrconf/apparmor_profiles.scr \
-  scrconf/complain.scr \
-  scrconf/apparmor.scr
-
-agent_SCRIPTS = \
-  servers_non_y2/ag_complain \
-  servers_non_y2/ag_complain.pm \
-  servers_non_y2/ag_aa_config \
-  servers_non_y2/ag_aa_config.pm \
-  servers_non_y2/ag_apparmor \
-  servers_non_y2/ag_apparmor.pm \
-  servers_non_y2/ag_apparmor_profiles \
-  servers_non_y2/ag_apparmor_profiles.pm
+  include/apparmor/apparmor_ycp_utils.rb
 
 desktop_DATA = \
   desktop/apparmor.desktop
 
-EXTRA_DIST = $(module_DATA) $(client_DATA) $(ynclude_DATA) $(scrconf_DATA) $(agent_SCRIPTS) $(desktop_DATA)
+EXTRA_DIST = $(module_DATA) $(client_DATA) $(ynclude_DATA) $(desktop_DATA)
 
 include $(top_srcdir)/Makefile.am.common
