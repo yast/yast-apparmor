@@ -138,13 +138,9 @@ module Yast
         "complain" => _("complain"),
       }
 
-      recListTranslated = []
-      Builtins.foreach(@recList) do |record|
-        recListTranslated = Builtins.add(
-          recListTranslated,
-          Item(record.params[0], record.params[1],
-            translation_mapping[record.params[2]])
-        )
+      recListTranslated = (@recList || []).map do |record|
+        Item(record.params[0], record.params[1],
+          translation_mapping[record.params[2]] || record.params[2])
       end
 
       modeForm = Frame(
@@ -264,7 +260,7 @@ module Yast
             1,
             ""
           )
-          mode = "!unknown!"
+          mode = ""
           Builtins.foreach(@recList) do |record|
             if record.params[1] == profile
               mode = record.params[2]
