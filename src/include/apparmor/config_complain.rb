@@ -89,7 +89,7 @@ module Yast
       nil
     end
 
-    def getRecordList(showAll)
+    def updateRecordList(showAll)
       _Settings = {}
       Ops.set(_Settings, "list", "1")
 
@@ -99,7 +99,7 @@ module Yast
         Ops.set(_Settings, "showall", "0")
       end
 
-      recList = []
+      @recList = []
       key = 1
 
       # restarts ag_complain agent if necessary
@@ -112,31 +112,35 @@ module Yast
         )
       end
 
-      translation_mapping = {
-        # translators: string is value in table for mode of apparmor
-        "enforce"  => _("enforce"),
-        "complain" => _("complain"),
-      }
-
       Builtins.foreach(db) do |record|
-        recList = Builtins.add(
-          recList,
-          Item(Id(key), Ops.get(record, "name"), translation_mapping[record["mode"]])
+        @recList = Builtins.add(
+          @recList,
+          Item(Id(key), Ops.get(record, "name"), record["mode"])
         )
         key = Ops.add(key, 1)
       end
 
-      deep_copy(recList)
+      nil
     end
 
-    def getProfModeForm(recList, showAll)
-      recList = deep_copy(recList)
+    def getProfModeForm(showAll)
       allBtn = PushButton(Id(:showAll), _("Show All Profiles"))
       allText = _("Configure Mode for Active Profiles")
 
       if showAll && showAll == true
         allBtn = PushButton(Id(:showAct), _("Show Active Profiles"))
         allText = _("Configure Mode for All Profiles")
+      end
+
+      translation_mapping = {
+        # translators: string is value in table for mode of apparmor
+        "enforce"  => _("enforce"),
+        "complain" => _("complain"),
+      }
+
+      recListTranslated = (@recList || []).map do |record|
+        Item(record.params[0], record.params[1],
+          translation_mapping[record.params[2]] || record.params[2])
       end
 
       modeForm = Frame(
@@ -151,7 +155,7 @@ module Yast
               Id(:table),
               Opt(:notify),
               Header(_("Profile Name"), _("Mode")),
-              recList
+              recListTranslated
             )
           ),
           VSpacing(0.5),
@@ -168,16 +172,16 @@ module Yast
     end
 
     def updateModeConfigForm(showAll)
-      recList = getRecordList(showAll)
-      newModeForm = getProfModeForm(recList, showAll)
+      updateRecordList(showAll)
+      newModeForm = getProfModeForm(showAll)
 
       deep_copy(newModeForm)
     end
 
     # Profile Mode Configuration -- Sets Complain and Enforce Behavior
     def profileModeConfigForm
-      recList = getRecordList(@showAll)
-      modeForm = getProfModeForm(recList, @showAll)
+      updateRecordList(@showAll)
+      modeForm = getProfModeForm(@showAll)
       Wizard.CreateDialog
       Wizard.SetContentsButtons(
         _("Profile Mode Configuration"),
@@ -256,13 +260,12 @@ module Yast
             1,
             ""
           )
-          mode = Ops.get_string(
-            Convert.to_term(
-              UI.QueryWidget(Id(:table), term(:Item, itemselected))
-            ),
-            2,
-            ""
-          )
+          mode = ""
+          Builtins.foreach(@recList) do |record|
+            if record.params[1] == profile
+              mode = record.params[2]
+            end
+          end
 
           updateComplain(id, profile, mode, @showAll)
           modified = true

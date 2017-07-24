@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 24 01:26:27 UTC 2017 - belphegor@belbel.or.jp
+
+- fix 'Toggle Mode' bug for non-English locale (bsc#1043546)
+
+-------------------------------------------------------------------
 Fri Jun 30 12:44:14 UTC 2017 - jreidinger@suse.com
 
 - fix name of apparmor systemd service (bsc#1046750)
