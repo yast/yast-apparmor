@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Aug 15 06:31:30 CDT 2017 - rgoldwyn@suse.com
+
+- Use the JSON interface of apparmor to show dialogs (FATE#323380)
+ - Added log profiling
+ - Added generating a profile
+- Removed old perl interface code
+- 3.3.1
+
+-------------------------------------------------------------------
 Mon Jul 24 01:26:27 UTC 2017 - belphegor@belbel.or.jp
 
 - fix 'Toggle Mode' bug for non-English locale (bsc#1043546)

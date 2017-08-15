@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        3.3.0
+Version:        3.3.1
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
@@ -70,10 +70,9 @@ SubDomain.
 %{_bindir}/*
 %{yast_clientdir}
 %{yast_yncludedir}/apparmor
-%{yast_scrconfdir}
+%{yast_libdir}/apparmor
 %{yast_moduledir}
 %{yast_desktopdir}
-%{yast_agentdir}
 %dir %{_sysconfdir}/apparmor
 %config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
 %config(noreplace) %{_sysconfdir}/apparmor/reports.conf

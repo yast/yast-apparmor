@@ -1,7 +1,0 @@
-To extract the translatable strings from the agents, xgettext needs
-a hint about the file type.
-A similar situation exists with
-http://svn.opensuse.org/svn/yast/trunk/installation/control/control.xml
-
-See also
-https://bugzilla.novell.com/show_bug.cgi?id=354678
