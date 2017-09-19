@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 19 14:09:45 CDT 2017 - rgoldwyn@suse.com
+
+- Add VStretch() and HStretch() to aa-settings (bsc#1056942)
+
+-------------------------------------------------------------------
 Tue Aug 15 06:31:30 CDT 2017 - rgoldwyn@suse.com
 
 - Use the JSON interface of apparmor to show dialogs (FATE#323380)
