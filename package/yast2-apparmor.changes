@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 30 14:09:45 CDT 2017 - rgoldwyn@suse.com
+
+- Add VStretch() and HStretch() to aa-settings (bsc#1056942)
+
+-------------------------------------------------------------------
 Tue Sep 26 14:18:59 UTC 2017 - igonzalezsosa@suse.com
 
 - Propose installation of apparmor packages when they are missing
