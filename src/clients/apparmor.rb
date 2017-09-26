@@ -42,6 +42,7 @@ module Yast
         return deep_copy(@ret)
       end
 
+      return unless installAppArmorPackages
       @ret = startDialog
       deep_copy(@ret)
     end
