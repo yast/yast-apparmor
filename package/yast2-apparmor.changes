@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 18 11:11:36 CDT 2017 - rgoldwyn@suse.com
+
+- Remove more perl dependencies (boo#1062656)
+
+-------------------------------------------------------------------
 Tue Sep 30 14:09:45 CDT 2017 - rgoldwyn@suse.com
 
 - Add VStretch() and HStretch() to aa-settings (bsc#1056942)

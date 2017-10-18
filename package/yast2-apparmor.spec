@@ -27,14 +27,6 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 3.1.10
-Requires:       perl(Data::Dumper)
-Requires:       perl(Encode)
-Requires:       perl(Getopt::Long)
-Requires:       perl(Immunix::AppArmor)
-Requires:       perl(Locale::gettext)
-Requires:       perl(POSIX)
-Requires:       perl(ycp)
-Requires:       perl-TimeDate
 Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 Obsoletes:      yast2-subdomain
@@ -42,11 +34,6 @@ Provides:       yast2-subdomain
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-%if 0%{?suse_version} >= 1140
-# openSUSE-11.4 or newer
-BuildRequires:  perl-macros
-%{perl_requires}
-%endif
 
 %description
 Yast2 forms and components for the management of Novell AppArmor
@@ -67,14 +54,10 @@ SubDomain.
 
 %files
 %defattr(-,root,root)
-%{_bindir}/*
 %{yast_clientdir}
 %{yast_yncludedir}/apparmor
 %{yast_libdir}/apparmor
 %{yast_moduledir}
 %{yast_desktopdir}
-%dir %{_sysconfdir}/apparmor
-%config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
-%config(noreplace) %{_sysconfdir}/apparmor/reports.conf
 %doc %{yast_docdir}
 
