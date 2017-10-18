@@ -120,7 +120,7 @@ module AppArmor
       Yast::UI.OpenDialog(
         Opt(:decorate, :defaultsize),
         VBox(
-          Inputfield(Id(:str), @text),
+          InputField(Id(:str), @text),
           PushButton('&OK')
         )
       )
