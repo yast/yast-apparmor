@@ -2,6 +2,8 @@
 Wed Oct 18 11:11:36 CDT 2017 - rgoldwyn@suse.com
 
 - Remove more perl dependencies (boo#1062656)
+- Remove ancient subdomain dependencies (boo#1062656)
+- Fix yast-apparmor.spec description
 
 -------------------------------------------------------------------
 Tue Sep 30 14:09:45 CDT 2017 - rgoldwyn@suse.com

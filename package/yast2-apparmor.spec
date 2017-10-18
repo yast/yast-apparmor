@@ -29,18 +29,13 @@ BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 3.1.10
 Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
-Obsoletes:      yast2-subdomain
-Provides:       yast2-subdomain
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
-Yast2 forms and components for the management of Novell AppArmor
+Yast2 forms and components for the management of AppArmor
 profiles.
-
-This package is part of a suite of tools that used to be named
-SubDomain.
 
 %prep
 %setup -q
