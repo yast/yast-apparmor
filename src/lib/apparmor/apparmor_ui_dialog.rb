@@ -114,20 +114,23 @@ module AppArmor
       log.info "Hash map #{hm}"
       @map = {}
       @map['dialog'] = 'getstring'
+      @text = hm['text']
+      @default = hm['default']
     end
 
     def run
       Yast::UI.OpenDialog(
-        Opt(:decorate, :defaultsize),
+        Opt(:decorate),
         VBox(
-          Inputfield(Id(:str), @text),
+	  VSpacing(0.3),
+          InputField(Id(:str), Opt(:hstretch), @text, @default),
+	  VSpacing(0.3),
           PushButton('&OK')
         )
       )
-      str = Yast::UI.QueryWidget(Id(:str), :Value)
       Yast::UI.UserInput()
+      @map['response'] = Yast::UI.QueryWidget(Id(:str), :Value)
       Yast::UI.CloseDialog()
-      @map['response'] = str
       @map
     end
   end

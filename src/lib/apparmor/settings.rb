@@ -57,10 +57,16 @@ module AppArmor
         Frame(
           Id(:aaEnableFrame),
           _('Configure Profiles'),
+	  VBox(
+	  VStretch(),
           HBox(
-            Label(_('Configure Profile modes')),
-            PushButton(Id(:modeconf), _('Configure'))
-          )
+	    HStretch(),
+            Label(_('Configure Profile modes ')),
+            PushButton(Id(:modeconf), _('Configure')),
+	    HStretch()
+          ),
+	  VStretch()
+	  ),
         ),
         VSpacing(1),
         HBox(
