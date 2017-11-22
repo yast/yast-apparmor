@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 22 12:09:45 CST 2017 - rgoldwyn@suse.com
+
+- fix textdomain to apparmor (bsc#1065569)
+- 4.0.2
+-------------------------------------------------------------------
 Wed Oct 18 11:11:36 CDT 2017 - rgoldwyn@suse.com
 
 - Remove more perl dependencies (boo#1062656)

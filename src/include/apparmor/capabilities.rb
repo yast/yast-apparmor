@@ -27,7 +27,7 @@
 module Yast
   module ApparmorCapabilitiesInclude
     def initialize_apparmor_capabilities(include_target)
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       @capdefs = {
         "chown"            => {

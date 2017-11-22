@@ -25,7 +25,7 @@ module Yast
   class ApparmorClient < Client
     def main
       Yast.import "UI"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
       Yast.import "Wizard"
       Yast.import "Label"
       Yast.import "Popup"

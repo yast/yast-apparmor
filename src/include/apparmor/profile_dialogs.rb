@@ -30,7 +30,7 @@ module Yast
       Yast.import "Label"
       Yast.import "Map"
       Yast.include include_target, "apparmor/capabilities.rb"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       # Globalz
       @timeout_millisec = 20 * 1000

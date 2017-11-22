@@ -26,7 +26,7 @@ module Yast
     def initialize_apparmor_apparmor_profile_check(include_target)
 
       Yast.import "Popup"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
     end
 
     def checkProfileSyntax

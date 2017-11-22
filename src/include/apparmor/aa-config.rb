@@ -28,7 +28,7 @@ module Yast
       Yast.include include_target, "apparmor/config_complain.rb"
       Yast.include include_target, "apparmor/helps.rb"
       Yast.include include_target, "apparmor/apparmor_ycp_utils.rb"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       Yast.import "Label"
       Yast.import "Popup"
