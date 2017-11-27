@@ -24,7 +24,7 @@
 module Yast
   module ApparmorHelpsInclude
     def initialize_apparmor_helps(include_target)
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       # START Help Section
       #**********************************************************

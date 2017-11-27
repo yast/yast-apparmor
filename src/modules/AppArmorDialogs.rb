@@ -26,7 +26,7 @@ require "yast"
 module Yast
   class AppArmorDialogsClass < Module
     def main
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       @busy_dialog = nil
     end
