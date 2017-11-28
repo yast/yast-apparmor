@@ -29,7 +29,7 @@ module Yast
       Yast.import "Label"
       Yast.import "Popup"
       Yast.import "AppArmorDialogs"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       @CMDS = {}
       Ops.set(@CMDS, "CMD_ALLOW", _("&Allow"))
