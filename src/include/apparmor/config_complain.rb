@@ -25,7 +25,7 @@ module Yast
   module ApparmorConfigComplainInclude
     def initialize_apparmor_config_complain(include_target)
       Yast.import "UI"
-      textdomain "yast2-apparmor"
+      textdomain "apparmor"
 
       Yast.import "Label"
       Yast.import "Popup"
