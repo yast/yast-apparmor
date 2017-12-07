@@ -22,7 +22,8 @@ module AppArmor
       Yast::UI.OpenDialog(
         Opt(:decorated, :defaultsize),
         VBox(
-          Label(_("No more records in logfile #{@logfile} to process")),
+          # TRANSLATORS: file path
+          Label(_("No more records in logfile %s to process") % @logfile),
           VSpacing(2),
           HBox(
             HStretch(),

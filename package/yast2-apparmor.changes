@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec  7 13:33:06 UTC 2017 - igonzalezsosa@suse.com
+
+- Fix translation issues (bsc#1071756)
+- 4.0.3
+
+-------------------------------------------------------------------
 Wed Nov 22 12:09:45 CST 2017 - rgoldwyn@suse.com
 
 - fix textdomain to apparmor (bsc#1065569)

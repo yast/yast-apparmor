@@ -29,7 +29,8 @@ module AppArmor
       Yast::UI.OpenDialog(
         Opt(:decorated, :defaultsize),
         VBox(
-          Label(_("Profile for #{@program} generated")),
+          # TRANSLATORS: file path
+          Label(_("Profile for %s generated") % @program),
           VSpacing(2),
           HBox(
             HStretch(),
