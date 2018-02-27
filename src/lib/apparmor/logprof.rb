@@ -11,6 +11,7 @@ module AppArmor
   # the appropriate dialogs for the yast UI
   class LogProf < AAProgram
     def initialize(logfile = '')
+      textdomain "apparmor"
       @logfile = logfile
       command = '/usr/sbin/aa-logprof --json '
       command += " -f #{@logfile}" unless @logfile.empty?
