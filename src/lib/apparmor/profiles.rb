@@ -101,6 +101,7 @@ module AppArmor
       super
       @profiles = Profiles.new
       @active = true
+      textdomain "apparmor"
     end
 
     def dialog_options

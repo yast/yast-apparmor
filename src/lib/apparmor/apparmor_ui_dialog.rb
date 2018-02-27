@@ -141,6 +141,7 @@ module AppArmor
     include Yast::I18n
     include Yast::Logger
     def initialize(hm)
+      textdomain "apparmor"
       log.info "Hash map #{hm}"
       @map = {}
       @map['dialog'] = 'getfile'
@@ -243,6 +244,7 @@ module AppArmor
     include Yast::Logger
     AA_JSON = 2.12
     def initialize(hm)
+      textdomain "apparmor"
       log.info "Hash map #{hm}"
       @json_version = hm['data'].to_f
     end
@@ -259,6 +261,7 @@ module AppArmor
     include Yast::Logger
     include Yast::I18n
     def initialize(command)
+      textdomain "apparmor"
       Yast::Report.Error(_('Error: cmd is not defined')) if command.empty?
       @cmd = command
     end
