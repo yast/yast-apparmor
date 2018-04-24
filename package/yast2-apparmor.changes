@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 27 06:56:31 CDT 2018 - rgoldwyn@suse.com
+
+- Process profile change only if we have it selected (bsc#1090592)
+- 4.0.5
+
+-------------------------------------------------------------------
 Tue Feb 27 12:27:40 UTC 2018 - jreidinger@suse.com
 
 - fix more translation issues (bsc#1083015)
