@@ -13,6 +13,7 @@ X-SuSE-YaST-AutoInst=none
 X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstClonable=false
+X-SuSE-YaST-Keywords=security,LSM,MAC,DAC,access,control
 
 Icon=apparmor_view_profile
 Exec=/usr/bin/xdg-su -c '/sbin/yast2 apparmor'
