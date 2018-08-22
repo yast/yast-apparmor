@@ -21,7 +21,7 @@ Version:        4.0.5
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
-License:        GPL-2.0
+License:        GPL-2.0-only
 Group:          Productivity/Security
 Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  update-desktop-files
