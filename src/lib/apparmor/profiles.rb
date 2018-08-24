@@ -229,7 +229,7 @@ module AppArmor
     def changeMode_handler
       selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
       log.info "Toggling #{selected_item}"
-      @profiles.toggle(selected_item)
+      @profiles.toggle(selected_item) if selected_item
       redraw_table
     end
 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 24 08:20:53 CDT 2018 - rgoldwyn@suse.com
+
+- Process profile change only if we have it selected (bsc#1090592)
+- 4.0.6
+
+-------------------------------------------------------------------
 Thu Jun 28 16:00:46 CEST 2018 - schubi@suse.de
 
 - Added additional searchkeys to desktop file (fate#321043).
