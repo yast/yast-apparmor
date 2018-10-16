@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 16 16:54:23 CEST 2018 - schubi@suse.de
+
+- Added license file to spec.
+
+-------------------------------------------------------------------
 Fri Aug 24 08:20:53 CDT 2018 - rgoldwyn@suse.com
 
 - Process profile change only if we have it selected (bsc#1090592)
