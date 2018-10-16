@@ -55,4 +55,5 @@ profiles.
 %{yast_moduledir}
 %{yast_desktopdir}
 %doc %{yast_docdir}
+%license COPYING
 
