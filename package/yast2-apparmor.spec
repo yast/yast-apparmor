@@ -54,6 +54,7 @@ profiles.
 %{yast_libdir}/apparmor
 %{yast_moduledir}
 %{yast_desktopdir}
+%{_datadir}/icons/*
 %doc %{yast_docdir}
 %license COPYING
 
