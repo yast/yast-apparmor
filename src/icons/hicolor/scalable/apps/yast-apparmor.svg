@@ -88,74 +88,6 @@
     </linearGradient>
     <linearGradient
        spreadMethod="pad"
-       gradientUnits="userSpaceOnUse"
-       y2="15.7422"
-       y1="15.7422"
-       x2="27.5"
-       x1="5"
-       id="linearGradient908"
-       gradientTransform="matrix(4,0,0,4,0,172.0312)">
-      <stop
-         id="stop904"
-         offset="0"
-         stop-color="#fff" />
-      <stop
-         style="stop-color:#faf9f9;stop-opacity:1;"
-         stop-color="#fff"
-         offset="0.5140695"
-         id="stop910" />
-      <stop
-         id="stop906"
-         offset="1"
-         stop-color="#f6f5f4" />
-    </linearGradient>
-    <linearGradient
-       spreadMethod="pad"
-       gradientUnits="userSpaceOnUse"
-       y2="15.7422"
-       y1="15.7422"
-       x2="27.5"
-       x1="5"
-       id="linearGradient900"
-       gradientTransform="matrix(4,0,0,4,0,172.0312)">
-      <stop
-         id="stop896"
-         offset="0"
-         stop-color="#fff" />
-      <stop
-         style="stop-color:#fafaf9;stop-opacity:1;"
-         stop-color="#fff"
-         offset="0.49814969"
-         id="stop902" />
-      <stop
-         id="stop898"
-         offset="1"
-         stop-color="#f6f5f4" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="15.7422"
-       y1="15.7422"
-       x2="27.5"
-       x1="5"
-       id="linearGradient892"
-       gradientTransform="matrix(4,0,0,4,0,172.0312)">
-      <stop
-         id="stop888"
-         offset="0"
-         stop-color="#fff" />
-      <stop
-         style="stop-color:#fafaf9;stop-opacity:1;"
-         stop-color="#fff"
-         offset="0.48222986"
-         id="stop894" />
-      <stop
-         id="stop890"
-         offset="1"
-         stop-color="#f6f5f4" />
-    </linearGradient>
-    <linearGradient
-       spreadMethod="pad"
        gradientTransform="matrix(4,0,0,4,0,172.0312)"
        id="a"
        x1="5"
@@ -171,23 +103,6 @@
          stop-color="#f6f5f4"
          offset="1"
          id="stop4" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="matrix(4,0,0,4,0,172.0312)"
-       id="a-3"
-       x1="5"
-       x2="27.5"
-       y1="15.7422"
-       y2="15.7422"
-       gradientUnits="userSpaceOnUse">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop2-6" />
-      <stop
-         stop-color="#f6f5f4"
-         offset="1"
-         id="stop4-7" />
     </linearGradient>
     <linearGradient
        spreadMethod="pad"
