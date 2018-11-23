@@ -119,7 +119,6 @@ module Yast
 
       # May want to replace Wizard() with UI()
       Wizard.CreateDialog
-      Wizard.SetTitleIcon("apparmor/control_panel")
       Wizard.SetContentsButtons(
         caption,
         contents,
