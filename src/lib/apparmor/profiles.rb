@@ -6,6 +6,8 @@
 require 'json'
 require 'open3'
 require 'yast'
+require "yast2/execute"
+
 Yast.import 'UI'
 Yast.import 'Label'
 Yast.import 'Popup'
@@ -23,13 +25,13 @@ module AppArmor
 
     # Set to complain mode
     def complain
-      system("/usr/sbin/aa-complain #{@name}")
+      execute("/usr/sbin/aa-complain", @name)
       @status = 'complain'
     end
 
     # Set to enforce mode
     def enforce
-      system("/usr/sbin/aa-enforce #{@name}")
+      execute("/usr/sbin/aa-enforce", @name)
       @status = 'enforce'
     end
 
@@ -56,6 +58,21 @@ module AppArmor
       pstr = @pid.map(&:to_str).join(", ")
       a.push(pstr)
       a
+    end
+
+  private
+
+    # Executes a given command
+    #
+    # @see Yast::Execute
+    #
+    # @param args [Array<String>] command path and parameters
+    # @return [Boolean] true if the command finishes correctly; false otherwise
+    def execute(*args)
+      Yast::Execute.locally!(*args)
+      true
+    rescue Cheetah::ExecutionFailed
+      false
     end
   end
 
