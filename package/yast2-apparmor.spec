@@ -27,7 +27,8 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 3.1.10
-Requires:       yast2
+# Yast::Execute.locally!
+Requires:       yast2 > 3.3.2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
