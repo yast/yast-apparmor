@@ -1,7 +1,14 @@
 -------------------------------------------------------------------
+Mon Dec 10 13:49:30 UTC 2018 - jlopez@suse.com
+
+- Hardening execution of system commands (part of bsc#1118291).
+- 4.1.2
+
+-------------------------------------------------------------------
 Fri Nov 23 14:14:25 UTC 2018 - Stasiek Michalski <hellcp@mailbox.org>
 
 - Provide icon with module (boo#1109310)
+- 4.1.1
 
 -------------------------------------------------------------------
 Tue Oct 16 16:54:23 CEST 2018 - schubi@suse.de
