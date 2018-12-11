@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec 11 16:44:21 UTC 2018 - jlopez@suse.com
+
+- More about hardening commands execution (part of bsc#1118291).
+- Replace backticks by Yast::Execute.
+- 4.1.3
+
+-------------------------------------------------------------------
 Mon Dec 10 13:49:30 UTC 2018 - jlopez@suse.com
 
 - Hardening execution of system commands (part of bsc#1118291).
