@@ -64,9 +64,8 @@ module AppArmor
 
     # Executes a given command
     #
-    # @see Yast::Execute
+    # For possible parameters, see Yast::Execute.locally!.
     #
-    # @param args [Array<String>] command path and parameters
     # @return [Boolean] true if the command finishes correctly; false otherwise
     def execute(*args)
       Yast::Execute.locally!(*args)
@@ -80,7 +79,8 @@ module AppArmor
   class Profiles
     attr_reader :prof
     def initialize
-      status_output = `/usr/sbin/aa-status --json`
+      status_output = command_output("/usr/sbin/aa-status", "--json")
+
       jtext = JSON.parse(status_output)
       h = jtext['profiles']
       @prof = {}
@@ -106,6 +106,20 @@ module AppArmor
 
     def toggle(name)
       @prof[name].toggle
+    end
+
+  private
+
+    # Returns the output of the given command
+    #
+    # @param args [Array<String>, Array<Array<String>>] the command to execute and
+    #   its arguments. For a detailed description, see
+    #   https://www.rubydoc.info/github/openSUSE/cheetah/Cheetah#run-class_method
+    # @return [String] commmand output or an empty string if the command fails.
+    def command_output(*args)
+      Yast::Execute.locally!(*args, stdout: :capture)
+    rescue Cheetah::ExecutionFailed
+      ""
     end
   end
 
