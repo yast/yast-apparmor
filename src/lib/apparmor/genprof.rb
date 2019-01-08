@@ -24,13 +24,18 @@ module AppArmor
 
     def execute
       return nil if @program.nil?
-      super
+
+      # TRANSLATORS: file path
+      if super
+        msg = _("Profile for %s generated.") % @program
+      else
+        msg = _("Error: Profile for %s not generated due to error in executing aa-genprof") % @program
+      end
 
       Yast::UI.OpenDialog(
         Opt(:decorated, :defaultsize),
         VBox(
-          # TRANSLATORS: file path
-          Label(_("Profile for %s generated") % @program),
+          Label(msg),
           VSpacing(2),
           HBox(
             HStretch(),

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 14 07:41:58 CST 2019 - rgoldwyn@suse.com
+
+- Use exit status of the executed program and present appropriate
+  message to the user (bsc#1120277)
+- 4.0.7
+
+-------------------------------------------------------------------
 Fri Aug 24 08:20:53 CDT 2018 - rgoldwyn@suse.com
 
 - Process profile change only if we have it selected (bsc#1090592)

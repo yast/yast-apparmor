@@ -19,12 +19,16 @@ module AppArmor
     end
 
     def execute
-      super
+      # TRANSLATORS: file path
+      if super
+        msg = _("No more records in logfile %s to process") % @logfile
+      else
+        msg = _("Error: Could not process records in %s due to error in executing aa-logprof") % @logfile
+      end
       Yast::UI.OpenDialog(
         Opt(:decorated, :defaultsize),
         VBox(
-          # TRANSLATORS: file path
-          Label(_("No more records in logfile %s to process") % @logfile),
+          Label(msg),
           VSpacing(2),
           HBox(
             HStretch(),
