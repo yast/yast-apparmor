@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 14 07:41:58 CST 2019 - rgoldwyn@suse.com
+
+- Use exit status of the executed program and present appropriate
+  message to the user (bsc#1120277)
+- 4.1.4
+
+-------------------------------------------------------------------
 Tue Dec 11 16:44:21 UTC 2018 - jlopez@suse.com
 
 - More about hardening commands execution (part of bsc#1118291).

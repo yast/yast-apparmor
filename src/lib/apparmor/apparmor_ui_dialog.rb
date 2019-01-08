@@ -282,6 +282,7 @@ module AppArmor
           end
         end
       end
+      $?.success?
     end
 
     private
