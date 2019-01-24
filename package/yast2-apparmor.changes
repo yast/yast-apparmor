@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 24 12:39:46 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
+
+- Adapted aa-status parser to new output format to prevent crash
+  (bsc#1121274)
+- 4.0.8
+
+-------------------------------------------------------------------
 Mon Jan 14 07:41:58 CST 2019 - rgoldwyn@suse.com
 
 - Use exit status of the executed program and present appropriate
