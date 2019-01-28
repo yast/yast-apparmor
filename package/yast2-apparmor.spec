@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        4.1.5
+Version:        4.1.6
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
@@ -33,8 +33,8 @@ Requires:       yast2-ruby-bindings >= 1.0.0
 
 # New JSON output format in aa-status; upstream change:
 # aa-status: split profile from exec name
-# bsc#1121274 / PR#35
-Conflicts:	apparmor-utils < 2.13
+# bsc#1121274 / PR#35, bsc#1123258 / PR#36
+Conflicts:	apparmor-utils < 2.12
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
