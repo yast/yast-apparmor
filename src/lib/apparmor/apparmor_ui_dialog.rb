@@ -214,10 +214,10 @@ module AppArmor
       return box if @options.nil?
       @options.each_with_index do |opt, i|
         log.info "opt #{opt} i #{i}"
-        box << RadioButton(Id(i.to_s), opt.to_s, i == 0)
+        box << Left(RadioButton(Id(i.to_s), opt.to_s, i == 0))
         box << VSpacing(1)
       end
-      VBox(RadioButtonGroup(Id(:options), box))
+      VBox(RadioButtonGroup(Id(:options), HSquash(box)))
     end
 
     def menu_to_text_key(menu)
