@@ -238,6 +238,54 @@ module AppArmor
     end
   end
 
+  # Dialog that shows the changes (the diff) between the old and the new profile
+  class ChangesDialog
+    include Yast::UIShortcuts
+    include Yast::I18n
+    include Yast::Logger
+    include Yast
+
+    def initialize(hm)
+      log.info "Hash map #{hm}"
+      @header = hm["header"]
+      @filename = hm["filename"]
+    end
+
+    def run
+      UI.OpenDialog(
+        Opt(:decorated, :defaultsize),
+        VBox(
+          dialog_header,
+	  VSpacing(0.3),
+          RichText(Opt(:plainText), changes_content),
+	  VSpacing(0.3),
+          PushButton(Label.OKButton)
+        )
+      )
+
+      Yast::UI.UserInput
+      Yast::UI.CloseDialog
+
+      {
+        "dialog"   => "changes",
+        "response" => "ignored"
+      }
+    end
+
+    private
+
+    def dialog_header
+      return Empty() if @header.nil?
+      # Not using a Heading widget here for consistency with the rest of this module
+      Label(@header)
+    end
+
+    def changes_content
+      return "" if @filename.nil?
+      File.read(@filename)
+    end
+  end
+
   # Checks JSON version of the tool and if we are compatible
   class AAJSONVersion
     include Yast::I18n
@@ -277,6 +325,7 @@ module AppArmor
           l = get_dialog(hm)
           r = l.run
           unless r.nil?
+            log.info("Sending reply #{r.to_json}")
             f.puts r.to_json
             f.flush
           end
@@ -295,6 +344,7 @@ module AppArmor
       'getstring' => GetStringDialog,
       'getfile' => GetFileDialog,
       'promptuser' => PromptDialog,
+      'changes' => ChangesDialog,
       'apparmor-json-version' => AAJSONVersion
     }
 
