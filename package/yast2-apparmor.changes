@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 29 12:42:25 UTC 2019 - Stasiek Michalski <hellcp@mailbox.org>
+
+- Add metadata (fate#319035)
+- 4.2.0
+
+-------------------------------------------------------------------
 Wed Jan 30 15:51:08 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Implemented "changes" dialog for "scan audit logs" (bsc#1120043)
