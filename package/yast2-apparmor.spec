@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -23,10 +23,13 @@ Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
 License:        GPL-2.0-only
 Group:          Productivity/Security
+
 Source0:        %{name}-%{version}.tar.bz2
+
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 3.1.10
+
 # Yast::Execute.locally!
 Requires:       yast2 > 3.3.2
 Requires:       yast2-ruby-bindings >= 1.0.0
@@ -36,11 +39,10 @@ Requires:       yast2-ruby-bindings >= 1.0.0
 # bsc#1121274 / PR#35, bsc#1123258 / PR#36
 Conflicts:      apparmor-utils < 2.12
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
-Yast2 forms and components for the management of AppArmor
+YaST2 forms and components for the management of AppArmor
 profiles.
 
 %prep
@@ -53,16 +55,15 @@ profiles.
 %yast_install
 %yast_metainfo
 
-
 %files
-%defattr(-,root,root)
 %{yast_clientdir}
-%{yast_yncludedir}/apparmor
-%{yast_libdir}/apparmor
+%{yast_yncludedir}
+%{yast_libdir}
 %{yast_moduledir}
 %{yast_desktopdir}
 %{yast_metainfodir}
-%{_datadir}/icons/*
+%{yast_icondir}
 %doc %{yast_docdir}
 %license COPYING
 
+%changelog
