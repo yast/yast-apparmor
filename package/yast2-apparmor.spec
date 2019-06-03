@@ -28,7 +28,7 @@ Source0:        %{name}-%{version}.tar.bz2
 
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
-BuildRequires:  yast2-devtools >= 3.1.10
+BuildRequires:  yast2-devtools >= 4.2.2
 
 # Yast::Execute.locally!
 Requires:       yast2 > 3.3.2
