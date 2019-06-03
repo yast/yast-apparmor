@@ -30,7 +30,7 @@ ylib_DATA = \
   lib/apparmor/settings.rb
 
 desktop_DATA = \
-  desktop/apparmor.desktop
+  desktop/org.opensuse.yast.Apparmor.desktop
 
 symbolicdir = @icondir@/hicolor/symbolic/apps
 symbolic_DATA = \

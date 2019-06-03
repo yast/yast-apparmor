@@ -82,7 +82,7 @@ module Yast
       )
 
       Wizard.CreateDialog
-      Wizard.SetDesktopTitleAndIcon("apparmor")
+      Wizard.SetDesktopTitleAndIcon("org.opensuse.yast.Apparmor")
       Wizard.SetContentsButtons(
         caption,
         contents,

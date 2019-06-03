@@ -18,6 +18,7 @@ X-SuSE-YaST-Keywords=security,LSM,MAC,DAC,access,control
 Icon=yast-apparmor
 Exec=/usr/bin/xdg-su -c '/sbin/yast2 apparmor'
 
-Name=AppArmor Configuration
-GenericName=AppArmor Configuration
+Name=YaST AppArmor
+GenericName=AppArmor
+Comment=AppArmor Configuration
 StartupNotify=true
