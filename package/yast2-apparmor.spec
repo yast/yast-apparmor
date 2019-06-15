@@ -62,6 +62,7 @@ profiles.
 %{yast_desktopdir}
 %{yast_metainfodir}
 %{yast_icondir}
+%doc %{yast_docdir}
 %license COPYING
 
 %changelog
