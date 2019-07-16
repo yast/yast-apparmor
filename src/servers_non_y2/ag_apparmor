@@ -20,7 +20,6 @@
 use strict;
 use ycp;
 use Data::Dumper;
-use Immunix::Notify;
 use Immunix::AppArmor;
 
 
@@ -70,14 +69,11 @@ while ( <STDIN> ) {
     if ( $argument eq 'aa-all') {
       my %hResult = '';		# hashed result, duh 
       $hResult{'aa-status'} = getAppArmorStatus();
-      $hResult{'aa-notify'} = Immunix::Notify::getNotifyStatus();
       #ycp::ycpReturnHashAsMap( %hResult );
       ycp::Return( %hResult );
       $donereturn = 1;
     } elsif ( $argument eq 'aa-status') {
       $result = getAppArmorStatus();
-    } elsif ( $argument eq 'aa-notify') {
-      $result = Immunix::Notify::getNotifyStatus();
     } elsif ( $command eq "Read" and $argument eq 'custom-includes') {
       my $cfg = Immunix::AppArmor::read_config("logprof.conf");
       my @ret = split(' ', $cfg->{settings}{custom_includes});
@@ -86,10 +82,6 @@ while ( <STDIN> ) {
     } elsif ( $command eq "Execute" and $argument eq 'profile-syntax-check') {
       $result = profileSyntaxCheck();
       ycp::ycpReturn($result);
-      $donereturn = 1;
-    } elsif ( $argument eq 'aa-notify-settings') {
-      $result = Immunix::Notify::getNotifySettings();
-      ycp::Return($result);
       $donereturn = 1;
     }
     ycp::ycpReturnSkalarAsString( $result ) if ( ! $donereturn );
