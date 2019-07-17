@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Jul 17 07:25:37 UTC 2019 - David Diaz <dgonzalez@suse.com>
+
+- Avoid warnings due to dead code related to notify settings,
+  which were removed some time ago (bsc#1139852).
+- Removes a Perl script to generate reports that is broken
+  and is not used for a long time ago.
+- 3.2.2
+
+-------------------------------------------------------------------
 Fri Jun 30 12:44:14 UTC 2017 - jreidinger@suse.com
 
 - fix name of apparmor systemd service (bsc#1046750)
