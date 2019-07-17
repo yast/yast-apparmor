@@ -67,15 +67,11 @@ SubDomain.
 
 %files
 %defattr(-,root,root)
-%{_bindir}/*
 %{yast_clientdir}
 %{yast_yncludedir}/apparmor
 %{yast_scrconfdir}
 %{yast_moduledir}
 %{yast_desktopdir}
 %{yast_agentdir}
-%dir %{_sysconfdir}/apparmor
-%config(noreplace) %{_sysconfdir}/apparmor/reports.crontab
-%config(noreplace) %{_sysconfdir}/apparmor/reports.conf
 %doc %{yast_docdir}
 
