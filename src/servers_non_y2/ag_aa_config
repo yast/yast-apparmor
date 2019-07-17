@@ -18,8 +18,6 @@ use strict;
 use ycp;
 use Data::Dumper;
 
-use Immunix::Notify;
-
 # Subroutines
 ################################################################################
 sub setAppArmor {
@@ -57,13 +55,6 @@ sub setAppArmor {
   return $errmsg;
 }
 
-sub setNotify {
-
-  my $action = shift;
-
-  return 0; 
-}
-
 sub setLearningMode {
 
   my $action = shift;
@@ -94,28 +85,13 @@ while ( <STDIN> ) {
 
   if ( $command && $path && $argument ) {
 
-    if (ref($argument) eq "HASH" && $argument->{"set_notify"}) {
-      my ($ntSettings, $result) = Immunix::Notify::sanitize($argument);
-
-      if ($result ne "success") {
-        ycp::Return($result);
-        next;
-      } else {
-        $result = Immunix::Notify::setNotifySettings($ntSettings);
-        ycp::Return($result);
-        next;
-      }
-    }
-
     ($action) = (split(/:/, $argument))[1];
 
     if ( $argument =~ /apparmor/ ) {
       $result = setAppArmor($action);
     } elsif ( $argument =~ /learning/ ) {
       setLearningMode($action);
-    } elsif ( $argument eq 'aa-notify') {
-      setNotify($action);
-    } 
+    }
 
     if ( $result ) {
       ycp::Return( $result );
