@@ -210,7 +210,7 @@ module Yast
             ret = Convert.to_integer(
               SCR.Execute(
                 path(".target.bash"),
-                "/sbin/rcapparmor reload > /dev/null 2>&1"
+                "/bin/systemctl reload apparmor"
               )
             )
           else
