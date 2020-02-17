@@ -1477,19 +1477,11 @@ module Yast
             next
           end # TODO ELSE POPUP NO ENTRY SELECTED ERROR
         elsif id == :delete
-          if Popup.YesNoHeadline(
-              _("Delete profile confirmation"),
-              Ops.add(
-                Ops.add(
-                  _("Are you sure you want to delete the profile "),
-                  profilename
-                ),
-                _(
-                  " ?\nAfter this operation the AppArmor module will reload the profile set."
-                )
-              )
-            )
-            Builtins.y2milestone(Ops.add("Deleted ", profilename))
+          # Translators: %1 is the name of the profile.
+          popup_msg = Builtins.sformat(_("Are you sure you want to delete the profile \"%1\"?"), profilename )
+          popup_msg += "\n" + _("After this operation the AppArmor module will reload the profile set.")
+          if Popup.YesNoHeadline(_("Delete profile confirmation"), popup_msg)
+            Builtins.y2milestone("Deleted %1", profilename)
             result = SCR.Write(path(".apparmor_profiles.delete"), profilename)
             result2 = SCR.Execute(path(".target.bash"), "/sbin/apparmor_parser -r /etc/apparmor.d")
           end
