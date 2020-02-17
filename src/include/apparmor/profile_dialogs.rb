@@ -1478,7 +1478,7 @@ module Yast
           end # TODO ELSE POPUP NO ENTRY SELECTED ERROR
         elsif id == :delete
           # Translators: %1 is the name of the profile.
-          popup_msg = Builtins.sformat(_("Are you sure you want to delete the profile \"%1\"?"), profilename )
+          popup_msg = Builtins.sformat(_("Are you sure you want to delete the profile\n\"%1\"?"), profilename )
           popup_msg += "\n" + _("After this operation the AppArmor module will reload the profile set.")
           if Popup.YesNoHeadline(_("Delete profile confirmation"), popup_msg)
             Builtins.y2milestone("Deleted %1", profilename)
