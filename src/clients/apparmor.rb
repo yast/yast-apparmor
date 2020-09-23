@@ -31,8 +31,6 @@ module Yast
       Yast.import "Popup"
       Yast.import "Sequencer"
       Yast.include self, "apparmor/apparmor_packages.rb"
-      Yast.include self, "apparmor/apparmor_profile_check.rb"
-      Yast.include self, "apparmor/profile_dialogs.rb"
 
       @ret = nil
       # no command line support #269891

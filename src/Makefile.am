@@ -12,14 +12,7 @@ client_DATA = \
 
 yncludedir = @yncludedir@/apparmor
 ynclude_DATA = \
-  include/apparmor/capabilities.rb \
-  include/apparmor/apparmor_profile_check.rb \
-  include/apparmor/apparmor_packages.rb \
-  include/apparmor/aa-config.rb \
-  include/apparmor/config_complain.rb \
-  include/apparmor/apparmor_ycp_utils.rb \
-  include/apparmor/helps.rb \
-  include/apparmor/profile_dialogs.rb
+  include/apparmor/apparmor_packages.rb
 
 ylibdir = @yast2dir@/lib/apparmor
 ylib_DATA = \

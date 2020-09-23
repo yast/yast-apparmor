@@ -11,9 +11,13 @@ require "yast2/execute"
 Yast.import 'UI'
 Yast.import 'Label'
 Yast.import 'Popup'
+Yast.import 'Report'
 
 module AppArmor
-  # Class representing a single apparmor profile
+
+  Yast.include self, "apparmor/apparmor_packages.rb"
+
+  # Class representing a single apparmor profile 
   class Profile
     attr_reader :name, :status, :pid
 
@@ -35,15 +39,54 @@ module AppArmor
       @status = 'enforce'
     end
 
+    # Set to unconfined mode
+    def unconfined
+      execute("/usr/sbin/aa-unconfined", @name)
+      @status = 'unconfined'
+    end
+
+    # Set to kill mode
+    def kill
+      execute("/usr/sbin/aa-kill", @name)
+      @status = 'kill'
+    end
+
+    # Set to mixed mode
+    def mixed
+      Report.Warning("Currently without any action.")
+      @status = 'mixed'
+    end
+
+    # Set to prompt mode
+    def prompt
+      Report.Warning("Currently without any action.")      
+      @status = 'prompt'
+    end    
+
     def addPid(p)
       @pid.push(p)
     end
 
     def toggle
-      if @status == 'complain'
+      case @status
+      when 'enforce'
+        complain        
+      when 'complain'
+        if (!AppArmorVersion.start_with?("3."))        
+          enforce
+        else
+          unconfined
+        end
+      when "unconfined"
+        kill
+      when "kill"
+        prompt
+      when "prompt"
+        mixed     
+      when "mixed"
         enforce
       else
-        complain
+        log.error("status not supported: #{@status}")
       end
     end
 
@@ -68,6 +111,7 @@ module AppArmor
     #
     # @return [Boolean] true if the command finishes correctly; false otherwise
     def execute(*args)
+      log.info("Call to set status: #{args}")
       Yast::Execute.locally!(*args)
       true
     rescue Cheetah::ExecutionFailed
