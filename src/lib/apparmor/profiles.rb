@@ -18,6 +18,7 @@ module AppArmor
   # Class representing a single apparmor profile 
   class Profile
     include Yast::Logger
+    include Yast::I18n    
 
     attr_reader :name, :status, :pid
 
@@ -53,13 +54,13 @@ module AppArmor
 
     # Set to mixed mode
     def mixed
-      Yast::Report.Warning("Currently without any action.")
+      Yast::Report.Warning(_("Currently without any action."))
       @status = 'mixed'
     end
 
     # Set to prompt mode
     def prompt
-      Yast::Report.Warning("Currently without any action.")
+      Yast::Report.Warning(_("Currently without any action."))
       @status = 'prompt'
     end    
 
@@ -132,12 +133,17 @@ module AppArmor
   # Class representing a list of profiles
   class Profiles
     include Yast::Logger
+    include Yast::I18n    
 
     attr_reader :prof
     def initialize
       @prof = {}
       status_output = command_output("/usr/sbin/aa-status", "--pretty-json")
       log.info("aa-status output:\n#{status_output}\n")
+      if (status_output.length <= 0)
+        Yast::Report.Error(_("Cannot evaluate current status via aa-status."))
+        return
+      end
       jtext = JSON.parse(status_output)
       add_profiles(jtext["profiles"])
       add_processes(jtext["processes"])
