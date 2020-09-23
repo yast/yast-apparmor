@@ -15,10 +15,10 @@ Yast.import 'Report'
 
 module AppArmor
 
-  Yast.include self, "apparmor/apparmor_packages.rb"
-
   # Class representing a single apparmor profile 
   class Profile
+    include Yast::Logger
+
     attr_reader :name, :status, :pid
 
     def initialize(name, status)
@@ -53,13 +53,13 @@ module AppArmor
 
     # Set to mixed mode
     def mixed
-      Report.Warning("Currently without any action.")
+      Yast::Report.Warning("Currently without any action.")
       @status = 'mixed'
     end
 
     # Set to prompt mode
     def prompt
-      Report.Warning("Currently without any action.")      
+      Yast::Report.Warning("Currently without any action.")
       @status = 'prompt'
     end    
 
@@ -72,7 +72,7 @@ module AppArmor
       when 'enforce'
         complain        
       when 'complain'
-        if (!AppArmorVersion.start_with?("3."))        
+        if (!AppArmorVersion().start_with?("3."))
           enforce
         else
           unconfined
@@ -117,11 +117,22 @@ module AppArmor
     rescue Cheetah::ExecutionFailed
       false
     end
+
+    # Evaluating AppArmor version
+    #
+    # @return [String] version string or empty string
+    def AppArmorVersion
+      ret = Yast::Execute.locally!("/sbin/apparmor_parser", "-V", stdout: :capture)
+      ret.lines.first.chomp.split.last
+    rescue Cheetah::ExecutionFailed
+      ""
+    end    
   end
 
   # Class representing a list of profiles
   class Profiles
     include Yast::Logger
+
     attr_reader :prof
     def initialize
       @prof = {}

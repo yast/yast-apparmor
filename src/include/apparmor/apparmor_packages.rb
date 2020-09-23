@@ -40,12 +40,5 @@ module Yast
     def installAppArmorPackages
       PackageSystem.CheckAndInstallPackagesInteractive(@__needed_packages)
     end
-
-    def AppArmorVersion
-      ret = Yast::Execute.locally!("/usr/sbin/apparmor_parser", "-v", stdout: :capture)
-      lines.first.chomp.split.last
-    rescue Cheetah::ExecutionFailed
-      ""
-    end      
   end
 end
