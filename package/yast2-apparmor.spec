@@ -29,6 +29,7 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 4.2.2
+BuildRequires:  rubygem(%rb_default_ruby_abi:yast-rake)
 
 # Yast::Execute.locally!
 Requires:       yast2 > 3.3.2
@@ -47,6 +48,9 @@ profiles.
 
 %prep
 %setup -q
+
+%check
+%yast_check
 
 %build
 
