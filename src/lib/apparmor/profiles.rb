@@ -216,8 +216,14 @@ module AppArmor
         VSpacing(0.3),
         # Footer buttons
         HBox(
-          HWeight(1, PushButton(Id(:setEnforce), _("S&et to 'enforce'"))),
-          HWeight(1, PushButton(Id(:setComplain), _("Set to '&complain'"))),          
+          HWeight(1,
+            PushButton(Id(:setEnforce),
+              ((table_items.first.params[1] == "enforce") ? Opt(:disabled) : Opt()),
+              _("S&et to 'enforce'"))),
+          HWeight(1,
+            PushButton(Id(:setComplain),
+              ((table_items.first.params[1] == "complain") ? Opt(:disabled) : Opt()),
+              _("Set to '&complain'"))),
           HStretch(),
           HWeight(1, PushButton(Id(:finish), Yast::Label.FinishButton))
         )
@@ -228,7 +234,7 @@ module AppArmor
       headers = Array[_('Name'), _('Mode'), _('PID')]
       Table(
         Id(:entries_table),
-        Opt(:keepSorting),
+        Opt(:keepSorting,:notify,:immediate),
         Header(*headers),
         table_items
       )
@@ -249,6 +255,7 @@ module AppArmor
 
     def redraw_table
       Yast::UI.ChangeWidget(Id(:entries_table), :Items, table_items)
+      entries_table_handler
     end
 
     def setEnforce_handler
@@ -272,6 +279,20 @@ module AppArmor
 
     def finish_handler
       finish_dialog
+    end
+
+    def entries_table_handler
+      selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
+      if(@profiles.all[selected_item].status == "enforce")
+        Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, false)
+      else
+        Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, true)
+      end
+      if(@profiles.all[selected_item].status == "complain")
+        Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, false)
+      else
+        Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, true)
+      end
     end
   end
 end
