@@ -18,7 +18,6 @@ module AppArmor
   # Class representing a single apparmor profile 
   class Profile
     include Yast::Logger
-    include Yast::I18n    
 
     attr_reader :name, :status, :pid
 
@@ -40,55 +39,8 @@ module AppArmor
       @status = 'enforce'
     end
 
-    # Set to unconfined mode
-    def unconfined
-      execute("/usr/sbin/aa-unconfined", @name)
-      @status = 'unconfined'
-    end
-
-    # Set to kill mode
-    def kill
-      execute("/usr/sbin/aa-kill", @name)
-      @status = 'kill'
-    end
-
-    # Set to mixed mode
-    def mixed
-      Yast::Report.Warning(_("Currently without any action."))
-      @status = 'mixed'
-    end
-
-    # Set to prompt mode
-    def prompt
-      Yast::Report.Warning(_("Currently without any action."))
-      @status = 'prompt'
-    end    
-
     def addPid(p)
       @pid.push(p)
-    end
-
-    def toggle
-      case @status
-      when 'enforce'
-        complain        
-      when 'complain'
-        if (!AppArmorVersion().start_with?("3."))
-          enforce
-        else
-          unconfined
-        end
-      when "unconfined"
-        kill
-      when "kill"
-        prompt
-      when "prompt"
-        mixed     
-      when "mixed"
-        enforce
-      else
-        log.error("status not supported: #{@status}")
-      end
     end
 
     def to_s
@@ -118,16 +70,7 @@ module AppArmor
     rescue Cheetah::ExecutionFailed
       false
     end
-
-    # Evaluating AppArmor version
-    #
-    # @return [String] version string or empty string
-    def AppArmorVersion
-      ret = Yast::Execute.locally!("/sbin/apparmor_parser", "-V", stdout: :capture)
-      ret.lines.first.chomp.split.last
-    rescue Cheetah::ExecutionFailed
-      ""
-    end    
+    
   end
 
   # Class representing a list of profiles
@@ -158,8 +101,12 @@ module AppArmor
       @prof
     end
 
-    def toggle(name)
-      @prof[name].toggle
+    def enforce(name)
+      @prof[name].enforce
+    end
+
+    def complain(name)
+      @prof[name].complain
     end
 
   private
@@ -269,7 +216,8 @@ module AppArmor
         VSpacing(0.3),
         # Footer buttons
         HBox(
-          HWeight(1, PushButton(Id(:changeMode), _('Change mode'))),
+          HWeight(1, PushButton(Id(:setEnforce), _("S&et to 'enforce'"))),
+          HWeight(1, PushButton(Id(:setComplain), _("Set to '&complain'"))),          
           HStretch(),
           HWeight(1, PushButton(Id(:finish), Yast::Label.FinishButton))
         )
@@ -303,12 +251,19 @@ module AppArmor
       Yast::UI.ChangeWidget(Id(:entries_table), :Items, table_items)
     end
 
-    def changeMode_handler
+    def setEnforce_handler
       selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
-      log.info "Toggling #{selected_item}"
-      @profiles.toggle(selected_item) if selected_item
+      log.info "Set to enforce #{selected_item}"
+      @profiles.enforce(selected_item) if selected_item
       redraw_table
     end
+
+    def setComplain_handler
+      selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
+      log.info "Set to complain #{selected_item}"
+      @profiles.complain(selected_item) if selected_item
+      redraw_table
+    end    
 
     def active_only_handler
       @active = Yast::UI.QueryWidget(Id(:active_only), :Value)
