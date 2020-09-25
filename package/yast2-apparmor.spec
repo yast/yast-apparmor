@@ -30,6 +30,9 @@ BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 4.2.2
 
+#for install task
+BuildRequires:  rubygem(%rb_default_ruby_abi:yast-rake)
+
 # Yast::Execute.locally!
 Requires:       yast2 > 3.3.2
 Requires:       yast2-ruby-bindings >= 1.0.0
@@ -49,7 +52,6 @@ profiles.
 %setup -q
 
 %build
-%yast_build
 
 %install
 %yast_install
