@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        4.2.4
+Version:        4.3.0
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
@@ -29,6 +29,9 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  update-desktop-files
 BuildRequires:  yast2
 BuildRequires:  yast2-devtools >= 4.2.2
+BuildRequires:  rubygem(%rb_default_ruby_abi:yast-rake)
+
+#for install task
 BuildRequires:  rubygem(%rb_default_ruby_abi:yast-rake)
 
 # Yast::Execute.locally!

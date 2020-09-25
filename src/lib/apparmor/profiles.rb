@@ -11,10 +11,14 @@ require "yast2/execute"
 Yast.import 'UI'
 Yast.import 'Label'
 Yast.import 'Popup'
+Yast.import 'Report'
 
 module AppArmor
-  # Class representing a single apparmor profile
+
+  # Class representing a single apparmor profile 
   class Profile
+    include Yast::Logger
+
     attr_reader :name, :status, :pid
 
     def initialize(name, status)
@@ -39,14 +43,6 @@ module AppArmor
       @pid.push(p)
     end
 
-    def toggle
-      if @status == 'complain'
-        enforce
-      else
-        complain
-      end
-    end
-
     def to_s
       "#{@name}, #{@status}, #{@pid}"
     end
@@ -68,21 +64,29 @@ module AppArmor
     #
     # @return [Boolean] true if the command finishes correctly; false otherwise
     def execute(*args)
+      log.info("Call to set status: #{args}")
       Yast::Execute.locally!(*args)
       true
     rescue Cheetah::ExecutionFailed
       false
     end
+    
   end
 
   # Class representing a list of profiles
   class Profiles
     include Yast::Logger
+    include Yast::I18n    
+
     attr_reader :prof
     def initialize
       @prof = {}
       status_output = command_output("/usr/sbin/aa-status", "--pretty-json")
       log.info("aa-status output:\n#{status_output}\n")
+      if (status_output.length <= 0)
+        Yast::Report.Error(_("Cannot evaluate current status via aa-status."))
+        return
+      end
       jtext = JSON.parse(status_output)
       add_profiles(jtext["profiles"])
       add_processes(jtext["processes"])
@@ -97,8 +101,12 @@ module AppArmor
       @prof
     end
 
-    def toggle(name)
-      @prof[name].toggle
+    def enforce(name)
+      @prof[name].enforce
+    end
+
+    def complain(name)
+      @prof[name].complain
     end
 
   private
@@ -208,7 +216,14 @@ module AppArmor
         VSpacing(0.3),
         # Footer buttons
         HBox(
-          HWeight(1, PushButton(Id(:changeMode), _('Change mode'))),
+          HWeight(1,
+            PushButton(Id(:setEnforce),
+              ((table_items.first.params[1] == "enforce") ? Opt(:disabled) : Opt()),
+              _("S&et to 'enforce'"))),
+          HWeight(1,
+            PushButton(Id(:setComplain),
+              ((table_items.first.params[1] == "complain") ? Opt(:disabled) : Opt()),
+              _("Set to '&complain'"))),
           HStretch(),
           HWeight(1, PushButton(Id(:finish), Yast::Label.FinishButton))
         )
@@ -219,7 +234,7 @@ module AppArmor
       headers = Array[_('Name'), _('Mode'), _('PID')]
       Table(
         Id(:entries_table),
-        Opt(:keepSorting),
+        Opt(:keepSorting,:notify,:immediate),
         Header(*headers),
         table_items
       )
@@ -240,14 +255,22 @@ module AppArmor
 
     def redraw_table
       Yast::UI.ChangeWidget(Id(:entries_table), :Items, table_items)
+      entries_table_handler
     end
 
-    def changeMode_handler
+    def setEnforce_handler
       selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
-      log.info "Toggling #{selected_item}"
-      @profiles.toggle(selected_item) if selected_item
+      log.info "Set to enforce #{selected_item}"
+      @profiles.enforce(selected_item) if selected_item
       redraw_table
     end
+
+    def setComplain_handler
+      selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
+      log.info "Set to complain #{selected_item}"
+      @profiles.complain(selected_item) if selected_item
+      redraw_table
+    end    
 
     def active_only_handler
       @active = Yast::UI.QueryWidget(Id(:active_only), :Value)
@@ -256,6 +279,20 @@ module AppArmor
 
     def finish_handler
       finish_dialog
+    end
+
+    def entries_table_handler
+      selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
+      if(@profiles.all[selected_item].status == "enforce")
+        Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, false)
+      else
+        Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, true)
+      end
+      if(@profiles.all[selected_item].status == "complain")
+        Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, false)
+      else
+        Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, true)
+      end
     end
   end
 end
