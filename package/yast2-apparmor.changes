@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 25 10:02:31 CEST 2020 - schubi@suse.de
+
+- Adaptions to AppArmor 3.X: Changes in AppArmor aa-status output.
+  (bsc#1174746)
+- 4.3.0
+
+-------------------------------------------------------------------
 Mon Feb 17 16:01:12 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Fixed user-visible messages (bsc#1084015)
