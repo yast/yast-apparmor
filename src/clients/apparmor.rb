@@ -93,22 +93,24 @@ module Yast
 
       ret = nil
       while true
-        ret = UI.UserInput
+        event = UI.WaitForEvent
+        ret = event["ID"]
+        Builtins.y2milestone("Input event: %1", event)
 
         # abort?
         if ret == :abort || ret == :cancel
           break
-        # next
-        elsif ret == :next || ret == :modules
+        # next or selecting an item,
+        # differ between changing the current item and activating it
+        elsif ret == :next || (ret == :modules && event["EventReason"] == "Activated")
           # check_*
           ret = :next
           break
         # back
         elsif ret == :back
           break
-        else
+        elsif ret != :modules
           Builtins.y2error("unexpected retcode: %1", ret)
-          next
         end
       end
 
