@@ -248,6 +248,14 @@ module AppArmor
       )
     end
 
+    # Returns the list of visible profiles
+    #
+    # Each element of the array is another array with the profile name
+    # and a profile object.
+    #
+    # [["apache2", #<AppArmor::Profile...>], ["dovecot", #<AppArmor::Profile...>]]
+    #
+    # @return [Array<Array<String,Profile>>]
     def visible_profiles
       if @active
         @profiles.active
