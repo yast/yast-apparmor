@@ -203,6 +203,8 @@ module AppArmor
     end
 
     def dialog_content
+      profile = visible_profiles.first&.last
+
       VBox(
         # Header
         Heading(_('Profile List')),
@@ -217,13 +219,19 @@ module AppArmor
         # Footer buttons
         HBox(
           HWeight(1,
-            PushButton(Id(:setEnforce),
-              ((table_items.first.params[1] == "enforce") ? Opt(:disabled) : Opt()),
-              _("S&et to 'enforce'"))),
+            PushButton(
+              Id(:setEnforce),
+              profile.nil? || profile.status == "enforce" ? Opt(:disabled) : Opt(),
+              _("S&et to 'enforce'")
+            )
+          ),
           HWeight(1,
-            PushButton(Id(:setComplain),
-              ((table_items.first.params[1] == "complain") ? Opt(:disabled) : Opt()),
-              _("Set to '&complain'"))),
+            PushButton(
+              Id(:setComplain),
+              profile.nil? || profile.status == "complain" ? Opt(:disabled) : Opt(),
+              _("Set to '&complain'")
+            )
+          ),
           HStretch(),
           HWeight(1, PushButton(Id(:finish), Yast::Label.FinishButton))
         )
@@ -240,14 +248,25 @@ module AppArmor
       )
     end
 
+    # Returns the list of visible profiles
+    #
+    # Each element of the array is another array with the profile name
+    # and a profile object.
+    #
+    # [["apache2", #<AppArmor::Profile...>], ["dovecot", #<AppArmor::Profile...>]]
+    #
+    # @return [Array<Array<String,Profile>>]
+    def visible_profiles
+      if @active
+        @profiles.active
+      else
+        @profiles.all
+      end
+    end
+
     def table_items
-      profs = if @active
-                @profiles.active
-              else
-                @profiles.all
-              end
       arr = []
-      profs.each do |_n, pr|
+      visible_profiles.each do |_n, pr|
         arr.push(pr.to_array)
       end
       arr.map { |i| Item(*i) }
@@ -283,12 +302,15 @@ module AppArmor
 
     def entries_table_handler
       selected_item = Yast::UI.QueryWidget(Id(:entries_table), :CurrentItem)
-      if(@profiles.all[selected_item].status == "enforce")
+      selected_profile = @profiles.all[selected_item]
+
+      if selected_profile.nil? || selected_profile.status == "enforce"
         Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, false)
       else
         Yast::UI.ChangeWidget(Id(:setEnforce), :Enabled, true)
       end
-      if(@profiles.all[selected_item].status == "complain")
+
+      if selected_profile.nil? || selected_profile.status == "complain"
         Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, false)
       else
         Yast::UI.ChangeWidget(Id(:setComplain), :Enabled, true)
