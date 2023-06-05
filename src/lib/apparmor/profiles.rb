@@ -80,6 +80,7 @@ module AppArmor
 
     attr_reader :prof
     def initialize
+      textdomain "apparmor"
       @prof = {}
       status_output = command_output("/usr/sbin/aa-status", "--pretty-json")
       log.info("aa-status output:\n#{status_output}\n")
