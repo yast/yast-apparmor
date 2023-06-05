@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun  5 08:19:51 UTC 2023 - Stefan Hundhammer <shundhammer@suse.com>
+
+- Added missing textdomain (bsc#1211980)
+- 4.5.1
+
+-------------------------------------------------------------------
 Wed Apr 06 13:24:58 UTC 2022 - Ladislav Slezák <lslezak@suse.cz>
 
 - Bump version to 4.5.0 (bsc#1198109)
