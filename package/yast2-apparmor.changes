@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 04 08:03:15 UTC 2023 - Michal Filka <mfilka@suse.com>
+
+- bsc#1214418
+  - Backport: Fixed crash on internal error when scanning audit.log
+- 4.6.3
+
+-------------------------------------------------------------------
 Fri Sep 01 19:57:03 UTC 2023 - Josef Reidinger <jreidinger@suse.com>
 
 - Branch package for SP6 (bsc#1208913)
