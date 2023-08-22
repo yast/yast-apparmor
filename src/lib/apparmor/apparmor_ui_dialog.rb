@@ -125,7 +125,7 @@ module AppArmor
 	  VSpacing(0.3),
           InputField(Id(:str), Opt(:hstretch), @text, @default),
 	  VSpacing(0.3),
-          PushButton(Label.OKButton)
+          PushButton(Yast::Label.OKButton)
         )
       )
       Yast::UI.UserInput()
