@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 06 07:14:32 UTC 2024 - Ladislav Slezák <lslezak@suse.com>
+
+- Branch package for SP7 (bsc#1230201)
+
+-------------------------------------------------------------------
 Mon Sep 04 08:03:15 UTC 2023 - Michal Filka <mfilka@suse.com>
 
 - bsc#1214418
