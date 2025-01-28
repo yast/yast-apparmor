@@ -121,7 +121,6 @@ module AppArmor
     #      "/usr/bin/lessopen.sh": "enforce",
     #      "/usr/lib/colord": "enforce",
     #      "/usr/{bin,sbin}/dnsmasq": "enforce",
-    #      "nscd": "enforce",
     #      "ntpd": "enforce",
     #      "syslogd": "enforce",
     #      "traceroute": "enforce",
@@ -141,9 +140,9 @@ module AppArmor
     # Sample JSON:
     #
     # "processes": {
-    #     "/usr/sbin/nscd": [
+    #     "/usr/sbin/foo": [
     #         {
-    #             "profile": "nscd",
+    #             "profile": "foo",
     #             "pid": "805",
     #             "status": "enforce"
     #         }
