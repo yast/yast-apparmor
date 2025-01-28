@@ -17,7 +17,7 @@
 
 
 Name:           yast2-apparmor
-Version:        5.0.0
+Version:        5.0.1
 Release:        0
 Summary:        YaST2 - Plugins for AppArmor Profile Management
 Url:            https://github.com/yast/yast-apparmor
