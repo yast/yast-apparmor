@@ -2,8 +2,9 @@
 Tue Mar 10 09:00:28 UTC 2026 - Michal Filka <mfilka@suse.com>
 
 - jsc#PED-14507
-  - Removed reference to update-desktop-files from spec file 
+  - Removed reference to update-desktop-files from spec file
   - 5.0.2
+
 -------------------------------------------------------------------
 Tue Jan 28 09:59:39 UTC 2025 - Stefan Hundhammer <shundhammer@suse.com>
 
@@ -29,7 +30,6 @@ Mon Jun  5 08:19:51 UTC 2023 - Stefan Hundhammer <shundhammer@suse.com>
 - 4.6.1
 
 -------------------------------------------------------------------
-
 Fri Mar 03 14:44:07 UTC 2023 - Ladislav Slezák <lslezak@suse.cz>
 
 - Bump version to 4.6.0 (bsc#1208913)
